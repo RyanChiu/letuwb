@@ -1,0 +1,5 @@
+1.how to perform automatically update:
+	a)change the values of the keys "versionCode" and "versionName" both in "AndroidMainifest.xml" and "ver.php", and make sure the 2 pairs match to each other.and, we will judge the version by "versionCode".
+	b)put the apk file on server of the url that the member mUrlUpdate of LetuseeActivity point to.
+	c)renew (by usring git is prefered) ver.php on server of the url that the member mUrlSite of LetuseeActivity point to.
+2.continued...

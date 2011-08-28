@@ -1,0 +1,9 @@
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" 
+	android:layout_width="fill_parent" 
+	android:gravity="center" 
+	android:layout_gravity="center">
+    <ProgressBar android:id="@+id/pbCustomDialogProgress" android:layout_marginTop="9dp" android:layout_height="36dp" android:layout_marginBottom="9dp" android:layout_width="36dp"></ProgressBar>
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="3dp" android:id="@+id/tvCustomDialogTitle" android:text="@string/msg_loading"></TextView>
+</LinearLayout>

@@ -1,0 +1,9 @@
+bin
+bin/*.class
+bin/*.dex
+bin/*.apk
+letmesee/manager/tmp
+letmesee/manager/cache
+letmesee/manager/app/tmp/cache
+letmesee/manager/app/vendors/cache
+*.log

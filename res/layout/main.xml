@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.zrd.zr.letuwb"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="@drawable/bg">
+	<FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/frameLayoutMain">
+        <WebView android:id="@+id/wvCount"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:visibility="gone"/>
+        <ViewSwitcher android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/viewSwitcherMain">
+            <GridView 
+            	android:id="@+id/gridViewPics" 
+            	android:layout_width="fill_parent" 
+            	android:layout_height="fill_parent"
+            	android:stretchMode="columnWidth"
+            	android:gravity="center" android:horizontalSpacing="3dp" android:verticalSpacing="3dp" android:numColumns="2" android:paddingTop="56dp">
+            </GridView>
+        </ViewSwitcher>
+        <RelativeLayout android:layout_width="fill_parent" android:id="@+id/relativeLayoutMain" android:layout_height="wrap_content">
+            <LinearLayout 
+            	android:layout_width="fill_parent" 
+            	android:layout_height="wrap_content" 
+            	android:id="@+id/linearLayoutMainTop" 
+            	android:gravity="center" 
+            	android:paddingBottom="6dp" 
+            	android:paddingTop="3dp" android:layout_centerHorizontal="true">
+				<com.google.ads.AdView android:id="@+id/adsMain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    app:adUnitId="a14dae4f9fc303c"
+                    app:adSize="BANNER" android:layout_gravity="center"/>
+            </LinearLayout>
+            <LinearLayout 
+            	android:layout_width="fill_parent" 
+	        	android:layout_height="wrap_content"
+	        	android:orientation="vertical"
+	            android:layout_alignParentBottom="true" android:id="@+id/linearLayoutMainBottom" android:gravity="center" android:background="#33000000">
+                <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="center" android:layout_gravity="center">
+                    <Button android:text="@string/label_pre" android:id="@+id/btnPre" android:layout_marginLeft="5dp" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:textSize="11sp" android:background="@drawable/btn_custom" android:textColor="#00ff00" android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+                    <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:layout_centerInParent="true" android:layout_centerVertical="true" android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginLeft="66dp" android:layout_marginRight="66dp">
+                        <TextView android:text="......" android:id="@+id/tvPageInfo" android:layout_height="wrap_content" android:textColor="#ddffff" android:layout_width="wrap_content" android:layout_marginBottom="3dp" android:layout_marginTop="3dp" android:textSize="11sp"></TextView>
+                        <TextView android:text="0" android:id="@+id/tvSeekPos" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textSize="11sp"></TextView>
+                        <SeekBar android:layout_width="fill_parent" android:layout_marginBottom="3dp" android:id="@+id/sbMain" android:layout_height="19dp"></SeekBar>
+                    </LinearLayout>
+                    <Button android:layout_alignParentRight="true" android:id="@+id/btnNext" android:text="@string/label_next" android:layout_marginRight="5dp" android:layout_centerVertical="true" android:textSize="11sp" android:gravity="center" android:background="@drawable/btn_custom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#00ff00"></Button>
+                </RelativeLayout>
+                <RelativeLayout android:id="@+id/relativeLayout2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="center" android:gravity="center">
+                    <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:layout_centerHorizontal="true" android:layout_centerInParent="true" android:layout_centerVertical="true" android:gravity="center">
+                        <Button android:text="@string/label_latest" android:id="@+id/btnLatest" android:textSize="11sp" android:background="@drawable/btn_custom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#00ff00"></Button>
+                        <Button android:text="@string/label_hottest" android:id="@+id/btnHottest" android:textSize="11sp" android:background="@drawable/btn_custom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#00ff00"></Button>
+                        <Button android:layout_width="wrap_content" android:text="@string/label_random" android:textSize="11sp" android:background="@drawable/btn_custom" android:textColor="#00ff00" android:layout_height="wrap_content" android:id="@+id/btnRandom"></Button>
+                        <Button android:text="@string/label_unhottest" android:id="@+id/btnUnhottest" android:textSize="11sp" android:background="@drawable/btn_custom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#00ff00"></Button>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </FrameLayout>
+</LinearLayout>

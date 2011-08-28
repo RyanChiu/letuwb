@@ -1,0 +1,36 @@
+
+message Weibouser {
+	required int32 id = 1;
+	required int32 uid = 2;
+	required string screen_name = 3;
+	required string name = 4;
+	required int32 province = 5;
+	required int32 city = 6;
+	required string location = 7;
+	required string description = 8;
+	required string url = 9;
+	required string profile_image_url = 10;
+	required string domain = 11;
+	required string gender = 12;
+	required int32 followers_count = 13;
+	required int32 friends_count = 14;
+	required int32 statuses_count = 15;
+	required int32 favourites_count = 16;
+	required string created_at = 17;
+	required int32 following = 18;
+	required int32 allow_all_act_msg = 19;
+	required int32 geo_enabled = 20;
+	required int32 verified = 21;
+	required int32 status_id = 22;
+	required int32 clicks = 23;
+	required int32 likes = 24;
+	required int32 dislikes = 25;
+	required string lastvotetime = 26;
+	required int32 weeklyclicks = 27;
+	required int32 weeklylikes = 28;
+	required int32 weeklydislikes = 29;
+}
+
+message Weibousers {
+	repeated Weibouser usr = 1;
+}

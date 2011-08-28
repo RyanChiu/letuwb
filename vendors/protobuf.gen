@@ -1,0 +1,5 @@
+/usr/local/bin/protoc -I=./ --java_out=../src/ weibousers_protos.proto;
+awk 'NR != 1' weibousers_protos.proto > ../letmewb/protocolbuf/copiesonly/weibousers_protos.proto;
+cd ../letmewb/protocolbuf/parser;
+php zrparser.php;
+cd ../../../vendors;

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:background="@drawable/bg" android:orientation="vertical">
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_width="fill_parent" android:paddingBottom="6dp" android:paddingLeft="6dp" android:paddingRight="6dp" android:paddingTop="6dp">
+        <ImageView android:layout_height="64dp" android:scaleType="fitXY" android:layout_width="64dp" android:id="@+id/imageView1" android:src="@drawable/theateryellowii128x128"></ImageView>
+        <LinearLayout android:layout_height="fill_parent" android:layout_width="wrap_content" android:id="@+id/linearLayout2" android:gravity="center">
+            <TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/app_name" android:layout_marginLeft="16dp" android:textSize="24sp" android:textColor="#ffffff"></TextView>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout3" android:paddingBottom="6dp" android:paddingLeft="6dp" android:paddingRight="6dp" android:paddingTop="6dp">
+        <TextView android:textColor="#ffffff" android:id="@+id/tvVersion" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/about_version"></TextView>
+    </LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout4" android:paddingBottom="6dp" android:paddingLeft="6dp" android:paddingRight="6dp" android:paddingTop="6dp">
+        <TextView android:textColor="#ffffff" android:text="@string/about_officialsite" android:id="@+id/tvOfficialSite" android:layout_height="wrap_content" android:layout_width="wrap_content" android:clickable="true"></TextView>
+        <Button android:id="@+id/btnOfficialSite" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="#00000000" android:text="--"></Button>
+    </LinearLayout>
+    <TextView android:id="@+id/textView2" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textColor="#ffffff" android:paddingBottom="6dp" android:paddingLeft="6dp" android:paddingRight="6dp" android:paddingTop="6dp" android:text="@string/about_content"></TextView>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout5" android:paddingBottom="6dp" android:paddingLeft="6dp" android:paddingRight="6dp" android:paddingTop="6dp">
+        <TextView android:id="@+id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/about_contact" android:textColor="#ffffff"></TextView>
+        <Button android:id="@+id/btnContact" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="--" android:background="#00000000"></Button>
+    </LinearLayout>
+</LinearLayout>

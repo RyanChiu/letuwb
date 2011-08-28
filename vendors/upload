@@ -1,0 +1,4 @@
+#!/bin/bash
+file=$1
+#echo $file
+curl -F "file=@$file"  -F 'action=Upload Image' -F 'accountid=1' -F 'intro=""' http://griffin/letmesee/upload.php

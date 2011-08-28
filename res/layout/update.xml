@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:background="#00000000" android:gravity="center">
+    <LinearLayout android:id="@+id/linearLayout1" android:gravity="center" android:layout_height="wrap_content" android:layout_width="230dp" android:background="@drawable/popup_full_dark" android:orientation="vertical">
+        <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout3" android:layout_width="fill_parent" android:layout_gravity="center" android:gravity="center" android:layout_marginTop="3dp" android:layout_marginBottom="3dp">
+            <TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:text="@string/update_title"></TextView>
+        </LinearLayout>
+        <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout2" android:layout_width="fill_parent" android:gravity="center" android:layout_gravity="center">
+            <ProgressBar android:id="@+id/pbUpdate" android:layout_marginTop="9dp" android:layout_height="36dp" android:layout_marginBottom="9dp" android:layout_width="36dp"></ProgressBar>
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="3dp" android:text="@string/tips_connecting" android:id="@+id/tvUpdate"></TextView>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
