@@ -106,6 +106,7 @@ while ($row = mysql_fetch_assoc($rs)) {
 	$usr->set_clicks($row['clicks']);
 	$usr->set_likes($row['likes']);
 	$usr->set_dislikes($row['dislikes']);
+	$urs->set_lastvotetime($row['lastvotetime']);
 	$usr->set_weeklyclicks($row['weeklyclicks']);
 	$usr->set_weeklylikes($row['weeklylikes']);
 	$usr->set_weeklydislikes($row['weeklydislikes']);
