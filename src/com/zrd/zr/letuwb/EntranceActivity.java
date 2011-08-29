@@ -893,7 +893,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
  		String sBackMsg = "";
 		sBackMsg = getPhpContentByGet(
 			"stats.php",
-			EntranceActivity.getParamsAsStr("total", "pics", "relpath", "pictures/")
+			EntranceActivity.getParamsAsStr("total", "usrs")
 		);
 		if (sBackMsg != null) {
 			String ss[] = getPhpMsg(sBackMsg);

@@ -23,5 +23,18 @@ if (array_key_exists("total", $_GET) && $_GET['total'] == "pages"
 	exit();
 }
 
+if (array_key_exists("total", $_GET) && $_GET['total'] == "usrs") {
+	$sql = sprintf("select count(id) from weibo_users");
+	$rs = mysql_query($sql, $zconn->dblink)
+		or die ("db_err: " . mysql_error());
+	$total = 0;
+	if (mysql_num_rows($rs) > 0) {
+		$r = mysql_fetch_row($rs);
+		$total = $r[0];
+	}
+	echo "~successful~$total~successful~";
+	exit();
+}
+
 echo "~failed~Illegal submit~failed~";
 ?>
