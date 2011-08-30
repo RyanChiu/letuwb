@@ -91,9 +91,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	private static String mClientKey = "";
 	private static String mRandomKey = "";
 	private static Integer mTopicChoice = 0;
-	GridView gvPics;
+	GridView mGridPics;
 	private static final Integer mLimit = 28;//how many pictures should be passed to PicbrowActivity, actually multiple of mPageLimit is recommended
-	final Integer mPageLimit = 4;//how many pictures should be loaded into gvPics.
+	final Integer mPageLimit = 4;//how many pictures should be loaded into mGridPics.
 	private static Integer mCurPage = 1;
 	private Integer mPageBeforeBrow = 1;
 	private static Integer mCurParagraph = 1;
@@ -170,7 +170,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
                 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.exchangelist_title);
         mBtnExchange = (ImageButton) findViewById(R.id.btnExchange);
-        gvPics = (GridView) findViewById(R.id.gridViewPics);
+        mGridPics = (GridView) findViewById(R.id.gridViewPics);
         mTextPageInfo = (TextView) findViewById(R.id.tvPageInfo);
         mBtnRandom = (Button) findViewById(R.id.btnRandom);
         mBtnLatest = (Button) findViewById(R.id.btnLatest);
@@ -191,7 +191,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mGestureDetector = new GestureDetector(this, new LetuseeGestureListener());
-        gvPics.setOnTouchListener(this);
+        mGridPics.setOnTouchListener(this);
         
         mBtnExchange.setOnClickListener(new OnClickListener() {
 
@@ -431,7 +431,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			}
 		);
                 
-        gvPics.setOnItemClickListener(new OnItemClickListener() {
+		mGridPics.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				// TODO Auto-generated method stub
 				WeibouserInfo wi = (WeibouserInfo) mPageUsrs.get(position);
@@ -849,8 +849,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 					for (int i = (mCurParagraph - 1) * mPageLimit; i < mCurParagraph * mPageLimit; i++) {
 						mPageUsrs.add(mUsrs.get(i));
 					}
-					WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, gvPics);
-					gvPics.setAdapter(adapter);
+					WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, mGridPics);
+					mGridPics.setAdapter(adapter);
 					renewCurParagraphTitle();
 				}
 			}
@@ -962,9 +962,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
     }
     
     /*
-     * try to load pictures in gvPics under background by using AsyncTask:
+     * try to load pictures in mGridPics under background by using AsyncTask:
      * 1, get picture informations from remote DB
-     * 2, get picture images from remote server and set to gvPics
+     * 2, get picture images from remote server and set to mGridPics
      */
     private class AsyncGridLoader extends AsyncTask <String, Object, WeibouserInfoGridAdapter> {
     	Context mContext;
@@ -978,7 +978,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			// TODO Auto-generated method stub
 			renewCurParagraphTitle();
 			if (result != null) {
-				gvPics.setAdapter(result);
+				mGridPics.setAdapter(result);
 			} else {
 				((EntranceActivity) mContext).mPrgDlg.dismiss();
 				AlertDialog alertDlg = new AlertDialog.Builder(mContext)
@@ -1021,7 +1021,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			}
 			WeibouserInfoGridAdapter adapter = null;
 			if (mPageUsrs.size() != 0) {
-				adapter = new WeibouserInfoGridAdapter((EntranceActivity) mContext, mPageUsrs, gvPics);
+				adapter = new WeibouserInfoGridAdapter((EntranceActivity) mContext, mPageUsrs, mGridPics);
 			} 
 			return adapter;
 		}
@@ -1210,8 +1210,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			for (int i = (mCurParagraph -1) * mPageLimit; i < mCurParagraph * mPageLimit && i < mUsrs.size(); i++) {
 				mPageUsrs.add(mUsrs.get(i));
 			}
-			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, gvPics);
-			gvPics.setAdapter(adapter);
+			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, mGridPics);
+			mGridPics.setAdapter(adapter);
 			renewCurParagraphTitle();
 		}
     }
@@ -1234,8 +1234,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			for (int i = (mCurParagraph -1) * mPageLimit; i < mCurParagraph * mPageLimit && i < mUsrs.size(); i++) {
 				mPageUsrs.add(mUsrs.get(i));
 			}
-			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, gvPics);
-			gvPics.setAdapter(adapter);
+			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, mGridPics);
+			mGridPics.setAdapter(adapter);
 			renewCurParagraphTitle();
 		}
     }

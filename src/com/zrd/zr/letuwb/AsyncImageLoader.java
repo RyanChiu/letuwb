@@ -89,7 +89,7 @@ public class AsyncImageLoader {
 					String sUrl = "";
 				    if (wi != null) {
 				    	sUrl = new String(wi.profile_image_url);
-				    	sUrl.replace("/50/", "/180/");
+				    	sUrl = sUrl.replace("/50/", "/180/");
 				    }
 				    
 					BitmapDrawable bd;

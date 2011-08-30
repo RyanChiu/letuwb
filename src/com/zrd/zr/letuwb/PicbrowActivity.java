@@ -854,7 +854,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 			} else {
 				SecureUrl su = new SecureUrl();
 				String sUrl = new String(wi.profile_image_url);
-				sUrl.replace("/50/", "/180/");
+				sUrl = sUrl.replace("/50/", "/180/");
 				URLConnection conn = su.getConnection(sUrl);
 				InputStream is;
 				
