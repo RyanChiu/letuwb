@@ -20,6 +20,8 @@ class DoController extends AppController {
 		$this->Auth->logoutRedirect = array('controller' => 'do', 'action' => 'login');
 		$this->Auth->userScope = array('Account.username' => 'admin');
 		
+		mysql_query("set names 'utf8';");
+		
 		parent::beforeFilter();
 	}
 	
