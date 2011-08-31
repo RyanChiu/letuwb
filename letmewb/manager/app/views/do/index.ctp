@@ -5,18 +5,17 @@
 <table width="100%" style="border-width:1px;">
 <thead>
 <tr>
-	<th><b><?php echo $paginator->sort('ID', 'Picture.id'); ?></b></th>
-	<th><b><?php echo $paginator->sort('File Serial', 'Picture.fileserial'); ?></b></th>
-	<th><b><?php echo $paginator->sort('File Name', 'Picture.filename'); ?></b></th>
-	<th><b><?php echo $paginator->sort('Account', 'Picture.accountid'); ?></b></th>
-	<th><b><?php echo $paginator->sort('Upload Time', 'Picture.time'); ?></b></th>
-	<th><b><?php echo $paginator->sort('Last Vote Time', 'Picture.lastvotetime'); ?></b></th>
-	<th><b><?php echo $paginator->sort('Likes', 'Picture.likes'); ?></b></th>
-	<th><b><?php echo $paginator->sort('Dislikes', 'Picture.dislikes'); ?></b></th>
-	<th><b><?php echo $paginator->sort('Clicks', 'Picture.clicks'); ?></b></th>
-	<th><b><?php echo $paginator->sort('Wkly Likes', 'Picture.weeklylikes'); ?></b></th>
-	<th><b><?php echo $paginator->sort('Wkly Dislikes', 'Picture.weeklydislikes'); ?></b></th>
-	<th><b><?php echo $paginator->sort('Wkly Clicks', 'Picture.weeklyclicks'); ?></b></th>
+	<th><b><?php echo $paginator->sort('ID', 'WeiboUser.id'); ?></b></th>
+	<th><b><?php echo $paginator->sort('User ID', 'WeiboUser.uid'); ?></b></th>
+	<th><b><?php echo $paginator->sort('Gender', 'WeiboUser.gender'); ?></b></th>
+	<th><b><?php echo $paginator->sort('Location', 'WeiboUser.location'); ?></b></th>
+	<th><b><?php echo $paginator->sort('Last Vote Time', 'WeiboUser.lastvotetime'); ?></b></th>
+	<th><b><?php echo $paginator->sort('Likes', 'WeiboUser.likes'); ?></b></th>
+	<th><b><?php echo $paginator->sort('Dislikes', 'WeiboUser.dislikes'); ?></b></th>
+	<th><b><?php echo $paginator->sort('Clicks', 'WeiboUser.clicks'); ?></b></th>
+	<th><b><?php echo $paginator->sort('Wkly Likes', 'WeiboUser.weeklylikes'); ?></b></th>
+	<th><b><?php echo $paginator->sort('Wkly Dislikes', 'WeiboUser.weeklydislikes'); ?></b></th>
+	<th><b><?php echo $paginator->sort('Wkly Clicks', 'WeiboUser.weeklyclicks'); ?></b></th>
 	<th><b>Image</b></th>
 	<th style="text-align:center;"><b>Operation</b></th>
 </tr>
@@ -26,21 +25,21 @@ $i = 0;
 foreach ($rs as $r) {
 ?>
 <tr <?php echo $i % 2 == 0? '' : 'style="background-color:#00ffff;"'; ?>>
-	<td><?php echo $r['Picture']['id']; ?></td>
-	<td><?php echo $r['Picture']['fileserial']; ?></td>
-	<td><?php echo $r['Picture']['filename']; ?></td>
-	<td><?php echo $r['Picture']['accountid']; ?></td>
-	<td><?php echo $r['Picture']['time']; ?></td>
-	<td><?php echo $r['Picture']['lastvotetime']; ?></td>
-	<td><?php echo $r['Picture']['likes']; ?></td>
-	<td><?php echo $r['Picture']['dislikes']; ?></td>
-	<td><?php echo $r['Picture']['clicks']; ?></td>
-	<td><?php echo $r['Picture']['weeklylikes']; ?></td>
-	<td><?php echo $r['Picture']['weeklydislikes']; ?></td>
-	<td><?php echo $r['Picture']['weeklyclicks']; ?></td>
+	<td><?php echo $r['WeiboUser']['id']; ?></td>
+	<td><?php echo $r['WeiboUser']['uid']; ?></td>
+	<td><?php echo $r['WeiboUser']['gender']; ?></td>
+	<td><?php echo $r['WeiboUser']['location']; ?></td>
+	<td><?php echo $r['WeiboUser']['lastvotetime']; ?></td>
+	<td><?php echo $r['WeiboUser']['likes']; ?></td>
+	<td><?php echo $r['WeiboUser']['dislikes']; ?></td>
+	<td><?php echo $r['WeiboUser']['clicks']; ?></td>
+	<td><?php echo $r['WeiboUser']['weeklylikes']; ?></td>
+	<td><?php echo $r['WeiboUser']['weeklydislikes']; ?></td>
+	<td><?php echo $r['WeiboUser']['weeklyclicks']; ?></td>
 	<td>
 	<?php
-	$picurl = "/../" . $r['Picture']['relpath'] . substr($r['Picture']['fileserial'], 0, 3) . "/" . substr($r['Picture']['fileserial'], 3, 3) . "t.jpg";
+	$picurl = $r['WeiboUser']['profile_image_url'];
+	$picurl = str_replace("/50/", "/180/", $picurl);
 	echo $html->image($picurl, array('style' => 'width:136px;border:0px;'))
 	?>
 	</td>
@@ -56,9 +55,7 @@ foreach ($rs as $r) {
 		'Delete',
 		array(
 			'controller' => 'do', 'action' => 'delete',
-			'picid' => $r['Picture']['id'],
-			'picpath' => $r['Picture']['relpath'],
-			'picdir' => substr($r['Picture']['fileserial'], 0, 3),
+			'uid' => $r['WeiboUser']['uid'],
 			'fromk' => implode(',', $fromk),
 			'fromv' => implode(',', $fromv)
 		),

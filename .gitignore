@@ -2,8 +2,10 @@ bin
 bin/*.class
 bin/*.dex
 bin/*.apk
-letmesee/manager/tmp
-letmesee/manager/cache
-letmesee/manager/app/tmp/cache
-letmesee/manager/app/vendors/cache
+letmewb/manager/tmp
+letmewb/manager/cache
+letmewb/manager/app/tmp/cache/views
+letmewb/manager/app/tmp/cache/models
+letmewb/manager/app/tmp/cache/persistent
+letmewb/manager/app/vendors/cache
 *.log

@@ -1,7 +1,7 @@
 <?php
 class DoController extends AppController {
 	var $name = 'Do';
-	var $uses = array('Account', 'Picture');
+	var $uses = array('Account', 'WeiboUser');
 	var $components = array('Auth');
 	var $helpers = array(
 		'Form', 'Html', 'Javascript',
@@ -84,14 +84,14 @@ class DoController extends AppController {
 			
 		} else {
 			$this->paginate = array(
-				'Picture' => array(
+				'WeiboUser' => array(
 					'conditions' => array('1' => '1'),
-					'order' => 'time desc',
+					'order' => 'created_at desc',
 					'limit' => $this->__limit
 				)
 			);
 			$this->set('rs',
-				$this->paginate('Picture')
+				$this->paginate('WeiboUser')
 			);
 		}
 	}
@@ -99,15 +99,11 @@ class DoController extends AppController {
 	function delete() {
 		if (!$this->Auth->user()) $this->redirect(array('controller' => 'images', 'action' => 'login'));
 		
-		if (array_key_exists('picid', $this->passedArgs)
-			&& array_key_exists('picpath', $this->passedArgs)
-			&& array_key_exists('picdir', $this->passedArgs)
+		if (array_key_exists('uid', $this->passedArgs)
 			&& array_key_exists('fromk', $this->passedArgs)
 			&& array_key_exists('fromv', $this->passedArgs)
 		) {
-			$picid = intval($this->passedArgs['picid']);
-			$picpath = $this->passedArgs['picpath'];
-			$picdir = $this->passedArgs['picdir'];
+			$uid = intval($this->passedArgs['uid']);
 			$fromk = explode(',', $this->passedArgs['fromk']);
 			$fromv = explode(',', $this->passedArgs['fromv']);
 			$from = array_combine($fromk, $fromv);
@@ -116,13 +112,8 @@ class DoController extends AppController {
 			 * 1.delete the record in db.
 			 * 2.delete the whole folder that hold all the kinds of the picture
 			 */
-			if ($this->Picture->delete($picid)) {
-				$delpath = "../../../" . $picpath . "/" . $picdir;
-				if ($this->__deleteAll($delpath)) {
-					$this->Session->setFlash("Successfully deleted.");
-				} else {
-					$this->Session->setFlash("Failed to delete the folder.");
-				}
+			if ($this->WeiboUser->delete($uid)) {
+				$this->Session->setFlash("Successfully deleted.");
 			} else {
 				$this->Session->setFlash("Failed to delete it in DB.");
 			}
