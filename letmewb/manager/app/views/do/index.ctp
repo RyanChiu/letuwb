@@ -7,6 +7,7 @@
 <tr>
 	<th><b><?php echo $paginator->sort('ID', 'WeiboUser.id'); ?></b></th>
 	<th><b><?php echo $paginator->sort('User ID', 'WeiboUser.uid'); ?></b></th>
+	<th><b><?php echo $paginator->sort('Screen Name', 'WeiboUser.screen_name'); ?></b></th>
 	<th><b><?php echo $paginator->sort('Gender', 'WeiboUser.gender'); ?></b></th>
 	<th><b><?php echo $paginator->sort('Location', 'WeiboUser.location'); ?></b></th>
 	<th><b><?php echo $paginator->sort('Last Vote Time', 'WeiboUser.lastvotetime'); ?></b></th>
@@ -27,6 +28,7 @@ foreach ($rs as $r) {
 <tr <?php echo $i % 2 == 0? '' : 'style="background-color:#00ffff;"'; ?>>
 	<td><?php echo $r['WeiboUser']['id']; ?></td>
 	<td><?php echo $r['WeiboUser']['uid']; ?></td>
+	<td><?php echo $r['WeiboUser']['screen_name']; ?></td>
 	<td><?php echo $r['WeiboUser']['gender']; ?></td>
 	<td><?php echo $r['WeiboUser']['location']; ?></td>
 	<td><?php echo $r['WeiboUser']['lastvotetime']; ?></td>
