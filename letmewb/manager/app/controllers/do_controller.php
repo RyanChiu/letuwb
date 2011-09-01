@@ -101,11 +101,11 @@ class DoController extends AppController {
 	function delete() {
 		if (!$this->Auth->user()) $this->redirect(array('controller' => 'images', 'action' => 'login'));
 		
-		if (array_key_exists('uid', $this->passedArgs)
+		if (array_key_exists('id', $this->passedArgs)
 			&& array_key_exists('fromk', $this->passedArgs)
 			&& array_key_exists('fromv', $this->passedArgs)
 		) {
-			$uid = intval($this->passedArgs['uid']);
+			$id = intval($this->passedArgs['id']);
 			$fromk = explode(',', $this->passedArgs['fromk']);
 			$fromv = explode(',', $this->passedArgs['fromv']);
 			$from = array_combine($fromk, $fromv);
@@ -114,7 +114,7 @@ class DoController extends AppController {
 			 * 1.delete the record in db.
 			 * 2.delete the whole folder that hold all the kinds of the picture
 			 */
-			if ($this->WeiboUser->delete($uid)) {
+			if ($this->WeiboUser->delete($id)) {
 				$this->Session->setFlash("Successfully deleted.");
 			} else {
 				$this->Session->setFlash("Failed to delete it in DB.");

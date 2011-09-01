@@ -59,7 +59,7 @@ foreach ($rs as $r) {
 		'Delete',
 		array(
 			'controller' => 'do', 'action' => 'delete',
-			'uid' => $r['WeiboUser']['uid'],
+			'id' => $r['WeiboUser']['id'],
 			'fromk' => implode(',', $fromk),
 			'fromv' => implode(',', $fromv)
 		),
