@@ -10,6 +10,7 @@
 	<th><b><?php echo $paginator->sort('Screen Name', 'WeiboUser.screen_name'); ?></b></th>
 	<th><b><?php echo $paginator->sort('Gender', 'WeiboUser.gender'); ?></b></th>
 	<th><b><?php echo $paginator->sort('Location', 'WeiboUser.location'); ?></b></th>
+	<th><b><?php echo $paginator->sort('Verified', 'WeiboUser.verified'); ?></b></th>
 	<th><b><?php echo $paginator->sort('Last Vote Time', 'WeiboUser.lastvotetime'); ?></b></th>
 	<th><b><?php echo $paginator->sort('Likes', 'WeiboUser.likes'); ?></b></th>
 	<th><b><?php echo $paginator->sort('Dislikes', 'WeiboUser.dislikes'); ?></b></th>
@@ -31,6 +32,7 @@ foreach ($rs as $r) {
 	<td><?php echo $r['WeiboUser']['screen_name']; ?></td>
 	<td><?php echo $r['WeiboUser']['gender']; ?></td>
 	<td><?php echo $r['WeiboUser']['location']; ?></td>
+	<td><?php echo $r['WeiboUser']['verified']; ?></td>
 	<td><?php echo $r['WeiboUser']['lastvotetime']; ?></td>
 	<td><?php echo $r['WeiboUser']['likes']; ?></td>
 	<td><?php echo $r['WeiboUser']['dislikes']; ?></td>
