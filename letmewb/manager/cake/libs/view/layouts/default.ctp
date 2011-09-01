@@ -45,7 +45,7 @@
 
 		</div>
 		<div id="footer">
-			Letusee
+			Letuwb
 		</div>
 	</div>
 	<?php echo $this->element('sql_dump'); ?>
