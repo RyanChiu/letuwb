@@ -75,5 +75,5 @@ foreach ($hots as $hot) {
 		$i += mysql_affected_rows();
 	}
 }
-echo "Total: " . count($hots) . " / Affected: " . $i . "\n";
+echo "Total: " . count($hots) . " / Affected: " . $i . ". (" . date("Y-m-d H:i:s") . ")\n";
 ?>
