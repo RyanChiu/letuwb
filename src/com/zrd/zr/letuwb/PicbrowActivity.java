@@ -709,11 +709,11 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 			+ "/"
 			+ EntranceActivity.getTotalPics()
 		);
-		if (wi.location.trim().equals("")) {
+		if (wi.screen_name.trim().equals("")) {
 			tvFileInfo.setVisibility(TextView.GONE);
 		} else {
 			tvFileInfo.setVisibility(TextView.VISIBLE);
-			tvFileInfo.setText(String.format(getString(R.string.info_picture), wi.location));
+			tvFileInfo.setText(String.format(getString(R.string.info_picture), wi.screen_name + (wi.verified == 1 ? " (V)" : "")));
 		}
 		mTextUpup.setText(wi.likes.toString());
 		mTextDwdw.setText(wi.dislikes.toString());

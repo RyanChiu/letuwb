@@ -67,7 +67,10 @@ public class WeibouserInfoGridAdapter extends ArrayAdapter<WeibouserInfo> {
 				imageView.setImageDrawable(cachedImage);
 			}
 	        // Set the text on the TextView
-	        textView.setText(wi.location);
+	        textView.setText(
+	        	wi.screen_name
+	        	+ (wi.verified == 1 ? " (V)" : "")
+	        );
 
 	        return rowView;
 	    }
