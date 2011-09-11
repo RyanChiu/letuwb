@@ -103,11 +103,12 @@ class DoController extends AppController {
 		
 		$from = array();
 		$id = 0;
-		if (array_key_exists('id', $this->passedArgs)
-			&& array_key_exists('fromk', $this->passedArgs)
+		if (array_key_exists('id', $this->passedArgs)) {
+			$id = intval($this->passedArgs['id']);
+		}
+		if (array_key_exists('fromk', $this->passedArgs)
 			&& array_key_exists('fromv', $this->passedArgs)
 		) {
-			$id = intval($this->passedArgs['id']);
 			$fromk = explode(',', $this->passedArgs['fromk']);
 			$fromv = explode(',', $this->passedArgs['fromv']);
 			$from = array_combine($fromk, $fromv);
