@@ -101,6 +101,8 @@ class DoController extends AppController {
 	function delete() {
 		if (!$this->Auth->user()) $this->redirect(array('controller' => 'images', 'action' => 'login'));
 		
+		$from = array();
+		$id = 0;
 		if (array_key_exists('id', $this->passedArgs)
 			&& array_key_exists('fromk', $this->passedArgs)
 			&& array_key_exists('fromv', $this->passedArgs)
@@ -109,20 +111,18 @@ class DoController extends AppController {
 			$fromk = explode(',', $this->passedArgs['fromk']);
 			$fromv = explode(',', $this->passedArgs['fromv']);
 			$from = array_combine($fromk, $fromv);
-			//need to be back to "key->value" kind of array
-			/*
-			 * 1.delete the record in db.
-			 * 2.delete the whole folder that hold all the kinds of the picture
-			 */
-			if ($this->WeiboUser->delete($id)) {
-				$this->Session->setFlash("Successfully deleted.");
-			} else {
-				$this->Session->setFlash("Failed to delete it in DB.");
-			}
+		}
+		//need to be back to "key->value" kind of array
+		/*
+		 * 1.delete the record in db.
+		 * 2.delete the whole folder that hold all the kinds of the picture
+		 */
+		if ($this->WeiboUser->delete($id)) {
+			$this->Session->setFlash("Successfully deleted.");
 			$this->redirect(array('controller' => 'do', 'action' => 'index') + $from);
 		} else {
-			$this->Session->setFlash("Illegal delete.");
-			$this->redirect(array('controller' => 'do', 'action' => 'index'));
+			$this->Session->setFlash("Failed to delete it in DB.");
+			$this->render("error");
 		}
 	}
 }
