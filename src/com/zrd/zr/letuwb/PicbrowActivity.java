@@ -85,6 +85,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	ImageButton btnZoomOut;
 	ImageButton mBtnExchange;
 	ImageButton mBtnShare;
+	ImageButton mBtnWeiboShow;
 	private static Boolean mIsLoading = false;
 	private Boolean mWasPlaying = false;
 	public Boolean mIsDooming = false;
@@ -134,6 +135,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		btnZoomOut = (ImageButton) findViewById(R.id.btnZoomout);
 		mBtnExchange = (ImageButton) findViewById(R.id.btnExchange);
 		mBtnShare = (ImageButton) findViewById(R.id.btnShare);
+		mBtnWeiboShow = (ImageButton) findViewById(R.id.btnWeiboShow);
 		bdPicFailed = BitmapFactory.decodeResource(this.getResources(), R.drawable.cgpretty);
 		mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mGestureDetector = new GestureDetector(this, new PicbrowGestureListener());
@@ -196,12 +198,30 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 
             @Override
             public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    Intent intent = new Intent();
-                    intent.setClass(PicbrowActivity.this, ExchangeListActivity.class);
-                    startActivity(intent);
+                // TODO Auto-generated method stub
+            	Intent intent = new Intent();
+                intent.setClass(PicbrowActivity.this, ExchangeListActivity.class);
+                startActivity(intent);
             }
         });
+		
+		mBtnWeiboShow.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				//get current weibo user's information
+            	WeibouserInfo wi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
+            	
+                Intent intent = new Intent();
+                
+                intent.putExtra("uid", wi.uid.toString());
+				
+				intent.setClass(PicbrowActivity.this, WeiboShowActivity.class);
+				startActivity(intent);
+			}
+			
+		});
 		
 		btnZoomOut.setOnClickListener(new OnClickListener () {
 
@@ -281,28 +301,28 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 						Toast.LENGTH_SHORT
 					).show();
 				} else {
-					WeibouserInfo pi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
+					WeibouserInfo wi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
 					Calendar now = Calendar.getInstance();
 					now.setTimeZone(TimeZone.getTimeZone(EntranceActivity.TIMEZONE_SERVER));
 					
-					if ((pi.mLastVoteTime != null
-						&& now.getTime().getTime() - pi.mLastVoteTime.getTime() > EntranceActivity.PERIOD_VOTEAGAIN * 3600000)
-						|| pi.mLastVoteTime == null) {
+					if ((wi.mLastVoteTime != null
+						&& now.getTime().getTime() - wi.mLastVoteTime.getTime() > EntranceActivity.PERIOD_VOTEAGAIN * 3600000)
+						|| wi.mLastVoteTime == null) {
 						/**
 						 * we let the voters think they'll see the result immediately,
 						 * and we actually do the voting at background and it'll refresh
 						 * the real result lately.
 						 */
 						//mVibrator.vibrate( new long[]{50, 400, 30, 800},-1);
-						pi.likes++;
-						pi.mLastVote = 1;
+						wi.likes++;
+						wi.mLastVote = 1;
 						zrRenewCurFileInfo();
 						AsyncVoter asyncVoter = new AsyncVoter();
 						asyncVoter.execute("weibouserid", curUsrId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "1");
 					} else {
 						Toast.makeText(
 							PicbrowActivity.this, 
-							String.format(getString(R.string.err_voted), pi.mLastVote == 1 ? getString(R.string.label_upup) : getString(R.string.label_dwdw), EntranceActivity.PERIOD_VOTEAGAIN),
+							String.format(getString(R.string.err_voted), wi.mLastVote == 1 ? getString(R.string.label_upup) : getString(R.string.label_dwdw), EntranceActivity.PERIOD_VOTEAGAIN),
 							Toast.LENGTH_SHORT
 						).show();
 					}
@@ -323,27 +343,27 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 						Toast.LENGTH_SHORT
 					).show();
 				} else {
-					WeibouserInfo pi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
+					WeibouserInfo wi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
 					Date now = Calendar.getInstance(TimeZone.getTimeZone(EntranceActivity.TIMEZONE_SERVER)).getTime();
 					
-					if ((pi.mLastVoteTime != null
-						&& now.getTime() - pi.mLastVoteTime.getTime() > EntranceActivity.PERIOD_VOTEAGAIN * 3600000)
-						|| pi.mLastVoteTime == null) {
+					if ((wi.mLastVoteTime != null
+						&& now.getTime() - wi.mLastVoteTime.getTime() > EntranceActivity.PERIOD_VOTEAGAIN * 3600000)
+						|| wi.mLastVoteTime == null) {
 						/**
 						 * we let the voters think they'll see the result immediately,
 						 * and we actually do the voting at background and it'll refresh
 						 * the real result lately.
 						 */
 						//mVibrator.vibrate( new long[]{100,10,100,10},-1);
-						pi.dislikes++;
-						pi.mLastVote = -1;
+						wi.dislikes++;
+						wi.mLastVote = -1;
 						zrRenewCurFileInfo();
 						AsyncVoter asyncVoter = new AsyncVoter();
 						asyncVoter.execute("weibouserid", curUsrId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "-1");
 					} else {
 						Toast.makeText(
 							PicbrowActivity.this, 
-							String.format(getString(R.string.err_voted), pi.mLastVote == 1 ? getString(R.string.label_upup) : getString(R.string.label_dwdw), EntranceActivity.PERIOD_VOTEAGAIN),
+							String.format(getString(R.string.err_voted), wi.mLastVote == 1 ? getString(R.string.label_upup) : getString(R.string.label_dwdw), EntranceActivity.PERIOD_VOTEAGAIN),
 							Toast.LENGTH_SHORT
 						).show();
 					}

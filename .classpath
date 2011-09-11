@@ -8,5 +8,8 @@
 	<classpathentry kind="lib" path="/home/ray/workspace/letuwb/vendors/protobuf-java-2.4.1.jar"/>
 	<classpathentry kind="lib" path="/home/ray/workspace/letuwb/vendors/Analytics_Android_SDK_2.1.jar"/>
 	<classpathentry kind="lib" path="/home/ray/workspace/letuwb/vendors/ks_exchange.jar"/>
+	<classpathentry kind="lib" path="/home/ray/workspace/letuwb/vendors/commons-codec.jar"/>
+	<classpathentry kind="lib" path="/home/ray/workspace/letuwb/vendors/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="/home/ray/workspace/letuwb/vendors/commons-logging-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
