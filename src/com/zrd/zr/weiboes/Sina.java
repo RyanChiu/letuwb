@@ -4,6 +4,7 @@ import java.util.List;
 
 import weibo4android.Paging;
 import weibo4android.Status;
+import weibo4android.User;
 import weibo4android.Weibo;
 import weibo4android.OAuthConstant;
 import weibo4android.WeiboException;
@@ -11,6 +12,7 @@ import weibo4android.WeiboException;
 public class Sina {
 	
 	private Weibo mWeibo = null;
+	private User mLastUserInfo = null;
 	
 	public Sina() {
 		mWeibo = OAuthConstant.getInstance().getWeibo();
@@ -47,10 +49,15 @@ public class Sina {
 	
 	public String getContent(String uid) {
 		try {
-			return mWeibo.showUser(uid).toString();
+			mLastUserInfo = mWeibo.showUser(uid);
+			return mLastUserInfo.toString();
 		} catch (WeiboException e) {
 			e.printStackTrace();
 			return e.toString();
 		}
+	}
+	
+	public User getLastUserInfo() {
+		return mLastUserInfo;
 	}
 }

@@ -2,8 +2,20 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
-    <ScrollView android:id="@+id/scrollView1" android:layout_height="fill_parent" android:layout_width="fill_parent">
-        <TextView android:layout_width="fill_parent" android:id="@+id/tvContent" android:text="..." android:layout_height="fill_parent"></TextView>
-    </ScrollView>
+  android:layout_height="fill_parent" android:orientation="vertical">
+    <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentLeft="true">
+            <ImageView android:scaleType="fitXY" android:id="@+id/ivTinyProfileImage" android:layout_width="36dp" android:layout_height="36dp" android:src="@drawable/ic_menu_myplaces"></ImageView>
+            <TextView android:id="@+id/tvScreenName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="..."></TextView>
+            <ImageView android:scaleType="fitXY" android:id="@+id/ivVerified" android:src="@drawable/weibo_verified" android:layout_width="18dp" android:layout_height="22dp"></ImageView>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/linearLayout3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="..." android:id="@+id/tvCreatedAt"></TextView>
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <ScrollView android:id="@+id/scrollView1" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <TextView android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/tvContent" android:text="..."></TextView>
+        </ScrollView>
+    </LinearLayout>
 </LinearLayout>

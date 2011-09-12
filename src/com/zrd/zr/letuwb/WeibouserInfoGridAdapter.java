@@ -2,7 +2,7 @@ package com.zrd.zr.letuwb;
 
 import java.util.List;
 
-import com.zrd.zr.letuwb.AsyncImageLoader.ImageCallback;
+import com.zrd.zr.letuwb.AsyncThumLoader.ImageCallback;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,10 +17,10 @@ import android.widget.TextView;
 
 public class WeibouserInfoGridAdapter extends ArrayAdapter<WeibouserInfo> {
 		private GridView gridView;
-	    private AsyncImageLoader asyncImageLoader;
+	    private AsyncThumLoader asyncImageLoader;
 	    Context mContext;
 	    
-	    public AsyncImageLoader getAsyncImageLoader() {
+	    public AsyncThumLoader getAsyncImageLoader() {
 	    	return asyncImageLoader;
 	    }
 	    
@@ -28,7 +28,7 @@ public class WeibouserInfoGridAdapter extends ArrayAdapter<WeibouserInfo> {
 	        super(activity, 0, usrs);
 	        this.gridView = gridView;
 	        mContext = (EntranceActivity)activity;
-	        asyncImageLoader = new AsyncImageLoader(mContext, usrs);
+	        asyncImageLoader = new AsyncThumLoader(mContext, usrs);
 	    }
 
 	    public View getView(int position, View convertView, ViewGroup parent) {

@@ -1,124 +1,97 @@
 package com.zrd.zr.letuwb;
 
 import java.io.BufferedInputStream;
-import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Message;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
 
-public class AsyncImageLoader {
-	static Context mContext;
-	static ArrayList<WeibouserInfo> mUsrs = new ArrayList<WeibouserInfo>();
-
-		private HashMap<Integer, SoftReference<Drawable>> imageCache;
+public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
+	Activity mContext;
+	Integer mResIdImageView;
+	Integer mResIdBadImage;
+	
+	public AsyncImageLoader(Activity c, Integer resIdImageView, Integer resIdBadImage) {
+		super();
+		mContext = c;
+		mResIdImageView = resIdImageView;
+		mResIdBadImage = resIdBadImage;
+	}
+	
+	@Override
+	protected Bitmap doInBackground(Object... params) {
+		System.gc();
+		System.runFinalization();
+		System.gc();
 		
-		public HashMap<Integer, SoftReference<Drawable>> getImageCache() {
-			return imageCache;
+		// TODO Auto-generated method stub
+		
+		if (params.length != 1) return null;
+		
+		URL url = (URL) params[0];
+		
+		SecureUrl su = new SecureUrl();
+		URLConnection conn = su.getConnection(url);
+		InputStream is;
+		
+		if (conn == null) return null;
+		try {
+			is = conn.getInputStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Log.e("DEBUGTAG", "Remtoe Image Exception", e);
+			e.printStackTrace();
+			return null;
 		}
-
-	     public AsyncImageLoader(Context c, List<WeibouserInfo> pics) {
-	    	 AsyncImageLoader.mContext = c;
-	    	 for (int i = 0; i < pics.size(); i++) {
-	    		 mUsrs.add(pics.get(i));
-	    	 }
-	    	 imageCache = new HashMap<Integer, SoftReference<Drawable>>();
-	     }
-	  
-	     public Drawable loadDrawable(final Integer id, final ImageCallback imageCallback) {
-	         if (imageCache.containsKey(id)) {
-	             SoftReference<Drawable> softReference = imageCache.get(id);
-	             Drawable drawable = softReference.get();
-	             if (drawable != null) {
-	                 return drawable;
-	             }
-	         }
-	         final Handler handler = new Handler() {
-	             public void handleMessage(Message message) {
-	            	 if (message.what == 0) {
-	            		 imageCallback.imageLoaded((Drawable) message.obj, id);
-	            	 }
-	            	 if (message.what == 1) {
-	            		 EntranceActivity c = (EntranceActivity) mContext;
-	            		 c.mPrgDlg.dismiss();
-	            	 }
-	             }
-	         };
-	         new Thread() {
-	             @Override
-	             public void run() {
-	                 Drawable drawable = loadImageFromId(id);
-	                 imageCache.put(id, new SoftReference<Drawable>(drawable));
-	                 Message message = handler.obtainMessage(0, drawable);
-	                 handler.sendMessage(message);
-	                 EntranceActivity c = (EntranceActivity) mContext;
-	                 if (imageCache.size() == c.mPageUsrs.size()) {
-	                	 Message msg = handler.obtainMessage(1);
-	                	 handler.sendMessage(msg);
-	                 }
-	             }
-	         }.start();
-	         return null;
-	     }
-	  
-		public static Drawable loadImageFromId(Integer id) {
-			System.gc();
-			System.runFinalization();
-			System.gc();
-			
-		    WeibouserInfo wi = EntranceActivity.getPicFromId(id, mUsrs);
-		    String sPath = AsyncSaver.getSdcardDir() + EntranceActivity.PATH_CACHE;
-		    String sFname = wi.uid + "t.jg";
-		    if (AsyncSaver.probeFile(sPath, sFname) == -2) {
-		    	Bitmap bmp = BitmapFactory.decodeFile(sPath + "/" + sFname);
-		    	return new BitmapDrawable(bmp);
-		    } else {
-				try {
-					String sUrl = "";
-				    if (wi != null) {
-				    	sUrl = new String(wi.profile_image_url);
-				    	sUrl = sUrl.replace("/50/", "/180/");
-				    }
-				    
-					BitmapDrawable bd;
-					URL url = new URL(sUrl);
-					URLConnection conn = url.openConnection();
-					conn.connect();
-					InputStream is = conn.getInputStream();
-					BufferedInputStream bis = new BufferedInputStream(is, 8192);
-					Bitmap preview_bitmap = BitmapFactory.decodeStream(bis);
-					bd = new BitmapDrawable(preview_bitmap);
-					bis.close();
-					is.close();
-					File file = AsyncSaver.getSilentFile(sPath, sFname);
-					if (file != null) {
-						AsyncSaver saver = new AsyncSaver(mContext, preview_bitmap);
-						saver.saveImage(file);
-						saver = null;
-					}
-					return bd;
-				} catch (Exception e) {
-					Log.e("DEBUGTAG", "Remtoe Image Exception", e);
-					e.printStackTrace();
-					return null;
-				}
-		    }
+		
+		if (is == null) return null;
+		BufferedInputStream bis = new BufferedInputStream(is, 8192);
+		Bitmap bmp = BitmapFactory.decodeStream(bis);
+		if (bmp == null) return null;
+		try {
+			bis.close();
+			is.close();
+			bis = null;
+			is = null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Log.e("DEBUGTAG", "Remtoe Image Exception", e);
+			e.printStackTrace();
+			bis = null;
+			is = null;
+			return null;
 		}
-	  
-	     public interface ImageCallback {
-	         public void imageLoaded(Drawable imageDrawable, Integer id);
-	     }
+		return bmp;
+	}
 
+	@Override
+	protected void onPostExecute(Bitmap result) {
+		// TODO Auto-generated method stub
+		ImageView iv = (ImageView) mContext.findViewById(mResIdImageView);
+		if (iv != null) {
+			if (result != null)
+				iv.setImageBitmap(result);
+			else
+				iv.setImageResource(mResIdBadImage);
+		}
+		super.onPostExecute(result);
+	}
+
+	@Override
+	protected void onProgressUpdate(Object... values) {
+		// TODO Auto-generated method stub
+		super.onProgressUpdate(values);
+	}
+	
+	@Override
+    protected void onCancelled() {
+		super.onCancelled();
+    }
 }
