@@ -40,17 +40,8 @@ public class SecureUrl {
 	    return hexValue.toString();
 	}
 	
-	public URLConnection getConnection(String sUrl) {		
-		URL url = null;
-		try {
-			url = new URL(sUrl);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			Log.e("DEBUGTAG", "Remtoe Image Exception", e);
-			e.printStackTrace();
-			return null;
-		}
-		
+	public URLConnection getConnection(URL url) {
+		if (url == null) return null;
 		URLConnection conn = null;
 		try {
 			conn = url.openConnection();
@@ -71,6 +62,22 @@ public class SecureUrl {
 		
 		return conn;
 	}
+	
+	public URLConnection getConnection(String sUrl) {		
+		URL url = null;
+		try {
+			url = new URL(sUrl);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			Log.e("DEBUGTAG", "Remtoe Image Exception", e);
+			e.printStackTrace();
+			return null;
+		}
+		
+		return getConnection(url);
+	}
+	
+	
 	
 	String getUrlStr(String sUrl) {
 		String url = sUrl
