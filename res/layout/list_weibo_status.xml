@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:orientation="vertical">
+    <RelativeLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/relativeLayout1">
+        <LinearLayout android:layout_alignParentRight="true" android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="wrap_content">
+            <TextView android:id="@+id/tvStatusCreatedAt" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="..."></TextView>
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout4">
+        <TextView android:id="@+id/tvStatusText" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="..."></TextView>
+    </LinearLayout>
+    <RelativeLayout android:id="@+id/relativeLayout2" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout2" android:layout_marginBottom="38dp" android:layout_height="fill_parent" android:gravity="center">
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ivStatusImage" android:src="@drawable/brush"></ImageView>
+        </LinearLayout>
+        <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout3" android:layout_alignParentBottom="true" android:layout_height="36dp">
+            <TextView android:id="@+id/tvStatusReply" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView"></TextView>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

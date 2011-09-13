@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -14,14 +15,21 @@ import android.util.Log;
 import android.widget.ImageView;
 
 public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
-	Activity mContext;
-	Integer mResIdImageView;
-	Integer mResIdBadImage;
+	private Context mContext;
+	private Integer mResIdBadImage;
+	private ImageView mImage;
 	
-	public AsyncImageLoader(Activity c, Integer resIdImageView, Integer resIdBadImage) {
+	public AsyncImageLoader(Context context, Integer resIdImageView, Integer resIdBadImage) {
 		super();
-		mContext = c;
-		mResIdImageView = resIdImageView;
+		mContext = context;
+		mImage = (ImageView) ((Activity)mContext).findViewById(resIdImageView);
+		mResIdBadImage = resIdBadImage;
+	}
+	
+	public AsyncImageLoader(Context context, ImageView image, Integer resIdBadImage) {
+		super();
+		mContext = context;
+		mImage = image;
 		mResIdBadImage = resIdBadImage;
 	}
 	
@@ -74,12 +82,11 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	@Override
 	protected void onPostExecute(Bitmap result) {
 		// TODO Auto-generated method stub
-		ImageView iv = (ImageView) mContext.findViewById(mResIdImageView);
-		if (iv != null) {
+		if (mImage != null) {
 			if (result != null)
-				iv.setImageBitmap(result);
+				mImage.setImageBitmap(result);
 			else
-				iv.setImageResource(mResIdBadImage);
+				mImage.setImageResource(mResIdBadImage);
 		}
 		super.onPostExecute(result);
 	}
