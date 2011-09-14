@@ -12,11 +12,11 @@
         <TextView android:id="@+id/tvStatusText" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="..."></TextView>
     </LinearLayout>
     <RelativeLayout android:id="@+id/relativeLayout2" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout2" android:layout_marginBottom="38dp" android:layout_height="fill_parent" android:gravity="center">
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ivStatusImage" android:src="@drawable/brush"></ImageView>
+        <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout2" android:layout_height="fill_parent" android:gravity="center">
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ivStatusImage" android:src="@drawable/brush" android:layout_marginBottom="38dp"></ImageView>
         </LinearLayout>
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout3" android:layout_alignParentBottom="true" android:layout_height="36dp">
-            <TextView android:id="@+id/tvStatusReply" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView"></TextView>
+            <TextView android:id="@+id/tvStatusReply" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Reply"></TextView>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

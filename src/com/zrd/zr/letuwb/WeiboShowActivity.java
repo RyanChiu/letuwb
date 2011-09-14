@@ -9,11 +9,14 @@ import java.util.Map;
 
 import weibo4android.Status;
 import weibo4android.User;
+import weibo4android.Weibo;
+import weibo4android.WeiboException;
 
 import com.zrd.zr.weiboes.Sina;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,7 +32,13 @@ public class WeiboShowActivity extends Activity {
 	private TextView mTextCounts;
 	private ListView mListStatus;
 	
-	private Sina mSina;
+	private static Sina mSina = null;
+	private static User mLastUser = null;
+	
+	public enum Action {
+		SHOW_USER,
+		SHOW_
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,91 +53,26 @@ public class WeiboShowActivity extends Activity {
 		mTextDescription = (TextView)findViewById(R.id.tvDescription);
 		mTextCounts = (TextView)findViewById(R.id.tvCounts);
 		mListStatus = (ListView)findViewById(R.id.lvStatus);
-		
-		mSina = new Sina();
-				
+						
 		/*
 		 * show the whole user/info
 		 */
 		Intent intent = getIntent();
 		String uid = intent.getStringExtra("uid");
-    	String content = mSina.getContent(uid);
-		if (content == null) content = "No data passed.";
-		
-		User userInfo = mSina.getLastUserInfo();
-		if (userInfo != null) {
-			/*
-			 * show the status info
-			 */
-			WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
-				this,
-				getStatusData()
-			);
-			mListStatus.setAdapter(adapter);
-			
-			/*
-			 * show the profile-image
-			 */
-			AsyncImageLoader ail = new AsyncImageLoader(
-				WeiboShowActivity.this,
-				R.id.ivTinyProfileImage,
-				R.drawable.cgpretty_small
-			);
-			ail.execute(userInfo.getProfileImageURL());
-			
-			/*
-			 * show the screen name
-			 */
-			mTextScreenName.setText(userInfo.getScreenName());
-			
-			/*
-			 * show "v" if verified
-			 */
-			if (userInfo.isVerified()) {
-				mImageVerified.setVisibility(ImageView.VISIBLE);
-			} else {
-				mImageVerified.setVisibility(ImageView.GONE);
-			}
-			
-			/*
-			 * show when did the user be created
-			 */
-			Date dtCreatedAt = userInfo.getCreatedAt();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-			mTextCreatedAt.setText(sdf.format(dtCreatedAt));
-			
-			/*
-			 * show the location and the description
-			 */
-			mTextLocation.setText(
-				userInfo.getLocation()
-			);
-			mTextDescription.setText(
-				userInfo.getDescription()
-			);
-			
-			/*
-			 * show all kinds of the counts
-			 */
-			mTextCounts.setText(
-				"Weibos:" + userInfo.getStatusesCount()
-				+ "  Favorites:" + userInfo.getFavouritesCount()
-				+ "\n"
-				+ "Followers:" + userInfo.getFollowersCount()
-				+ "  Friends:" + userInfo.getFriendsCount()
-			);
-		}
-		
+    	
+		AsyncWeiboLoader loader = new AsyncWeiboLoader();
+		loader.execute(Action.SHOW_USER, uid);
 	}
 	
 	private List<Map<String, Object>> getStatusData() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
-		User usrInfo = mSina.getLastUserInfo();
-		if (usrInfo != null) {
-			Status status = usrInfo.getStatus();
+		if (mLastUser != null) {
+			Status status = mLastUser.getStatus();
 			if (status != null) {
-				map.put("createdat", status.getCreatedAt().toString());
+				Date dt = status.getCreatedAt();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				map.put("createdat", sdf.format(dt));
 				map.put("text", status.getText());
 				map.put("image", status.getBmiddle_pic());
 				map.put("reply", "Reply:" + status.getInReplyToScreenName());
@@ -138,4 +82,121 @@ public class WeiboShowActivity extends Activity {
 		return list;
 	}
 
+	/*
+	 * AsyncTask<Params, Progress, Result>
+	 */
+	private class AsyncWeiboLoader extends AsyncTask<Object, Object, Object> {
+
+		@Override
+		protected void onPostExecute(Object result) {
+			// TODO Auto-generated method stub
+			if (result == null) return;
+			Object[] res = (Object[])result;
+			Action action = (Action)res[0];
+			switch (action) {
+			case SHOW_USER:
+				mLastUser = (User)res[1];
+				if (mLastUser != null) {
+					/*
+					 * show the status info
+					 */
+					WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
+						WeiboShowActivity.this,
+						getStatusData()
+					);
+					mListStatus.setAdapter(adapter);
+					
+					/*
+					 * show the profile-image
+					 */
+					AsyncImageLoader ail = new AsyncImageLoader(
+						WeiboShowActivity.this,
+						R.id.ivTinyProfileImage,
+						R.drawable.cgpretty_small
+					);
+					ail.execute(mLastUser.getProfileImageURL());
+					
+					/*
+					 * show the screen name
+					 */
+					mTextScreenName.setText(mLastUser.getScreenName());
+					
+					/*
+					 * show "v" if verified
+					 */
+					if (mLastUser.isVerified()) {
+						mImageVerified.setVisibility(ImageView.VISIBLE);
+					} else {
+						mImageVerified.setVisibility(ImageView.GONE);
+					}
+					
+					/*
+					 * show when did the user be created
+					 */
+					Date dtCreatedAt = mLastUser.getCreatedAt();
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					mTextCreatedAt.setText(sdf.format(dtCreatedAt));
+					
+					/*
+					 * show the location and the description
+					 */
+					mTextLocation.setText(
+						mLastUser.getLocation()
+					);
+					mTextDescription.setText(
+						mLastUser.getDescription()
+					);
+					
+					/*
+					 * show all kinds of the counts
+					 */
+					mTextCounts.setText(
+						"Weibos:" + mLastUser.getStatusesCount()
+						+ "  Favorites:" + mLastUser.getFavouritesCount()
+						+ "\n"
+						+ "Followers:" + mLastUser.getFollowersCount()
+						+ "  Friends:" + mLastUser.getFriendsCount()
+					);
+				} else {
+					mTextCreatedAt.setText("N/A");
+					mTextDescription.setText("Please try again...");
+				}
+				break;
+			}
+			
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected Object doInBackground(Object... params) {
+			// TODO Auto-generated method stub
+			if (mSina == null) {
+				mSina = new Sina();
+			}
+			if (params.length < 1) return null;
+			Action action = (Action) params[0];
+			Object[] res = new Object[2];
+			res[0] = action;
+			switch (action) {
+			case SHOW_USER:
+				if (params.length != 2) return null;
+				String uid = (String)params[1];
+				Weibo weibo = mSina.getWeibo();
+				if (weibo != null) {
+					try {
+						res[1] = weibo.showUser(uid);
+						return res;
+					} catch (WeiboException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return null;
+					}
+				}
+				break;
+			}
+			
+			return null;
+		}
+		
+	}
 }
