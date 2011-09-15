@@ -136,7 +136,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		mBtnExchange = (ImageButton) findViewById(R.id.btnExchange);
 		mBtnShare = (ImageButton) findViewById(R.id.btnShare);
 		mBtnWeiboShow = (ImageButton) findViewById(R.id.btnWeiboShow);
-		bdPicFailed = BitmapFactory.decodeResource(this.getResources(), R.drawable.cgpretty);
+		bdPicFailed = BitmapFactory.decodeResource(this.getResources(), R.drawable.broken);
 		mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mGestureDetector = new GestureDetector(this, new PicbrowGestureListener());
 		//mVibrator = ( Vibrator )getApplication().getSystemService(Service.VIBRATOR_SERVICE);
@@ -711,7 +711,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		ImageView iv = new ImageView(this);
 		iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 		iv.setLayoutParams(new ImageSwitcher.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-		iv.setImageResource(R.drawable.cgpretty);
+		iv.setImageResource(R.drawable.broken);
 		return iv;
 	}
 	

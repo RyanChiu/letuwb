@@ -81,6 +81,11 @@ public class WeiboShowActivity extends Activity {
 		}
 		return list;
 	}
+	
+	private void dealWithFailed() {
+		mTextCreatedAt.setText("N/A");
+		mTextDescription.setText("Please try again...");
+	}
 
 	/*
 	 * AsyncTask<Params, Progress, Result>
@@ -90,7 +95,10 @@ public class WeiboShowActivity extends Activity {
 		@Override
 		protected void onPostExecute(Object result) {
 			// TODO Auto-generated method stub
-			if (result == null) return;
+			if (result == null) {
+				dealWithFailed();
+				return;
+			}
 			Object[] res = (Object[])result;
 			Action action = (Action)res[0];
 			switch (action) {
@@ -112,7 +120,7 @@ public class WeiboShowActivity extends Activity {
 					AsyncImageLoader ail = new AsyncImageLoader(
 						WeiboShowActivity.this,
 						R.id.ivTinyProfileImage,
-						R.drawable.cgpretty_small
+						R.drawable.person
 					);
 					ail.execute(mLastUser.getProfileImageURL());
 					
@@ -158,8 +166,7 @@ public class WeiboShowActivity extends Activity {
 						+ "  Friends:" + mLastUser.getFriendsCount()
 					);
 				} else {
-					mTextCreatedAt.setText("N/A");
-					mTextDescription.setText("Please try again...");
+					dealWithFailed();
 				}
 				break;
 			}

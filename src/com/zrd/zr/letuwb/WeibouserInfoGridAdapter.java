@@ -61,7 +61,7 @@ public class WeibouserInfoGridAdapter extends ArrayAdapter<WeibouserInfo> {
 	            }
 	        });
 			if (cachedImage == null) {
-				imageView.setImageResource(R.drawable.cgpretty_small);
+				imageView.setImageResource(R.drawable.person);
 				//imageView.setImageDrawable(null);
 			}else{
 				imageView.setImageDrawable(cachedImage);

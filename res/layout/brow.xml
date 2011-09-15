@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res/com.zrd.zr.letuwb"
+  xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" android:background="@drawable/bg" android:id="@+id/flBackground">
     <com.sonyericsson.zoom.ImageZoomView
@@ -14,8 +14,9 @@
             <com.google.ads.AdView android:id="@+id/adsBrow"
 	            android:layout_width="wrap_content"
 	            android:layout_height="50dp"
-	            app:adUnitId="a14dae4f9fc303c"
-	            app:adSize="BANNER" android:layout_gravity="center"/>
+	            android:layout_gravity="center"
+	            ads:adUnitId="a14dae4f9fc303c"
+	            ads:adSize="BANNER"/>
         </LinearLayout>
         <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center" android:id="@+id/linearLayoutTop" android:orientation="vertical" android:background="#56000000">
             <LinearLayout android:layout_height="wrap_content" android:gravity="center" android:layout_width="fill_parent" android:id="@+id/linearLayoutOperate">
