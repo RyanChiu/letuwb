@@ -6,23 +6,24 @@
     <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content">
         <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentLeft="true">
             <ImageView android:scaleType="fitXY" android:id="@+id/ivTinyProfileImage" android:layout_width="36dp" android:layout_height="36dp" android:src="@drawable/ic_menu_myplaces"></ImageView>
-            <TextView android:id="@+id/tvScreenName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="..."></TextView>
+            <TextView android:id="@+id/tvScreenName" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
             <ImageView android:scaleType="fitXY" android:id="@+id/ivVerified" android:src="@drawable/weibo_verified" android:layout_width="18dp" android:layout_height="22dp"></ImageView>
         </LinearLayout>
         <LinearLayout android:id="@+id/linearLayout3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="..." android:id="@+id/tvCreatedAt"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvCreatedAt"></TextView>
+            <ProgressBar android:id="@+id/pbStatusLoading" android:layout_height="18dp" android:layout_width="18dp"></ProgressBar>
         </LinearLayout>
     </RelativeLayout>
     <LinearLayout android:id="@+id/linearLayout4" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical">
-        <TextView android:id="@+id/tvLocation" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="From:"></TextView>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvDescription" android:text="..."></TextView>
+        <TextView android:id="@+id/tvLocation" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvDescription"></TextView>
     </LinearLayout>
     <RelativeLayout android:id="@+id/relativeLayout2" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <LinearLayout android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:layout_marginBottom="36dp" android:layout_height="fill_parent" android:orientation="vertical">
             <ListView android:layout_width="fill_parent" android:id="@+id/lvStatus" android:layout_height="fill_parent"></ListView>
         </LinearLayout>
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout5" android:layout_alignParentBottom="true" android:layout_height="36dp" android:gravity="center" android:layout_centerVertical="true">
-            <TextView android:id="@+id/tvCounts" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="..."></TextView>
+            <TextView android:id="@+id/tvCounts" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

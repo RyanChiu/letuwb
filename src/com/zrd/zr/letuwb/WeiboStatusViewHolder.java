@@ -8,4 +8,5 @@ public final class WeiboStatusViewHolder {
 	public TextView mText;
 	public ImageView mImage;
 	public TextView mTextReply;
+	public TextView mTextSource;
 }

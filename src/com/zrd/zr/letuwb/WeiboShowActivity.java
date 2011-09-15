@@ -20,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class WeiboShowActivity extends Activity {
@@ -31,6 +32,7 @@ public class WeiboShowActivity extends Activity {
 	private TextView mTextDescription;
 	private TextView mTextCounts;
 	private ListView mListStatus;
+	private ProgressBar mProgressStatusLoading;
 	
 	private static Sina mSina = null;
 	private static User mLastUser = null;
@@ -53,6 +55,7 @@ public class WeiboShowActivity extends Activity {
 		mTextDescription = (TextView)findViewById(R.id.tvDescription);
 		mTextCounts = (TextView)findViewById(R.id.tvCounts);
 		mListStatus = (ListView)findViewById(R.id.lvStatus);
+		mProgressStatusLoading = (ProgressBar)findViewById(R.id.pbStatusLoading);
 						
 		/*
 		 * show the whole user/info
@@ -62,6 +65,14 @@ public class WeiboShowActivity extends Activity {
     	
 		AsyncWeiboLoader loader = new AsyncWeiboLoader();
 		loader.execute(Action.SHOW_USER, uid);
+	}
+	
+	private void turnLoading(boolean on) {
+		if (on == true) {
+			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
+		} else {
+			mProgressStatusLoading.setVisibility(ProgressBar.GONE);
+		}
 	}
 	
 	private List<Map<String, Object>> getStatusData() {
@@ -75,7 +86,8 @@ public class WeiboShowActivity extends Activity {
 				map.put("createdat", sdf.format(dt));
 				map.put("text", status.getText());
 				map.put("image", status.getBmiddle_pic());
-				map.put("reply", "Reply:" + status.getInReplyToScreenName());
+				map.put("reply", status.getInReplyToScreenName());
+				map.put("source", status.getSource());
 				list.add(map);
 			}
 		}
@@ -97,81 +109,89 @@ public class WeiboShowActivity extends Activity {
 			// TODO Auto-generated method stub
 			if (result == null) {
 				dealWithFailed();
-				return;
-			}
-			Object[] res = (Object[])result;
-			Action action = (Action)res[0];
-			switch (action) {
-			case SHOW_USER:
-				mLastUser = (User)res[1];
-				if (mLastUser != null) {
-					/*
-					 * show the status info
-					 */
-					WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
-						WeiboShowActivity.this,
-						getStatusData()
-					);
-					mListStatus.setAdapter(adapter);
-					
-					/*
-					 * show the profile-image
-					 */
-					AsyncImageLoader ail = new AsyncImageLoader(
-						WeiboShowActivity.this,
-						R.id.ivTinyProfileImage,
-						R.drawable.person
-					);
-					ail.execute(mLastUser.getProfileImageURL());
-					
-					/*
-					 * show the screen name
-					 */
-					mTextScreenName.setText(mLastUser.getScreenName());
-					
-					/*
-					 * show "v" if verified
-					 */
-					if (mLastUser.isVerified()) {
-						mImageVerified.setVisibility(ImageView.VISIBLE);
+			} else {
+				Object[] res = (Object[])result;
+				Action action = (Action)res[0];
+				switch (action) {
+				case SHOW_USER:
+					mLastUser = (User)res[1];
+					if (mLastUser != null) {
+						/*
+						 * show the status info
+						 */
+						WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
+							WeiboShowActivity.this,
+							getStatusData()
+						);
+						mListStatus.setAdapter(adapter);
+						
+						/*
+						 * show the profile-image
+						 */
+						AsyncImageLoader ail = new AsyncImageLoader(
+							WeiboShowActivity.this,
+							R.id.ivTinyProfileImage,
+							R.drawable.person
+						);
+						ail.execute(mLastUser.getProfileImageURL());
+						
+						/*
+						 * show the screen name
+						 */
+						mTextScreenName.setText(mLastUser.getScreenName());
+						
+						/*
+						 * show "v" if verified
+						 */
+						if (mLastUser.isVerified()) {
+							mImageVerified.setVisibility(ImageView.VISIBLE);
+						} else {
+							mImageVerified.setVisibility(ImageView.GONE);
+						}
+						
+						/*
+						 * show when was the user created
+						 */
+						Date dtCreatedAt = mLastUser.getCreatedAt();
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						mTextCreatedAt.setText(sdf.format(dtCreatedAt));
+						
+						/*
+						 * show the location and the description
+						 */
+						mTextLocation.setText(
+							mLastUser.getLocation()
+						);
+						mTextDescription.setText(
+							mLastUser.getDescription()
+						);
+						
+						/*
+						 * show all kinds of the counts
+						 */
+						mTextCounts.setText(
+							"Weibos:" + mLastUser.getStatusesCount()
+							+ "  Favorites:" + mLastUser.getFavouritesCount()
+							+ "\n"
+							+ "Followers:" + mLastUser.getFollowersCount()
+							+ "  Friends:" + mLastUser.getFriendsCount()
+						);
 					} else {
-						mImageVerified.setVisibility(ImageView.GONE);
+						dealWithFailed();
 					}
-					
-					/*
-					 * show when did the user be created
-					 */
-					Date dtCreatedAt = mLastUser.getCreatedAt();
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					mTextCreatedAt.setText(sdf.format(dtCreatedAt));
-					
-					/*
-					 * show the location and the description
-					 */
-					mTextLocation.setText(
-						mLastUser.getLocation()
-					);
-					mTextDescription.setText(
-						mLastUser.getDescription()
-					);
-					
-					/*
-					 * show all kinds of the counts
-					 */
-					mTextCounts.setText(
-						"Weibos:" + mLastUser.getStatusesCount()
-						+ "  Favorites:" + mLastUser.getFavouritesCount()
-						+ "\n"
-						+ "Followers:" + mLastUser.getFollowersCount()
-						+ "  Friends:" + mLastUser.getFriendsCount()
-					);
-				} else {
-					dealWithFailed();
+					break;
 				}
-				break;
 			}
 			
+			turnLoading(false);
 			super.onPostExecute(result);
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			turnLoading(true);
+			super.onPreExecute();
 		}
 
 		@Override
