@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class WeiboStatusListAdapter extends BaseAdapter {
@@ -56,6 +57,7 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			holder.mImage = (ImageView)convertView.findViewById(R.id.ivStatusImage);
 			holder.mTextReply = (TextView)convertView.findViewById(R.id.tvStatusReply);
 			holder.mTextSource = (TextView)convertView.findViewById(R.id.tvSource);
+			holder.mProgressStatusImageLoading = (ProgressBar)convertView.findViewById(R.id.pbStatusImageLoading);
 			convertView.setTag(holder);
 		} else {
 			holder = (WeiboStatusViewHolder)convertView.getTag();
@@ -79,7 +81,10 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 				holder.mTextSource.setText(Html.fromHtml("Source:" + sSource));
 			}
 			
-			AsyncImageLoader loader = new AsyncImageLoader(mContext, holder.mImage, R.drawable.broken);
+			AsyncImageLoader loader = new AsyncImageLoader(
+				mContext, holder.mImage, R.drawable.broken,
+				holder.mProgressStatusImageLoading
+			);
 			URL url = null;
 			try {
 				url = new URL((String)mList.get(position).get("image"));

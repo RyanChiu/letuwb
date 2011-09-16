@@ -13,11 +13,13 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	private Context mContext;
 	private Integer mResIdBadImage;
 	private ImageView mImage;
+	private ProgressBar mProgress = null;
 	
 	public AsyncImageLoader(Context context, Integer resIdImageView, Integer resIdBadImage) {
 		super();
@@ -33,6 +35,20 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		mResIdBadImage = resIdBadImage;
 	}
 	
+	public AsyncImageLoader(Context context, ImageView image, Integer resIdBadImage, ProgressBar progress) {
+		this(context, image, resIdBadImage);
+		mProgress = progress;
+	}
+	
+	@Override
+	protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		if (mProgress != null) {
+			mProgress.setVisibility(ProgressBar.VISIBLE);
+		}
+		super.onPreExecute();
+	}
+
 	@Override
 	protected Bitmap doInBackground(Object... params) {
 		System.gc();
@@ -87,6 +103,9 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 				mImage.setImageBitmap(result);
 			else
 				mImage.setImageResource(mResIdBadImage);
+		}
+		if (mProgress != null) {
+			mProgress.setVisibility(ProgressBar.GONE);
 		}
 		super.onPostExecute(result);
 	}

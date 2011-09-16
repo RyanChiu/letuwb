@@ -1,6 +1,7 @@
 package com.zrd.zr.letuwb;
 
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public final class WeiboStatusViewHolder {
@@ -9,4 +10,5 @@ public final class WeiboStatusViewHolder {
 	public ImageView mImage;
 	public TextView mTextReply;
 	public TextView mTextSource;
+	public ProgressBar mProgressStatusImageLoading;
 }
