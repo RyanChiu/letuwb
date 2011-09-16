@@ -16,6 +16,7 @@ import com.zrd.zr.weiboes.Sina;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -83,6 +84,14 @@ public class WeiboShowActivity extends Activity {
 			if (status != null) {
 				Date dt = status.getCreatedAt();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				map.put("createdat", sdf.format(dt));
+				map.put("text", status.getText());
+				map.put("image", status.getBmiddle_pic());
+				map.put("reply", status.getInReplyToScreenName());
+				map.put("source", status.getSource());
+				list.add(map);
+				
+				dt = status.getCreatedAt();
 				map.put("createdat", sdf.format(dt));
 				map.put("text", status.getText());
 				map.put("image", status.getBmiddle_pic());
@@ -225,5 +234,11 @@ public class WeiboShowActivity extends Activity {
 			return null;
 		}
 		
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		// TODO Auto-generated method stub
+		super.onConfigurationChanged(newConfig);
 	}
 }
