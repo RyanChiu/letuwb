@@ -10,5 +10,6 @@ public final class WeiboStatusViewHolder {
 	public ImageView mImage;
 	public TextView mTextReply;
 	public TextView mTextSource;
+	public TextView mTextRetweeted;
 	public ProgressBar mProgressStatusImageLoading;
 }

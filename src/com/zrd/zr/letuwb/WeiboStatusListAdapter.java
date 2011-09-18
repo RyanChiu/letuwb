@@ -2,8 +2,12 @@ package com.zrd.zr.letuwb;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import weibo4android.Status;
 
 import android.content.Context;
 import android.text.Html;
@@ -57,6 +61,7 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			holder.mImage = (ImageView)convertView.findViewById(R.id.ivStatusImage);
 			holder.mTextReply = (TextView)convertView.findViewById(R.id.tvStatusReply);
 			holder.mTextSource = (TextView)convertView.findViewById(R.id.tvSource);
+			holder.mTextRetweeted = (TextView)convertView.findViewById(R.id.tvRetweeted);
 			holder.mProgressStatusImageLoading = (ProgressBar)convertView.findViewById(R.id.pbStatusImageLoading);
 			
 			convertView.setTag(holder);
@@ -65,22 +70,40 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 		}
 		
 		if (mList != null) {
-			holder.mTextCreatedAt.setText((String)mList.get(position).get("createdat"));
+			Status status = (Status)mList.get(position).get("status");
 			
-			holder.mText.setText((String)mList.get(position).get("text"));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			Date dt = status.getCreatedAt();
+			holder.mTextCreatedAt.setText(sdf.format(dt));
 			
-			String sReply = (String)mList.get(position).get("reply");
+			holder.mText.setText(status.getText());
+			
+			String sReply = status.getInReplyToScreenName();
 			if (sReply.trim().equals("")) {
 				holder.mTextReply.setText("");
 			} else {
 				holder.mTextReply.setText("Reply:" + sReply);
 			}
 			
-			String sSource = (String)mList.get(position).get("source");
+			String sSource = status.getSource();
 			if (sSource.trim().equals("")) {
 				holder.mTextSource.setText("");
 			} else {
 				holder.mTextSource.setText(Html.fromHtml("Source:" + sSource));
+			}
+			
+			Status statusR = status.getRetweeted_status();
+			if (statusR == null) {
+				holder.mTextRetweeted.setVisibility(TextView.GONE);
+			} else {
+				holder.mTextRetweeted.setVisibility(TextView.VISIBLE);
+				holder.mTextRetweeted.setText(
+					Html.fromHtml(
+						"<b><font color='red'>Quote:</font></b>"
+						+ "@" + statusR.getUser().getScreenName() + ":"
+						+ statusR.getText()
+					)
+				);
 			}
 			
 			AsyncImageLoader loader = new AsyncImageLoader(
@@ -89,7 +112,8 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			);
 			URL url = null;
 			try {
-				url = new URL((String)mList.get(position).get("image"));
+				String sURL = status.getBmiddle_pic();
+				url = new URL(sURL);
 				loader.execute(url);
 			} catch (MalformedURLException e) {
 				holder.mImage.setImageResource(R.drawable.empty);

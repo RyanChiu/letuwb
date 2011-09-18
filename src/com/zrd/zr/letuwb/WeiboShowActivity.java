@@ -121,8 +121,6 @@ public class WeiboShowActivity extends Activity {
 	private List<Map<String, Object>> getStatusData(Action type) {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map;
-		Date dt;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Status status;
 		switch (type) {
 		case SHOW_USER:
@@ -130,12 +128,7 @@ public class WeiboShowActivity extends Activity {
 				status = mLastUser.getStatus();
 				if (status != null) {
 					map = new HashMap<String, Object>();
-					dt = status.getCreatedAt();
-					map.put("createdat", sdf.format(dt));
-					map.put("text", status.getText());
-					map.put("image", status.getBmiddle_pic());
-					map.put("reply", status.getInReplyToScreenName());
-					map.put("source", status.getSource());
+					map.put("status", status);
 					list.add(map);
 				}	
 			}
@@ -145,12 +138,7 @@ public class WeiboShowActivity extends Activity {
 				for (int i = 0; i < mLastUserTimeline.size(); i++) {
 					status = mLastUserTimeline.get(i);
 					map = new HashMap<String, Object>();
-					dt = status.getCreatedAt();
-					map.put("createdat", sdf.format(dt));
-					map.put("text", status.getText());
-					map.put("image", status.getBmiddle_pic());
-					map.put("reply", status.getInReplyToScreenName());
-					map.put("source", status.getSource());
+					map.put("status", status);
 					list.add(map);
 				}
 			}
