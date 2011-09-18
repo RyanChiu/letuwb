@@ -99,10 +99,12 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	protected void onPostExecute(Bitmap result) {
 		// TODO Auto-generated method stub
 		if (mImage != null) {
-			if (result != null)
+			if (result != null) {
 				mImage.setImageBitmap(result);
-			else
+			}
+			else {
 				mImage.setImageResource(mResIdBadImage);
+			}
 		}
 		if (mProgress != null) {
 			mProgress.setVisibility(ProgressBar.GONE);
