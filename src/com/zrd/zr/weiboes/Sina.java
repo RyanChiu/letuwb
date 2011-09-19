@@ -12,16 +12,36 @@ public class Sina {
 	
 	private Weibo mWeibo = null;
 	
+	/*
+	 * when some account of SINA_weibo actually logged in,
+	 * we told every activities that they should open some
+	 * rights for it.
+	 */
+	private boolean mLoggedIn = false;
+	
 	public Sina() {
-		mWeibo = OAuthConstant.getInstance().getWeibo();
-		
-		mWeibo.setOAuthConsumer(
-			Weibo.CONSUMER_KEY,
-			Weibo.CONSUMER_SECRET
-		);
+		this(true);
+		/*
+		 * we use the following tokens for default using,
+		 * but don't allow further more actions, like submit
+		 * a SINA_weibo or something like that.
+		 */
 		mWeibo.setOAuthAccessToken(
 			Weibo.ANFFERNEE_TOKEN, 
 			Weibo.ANFFERNEE_TOKEN_SECRET
+		);
+	}
+	
+	public Sina(boolean noAccessToken) {
+		mWeibo = OAuthConstant.getInstance().getWeibo();
+		
+		/*
+		 * the necessary key/secret pair that needed when
+		 * try to using the API of SINA_weibo
+		 */
+		mWeibo.setOAuthConsumer(
+			Weibo.CONSUMER_KEY,
+			Weibo.CONSUMER_SECRET
 		);
 	}
 	
@@ -29,6 +49,14 @@ public class Sina {
 		return mWeibo;
 	}
 
+	public void setLoggedIn(boolean loggedin) {
+		mLoggedIn = loggedin;
+	}
+	
+	public boolean isLoggedIn() {
+		return mLoggedIn;
+	}
+	
 	public String getContent() {
 		
 		List<Status> friendsTimeline;

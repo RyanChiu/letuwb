@@ -21,7 +21,7 @@
 		        <EditText android:layout_weight="1.0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/etPassword" android:singleLine="true" android:password="true"></EditText>
 		    </TableRow>
 		    <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone" android:id="@+id/trRepeat">
-		        <TextView android:id="@+id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Repeat:" android:textColor="#ffffff"></TextView>
+		        <TextView android:id="@+id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#ffffff" android:text="@string/label_repeat"></TextView>
 		        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" android:password="true" android:id="@+id/etRepeat"></EditText>
 		    </TableRow>
 		    <TableRow android:layout_width="wrap_content" android:id="@+id/tableRow3" android:layout_height="wrap_content">

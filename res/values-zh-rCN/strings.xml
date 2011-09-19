@@ -4,6 +4,7 @@
 	<string name="reglogin_title">登陆/注册</string>
 	<string name="label_username">用户名:</string>
     <string name="label_password">密  码:</string>
+    <string name="label_repeat">重  复:</string>
     <string name="label_login">登陆</string>
     <string name="label_guest">打酱油的</string>
     <string name="label_register">注册</string>

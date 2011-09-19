@@ -43,7 +43,7 @@ public class WeiboShowActivity extends Activity {
 	private LinearLayout mLayoutStatusCtrls;
 	private Button mBtnWeibos;
 	
-	private Sina mSina = null;
+	private static Sina mSina = null;
 	private User mLastUser = null;
 	private List<Status> mLastUserTimeline = null; 
 	
@@ -108,6 +108,14 @@ public class WeiboShowActivity extends Activity {
 			}
 			
 		});
+	}
+	
+	public static Sina getSina() {
+		return mSina;
+	}
+	
+	public static void setSina(Sina sina) {
+		mSina = sina;
 	}
 	
 	private void turnLoading(boolean on) {

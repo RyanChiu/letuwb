@@ -4,7 +4,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import weibo4android.OAuthConstant;
+import weibo4android.Weibo;
+import weibo4android.WeiboException;
+import weibo4android.http.AccessToken;
+import weibo4android.http.OAuthVerifier;
+import weibo4android.http.RequestToken;
+
 import com.zrd.zr.letuwb.R;
+import com.zrd.zr.weiboes.Sina;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -88,6 +96,44 @@ public class RegLoginActivity extends Activity {
 					Toast.makeText(RegLoginActivity.this, getString(R.string.err_needaccount), Toast.LENGTH_LONG).show();
 					return;
 				}
+				
+				/*
+				 * get SINA_weibo's token and token secret for the account
+				 */
+				Weibo weibo;
+				RequestToken requestToken;
+				try {
+					Sina sina = WeiboShowActivity.getSina();
+					if (sina == null) {
+						sina = new Sina(true);
+					}
+					weibo = sina.getWeibo();
+					requestToken = weibo.getOAuthRequestToken();
+					OAuthConstant.getInstance().setRequestToken(requestToken);
+					String username = mEditUsername.getText().toString();
+					String password = mEditPassword.getText().toString();
+					OAuthVerifier oauthVerifier = weibo.getOAuthVerifier(username, password);
+					String verifier = oauthVerifier.getVerifier();
+					AccessToken accessToken = requestToken.getAccessToken(verifier);
+					OAuthConstant.getInstance().setAccessToken(accessToken);
+					
+					sina.getWeibo().setOAuthAccessToken(
+						accessToken.getToken(),
+						accessToken.getTokenSecret()
+					);
+					sina.setLoggedIn(true);
+					WeiboShowActivity.setSina(sina);
+				} catch (WeiboException e) {
+					e.printStackTrace();
+					Toast.makeText(
+						RegLoginActivity.this, 
+						"Oooops, login failed...", 
+						Toast.LENGTH_LONG
+					).show();
+					WeiboShowActivity.getSina().setLoggedIn(false);
+				}
+				
+				/*
 				String sBackMsg = login(mEditUsername.getText().toString(), mEditPassword.getText().toString());
 				String[] msgparts = sBackMsg.split("\\.");
 				if (msgparts.length == 2 && msgparts[0].equals("Logged-in")) {
@@ -115,6 +161,7 @@ public class RegLoginActivity extends Activity {
 					Toast.makeText(RegLoginActivity.this, R.string.tips_loginfailed, Toast.LENGTH_LONG).show();
 					EntranceActivity.setPrivilege(1);
 				}
+				*/
 			}
 		});
 		

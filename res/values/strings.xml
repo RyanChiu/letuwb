@@ -4,6 +4,7 @@
     <string name="reglogin_title">Login or Register</string>
     <string name="label_username">Username:</string>
     <string name="label_password">Password:</string>
+    <string name="label_repeat">Repeat:</string>
     <string name="label_login">Login</string>
     <string name="label_guest">As a guest</string>
     <string name="label_register">Register</string>

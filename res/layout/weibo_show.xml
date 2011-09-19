@@ -5,7 +5,7 @@
   android:layout_height="fill_parent" android:orientation="vertical">
     <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingBottom="2dp" android:paddingLeft="2dp" android:paddingRight="2dp" android:paddingTop="1dp">
         <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentLeft="true">
-            <ImageView android:scaleType="fitXY" android:id="@+id/ivTinyProfileImage" android:layout_width="36dp" android:layout_height="36dp" android:src="@drawable/ic_menu_myplaces"></ImageView>
+            <ImageView android:scaleType="fitXY" android:id="@+id/ivTinyProfileImage" android:layout_width="36dp" android:layout_height="36dp" android:src="@drawable/ic_menu_myplaces" android:layout_marginBottom="3dp" android:layout_marginLeft="3dp" android:layout_marginTop="3dp"></ImageView>
             <LinearLayout android:id="@+id/linearLayout8" android:layout_width="wrap_content" android:layout_height="fill_parent" android:orientation="vertical">
                 <LinearLayout android:id="@+id/linearLayout7" android:layout_width="wrap_content" android:layout_height="wrap_content">
                     <TextView android:id="@+id/tvScreenName" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
