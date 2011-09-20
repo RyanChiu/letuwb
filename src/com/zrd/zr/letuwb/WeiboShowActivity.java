@@ -24,11 +24,12 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class WeiboShowActivity extends Activity {
 	
@@ -42,14 +43,17 @@ public class WeiboShowActivity extends Activity {
 	private ProgressBar mProgressStatusLoading;
 	private LinearLayout mLayoutStatusCtrls;
 	private Button mBtnWeibos;
+	private Button mBtnFriend;
 	
+	private String mUid = null;
 	private static Sina mSina = null;
 	private User mLastUser = null;
 	private List<Status> mLastUserTimeline = null; 
 	
 	public enum Action {
 		SHOW_USER,
-		GET_USER_TIMELINE
+		GET_USER_TIMELINE,
+		CREATE_FRIENDSHIP
 	}
 	
 	@Override
@@ -68,15 +72,17 @@ public class WeiboShowActivity extends Activity {
 		mProgressStatusLoading = (ProgressBar)findViewById(R.id.pbStatusLoading);
 		mLayoutStatusCtrls = (LinearLayout)findViewById(R.id.llStatusCtrls);
 		mBtnWeibos = (Button)findViewById(R.id.btnWeibos);
-						
+		mBtnFriend = (Button)findViewById(R.id.btnFriend);
+		
+		mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 		/*
 		 * show the whole user/info
 		 */
 		Intent intent = getIntent();
-		String uid = intent.getStringExtra("uid");
+		mUid = intent.getStringExtra("uid");
     	
 		AsyncWeiboLoader loader = new AsyncWeiboLoader();
-		loader.execute(Action.SHOW_USER, uid);
+		loader.execute(Action.SHOW_USER, mUid);
 		
 		/*
 		 * deal actions for components
@@ -101,9 +107,24 @@ public class WeiboShowActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (mLastUser != null) {
+				mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
+				AsyncWeiboLoader loader = new AsyncWeiboLoader();
+				loader.execute(Action.GET_USER_TIMELINE, mUid);
+			}
+			
+		});
+		
+		mBtnFriend.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
+				if (mSina != null && mSina.isLoggedIn()) {
 					AsyncWeiboLoader loader = new AsyncWeiboLoader();
-					loader.execute(Action.GET_USER_TIMELINE, "" + mLastUser.getId());
+					loader.execute(Action.CREATE_FRIENDSHIP, mUid);
+				} else {
+					RegLoginActivity.shallWeLogin(-1, WeiboShowActivity.this);
 				}
 			}
 			
@@ -116,14 +137,6 @@ public class WeiboShowActivity extends Activity {
 	
 	public static void setSina(Sina sina) {
 		mSina = sina;
-	}
-	
-	private void turnLoading(boolean on) {
-		if (on == true) {
-			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
-		} else {
-			mProgressStatusLoading.setVisibility(ProgressBar.GONE);
-		}
 	}
 	
 	private List<Map<String, Object>> getStatusData(Action type) {
@@ -155,22 +168,33 @@ public class WeiboShowActivity extends Activity {
 		return list;
 	}
 	
-	private void dealWithFailed() {
-		mTextCreatedAt.setText("N/A");
-		mTextDescription.setText("Please try again...");
-	}
-
 	/*
 	 * AsyncTask<Params, Progress, Result>
 	 */
 	private class AsyncWeiboLoader extends AsyncTask<Object, Object, Object> {
 
+		private void turnLoading(boolean on) {
+			if (on == true) {
+				mBtnWeibos.setEnabled(false);
+				mBtnFriend.setEnabled(false);
+				mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
+			} else {
+				mBtnWeibos.setEnabled(true);
+				mBtnFriend.setEnabled(true);
+				mProgressStatusLoading.setVisibility(ProgressBar.GONE);
+			}
+		}
+		
 		@SuppressWarnings("unchecked")
 		@Override
 		protected void onPostExecute(Object result) {
 			// TODO Auto-generated method stub
 			if (result == null) {
-				dealWithFailed();
+				Toast.makeText(
+					WeiboShowActivity.this,
+					"Failed to get SINA_weibo data...",
+					Toast.LENGTH_LONG
+				).show();
 			} else {
 				Object[] res = (Object[])result;
 				Action action = (Action)res[0];
@@ -239,7 +263,8 @@ public class WeiboShowActivity extends Activity {
 							+ "  Friends:" + mLastUser.getFriendsCount()
 						);
 					} else {
-						dealWithFailed();
+						mTextCreatedAt.setText("N/A");
+						mTextDescription.setText("Please try again...");
 					}
 					break;
 				case GET_USER_TIMELINE:
@@ -253,6 +278,28 @@ public class WeiboShowActivity extends Activity {
 							getStatusData(Action.GET_USER_TIMELINE)
 						);
 						mListStatus.setAdapter(adapter);
+					} else {
+						//deal with failing to get time_line
+					}
+					break;
+				case CREATE_FRIENDSHIP:
+					User user = (User)res[1];
+					if (user != null) {
+						if (!user.equals(mSina.getLoggedInUser())) {
+							Toast.makeText(
+								WeiboShowActivity.this,
+								"Friends made.",
+								Toast.LENGTH_LONG
+							).show();
+						} else {
+							Toast.makeText(
+								WeiboShowActivity.this,
+								"Friends already.",
+								Toast.LENGTH_LONG
+							).show();
+						}
+					} else {
+						//deal with failing to make friends
 					}
 					break;
 				}
@@ -285,6 +332,7 @@ public class WeiboShowActivity extends Activity {
 			case SHOW_USER:
 				if (params.length != 2) return null;
 				uid = (String)params[1];
+				if (uid == null) return null;
 				if (weibo != null) {
 					try {
 						res[1] = weibo.showUser(uid);
@@ -299,9 +347,31 @@ public class WeiboShowActivity extends Activity {
 			case GET_USER_TIMELINE:
 				if (params.length != 2) return null;
 				uid = (String)params[1];
+				if (uid == null) return null;
 				if (weibo != null) {
 					try {
 						res[1] = weibo.getUserTimeline(uid);
+						return res;
+					} catch (WeiboException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return null;
+					}
+				}
+				break;
+			case CREATE_FRIENDSHIP:
+				if (params.length != 2) return null;
+				uid = (String)params[1];
+				if (uid == null) return null;
+				if (weibo != null) {
+					try {
+						if (!mSina.isLoggedIn()) return null;
+						
+						if (weibo.existsFriendship("" + mSina.getLoggedInUser().getId(), uid)) {
+							res[1] = mSina.getLoggedInUser();
+						} else {
+							res[1] = weibo.createFriendship(uid);
+						}
 						return res;
 					} catch (WeiboException e) {
 						// TODO Auto-generated catch block

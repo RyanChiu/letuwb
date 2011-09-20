@@ -26,7 +26,7 @@
 		    </TableRow>
 		    <TableRow android:layout_width="wrap_content" android:id="@+id/tableRow3" android:layout_height="wrap_content">
 		        <Button android:id="@+id/btnLogin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="@string/label_login"></Button>
-		        <Button android:layout_weight="1.0" android:id="@+id/btnReg" android:text="@string/label_register" android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+		        <Button android:layout_weight="1.0" android:id="@+id/btnReg" android:text="@string/label_register" android:layout_height="wrap_content" android:layout_width="wrap_content" android:visibility="gone"></Button>
 		        <CheckBox android:layout_width="wrap_content" android:id="@+id/cbRemember" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="@string/label_remember" android:textColor="#ffffff"></CheckBox>
 		    </TableRow>
 		    <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tableRow5" android:gravity="center">
@@ -34,7 +34,7 @@
 		</TableLayout>
 	</TableRow>
 	<RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="wrap_content" android:layout_height="fill_parent">
-		<Button android:id="@+id/btnLetmereg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/label_letmereg" android:background="#22000000" android:paddingBottom="8dp" android:paddingTop="10dp" android:layout_marginTop="3dp" android:textColor="#0000dd"></Button>
+		<Button android:id="@+id/btnLetmereg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/label_letmereg" android:background="#22000000" android:paddingBottom="8dp" android:paddingTop="10dp" android:layout_marginTop="3dp" android:textColor="#0000dd" android:visibility="gone"></Button>
 		<Button android:id="@+id/btnGuest" android:text="@string/label_guest" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:layout_width="fill_parent"></Button>
 	</RelativeLayout>
 </TableLayout>

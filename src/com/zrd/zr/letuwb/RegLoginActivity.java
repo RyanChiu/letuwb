@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import weibo4android.OAuthConstant;
+import weibo4android.User;
 import weibo4android.Weibo;
 import weibo4android.WeiboException;
 import weibo4android.http.AccessToken;
@@ -86,6 +87,9 @@ public class RegLoginActivity extends Activity {
 			
 		});
 		
+		/*
+		 * login SINA_weibo with the input account
+		 */
 		btnLogin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -103,10 +107,7 @@ public class RegLoginActivity extends Activity {
 				Weibo weibo;
 				RequestToken requestToken;
 				try {
-					Sina sina = WeiboShowActivity.getSina();
-					if (sina == null) {
-						sina = new Sina(true);
-					}
+					Sina sina = new Sina(true);
 					weibo = sina.getWeibo();
 					requestToken = weibo.getOAuthRequestToken();
 					OAuthConstant.getInstance().setRequestToken(requestToken);
@@ -121,8 +122,28 @@ public class RegLoginActivity extends Activity {
 						accessToken.getToken(),
 						accessToken.getTokenSecret()
 					);
-					sina.setLoggedIn(true);
+					User user = sina.getWeibo().showUser("" + accessToken.getUserId());
+					sina.setLoggedInUser(user);
 					WeiboShowActivity.setSina(sina);
+					Toast.makeText(
+						RegLoginActivity.this,
+						"Logged in.",
+						Toast.LENGTH_LONG
+					).show();
+					
+					SharedPreferences.Editor editor = EntranceActivity.mPreferences.edit();
+					if (mCheckRemember.isChecked()) {
+						editor.putBoolean(EntranceActivity.CONFIG_REMEMBER, true);
+						editor.putString(EntranceActivity.CONFIG_USERNAME, mEditUsername.getText().toString());
+						editor.putString(EntranceActivity.CONFIG_PASSWORD, mEditPassword.getText().toString());
+						editor.commit();
+					} else {
+						editor.putBoolean(EntranceActivity.CONFIG_REMEMBER, false);
+						editor.putString(EntranceActivity.CONFIG_USERNAME, "");
+						editor.putString(EntranceActivity.CONFIG_PASSWORD, "");
+						editor.commit();
+					}
+					finish();
 				} catch (WeiboException e) {
 					e.printStackTrace();
 					Toast.makeText(
@@ -130,7 +151,7 @@ public class RegLoginActivity extends Activity {
 						"Oooops, login failed...", 
 						Toast.LENGTH_LONG
 					).show();
-					WeiboShowActivity.getSina().setLoggedIn(false);
+					WeiboShowActivity.getSina().setLoggedInUser(null);
 				}
 				
 				/*
@@ -295,7 +316,9 @@ public class RegLoginActivity extends Activity {
 			})
 			.setNegativeButton(context.getString(R.string.label_letmebe), null)
 			.create();
-		dlg.setTitle(context.getString(titleId));
+		if (titleId > 0) {
+			dlg.setTitle(context.getString(titleId));
+		}
 		dlg.show();
 	}
 }

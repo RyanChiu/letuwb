@@ -84,6 +84,7 @@ containing a value of this type.
         public static final int adsMain=0x7f070042;
         public static final int btnContact=0x7f07000c;
         public static final int btnExchange=0x7f07002f;
+        public static final int btnFriend=0x7f07006f;
         public static final int btnGuest=0x7f07005f;
         public static final int btnHottest=0x7f07004a;
         public static final int btnLatest=0x7f070049;
@@ -101,7 +102,7 @@ containing a value of this type.
         public static final int btnUnhottest=0x7f07004c;
         public static final int btnUpload=0x7f070015;
         public static final int btnWeiboShow=0x7f07001c;
-        public static final int btnWeibos=0x7f07006d;
+        public static final int btnWeibos=0x7f07006e;
         public static final int btnZoomin=0x7f07001e;
         public static final int btnZoomout=0x7f07001f;
         public static final int cbRemember=0x7f07005c;
@@ -127,7 +128,6 @@ containing a value of this type.
         public static final int linearLayout3=0x7f070004;
         public static final int linearLayout4=0x7f070006;
         public static final int linearLayout5=0x7f07000a;
-        public static final int linearLayout6=0x7f07006b;
         public static final int linearLayout7=0x7f070064;
         public static final int linearLayout8=0x7f070063;
         public static final int linearLayoutAd=0x7f070010;
@@ -137,9 +137,9 @@ containing a value of this type.
         public static final int linearLayoutMainTop=0x7f070041;
         public static final int linearLayoutOperate=0x7f070013;
         public static final int linearLayoutTop=0x7f070012;
-        public static final int llStatusCtrls=0x7f07006c;
+        public static final int llStatusCtrls=0x7f07006d;
         public static final int llVoteInfo=0x7f070023;
-        public static final int lvStatus=0x7f07006e;
+        public static final int lvStatus=0x7f07006b;
         public static final int pbCustomDialogProgress=0x7f07002a;
         public static final int pbStatusImageLoading=0x7f07003b;
         public static final int pbStatusLoading=0x7f070069;
@@ -169,7 +169,7 @@ containing a value of this type.
         public static final int trRepeat=0x7f070057;
         public static final int trTitle=0x7f07004e;
         public static final int tvAppName=0x7f07002e;
-        public static final int tvCounts=0x7f07006f;
+        public static final int tvCounts=0x7f07006c;
         public static final int tvCreatedAt=0x7f070068;
         public static final int tvCustomDialogTitle=0x7f07002b;
         public static final int tvDescription=0x7f07006a;

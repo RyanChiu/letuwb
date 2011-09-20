@@ -4,6 +4,7 @@ import java.util.List;
 
 import weibo4android.Paging;
 import weibo4android.Status;
+import weibo4android.User;
 import weibo4android.Weibo;
 import weibo4android.OAuthConstant;
 import weibo4android.WeiboException;
@@ -17,22 +18,13 @@ public class Sina {
 	 * we told every activities that they should open some
 	 * rights for it.
 	 */
-	private boolean mLoggedIn = false;
+	private User mLoggedInUser = null;
 	
 	public Sina() {
-		this(true);
-		/*
-		 * we use the following tokens for default using,
-		 * but don't allow further more actions, like submit
-		 * a SINA_weibo or something like that.
-		 */
-		mWeibo.setOAuthAccessToken(
-			Weibo.ANFFERNEE_TOKEN, 
-			Weibo.ANFFERNEE_TOKEN_SECRET
-		);
+		this(false);
 	}
 	
-	public Sina(boolean noAccessToken) {
+	public Sina(boolean noDefaultAccessToken) {
 		mWeibo = OAuthConstant.getInstance().getWeibo();
 		
 		/*
@@ -43,18 +35,36 @@ public class Sina {
 			Weibo.CONSUMER_KEY,
 			Weibo.CONSUMER_SECRET
 		);
+		
+		if (noDefaultAccessToken) {
+			mWeibo.setOAuthAccessToken("", "");
+		} else {
+			/*
+			 * we use the following tokens for default using,
+			 * but don't allow further more actions, like submit
+			 * a SINA_weibo or something like that.
+			 */
+			mWeibo.setOAuthAccessToken(
+				Weibo.ANFFERNEE_TOKEN, 
+				Weibo.ANFFERNEE_TOKEN_SECRET
+			);
+		}
 	}
 	
 	public Weibo getWeibo() {
 		return mWeibo;
 	}
 
-	public void setLoggedIn(boolean loggedin) {
-		mLoggedIn = loggedin;
+	public void setLoggedInUser(User user) {
+		mLoggedInUser = user;
+	}
+	
+	public User getLoggedInUser() {
+		return mLoggedInUser;
 	}
 	
 	public boolean isLoggedIn() {
-		return mLoggedIn;
+		return (mLoggedInUser != null);
 	}
 	
 	public String getContent() {
