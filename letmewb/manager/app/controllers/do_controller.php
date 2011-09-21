@@ -8,7 +8,7 @@ class DoController extends AppController {
 		'Paginator'
 	);
 	
-	var $__limit = 25;
+	var $__limit = 50;
 	
 	function beforeFilter() {
 		//Configure::write('debug', 2);
