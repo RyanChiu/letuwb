@@ -67,7 +67,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	FrameLayout mFrameBackground;
 	RelativeLayout rlCtrl;
 	LinearLayout llVoteInfo;
-	LinearLayout llBrowTop;
+	LinearLayout mLayoutOperate;
 	TextView tvNums;
 	TextView tvFileInfo;
 	TextView mTextUpup;
@@ -117,7 +117,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		mFrameBackground = (FrameLayout) findViewById(R.id.flBackground);
 		rlCtrl = (RelativeLayout) findViewById(R.id.rlControl);
 		llVoteInfo = (LinearLayout) findViewById(R.id.llVoteInfo);
-		llBrowTop = (LinearLayout) findViewById(R.id.linearLayoutTop);
+		mLayoutOperate = (LinearLayout) findViewById(R.id.llOperate);
 		tvNums = (TextView) findViewById(R.id.textViewNums);
 		tvFileInfo = (TextView) findViewById(R.id.textViewFileInfo);
 		mTextUpup = (TextView) findViewById(R.id.tvUpup);
@@ -150,7 +150,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		mBrow.setOnTouchListener(this);
         //mBrow.setOnTouchListener(mZoomListener);
 		
-		llBrowTop.setVisibility(LinearLayout.INVISIBLE);
+		mLayoutOperate.setVisibility(LinearLayout.INVISIBLE);
 		llVoteInfo.setVisibility(LinearLayout.INVISIBLE);
 		
 		// Look up the AdView as a resource and load a request.
@@ -631,20 +631,20 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		switch (item.getItemId()) {
 		case Menu.FIRST + 1:
 			if (getString(R.string.label_zoom).equals(item.getTitle())) {
-				if (llBrowTop.getVisibility() == LinearLayout.VISIBLE) {
+				if (mLayoutOperate.getVisibility() == LinearLayout.VISIBLE) {
 					fadeoutAnim.setDuration(300);
-					llBrowTop.startAnimation(fadeoutAnim);
-					llBrowTop.setVisibility(LinearLayout.INVISIBLE);
+					mLayoutOperate.startAnimation(fadeoutAnim);
+					mLayoutOperate.setVisibility(LinearLayout.INVISIBLE);
 				}
 				item.setTitle(getString(R.string.label_browse));
 				mBrow.setOnTouchListener(mZoomListener);
 				rlCtrl.setOnTouchListener(mZoomListener);
 				mIsDooming = true;
 			} else {
-				if (llBrowTop.getVisibility() == LinearLayout.INVISIBLE) {
-					llBrowTop.setVisibility(LinearLayout.VISIBLE);
+				if (mLayoutOperate.getVisibility() == LinearLayout.INVISIBLE) {
+					mLayoutOperate.setVisibility(LinearLayout.VISIBLE);
 					fadeinAnim.setDuration(500);
-					llBrowTop.startAnimation(fadeinAnim);
+					mLayoutOperate.startAnimation(fadeinAnim);
 				}
 				item.setTitle(getString(R.string.label_zoom));
 				mBrow.setOnTouchListener(this);
@@ -1036,14 +1036,14 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		public boolean onSingleTapConfirmed(MotionEvent e) {
 			// TODO Auto-generated method stub
 			//return super.onSingleTapConfirmed(e);
-			if (llBrowTop.getVisibility() == LinearLayout.VISIBLE) {
+			if (mLayoutOperate.getVisibility() == LinearLayout.VISIBLE) {
 				fadeoutAnim.setDuration(300);
-				llBrowTop.startAnimation(fadeoutAnim);
-				llBrowTop.setVisibility(LinearLayout.INVISIBLE);
+				mLayoutOperate.startAnimation(fadeoutAnim);
+				mLayoutOperate.setVisibility(LinearLayout.INVISIBLE);
 			} else {
-				llBrowTop.setVisibility(LinearLayout.VISIBLE);
+				mLayoutOperate.setVisibility(LinearLayout.VISIBLE);
 				fadeinAnim.setDuration(500);
-				llBrowTop.startAnimation(fadeinAnim);
+				mLayoutOperate.startAnimation(fadeinAnim);
 			}
 			return true;
 		}

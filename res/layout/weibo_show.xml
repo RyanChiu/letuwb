@@ -31,7 +31,7 @@
         </LinearLayout>
     </RelativeLayout>
     <RelativeLayout android:id="@+id/relativeLayout3" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <LinearLayout android:id="@+id/llStatusCtrls" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:background="#33ffffff">
+        <LinearLayout android:id="@+id/llStatusCtrls" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:background="#56000000">
             <Button android:layout_height="wrap_content" android:id="@+id/btnWeibos" android:layout_width="wrap_content" android:text="Weibos"></Button>
             <Button android:layout_height="wrap_content" android:id="@+id/btnFriend" android:layout_width="wrap_content" android:text="Friend"></Button>
         </LinearLayout>

@@ -34,7 +34,7 @@
     <string name="err_logintosave">Please login to save.</string>
     <string name="tips_nopictures">No pictures.</string>
     <string name="tips_playing">Playing...</string>
-    <string name="info_picture">Intro: %1$s</string>
+    <string name="info_picture">%1$s</string>
     <string name="tips_clicks">clicks: %1$d</string>
     <string name="tips_lastone">We\'re going to the first one.</string>
     <string name="tips_firstone">We\'re going to the last one.</string>

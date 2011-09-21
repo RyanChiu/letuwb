@@ -132,11 +132,11 @@ containing a value of this type.
         public static final int linearLayout8=0x7f070063;
         public static final int linearLayoutAd=0x7f070010;
         public static final int linearLayoutBottom=0x7f070020;
-        public static final int linearLayoutInfo=0x7f070018;
+        public static final int linearLayoutInfo=0x7f070019;
         public static final int linearLayoutMainBottom=0x7f070043;
         public static final int linearLayoutMainTop=0x7f070041;
-        public static final int linearLayoutOperate=0x7f070013;
         public static final int linearLayoutTop=0x7f070012;
+        public static final int llOperate=0x7f070013;
         public static final int llStatusCtrls=0x7f07006d;
         public static final int llVoteInfo=0x7f070023;
         public static final int lvStatus=0x7f07006b;
@@ -149,7 +149,7 @@ containing a value of this type.
         public static final int relativeLayout2=0x7f070021;
         public static final int relativeLayout3=0x7f070038;
         public static final int relativeLayoutMain=0x7f070040;
-        public static final int relativeLayoutZoom=0x7f07001b;
+        public static final int relativeLayoutZoom=0x7f070018;
         public static final int rlControl=0x7f07000f;
         public static final int rlVoteText=0x7f070025;
         public static final int sbMain=0x7f070047;
@@ -163,8 +163,8 @@ containing a value of this type.
         public static final int textView2=0x7f070009;
         public static final int textView3=0x7f07000b;
         public static final int textView4=0x7f070050;
-        public static final int textViewFileInfo=0x7f070019;
-        public static final int textViewNums=0x7f07001a;
+        public static final int textViewFileInfo=0x7f07001a;
+        public static final int textViewNums=0x7f07001b;
         public static final int tlBackground=0x7f07004d;
         public static final int trRepeat=0x7f070057;
         public static final int trTitle=0x7f07004e;

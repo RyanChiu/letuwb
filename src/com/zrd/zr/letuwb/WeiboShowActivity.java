@@ -21,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -48,7 +49,10 @@ public class WeiboShowActivity extends Activity {
 	private String mUid = null;
 	private static Sina mSina = null;
 	private User mLastUser = null;
-	private List<Status> mLastUserTimeline = null; 
+	private List<Status> mLastUserTimeline = null;
+	
+	private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
+	private AlphaAnimation mAnimFadeout = new AlphaAnimation(1.0f, 0.1f);
 	
 	public enum Action {
 		SHOW_USER,
@@ -95,7 +99,11 @@ public class WeiboShowActivity extends Activity {
 				// TODO Auto-generated method stub
 				if (mLayoutStatusCtrls.getVisibility() == LinearLayout.GONE) {
 					mLayoutStatusCtrls.setVisibility(LinearLayout.VISIBLE);
+					mAnimFadein.setDuration(500);
+					mLayoutStatusCtrls.startAnimation(mAnimFadein);
 				} else {
+					mAnimFadeout.setDuration(300);
+					mLayoutStatusCtrls.startAnimation(mAnimFadeout);
 					mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 				}
 			}
