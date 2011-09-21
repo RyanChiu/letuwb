@@ -18,9 +18,19 @@ $hots =
 		"http://api.t.sina.com.cn/users/hot.json",
 		array('source' => WB_AKEY)
 	);
+
+$sex = array('f', 'm');
+if ($argc == 2) {
+	if (in_array($argv[1] . '', $sex)) {
+		$sex = array($argv[1]);
+	}
+}
+
 $i = 0;
 foreach ($hots as $hot) {
-	if (in_array('' . $hot['gender'], array('f', 'm')) && intval($hot['id']) >= 0) {
+	if (in_array('' . $hot['gender'], $sex)
+		&& intval($hot['id']) >= 0
+	) {
 		$sql = sprintf(
 			'insert into weibo_users (`uid`, `screen_name`, `name`, `province`, `city`, `location`, '
 			. '`description`, `url`, `profile_image_url`, `domain`, `gender`, `followers_count`, '
