@@ -25,9 +25,9 @@ public class ThreadSinaDealer implements Runnable {
 	private Handler mHandler = null;
 	
 	/*
-	 * if parameter sina and handler is null, or action is illegal,
+	 * if parameter handler is null, or action is illegal,
 	 * then the instance of the class will do nothing, nothing at all!!
-	 * so, please make sure that the 3 parameters mentioned above
+	 * so, please make sure that the 2 parameters mentioned above
 	 * are available.
 	 */
 	public ThreadSinaDealer(Sina sina, int action, String[] params, Handler handler) {
