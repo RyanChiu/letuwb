@@ -9,6 +9,7 @@ import java.util.Map;
 
 import weibo4android.Status;
 import weibo4android.User;
+import weibo4android.WeiboException;
 
 import com.zrd.zr.weiboes.Sina;
 import com.zrd.zr.weiboes.ThreadSinaDealer;
@@ -71,6 +72,16 @@ public class WeiboShowActivity extends Activity {
 				sina = mSina;
 			} else {
 				setSina(sina);
+			}
+			WeiboException wexp = (WeiboException)msg.getData().getSerializable(ThreadSinaDealer.KEY_WEIBO_ERR);
+			if (wexp != null) {
+				Toast.makeText(
+					WeiboShowActivity.this,
+					wexp.toString(),
+					Toast.LENGTH_LONG
+				).show();
+				turnDealing(false);
+				return;
 			}
 			switch (msg.what) {
 			case ThreadSinaDealer.SHOW_USER:

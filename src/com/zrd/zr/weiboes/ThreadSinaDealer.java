@@ -17,12 +17,19 @@ public class ThreadSinaDealer implements Runnable {
 	public static final int CREATE_FRIENDSHIP = 0x7320003;
 	public static final String KEY_DATA = "data";
 	public static final String KEY_SINA = "sina";
+	public static final String KEY_WEIBO_ERR = "err";
 	
 	private Sina mSina = null;
 	private int mAction;
 	private String[] mParams = null;
 	private Handler mHandler = null;
 	
+	/*
+	 * if parameter sina and handler is null, or action is illegal,
+	 * then the instance of the class will do nothing, nothing at all!!
+	 * so, please make sure that the 3 parameters mentioned above
+	 * are available.
+	 */
 	public ThreadSinaDealer(Sina sina, int action, String[] params, Handler handler) {
 		this.mSina = sina;
 		this.mAction = action;
@@ -48,18 +55,20 @@ public class ThreadSinaDealer implements Runnable {
 		ArrayList<Status> statuses = new ArrayList<Status>();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(KEY_SINA, mSina);
+		bundle.putSerializable(KEY_WEIBO_ERR, null);
 		switch (mAction) {
 		case SHOW_USER:
 			if (mParams != null && mParams.length != 1 && mParams[0] != null) return;
 			try {
 				user = mSina.getWeibo().showUser(mParams[0]);
 				bundle.putSerializable(KEY_DATA, user);
-				msg.setData(bundle);
-				mHandler.sendMessage(msg);
 			} catch (WeiboException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				bundle.putSerializable(KEY_WEIBO_ERR, e);
 			}
+			msg.setData(bundle);
+			mHandler.sendMessage(msg);
 			break;
 		case GET_USER_TIMELINE:
 			if (mParams != null && mParams.length != 1 && mParams[0] != null) return;
@@ -69,30 +78,29 @@ public class ThreadSinaDealer implements Runnable {
 					statuses.add(list.get(i));
 				}
 				bundle.putSerializable(KEY_DATA, statuses);
-				msg.setData(bundle);
-				mHandler.sendMessage(msg);
 			} catch (WeiboException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				bundle.putSerializable(KEY_WEIBO_ERR, e);
 			}
+			msg.setData(bundle);
+			mHandler.sendMessage(msg);
 			break;
 		case CREATE_FRIENDSHIP:
 			if (mParams != null && mParams.length != 1 && mParams[0] != null) return;
-			if (!mSina.isLoggedIn()) {
-				return;
-			}
 			try {
 				if (mSina.getWeibo().existsFriendship("" + mSina.getLoggedInUser().getId(), mParams[0])) {
 					bundle.putSerializable(KEY_DATA, mSina.getLoggedInUser());
 				} else {
 					bundle.putSerializable(KEY_DATA, mSina.getWeibo().createFriendship(mParams[0]));
 				}
-				msg.setData(bundle);
-				mHandler.sendMessage(msg);
 			} catch (WeiboException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				bundle.putSerializable(KEY_WEIBO_ERR, e);
 			}
+			msg.setData(bundle);
+			mHandler.sendMessage(msg);
 			break;
 		}
 	}
