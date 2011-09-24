@@ -9,16 +9,16 @@ import java.util.Map;
 
 import weibo4android.Status;
 import weibo4android.User;
-import weibo4android.Weibo;
-import weibo4android.WeiboException;
 
 import com.zrd.zr.weiboes.Sina;
+import com.zrd.zr.weiboes.ThreadSinaDealer;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
@@ -60,6 +60,128 @@ public class WeiboShowActivity extends Activity {
 		CREATE_FRIENDSHIP
 	}
 	
+	/*
+	 * Handler for showing all kinds of SINA_weibo data from background thread.
+	 */
+	Handler mHandler = new Handler() {
+		@SuppressWarnings("unchecked")
+		public void handleMessage(Message msg) {
+			Sina sina = (Sina)msg.getData().getSerializable(ThreadSinaDealer.KEY_SINA);
+			if (sina == null) {
+				sina = mSina;
+			} else {
+				setSina(sina);
+			}
+			switch (msg.what) {
+			case ThreadSinaDealer.SHOW_USER:
+				mLastUser = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+				if (mLastUser != null) {
+					/*
+					 * show the status info
+					 */
+					WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
+						WeiboShowActivity.this,
+						getStatusData(Action.SHOW_USER)
+					);
+					mListStatus.setAdapter(adapter);
+					
+					/*
+					 * show the profile-image
+					 */
+					AsyncImageLoader ail = new AsyncImageLoader(
+						WeiboShowActivity.this,
+						R.id.ivTinyProfileImage,
+						R.drawable.person
+					);
+					ail.execute(mLastUser.getProfileImageURL());
+					
+					/*
+					 * show the screen name
+					 */
+					mTextScreenName.setText(mLastUser.getScreenName());
+					
+					/*
+					 * show "v" if verified
+					 */
+					if (mLastUser.isVerified()) {
+						mImageVerified.setVisibility(ImageView.VISIBLE);
+					} else {
+						mImageVerified.setVisibility(ImageView.GONE);
+					}
+					
+					/*
+					 * show when was the user created
+					 */
+					Date dtCreatedAt = mLastUser.getCreatedAt();
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					mTextCreatedAt.setText(sdf.format(dtCreatedAt));
+					
+					/*
+					 * show the location and the description
+					 */
+					mTextLocation.setText(
+						mLastUser.getLocation()
+					);
+					mTextDescription.setText(
+						mLastUser.getDescription()
+					);
+					
+					/*
+					 * show all kinds of the counts
+					 */
+					mTextCounts.setText(
+						"Weibos:" + mLastUser.getStatusesCount()
+						+ "  Favorites:" + mLastUser.getFavouritesCount()
+						+ "\n"
+						+ "Followers:" + mLastUser.getFollowersCount()
+						+ "  Friends:" + mLastUser.getFriendsCount()
+					);
+				} else {
+					mTextCreatedAt.setText("N/A");
+					mTextDescription.setText("Please try again...");
+				}
+				break;
+			case ThreadSinaDealer.GET_USER_TIMELINE:
+				mLastUserTimeline = (ArrayList<weibo4android.Status>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+				if (mLastUserTimeline != null) {
+					/*
+					 * show the user time_line
+					 */
+					WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
+						WeiboShowActivity.this,
+						getStatusData(Action.GET_USER_TIMELINE)
+					);
+					mListStatus.setAdapter(adapter);
+				} else {
+					//deal with failing to get time_line
+				}
+				break;
+			case ThreadSinaDealer.CREATE_FRIENDSHIP:
+				User user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+				if (user != null) {
+					if (!user.equals(mSina.getLoggedInUser())) {
+						Toast.makeText(
+							WeiboShowActivity.this,
+							"Friends made.",
+							Toast.LENGTH_LONG
+						).show();
+					} else {
+						Toast.makeText(
+							WeiboShowActivity.this,
+							"Friends already.",
+							Toast.LENGTH_LONG
+						).show();
+					}
+				} else {
+					//deal with failing to make friends
+				}
+				break;
+			}
+			
+			turnDealing(false);
+		}
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -85,8 +207,15 @@ public class WeiboShowActivity extends Activity {
 		Intent intent = getIntent();
 		mUid = intent.getStringExtra("uid");
     	
-		AsyncWeiboLoader loader = new AsyncWeiboLoader();
-		loader.execute(Action.SHOW_USER, mUid);
+		new Thread(
+			new ThreadSinaDealer(
+				mSina, 
+				ThreadSinaDealer.SHOW_USER, 
+				new String[] {mUid}, 
+				mHandler
+			)
+		).start();
+		turnDealing(true);
 		
 		/*
 		 * deal actions for components
@@ -115,9 +244,16 @@ public class WeiboShowActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				new Thread(
+					new ThreadSinaDealer(
+						mSina,
+						ThreadSinaDealer.GET_USER_TIMELINE,
+						new String[] {mUid},
+						mHandler
+					)
+				).start();
 				mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
-				AsyncWeiboLoader loader = new AsyncWeiboLoader();
-				loader.execute(Action.GET_USER_TIMELINE, mUid);
+				turnDealing(true);
 			}
 			
 		});
@@ -129,8 +265,14 @@ public class WeiboShowActivity extends Activity {
 				// TODO Auto-generated method stub
 				mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 				if (mSina != null && mSina.isLoggedIn()) {
-					AsyncWeiboLoader loader = new AsyncWeiboLoader();
-					loader.execute(Action.CREATE_FRIENDSHIP, mUid);
+					new Thread(
+						new ThreadSinaDealer(
+							mSina,
+							ThreadSinaDealer.CREATE_FRIENDSHIP,
+							new String[] {mUid},
+							mHandler
+						)
+					).start();
 				} else {
 					RegLoginActivity.shallWeLogin(-1, WeiboShowActivity.this);
 				}
@@ -177,222 +319,18 @@ public class WeiboShowActivity extends Activity {
 	}
 	
 	/*
-	 * AsyncTask<Params, Progress, Result>
+	 * change the status for the components when dealing with SINA_weibo data
 	 */
-	private class AsyncWeiboLoader extends AsyncTask<Object, Object, Object> {
-
-		private void turnLoading(boolean on) {
-			if (on == true) {
-				mBtnWeibos.setEnabled(false);
-				mBtnFriend.setEnabled(false);
-				mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
-			} else {
-				mBtnWeibos.setEnabled(true);
-				mBtnFriend.setEnabled(true);
-				mProgressStatusLoading.setVisibility(ProgressBar.GONE);
-			}
+	private void turnDealing(boolean on) {
+		if (on == true) {
+			mBtnWeibos.setEnabled(false);
+			mBtnFriend.setEnabled(false);
+			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
+		} else {
+			mBtnWeibos.setEnabled(true);
+			mBtnFriend.setEnabled(true);
+			mProgressStatusLoading.setVisibility(ProgressBar.GONE);
 		}
-		
-		@SuppressWarnings("unchecked")
-		@Override
-		protected void onPostExecute(Object result) {
-			// TODO Auto-generated method stub
-			if (result == null) {
-				Toast.makeText(
-					WeiboShowActivity.this,
-					"Failed to get SINA_weibo data...",
-					Toast.LENGTH_LONG
-				).show();
-			} else {
-				Object[] res = (Object[])result;
-				Action action = (Action)res[0];
-				switch (action) {
-				case SHOW_USER:
-					mLastUser = (User)res[1];
-					if (mLastUser != null) {
-						/*
-						 * show the status info
-						 */
-						WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
-							WeiboShowActivity.this,
-							getStatusData(Action.SHOW_USER)
-						);
-						mListStatus.setAdapter(adapter);
-						
-						/*
-						 * show the profile-image
-						 */
-						AsyncImageLoader ail = new AsyncImageLoader(
-							WeiboShowActivity.this,
-							R.id.ivTinyProfileImage,
-							R.drawable.person
-						);
-						ail.execute(mLastUser.getProfileImageURL());
-						
-						/*
-						 * show the screen name
-						 */
-						mTextScreenName.setText(mLastUser.getScreenName());
-						
-						/*
-						 * show "v" if verified
-						 */
-						if (mLastUser.isVerified()) {
-							mImageVerified.setVisibility(ImageView.VISIBLE);
-						} else {
-							mImageVerified.setVisibility(ImageView.GONE);
-						}
-						
-						/*
-						 * show when was the user created
-						 */
-						Date dtCreatedAt = mLastUser.getCreatedAt();
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-						mTextCreatedAt.setText(sdf.format(dtCreatedAt));
-						
-						/*
-						 * show the location and the description
-						 */
-						mTextLocation.setText(
-							mLastUser.getLocation()
-						);
-						mTextDescription.setText(
-							mLastUser.getDescription()
-						);
-						
-						/*
-						 * show all kinds of the counts
-						 */
-						mTextCounts.setText(
-							"Weibos:" + mLastUser.getStatusesCount()
-							+ "  Favorites:" + mLastUser.getFavouritesCount()
-							+ "\n"
-							+ "Followers:" + mLastUser.getFollowersCount()
-							+ "  Friends:" + mLastUser.getFriendsCount()
-						);
-					} else {
-						mTextCreatedAt.setText("N/A");
-						mTextDescription.setText("Please try again...");
-					}
-					break;
-				case GET_USER_TIMELINE:
-					mLastUserTimeline = (List<weibo4android.Status>)res[1];
-					if (mLastUserTimeline != null) {
-						/*
-						 * show the user time_line
-						 */
-						WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
-							WeiboShowActivity.this,
-							getStatusData(Action.GET_USER_TIMELINE)
-						);
-						mListStatus.setAdapter(adapter);
-					} else {
-						//deal with failing to get time_line
-					}
-					break;
-				case CREATE_FRIENDSHIP:
-					User user = (User)res[1];
-					if (user != null) {
-						if (!user.equals(mSina.getLoggedInUser())) {
-							Toast.makeText(
-								WeiboShowActivity.this,
-								"Friends made.",
-								Toast.LENGTH_LONG
-							).show();
-						} else {
-							Toast.makeText(
-								WeiboShowActivity.this,
-								"Friends already.",
-								Toast.LENGTH_LONG
-							).show();
-						}
-					} else {
-						//deal with failing to make friends
-					}
-					break;
-				}
-			}
-			
-			turnLoading(false);
-			super.onPostExecute(result);
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			turnLoading(true);
-			super.onPreExecute();
-		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			if (mSina == null) {
-				mSina = new Sina();
-			}
-			if (params.length < 1) return null;
-			Action action = (Action) params[0];
-			Object[] res = new Object[2];
-			res[0] = action;
-			String uid;
-			Weibo weibo = mSina.getWeibo();
-			switch (action) {
-			case SHOW_USER:
-				if (params.length != 2) return null;
-				uid = (String)params[1];
-				if (uid == null) return null;
-				if (weibo != null) {
-					try {
-						res[1] = weibo.showUser(uid);
-						return res;
-					} catch (WeiboException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						return null;
-					}
-				}
-				break;
-			case GET_USER_TIMELINE:
-				if (params.length != 2) return null;
-				uid = (String)params[1];
-				if (uid == null) return null;
-				if (weibo != null) {
-					try {
-						res[1] = weibo.getUserTimeline(uid);
-						return res;
-					} catch (WeiboException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						return null;
-					}
-				}
-				break;
-			case CREATE_FRIENDSHIP:
-				if (params.length != 2) return null;
-				uid = (String)params[1];
-				if (uid == null) return null;
-				if (weibo != null) {
-					try {
-						if (!mSina.isLoggedIn()) return null;
-						
-						if (weibo.existsFriendship("" + mSina.getLoggedInUser().getId(), uid)) {
-							res[1] = mSina.getLoggedInUser();
-						} else {
-							res[1] = weibo.createFriendship(uid);
-						}
-						return res;
-					} catch (WeiboException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						return null;
-					}
-				}
-				break;
-			}
-			
-			return null;
-		}
-		
 	}
 
 	@Override
