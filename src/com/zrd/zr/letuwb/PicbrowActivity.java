@@ -14,6 +14,8 @@ import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import weibo4android.User;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -61,13 +63,15 @@ import com.sonyericsson.zoom.DynamicZoomControl;
 import com.sonyericsson.zoom.ImageZoomView;
 import com.sonyericsson.zoom.LongPressZoomListener;
 import com.zrd.zr.letuwb.R;
+import com.zrd.zr.weiboes.Sina;
+import com.zrd.zr.weiboes.ThreadSinaDealer;
 
 public class PicbrowActivity extends Activity implements ViewFactory, OnTouchListener {
 
 	FrameLayout mFrameBackground;
 	RelativeLayout rlCtrl;
 	LinearLayout llVoteInfo;
-	LinearLayout mLayoutOperate;
+	LinearLayout mLayoutTop;
 	TextView tvNums;
 	TextView tvFileInfo;
 	TextView mTextUpup;
@@ -86,10 +90,11 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	ImageButton mBtnExchange;
 	ImageButton mBtnShare;
 	ImageButton mBtnWeiboShow;
+	ImageButton mBtnWeiboFriend;
 	private static Boolean mIsLoading = false;
 	private Boolean mWasPlaying = false;
 	public Boolean mIsDooming = false;
-	Integer curUsrId = 0;
+	Integer mId = 0;
 	ArrayList<WeibouserInfo> mUsrs = null;
 	Bitmap bdPicFailed;
 	private GestureDetector mGestureDetector = null;
@@ -117,7 +122,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		mFrameBackground = (FrameLayout) findViewById(R.id.flBackground);
 		rlCtrl = (RelativeLayout) findViewById(R.id.rlControl);
 		llVoteInfo = (LinearLayout) findViewById(R.id.llVoteInfo);
-		mLayoutOperate = (LinearLayout) findViewById(R.id.llOperate);
+		mLayoutTop = (LinearLayout) findViewById(R.id.llBrowTop);
 		tvNums = (TextView) findViewById(R.id.textViewNums);
 		tvFileInfo = (TextView) findViewById(R.id.textViewFileInfo);
 		mTextUpup = (TextView) findViewById(R.id.tvUpup);
@@ -136,10 +141,53 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		mBtnExchange = (ImageButton) findViewById(R.id.btnExchange);
 		mBtnShare = (ImageButton) findViewById(R.id.btnShare);
 		mBtnWeiboShow = (ImageButton) findViewById(R.id.btnWeiboShow);
+		mBtnWeiboFriend = (ImageButton) findViewById(R.id.btnMakeFriendsFromBrow);
 		bdPicFailed = BitmapFactory.decodeResource(this.getResources(), R.drawable.broken);
 		mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mGestureDetector = new GestureDetector(this, new PicbrowGestureListener());
 		//mVibrator = ( Vibrator )getApplication().getSystemService(Service.VIBRATOR_SERVICE);
+		mHandler = new Handler() {
+
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+					case 1:
+						if (mUsrs.size() == 0) {
+							Toast.makeText(PicbrowActivity.this, getString(R.string.tips_nopictures), Toast.LENGTH_SHORT).show();
+						} else if (btnPause.getVisibility() == ImageButton.VISIBLE && !PicbrowActivity.mIsLoading) {
+	                		Toast.makeText(PicbrowActivity.this, getString(R.string.tips_playing), Toast.LENGTH_SHORT).show();
+	                		if (EntranceActivity.getUsrIndexFromId(mId, mUsrs) < mUsrs.size() - 1) {
+	                			zrAsyncShowPic(mId, 2);
+	                		} else {
+	                			zrAsyncShowPic(mUsrs.get(0).id, 0);
+	                		}
+	                	}
+						break;
+					case ThreadSinaDealer.CREATE_FRIENDSHIP:
+						User user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+						if (user != null) {
+							if (!user.equals(WeiboShowActivity.getSina().getLoggedInUser())) {
+								Toast.makeText(
+									PicbrowActivity.this,
+									"Friends made.",
+									Toast.LENGTH_LONG
+								).show();
+							} else {
+								Toast.makeText(
+									PicbrowActivity.this,
+									"Friends already.",
+									Toast.LENGTH_LONG
+								).show();
+							}
+						} else {
+							//deal with failing to make friends
+						}
+						break;
+				}    
+				super.handleMessage(msg);
+			}
+			
+		};
+		
 		rlCtrl.setOnTouchListener(this);
 		mZoomControl = new DynamicZoomControl();
 		//mZoomListener = new LongPressZoomListener(getApplicationContext());
@@ -150,7 +198,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		mBrow.setOnTouchListener(this);
         //mBrow.setOnTouchListener(mZoomListener);
 		
-		mLayoutOperate.setVisibility(LinearLayout.INVISIBLE);
+		mLayoutTop.setVisibility(LinearLayout.INVISIBLE);
 		llVoteInfo.setVisibility(LinearLayout.INVISIBLE);
 		
 		// Look up the AdView as a resource and load a request.
@@ -161,8 +209,8 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		//mBrow.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
 		Intent intent = getIntent();
 		mUsrs = EntranceActivity.getmUsrs();
-		curUsrId = intent.getIntExtra("id", 0);
-		zrAsyncShowPic(curUsrId, 0);
+		mId = intent.getIntExtra("id", 0);
+		zrAsyncShowPic(mId, 0);
 		
 		tvNums.setText("0/" + mUsrs.size());
 		
@@ -171,7 +219,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
             @Override
             public void onClick(View v) {
                     // TODO Auto-generated method stub
-            	WeibouserInfo wi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
+            	WeibouserInfo wi = EntranceActivity.getPicFromId(mId, mUsrs);
             	if (wi != null) {
             		String sCacheFile = 
             			AsyncSaver.getSdcardDir() + EntranceActivity.PATH_CACHE 
@@ -211,7 +259,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//get current weibo user's information
-            	WeibouserInfo wi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
+            	WeibouserInfo wi = EntranceActivity.getPicFromId(mId, mUsrs);
             	
                 Intent intent = new Intent();
                 
@@ -219,6 +267,28 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 				
 				intent.setClass(PicbrowActivity.this, WeiboShowActivity.class);
 				startActivity(intent);
+			}
+			
+		});
+		
+		mBtnWeiboFriend.setOnClickListener(new OnClickListener () {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Sina sina = WeiboShowActivity.getSina();
+				if (sina != null && sina.isLoggedIn()) {
+					new Thread(
+						new ThreadSinaDealer(
+							sina,
+							ThreadSinaDealer.CREATE_FRIENDSHIP,
+							new String[] {"" + EntranceActivity.getPicFromId(mId, mUsrs).uid},
+							mHandler
+						)
+					).start();
+				} else {
+					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, PicbrowActivity.this);
+				}
 			}
 			
 		});
@@ -301,7 +371,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 						Toast.LENGTH_SHORT
 					).show();
 				} else {
-					WeibouserInfo wi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
+					WeibouserInfo wi = EntranceActivity.getPicFromId(mId, mUsrs);
 					Calendar now = Calendar.getInstance();
 					now.setTimeZone(TimeZone.getTimeZone(EntranceActivity.TIMEZONE_SERVER));
 					
@@ -318,7 +388,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 						wi.mLastVote = 1;
 						zrRenewCurFileInfo();
 						AsyncVoter asyncVoter = new AsyncVoter();
-						asyncVoter.execute("weibouserid", curUsrId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "1");
+						asyncVoter.execute("weibouserid", mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "1");
 					} else {
 						Toast.makeText(
 							PicbrowActivity.this, 
@@ -343,7 +413,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 						Toast.LENGTH_SHORT
 					).show();
 				} else {
-					WeibouserInfo wi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
+					WeibouserInfo wi = EntranceActivity.getPicFromId(mId, mUsrs);
 					Date now = Calendar.getInstance(TimeZone.getTimeZone(EntranceActivity.TIMEZONE_SERVER)).getTime();
 					
 					if ((wi.mLastVoteTime != null
@@ -359,7 +429,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 						wi.mLastVote = -1;
 						zrRenewCurFileInfo();
 						AsyncVoter asyncVoter = new AsyncVoter();
-						asyncVoter.execute("weibouserid", curUsrId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "-1");
+						asyncVoter.execute("weibouserid", mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "-1");
 					} else {
 						Toast.makeText(
 							PicbrowActivity.this, 
@@ -395,7 +465,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 					} else couldSave = true;
 					if (couldSave) {
 						//OK, now we could actually save the file, finally.
-						String fn = getSaveFileName(EntranceActivity.getPicFromId(curUsrId, mUsrs).uid + ".xxx");
+						String fn = getSaveFileName(EntranceActivity.getPicFromId(mId, mUsrs).uid + ".xxx");
 						mSaveFile = new File(file, fn);
 						if (mSaveFile.exists()) {
 							//if there is already a file exists with same file name
@@ -465,28 +535,6 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 				btnPlay.setVisibility(ImageButton.GONE);
 				
 				mTimer  = new Timer();
-				
-				mHandler = new Handler() {
-
-					public void handleMessage(Message msg) {
-						switch (msg.what) {
-							case 1:
-								if (mUsrs.size() == 0) {
-									Toast.makeText(PicbrowActivity.this, getString(R.string.tips_nopictures), Toast.LENGTH_SHORT).show();
-								} else if (btnPause.getVisibility() == ImageButton.VISIBLE && !PicbrowActivity.mIsLoading) {
-			                		Toast.makeText(PicbrowActivity.this, getString(R.string.tips_playing), Toast.LENGTH_SHORT).show();
-			                		if (EntranceActivity.getUsrIndexFromId(curUsrId, mUsrs) < mUsrs.size() - 1) {
-			                			zrAsyncShowPic(curUsrId, 2);
-			                		} else {
-			                			zrAsyncShowPic(mUsrs.get(0).id, 0);
-			                		}
-			                	}
-								break;
-						}    
-						super.handleMessage(msg);
-					}
-					
-				};
 				
 				mTimer.schedule(new TimerTask(){
 
@@ -631,20 +679,20 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		switch (item.getItemId()) {
 		case Menu.FIRST + 1:
 			if (getString(R.string.label_zoom).equals(item.getTitle())) {
-				if (mLayoutOperate.getVisibility() == LinearLayout.VISIBLE) {
+				if (mLayoutTop.getVisibility() == LinearLayout.VISIBLE) {
 					fadeoutAnim.setDuration(300);
-					mLayoutOperate.startAnimation(fadeoutAnim);
-					mLayoutOperate.setVisibility(LinearLayout.INVISIBLE);
+					mLayoutTop.startAnimation(fadeoutAnim);
+					mLayoutTop.setVisibility(LinearLayout.INVISIBLE);
 				}
 				item.setTitle(getString(R.string.label_browse));
 				mBrow.setOnTouchListener(mZoomListener);
 				rlCtrl.setOnTouchListener(mZoomListener);
 				mIsDooming = true;
 			} else {
-				if (mLayoutOperate.getVisibility() == LinearLayout.INVISIBLE) {
-					mLayoutOperate.setVisibility(LinearLayout.VISIBLE);
+				if (mLayoutTop.getVisibility() == LinearLayout.INVISIBLE) {
+					mLayoutTop.setVisibility(LinearLayout.VISIBLE);
 					fadeinAnim.setDuration(500);
-					mLayoutOperate.startAnimation(fadeinAnim);
+					mLayoutTop.startAnimation(fadeinAnim);
 				}
 				item.setTitle(getString(R.string.label_zoom));
 				mBrow.setOnTouchListener(this);
@@ -657,7 +705,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 			resetZoomState();
 			break;
 		case Menu.FIRST + 3:
-			zrAsyncShowPic(curUsrId, 0);
+			zrAsyncShowPic(mId, 0);
 			break;
 		case Menu.FIRST + 4:
 			Intent intent = new Intent();
@@ -719,11 +767,11 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	 * set current file information on tvFileInfo
 	 */
 	public void zrRenewCurFileInfo() {
-		WeibouserInfo wi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
+		WeibouserInfo wi = EntranceActivity.getPicFromId(mId, mUsrs);
 		if (wi == null) return;
-		//tvNums.setText((LetuseeActivity.getPicIndexFromId(curUsrId, mUsrs) + 1) + "/" + mUsrs.size());
+		//tvNums.setText((LetuseeActivity.getPicIndexFromId(mId, mUsrs) + 1) + "/" + mUsrs.size());
 		tvNums.setText(
-			(EntranceActivity.getUsrIndexFromId(curUsrId, mUsrs)
+			(EntranceActivity.getUsrIndexFromId(mId, mUsrs)
 			+ EntranceActivity.getLimit() * (EntranceActivity.getCurPage() -1)
 			+ 1)
 			+ "/"
@@ -778,7 +826,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 			mTimer.cancel();
 		}
 		Intent intent = new Intent();
-		intent.putExtra("id", curUsrId);
+		intent.putExtra("id", mId);
 		if (this.getParent() == null) {
 			this.setResult(Activity.RESULT_OK, intent);
 		} else {
@@ -837,7 +885,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 			switch (direction) {
 			default:
 			case 0:
-				curUsrId = id;
+				mId = id;
 				break;
 			case 1:
 				if (idx == 0) {
@@ -846,9 +894,9 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 						mUsrs = EntranceActivity.getPics(args);
 						EntranceActivity.setmUsrs(mUsrs);
 					}
-					curUsrId = mUsrs.get(mUsrs.size() - 1).id;
+					mId = mUsrs.get(mUsrs.size() - 1).id;
 				}
-				else curUsrId = mUsrs.get(idx - 1).id;
+				else mId = mUsrs.get(idx - 1).id;
 				break;
 			case 2:
 				if (idx == mUsrs.size() -1) {
@@ -857,18 +905,18 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 						mUsrs = EntranceActivity.getPics(args);
 						EntranceActivity.setmUsrs(mUsrs);
 					}
-					curUsrId = mUsrs.get(0).id;
+					mId = mUsrs.get(0).id;
 				}
-				else curUsrId = mUsrs.get(idx + 1).id;
+				else mId = mUsrs.get(idx + 1).id;
 				break;
 			}
 			
-			WeibouserInfo wi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
+			WeibouserInfo wi = EntranceActivity.getPicFromId(mId, mUsrs);
 			String sPath, sFname;
 			sPath = AsyncSaver.getSdcardDir() + EntranceActivity.PATH_CACHE;
 			sFname = wi.uid + ".jg";
 			if (AsyncSaver.probeFile(sPath, sFname) == -2) {
-				vote("weibouserid", curUsrId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "2");
+				vote("weibouserid", mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "2");
 				Bitmap bmp = BitmapFactory.decodeFile(sPath + "/" + sFname);
 		    	return bmp == null ? bdPicFailed : bmp;
 			} else {
@@ -985,18 +1033,18 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 				if (!PicbrowActivity.mIsLoading) {
 					if(e1.getX() > e2.getX()) {//move to left
 						/*
-						if (LetuseeActivity.getPicIndexFromId(curUsrId, mUsrs) == mUsrs.size() - 1) {
+						if (LetuseeActivity.getPicIndexFromId(mId, mUsrs) == mUsrs.size() - 1) {
 							Toast.makeText(PicbrowActivity.this, getString(R.string.tips_lastone), Toast.LENGTH_SHORT).show();
 						}
 						*/
-						zrAsyncShowPic(curUsrId, 2);
+						zrAsyncShowPic(mId, 2);
 					} else if (e1.getX() < e2.getX()) {
 						/*
-						if (LetuseeActivity.getPicIndexFromId(curUsrId, mUsrs) == 0) {
+						if (LetuseeActivity.getPicIndexFromId(mId, mUsrs) == 0) {
 							Toast.makeText(PicbrowActivity.this, getString(R.string.tips_firstone), Toast.LENGTH_SHORT).show();
 						}
 						*/
-						zrAsyncShowPic(curUsrId, 1);
+						zrAsyncShowPic(mId, 1);
 					}
 				}
 			}
@@ -1036,14 +1084,14 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		public boolean onSingleTapConfirmed(MotionEvent e) {
 			// TODO Auto-generated method stub
 			//return super.onSingleTapConfirmed(e);
-			if (mLayoutOperate.getVisibility() == LinearLayout.VISIBLE) {
+			if (mLayoutTop.getVisibility() == LinearLayout.VISIBLE) {
 				fadeoutAnim.setDuration(300);
-				mLayoutOperate.startAnimation(fadeoutAnim);
-				mLayoutOperate.setVisibility(LinearLayout.INVISIBLE);
+				mLayoutTop.startAnimation(fadeoutAnim);
+				mLayoutTop.setVisibility(LinearLayout.INVISIBLE);
 			} else {
-				mLayoutOperate.setVisibility(LinearLayout.VISIBLE);
+				mLayoutTop.setVisibility(LinearLayout.VISIBLE);
 				fadeinAnim.setDuration(500);
-				mLayoutOperate.startAnimation(fadeinAnim);
+				mLayoutTop.startAnimation(fadeinAnim);
 			}
 			return true;
 		}
@@ -1059,7 +1107,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	}
 	
 	private boolean vote(String... params) {
-		WeibouserInfo pi = EntranceActivity.getPicFromId(curUsrId, mUsrs);
+		WeibouserInfo pi = EntranceActivity.getPicFromId(mId, mUsrs);
 				
 		String msg = EntranceActivity.getPhpContentByGet(
 			"vote.php",
