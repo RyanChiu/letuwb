@@ -38,7 +38,7 @@ public class AboutActivity extends Activity {
 		Button btnOfficialSite = (Button) findViewById(R.id.btnOfficialSite);
 		btnOfficialSite.setText(
 			Html.fromHtml(
-				"<a href='http://az88.info/letmesee/landing'>http://az88.info/letmesee/landing</a>"
+				"<a href='http://az88.info/letmewb/landing'>http://az88.info/letmewb/landing</a>"
 			)
 		);
 		btnOfficialSite.setOnClickListener(new OnClickListener() {
