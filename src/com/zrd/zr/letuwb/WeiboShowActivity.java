@@ -285,7 +285,7 @@ public class WeiboShowActivity extends Activity {
 						)
 					).start();
 				} else {
-					RegLoginActivity.shallWeLogin(-1, WeiboShowActivity.this);
+					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
 				}
 			}
 			
