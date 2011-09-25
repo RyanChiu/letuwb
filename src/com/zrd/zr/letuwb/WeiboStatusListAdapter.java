@@ -10,6 +10,7 @@ import java.util.Map;
 import weibo4android.Status;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 	private Context mContext;
 	private LayoutInflater mInflater;
 	private List<Map<String, Object>> mList = null;
+	private int mSelectedItem = -1;
 	
 	public WeiboStatusListAdapter (Context context, List<Map<String, Object>> list) {
 		this.mContext = context;
@@ -31,6 +33,10 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 		this.mList = list;
 	}
 
+	public void setSelectedItem(int selected) {
+		this.mSelectedItem = selected;
+	}
+	
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
@@ -118,6 +124,15 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			} catch (MalformedURLException e) {
 				holder.mImage.setImageResource(R.drawable.empty);
 			}
+		}
+		
+		/*
+		 * dealing with selecting item
+		 */
+		if (position == mSelectedItem) {
+			convertView.setBackgroundColor(0x66ffc300);
+		} else {
+			convertView.setBackgroundColor(Color.TRANSPARENT);
 		}
 		
 		return convertView;

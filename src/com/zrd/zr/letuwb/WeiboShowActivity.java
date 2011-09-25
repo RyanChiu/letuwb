@@ -46,11 +46,13 @@ public class WeiboShowActivity extends Activity {
 	private LinearLayout mLayoutStatusCtrls;
 	private Button mBtnWeibos;
 	private Button mBtnFriend;
+	private Button mBtnFavorite;
 	
 	private String mUid = null;
 	private static Sina mSina = null;
 	private User mLastUser = null;
 	private List<Status> mLastUserTimeline = null;
+	private int mIndexOfSelectedStatus = -1;
 	
 	private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
 	private AlphaAnimation mAnimFadeout = new AlphaAnimation(1.0f, 0.1f);
@@ -83,6 +85,8 @@ public class WeiboShowActivity extends Activity {
 				turnDealing(false);
 				return;
 			}
+			User user;
+			Status status;
 			switch (msg.what) {
 			case ThreadSinaDealer.SHOW_USER:
 				mLastUser = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
@@ -168,7 +172,7 @@ public class WeiboShowActivity extends Activity {
 				}
 				break;
 			case ThreadSinaDealer.CREATE_FRIENDSHIP:
-				User user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+				user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 				if (user != null) {
 					if (!user.equals(mSina.getLoggedInUser())) {
 						Toast.makeText(
@@ -185,6 +189,18 @@ public class WeiboShowActivity extends Activity {
 					}
 				} else {
 					//deal with failing to make friends
+				}
+				break;
+			case ThreadSinaDealer.CREATE_FAVORITE:
+				status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+				if (status != null) {
+					Toast.makeText(
+						WeiboShowActivity.this,
+						"Favorite made.",
+						Toast.LENGTH_LONG
+					).show();
+				} else {
+					//deal with failing to make favorite
 				}
 				break;
 			}
@@ -210,6 +226,7 @@ public class WeiboShowActivity extends Activity {
 		mLayoutStatusCtrls = (LinearLayout)findViewById(R.id.llStatusCtrls);
 		mBtnWeibos = (Button)findViewById(R.id.btnWeibos);
 		mBtnFriend = (Button)findViewById(R.id.btnFriend);
+		mBtnFavorite = (Button)findViewById(R.id.btnFavorite);
 		
 		mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 		/*
@@ -246,6 +263,12 @@ public class WeiboShowActivity extends Activity {
 					mLayoutStatusCtrls.startAnimation(mAnimFadeout);
 					mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 				}
+				
+				int position = arg2;
+				WeiboStatusListAdapter adapter  = (WeiboStatusListAdapter)mListStatus.getAdapter();
+				adapter.setSelectedItem(position);
+				adapter.notifyDataSetInvalidated();
+				mIndexOfSelectedStatus = position;
 			}
 			
 		});
@@ -274,7 +297,6 @@ public class WeiboShowActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 				if (mSina != null && mSina.isLoggedIn()) {
 					new Thread(
 						new ThreadSinaDealer(
@@ -284,6 +306,54 @@ public class WeiboShowActivity extends Activity {
 							mHandler
 						)
 					).start();
+					mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
+					turnDealing(true);
+				} else {
+					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
+				}
+			}
+			
+		});
+		
+		mBtnFavorite.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
+				if (mSina != null && mSina.isLoggedIn()) {
+					if (mIndexOfSelectedStatus != -1) {
+						/*
+						 * make it favorite
+						 */
+						if (mLastUserTimeline == null) {
+							new Thread(
+								new ThreadSinaDealer(
+									mSina,
+									ThreadSinaDealer.CREATE_FAVORITE,
+									new String[] {"" + mLastUser.getStatus().getId()},
+									mHandler
+								)
+							).start();
+						} else {
+							new Thread(
+								new ThreadSinaDealer(
+									mSina,
+									ThreadSinaDealer.CREATE_FAVORITE,
+									new String[] {"" + mLastUserTimeline.get(mIndexOfSelectedStatus).getId()},
+									mHandler
+								)
+							).start();
+						}
+						mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
+						turnDealing(true);
+					} else {
+						Toast.makeText(
+							WeiboShowActivity.this,
+							"No item selected.",
+							Toast.LENGTH_LONG
+						).show();
+					}
 				} else {
 					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
 				}
@@ -336,10 +406,12 @@ public class WeiboShowActivity extends Activity {
 		if (on == true) {
 			mBtnWeibos.setEnabled(false);
 			mBtnFriend.setEnabled(false);
+			mBtnFavorite.setEnabled(false);
 			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
 		} else {
 			mBtnWeibos.setEnabled(true);
 			mBtnFriend.setEnabled(true);
+			mBtnFavorite.setEnabled(true);
 			mProgressStatusLoading.setVisibility(ProgressBar.GONE);
 		}
 	}

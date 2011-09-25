@@ -32,8 +32,9 @@
     </RelativeLayout>
     <RelativeLayout android:id="@+id/relativeLayout3" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <LinearLayout android:id="@+id/llStatusCtrls" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:background="#56000000">
-            <Button android:layout_height="wrap_content" android:id="@+id/btnWeibos" android:layout_width="wrap_content" android:text="Weibos"></Button>
-            <Button android:layout_height="wrap_content" android:id="@+id/btnFriend" android:layout_width="wrap_content" android:text="Friend"></Button>
+            <Button android:layout_height="wrap_content" android:id="@+id/btnWeibos" android:layout_width="wrap_content" android:text="@string/label_weibos" android:background="@drawable/btn_custom" android:textColor="#00ff00" android:textSize="11sp"></Button>
+            <Button android:layout_height="wrap_content" android:id="@+id/btnFriend" android:layout_width="wrap_content" android:text="@string/label_weibo_friendship" android:background="@drawable/btn_custom" android:textColor="#00ff00" android:textSize="11sp"></Button>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnFavorite" android:background="@drawable/btn_custom" android:text="@string/label_weibo_favorite" android:textColor="#00ff00" android:textSize="11sp"></Button>
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>

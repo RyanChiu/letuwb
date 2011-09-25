@@ -15,6 +15,7 @@ public class ThreadSinaDealer implements Runnable {
 	public static final int SHOW_USER = 0x7320001;
 	public static final int GET_USER_TIMELINE = 0x7320002;
 	public static final int CREATE_FRIENDSHIP = 0x7320003;
+	public static final int CREATE_FAVORITE = 0x7320004;
 	public static final String KEY_DATA = "data";
 	public static final String KEY_SINA = "sina";
 	public static final String KEY_WEIBO_ERR = "err";
@@ -45,13 +46,15 @@ public class ThreadSinaDealer implements Runnable {
 		}
 		if (mAction != SHOW_USER
 			&& mAction != GET_USER_TIMELINE
-			&& mAction != CREATE_FRIENDSHIP)
+			&& mAction != CREATE_FRIENDSHIP
+			&& mAction != CREATE_FAVORITE)
 			return;
 		if (mHandler == null) return;
 		
 		Message msg = new Message();
 		msg.what = mAction;
 		User user;
+		Status status;
 		ArrayList<Status> statuses = new ArrayList<Status>();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(KEY_SINA, mSina);
@@ -94,6 +97,19 @@ public class ThreadSinaDealer implements Runnable {
 				} else {
 					bundle.putSerializable(KEY_DATA, mSina.getWeibo().createFriendship(mParams[0]));
 				}
+			} catch (WeiboException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				bundle.putSerializable(KEY_WEIBO_ERR, e);
+			}
+			msg.setData(bundle);
+			mHandler.sendMessage(msg);
+			break;
+		case CREATE_FAVORITE:
+			if (mParams != null && mParams.length != 1 && mParams[0] != null) return;
+			try {
+				status = mSina.getWeibo().createFavorite(Long.parseLong(mParams[0]));
+				bundle.putSerializable(KEY_DATA, status);
 			} catch (WeiboException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

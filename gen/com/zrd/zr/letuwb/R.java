@@ -85,6 +85,7 @@ containing a value of this type.
         public static final int adsMain=0x7f070043;
         public static final int btnContact=0x7f07000c;
         public static final int btnExchange=0x7f070030;
+        public static final int btnFavorite=0x7f070071;
         public static final int btnFriend=0x7f070070;
         public static final int btnGuest=0x7f070060;
         public static final int btnHottest=0x7f07004b;
@@ -267,6 +268,9 @@ containing a value of this type.
         public static final int label_upload=0x7f050053;
         public static final int label_upup=0x7f050047;
         public static final int label_username=0x7f050002;
+        public static final int label_weibo_favorite=0x7f050069;
+        public static final int label_weibo_friendship=0x7f050068;
+        public static final int label_weibos=0x7f050067;
         public static final int label_yes=0x7f05000d;
         public static final int label_zoom=0x7f050034;
         public static final int msg_loading=0x7f05000a;

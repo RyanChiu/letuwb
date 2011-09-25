@@ -104,4 +104,7 @@
     <string name="about_content">感谢您使用我们的应用！非常高兴能够收到您的意见和建议，帮助我们将应用做得更好！</string>
     <string name="about_contact">请和我们联系：</string>
     <string name="title_loginfirst">您得先登录才能完成这项操作。</string>
+    <string name="label_weibos">微博</string>
+    <string name="label_weibo_friendship">关注</string>
+     <string name="label_weibo_favorite">收藏</string>
 </resources>
