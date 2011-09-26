@@ -35,6 +35,7 @@
             <Button android:layout_height="wrap_content" android:id="@+id/btnWeibos" android:layout_width="wrap_content" android:text="@string/label_weibos" android:background="@drawable/btn_custom" android:textColor="#00ff00" android:textSize="11sp"></Button>
             <Button android:layout_height="wrap_content" android:id="@+id/btnFriend" android:layout_width="wrap_content" android:text="@string/label_weibo_friendship" android:background="@drawable/btn_custom" android:textColor="#00ff00" android:textSize="11sp"></Button>
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnFavorite" android:background="@drawable/btn_custom" android:text="@string/label_weibo_favorite" android:textColor="#00ff00" android:textSize="11sp"></Button>
+            <Button android:layout_width="wrap_content" android:id="@+id/btnRepost" android:layout_height="wrap_content" android:background="@drawable/btn_custom" android:textColor="#00ff00" android:textSize="11sp" android:text="@string/label_weibo_repost"></Button>
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>

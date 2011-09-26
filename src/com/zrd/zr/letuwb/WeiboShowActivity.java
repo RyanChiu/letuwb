@@ -15,6 +15,8 @@ import com.zrd.zr.weiboes.Sina;
 import com.zrd.zr.weiboes.ThreadSinaDealer;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -47,6 +50,9 @@ public class WeiboShowActivity extends Activity {
 	private Button mBtnWeibos;
 	private Button mBtnFriend;
 	private Button mBtnFavorite;
+	private Button mBtnRepost;
+	
+	private EditText mEditRepost;
 	
 	private String mUid = null;
 	private static Sina mSina = null;
@@ -203,6 +209,18 @@ public class WeiboShowActivity extends Activity {
 					//deal with failing to make favorite
 				}
 				break;
+			case ThreadSinaDealer.REPOST:
+				status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+				if (status != null) {
+					Toast.makeText(
+						WeiboShowActivity.this,
+						"Reposted.",
+						Toast.LENGTH_LONG
+					).show();
+				} else {
+					//deal with failing to make favorite
+				}
+				break;
 			}
 			
 			turnDealing(false);
@@ -227,6 +245,8 @@ public class WeiboShowActivity extends Activity {
 		mBtnWeibos = (Button)findViewById(R.id.btnWeibos);
 		mBtnFriend = (Button)findViewById(R.id.btnFriend);
 		mBtnFavorite = (Button)findViewById(R.id.btnFavorite);
+		mBtnRepost = (Button)findViewById(R.id.btnRepost);
+		mEditRepost  = new EditText(this);
 		
 		mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 		/*
@@ -320,7 +340,6 @@ public class WeiboShowActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 				if (mSina != null && mSina.isLoggedIn()) {
 					if (mIndexOfSelectedStatus != -1) {
 						/*
@@ -354,6 +373,67 @@ public class WeiboShowActivity extends Activity {
 							Toast.LENGTH_LONG
 						).show();
 					}
+				} else {
+					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
+				}
+			}
+			
+		});
+		
+		mBtnRepost.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (mSina != null && mSina.isLoggedIn()) {
+					if (mIndexOfSelectedStatus == -1) {
+						Toast.makeText(
+							WeiboShowActivity.this,
+							"No item selected.",
+							Toast.LENGTH_LONG
+						).show();
+						return;
+					}
+					
+					AlertDialog dlg = new AlertDialog.Builder(WeiboShowActivity.this)
+						.setTitle("You could put some words here or just leave it blank.")
+						.setIcon(android.R.drawable.ic_dialog_info)
+						.setView(mEditRepost)
+						.setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
+	
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								// TODO Auto-generated method stub
+								/*
+								 * This is the place it handles reposting
+								 */
+								Toast.makeText(
+									WeiboShowActivity.this,
+									mEditRepost.getText().toString(),
+									Toast.LENGTH_LONG
+								).show();
+								long sid;
+								if (mLastUserTimeline == null) {
+									sid = mLastUser.getStatus().getId();
+								} else {
+									sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getId();
+								}
+								new Thread(
+									new ThreadSinaDealer(
+										mSina,
+										ThreadSinaDealer.REPOST,
+										new String[] {"" + sid, mEditRepost.getText().toString()},
+										mHandler
+									)
+								).start();
+								mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
+								turnDealing(true);
+							}
+							
+						})
+						.setNegativeButton(R.string.label_cancel, null)
+						.create();
+					dlg.show();
 				} else {
 					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
 				}

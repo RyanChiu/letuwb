@@ -100,6 +100,7 @@ containing a value of this type.
         public static final int btnPre=0x7f070045;
         public static final int btnRandom=0x7f07004c;
         public static final int btnReg=0x7f07005c;
+        public static final int btnRepost=0x7f070072;
         public static final int btnSave=0x7f070014;
         public static final int btnShare=0x7f07001e;
         public static final int btnUnhottest=0x7f07004d;
@@ -270,6 +271,7 @@ containing a value of this type.
         public static final int label_username=0x7f050002;
         public static final int label_weibo_favorite=0x7f050069;
         public static final int label_weibo_friendship=0x7f050068;
+        public static final int label_weibo_repost=0x7f05006a;
         public static final int label_weibos=0x7f050067;
         public static final int label_yes=0x7f05000d;
         public static final int label_zoom=0x7f050034;

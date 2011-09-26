@@ -107,4 +107,5 @@
     <string name="label_weibos">Weibos</string>
     <string name="label_weibo_friendship">Friend</string>
      <string name="label_weibo_favorite">Favorite</string>
+     <string name="label_weibo_repost">Repost</string>
 </resources>
