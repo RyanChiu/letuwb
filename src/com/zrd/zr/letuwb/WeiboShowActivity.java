@@ -395,7 +395,7 @@ public class WeiboShowActivity extends Activity {
 						return;
 					}
 					
-					AlertDialog dlg = new AlertDialog.Builder(WeiboShowActivity.this)
+					new AlertDialog.Builder(WeiboShowActivity.this)
 						.setTitle("You could put some words here or just leave it blank.")
 						.setIcon(android.R.drawable.ic_dialog_info)
 						.setView(mEditRepost)
@@ -407,11 +407,6 @@ public class WeiboShowActivity extends Activity {
 								/*
 								 * This is the place it handles reposting
 								 */
-								Toast.makeText(
-									WeiboShowActivity.this,
-									mEditRepost.getText().toString(),
-									Toast.LENGTH_LONG
-								).show();
 								long sid;
 								if (mLastUserTimeline == null) {
 									sid = mLastUser.getStatus().getId();
@@ -432,8 +427,8 @@ public class WeiboShowActivity extends Activity {
 							
 						})
 						.setNegativeButton(R.string.label_cancel, null)
-						.create();
-					dlg.show();
+						.create()
+						.show();
 				} else {
 					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
 				}
