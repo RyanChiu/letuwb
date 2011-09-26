@@ -26,9 +26,13 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
@@ -44,6 +48,7 @@ public class RegLoginActivity extends Activity {
 	Button btnGuest;
 	Button btnReg;
 	Button btnLetMeReg;
+	ListView mListAccounts;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,29 @@ public class RegLoginActivity extends Activity {
 		btnReg.setVisibility(Button.GONE);
 		btnLetMeReg = (Button) findViewById(R.id.btnLetmereg);
 		btnLetMeReg.setText(Html.fromHtml("<u>" + getString(R.string.label_letmereg) + "</u>"));
+		mListAccounts = (ListView)findViewById(R.id.lvAccounts);
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+			this,
+			android.R.layout.simple_list_item_1,
+			new String[] {"0", "1"}
+		);
+		mListAccounts.setAdapter(adapter);
+		mListAccounts.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				int position = arg2;
+				Toast.makeText(
+					RegLoginActivity.this,
+					"" + position,
+					Toast.LENGTH_LONG
+				).show();
+			}
+			
+		});
 		
 		btnLetMeReg.setOnClickListener(new OnClickListener() {
 
@@ -148,10 +176,12 @@ public class RegLoginActivity extends Activity {
 					e.printStackTrace();
 					Toast.makeText(
 						RegLoginActivity.this, 
-						"Oooops, login failed...", 
+						"Oooops, login failed...\nPlease check your input or the Internet connecton...", 
 						Toast.LENGTH_LONG
 					).show();
-					WeiboShowActivity.getSina().setLoggedInUser(null);
+					if (WeiboShowActivity.getSina() != null) {
+						WeiboShowActivity.getSina().setLoggedInUser(null);
+					}
 				}
 				
 				/*
