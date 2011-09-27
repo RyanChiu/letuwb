@@ -31,15 +31,17 @@
             <LinearLayout android:orientation="vertical" android:id="@+id/linearLayoutInfo" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="52dp" android:layout_marginLeft="3dp">
                 <TextView android:id="@+id/textViewFileInfo" android:layout_height="wrap_content" android:layout_gravity="center" android:gravity="center" android:layout_width="fill_parent"></TextView>
             </LinearLayout>
-            <LinearLayout android:id="@+id/linearLayout1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_alignParentBottom="true">
-                <ImageButton android:src="@drawable/weibo_friend48x48" android:layout_marginBottom="16dp" android:layout_marginLeft="2dp" android:layout_height="42dp" android:layout_width="42dp" android:scaleType="fitXY" android:background="#00000000" android:id="@+id/btnMakeFriendsFromBrow"></ImageButton>
-                <ImageButton android:background="#00000000" android:layout_marginBottom="16dp" android:scaleType="fitXY" android:id="@+id/btnWeiboShow" android:src="@drawable/weibo48x48" android:layout_height="42dp" android:layout_width="42dp" android:layout_marginLeft="2dp"></ImageButton>
-                <ImageButton android:background="#00000000" android:id="@+id/btnShare" android:scaleType="fitXY" android:layout_marginBottom="16dp" android:layout_width="44dp" android:layout_height="44dp" android:src="@drawable/share"></ImageButton>
-                <ImageButton android:id="@+id/btnZoomin" android:background="#00000000" android:src="@drawable/zoomin" android:layout_width="42dp" android:scaleType="fitXY" android:layout_marginBottom="5dp" android:layout_height="42dp" android:visibility="gone"></ImageButton>
-                <ImageButton android:id="@+id/btnZoomout" android:background="#00000000" android:src="@drawable/zoomout" android:layout_width="42dp" android:scaleType="fitXY" android:layout_marginBottom="5dp" android:layout_height="42dp" android:visibility="gone"></ImageButton>
-            </LinearLayout>
         </RelativeLayout>
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayoutBottom" android:orientation="vertical" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
+            <RelativeLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/relativeLayout1">
+                <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="wrap_content" android:layout_centerInParent="true">
+                    <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/btnMakeFriendsFromBrow" android:background="@drawable/btn_custom" android:textColor="#00ff00" android:textSize="11sp" android:text="@string/label_weibo_friendship"></Button>
+                    <Button android:id="@+id/btnShare" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:textColor="#00ff00" android:textSize="11sp" android:text="@string/label_share"></Button>
+                    <Button android:id="@+id/btnWeiboShow" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:text="@string/label_weibos" android:textColor="#00ff00" android:textSize="11sp"></Button>
+                    <ImageButton android:layout_height="42dp" android:id="@+id/btnZoomin" android:layout_width="42dp" android:visibility="gone" android:scaleType="fitXY" android:background="#00000000" android:src="@drawable/zoomin"></ImageButton>
+                    <ImageButton android:layout_height="42dp" android:id="@+id/btnZoomout" android:layout_width="42dp" android:visibility="gone" android:scaleType="fitXY" android:background="#00000000" android:src="@drawable/zoomout"></ImageButton>
+                </LinearLayout>
+            </RelativeLayout>
             <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/relativeLayout2">
                 <LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout2" android:layout_alignParentLeft="true" android:orientation="vertical" android:layout_height="wrap_content">
                     <ImageButton android:layout_marginLeft="2dp" android:id="@+id/imageButton4" android:layout_marginBottom="2dp" android:background="#00000000" android:src="@drawable/upup" android:layout_marginTop="3dp" android:scaleType="fitXY" android:layout_height="50dp" android:layout_width="50dp"></ImageButton>

@@ -108,4 +108,5 @@
     <string name="label_weibo_friendship">Friend</string>
      <string name="label_weibo_favorite">Favorite</string>
      <string name="label_weibo_repost">Repost</string>
+     <string name="label_share">Share</string>
 </resources>
