@@ -482,11 +482,13 @@ public class WeiboShowActivity extends Activity {
 			mBtnWeibos.setEnabled(false);
 			mBtnFriend.setEnabled(false);
 			mBtnFavorite.setEnabled(false);
+			mBtnRepost.setEnabled(false);
 			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
 		} else {
 			mBtnWeibos.setEnabled(true);
 			mBtnFriend.setEnabled(true);
 			mBtnFavorite.setEnabled(true);
+			mBtnRepost.setEnabled(true);
 			mProgressStatusLoading.setVisibility(ProgressBar.GONE);
 		}
 	}
