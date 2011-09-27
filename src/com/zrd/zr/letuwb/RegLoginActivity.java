@@ -1,6 +1,7 @@
 package com.zrd.zr.letuwb;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Html;
@@ -38,17 +38,19 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 public class RegLoginActivity extends Activity {
-	TableLayout mTableBackground;
-	EditText mEditUsername;
-	EditText mEditPassword;
-	EditText mEditRepeat;
-	TableRow mRowRepeat;
-	CheckBox mCheckRemember;
-	Button btnLogin;
-	Button btnGuest;
-	Button btnReg;
-	Button btnLetMeReg;
-	ListView mListAccounts;
+	private TableLayout mTableBackground;
+	private EditText mEditUsername;
+	private EditText mEditPassword;
+	private EditText mEditRepeat;
+	
+	private TableRow mRowRepeat;
+	private TableRow mRowLoginReg;
+	private CheckBox mCheckRemember;
+	private Button mBtnLogin;
+	private Button btnGuest;
+	private Button btnReg;
+	private Button btnLetMeReg;
+	private ListView mListAccounts;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +63,9 @@ public class RegLoginActivity extends Activity {
 		mEditPassword = (EditText) findViewById(R.id.etPassword);
 		mEditRepeat = (EditText) findViewById(R.id.etRepeat);
 		mRowRepeat = (TableRow) findViewById(R.id.trRepeat);
+		mRowLoginReg = (TableRow) findViewById(R.id.trLoginReg);
 		mCheckRemember = (CheckBox) findViewById(R.id.cbRemember);
-		mEditUsername.setText(EntranceActivity.mPreferences.getString(EntranceActivity.CONFIG_USERNAME, ""));
-		mEditPassword.setText(EntranceActivity.mPreferences.getString(EntranceActivity.CONFIG_PASSWORD, ""));
-		mCheckRemember.setChecked(EntranceActivity.mPreferences.getBoolean(EntranceActivity.CONFIG_REMEMBER, false));
-		btnLogin = (Button) findViewById(R.id.btnLogin);
+		mBtnLogin = (Button) findViewById(R.id.btnLogin);
 		btnGuest = (Button) findViewById(R.id.btnGuest);
 		btnReg = (Button) findViewById(R.id.btnReg);
 		btnReg.setVisibility(Button.GONE);
@@ -73,12 +73,9 @@ public class RegLoginActivity extends Activity {
 		btnLetMeReg.setText(Html.fromHtml("<u>" + getString(R.string.label_letmereg) + "</u>"));
 		mListAccounts = (ListView)findViewById(R.id.lvAccounts);
 		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-			this,
-			android.R.layout.simple_list_item_1,
-			new String[] {"0", "1"}
-		);
-		mListAccounts.setAdapter(adapter);
+		mRowLoginReg.setVisibility(TableRow.GONE);
+		
+		initAccountsList();
 		mListAccounts.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -86,11 +83,22 @@ public class RegLoginActivity extends Activity {
 					long arg3) {
 				// TODO Auto-generated method stub
 				int position = arg2;
-				Toast.makeText(
-					RegLoginActivity.this,
-					"" + position,
-					Toast.LENGTH_LONG
-				).show();
+				switch (position) {
+				case 0://means going to add a account
+					mRowLoginReg.setVisibility(TableRow.VISIBLE);
+					break;
+				default:
+					int idx = position - 1;
+					if (idx < 0) idx = 0;
+					ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
+					if (idx < list.size()) {
+						String[] pairs = list.get(idx);
+						mEditUsername.setText(pairs[0]);
+						mEditPassword.setText(pairs[1]);
+						mBtnLogin.performClick();
+					}
+					break;
+				}
 			}
 			
 		});
@@ -102,12 +110,12 @@ public class RegLoginActivity extends Activity {
 				// TODO Auto-generated method stub
 				if (mRowRepeat.getVisibility() == TableRow.GONE) {
 					mRowRepeat.setVisibility(TableRow.VISIBLE);
-					btnLogin.setVisibility(Button.GONE);
+					mBtnLogin.setVisibility(Button.GONE);
 					btnReg.setVisibility(Button.VISIBLE);
 					btnLetMeReg.setText(Html.fromHtml("<u>" + getString(R.string.label_letmelogon) + "</u>"));
 				} else {
 					mRowRepeat.setVisibility(TableRow.GONE);
-					btnLogin.setVisibility(Button.VISIBLE);
+					mBtnLogin.setVisibility(Button.VISIBLE);
 					btnReg.setVisibility(Button.GONE);
 					btnLetMeReg.setText(Html.fromHtml("<u>" + getString(R.string.label_letmereg) + "</u>"));
 				}
@@ -118,7 +126,7 @@ public class RegLoginActivity extends Activity {
 		/*
 		 * login SINA_weibo with the input account
 		 */
-		btnLogin.setOnClickListener(new OnClickListener() {
+		mBtnLogin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -132,26 +140,11 @@ public class RegLoginActivity extends Activity {
 				/*
 				 * get SINA_weibo's token and token secret for the account
 				 */
-				Weibo weibo;
-				RequestToken requestToken;
-				try {
-					Sina sina = new Sina(true);
-					weibo = sina.getWeibo();
-					requestToken = weibo.getOAuthRequestToken();
-					OAuthConstant.getInstance().setRequestToken(requestToken);
-					String username = mEditUsername.getText().toString();
-					String password = mEditPassword.getText().toString();
-					OAuthVerifier oauthVerifier = weibo.getOAuthVerifier(username, password);
-					String verifier = oauthVerifier.getVerifier();
-					AccessToken accessToken = requestToken.getAccessToken(verifier);
-					OAuthConstant.getInstance().setAccessToken(accessToken);
-					
-					sina.getWeibo().setOAuthAccessToken(
-						accessToken.getToken(),
-						accessToken.getTokenSecret()
-					);
-					User user = sina.getWeibo().showUser("" + accessToken.getUserId());
-					sina.setLoggedInUser(user);
+				Sina sina = login(
+					mEditUsername.getText().toString(), 
+					mEditPassword.getText().toString()
+				);
+				if (sina != null) {
 					WeiboShowActivity.setSina(sina);
 					Toast.makeText(
 						RegLoginActivity.this,
@@ -159,60 +152,25 @@ public class RegLoginActivity extends Activity {
 						Toast.LENGTH_LONG
 					).show();
 					
-					SharedPreferences.Editor editor = EntranceActivity.mPreferences.edit();
 					if (mCheckRemember.isChecked()) {
-						editor.putBoolean(EntranceActivity.CONFIG_REMEMBER, true);
-						editor.putString(EntranceActivity.CONFIG_USERNAME, mEditUsername.getText().toString());
-						editor.putString(EntranceActivity.CONFIG_PASSWORD, mEditPassword.getText().toString());
-						editor.commit();
-					} else {
-						editor.putBoolean(EntranceActivity.CONFIG_REMEMBER, false);
-						editor.putString(EntranceActivity.CONFIG_USERNAME, "");
-						editor.putString(EntranceActivity.CONFIG_PASSWORD, "");
-						editor.commit();
+						EntranceActivity.saveAccount(
+							mEditUsername.getText().toString(),
+							mEditPassword.getText().toString()
+						);
 					}
+					initAccountsList();
 					finish();
-				} catch (WeiboException e) {
-					e.printStackTrace();
+				} else {
 					Toast.makeText(
 						RegLoginActivity.this, 
-						"Oooops, login failed...\nPlease check your input or the Internet connecton...", 
+						"Oooops, login failed...\n"
+						+ "Please check your input or the Internet connecton and try again...", 
 						Toast.LENGTH_LONG
 					).show();
 					if (WeiboShowActivity.getSina() != null) {
 						WeiboShowActivity.getSina().setLoggedInUser(null);
 					}
 				}
-				
-				/*
-				String sBackMsg = login(mEditUsername.getText().toString(), mEditPassword.getText().toString());
-				String[] msgparts = sBackMsg.split("\\.");
-				if (msgparts.length == 2 && msgparts[0].equals("Logged-in")) {
-					Toast.makeText(RegLoginActivity.this, R.string.tips_loggedin, Toast.LENGTH_LONG).show();
-					try {
-						EntranceActivity.setAccountId(Integer.parseInt(msgparts[1]));
-					} catch (NumberFormatException e) {
-						EntranceActivity.setAccountId(-1);
-					}
-					SharedPreferences.Editor editor = EntranceActivity.mPreferences.edit();
-					if (mCheckRemember.isChecked()) {
-						editor.putBoolean(EntranceActivity.CONFIG_REMEMBER, true);
-						editor.putString(EntranceActivity.CONFIG_USERNAME, mEditUsername.getText().toString());
-						editor.putString(EntranceActivity.CONFIG_PASSWORD, mEditPassword.getText().toString());
-						editor.commit();
-					} else {
-						editor.putBoolean(EntranceActivity.CONFIG_REMEMBER, false);
-						editor.putString(EntranceActivity.CONFIG_USERNAME, "");
-						editor.putString(EntranceActivity.CONFIG_PASSWORD, "");
-						editor.commit();
-					}
-					EntranceActivity.setPrivilege(0);
-					finish();
-				} else {
-					Toast.makeText(RegLoginActivity.this, R.string.tips_loginfailed, Toast.LENGTH_LONG).show();
-					EntranceActivity.setPrivilege(1);
-				}
-				*/
 			}
 		});
 		
@@ -269,16 +227,6 @@ public class RegLoginActivity extends Activity {
 							} catch (NumberFormatException e) {
 								EntranceActivity.setAccountId(-1);
 							}
-							SharedPreferences.Editor editor = EntranceActivity.mPreferences.edit();
-							if (mCheckRemember.isChecked()) {
-								editor.putBoolean(EntranceActivity.CONFIG_REMEMBER, true);
-								editor.putString(EntranceActivity.CONFIG_USERNAME, mEditUsername.getText().toString());
-								editor.putString(EntranceActivity.CONFIG_PASSWORD, mEditPassword.getText().toString());
-								editor.commit();
-							} else {
-								editor.putBoolean(EntranceActivity.CONFIG_REMEMBER, false);
-								editor.commit();
-							}
 							EntranceActivity.setPrivilege(0);
 							finish();
 						} else {
@@ -294,6 +242,24 @@ public class RegLoginActivity extends Activity {
 		});
 	}
 	
+	public void initAccountsList() {
+		/*
+		 * initialize the accounts list
+		 */
+		ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
+		String[] usernames = new String[list.size() + 1];
+		usernames[0] = "Add another account...";
+		for (int i = 1; i < usernames.length; i++) {
+			usernames[i] = list.get(i - 1)[0];
+		}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+			this,
+			android.R.layout.simple_list_item_1,
+			usernames
+		);
+		mListAccounts.setAdapter(adapter);
+	}
+	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		// TODO Auto-generated method stub
@@ -306,26 +272,33 @@ public class RegLoginActivity extends Activity {
 		}
 	}
 
-	public static String login(String username, String password) {
-		Map<String, String> actions = new HashMap<String, String>();
-		actions.put("usr", username);
-		actions.put("pwd", password);
-		actions.put("ckey", EntranceActivity.getClientKey());
-		String sBackMsg = "";
+	public static Sina login(String username, String password) {
+		/*
+		 * get SINA_weibo's token and token secret for the account
+		 */
+		Weibo weibo;
+		RequestToken requestToken;
 		try {
-			sBackMsg = AsyncUploader.post(EntranceActivity.URL_SITE + "reglogin.php", actions, null);
-			String ss[] = EntranceActivity.getPhpMsg(sBackMsg);
-			if (ss != null) {
-				sBackMsg = ss[1];
-			} else {
-				sBackMsg = "~Wrong connection.~";
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			sBackMsg = "~Wrong connection.~";
+			Sina sina = new Sina(true);
+			weibo = sina.getWeibo();
+			requestToken = weibo.getOAuthRequestToken();
+			OAuthConstant.getInstance().setRequestToken(requestToken);
+			OAuthVerifier oauthVerifier = weibo.getOAuthVerifier(username, password);
+			String verifier = oauthVerifier.getVerifier();
+			AccessToken accessToken = requestToken.getAccessToken(verifier);
+			OAuthConstant.getInstance().setAccessToken(accessToken);
+			
+			sina.getWeibo().setOAuthAccessToken(
+				accessToken.getToken(),
+				accessToken.getTokenSecret()
+			);
+			User user = sina.getWeibo().showUser("" + accessToken.getUserId());
+			sina.setLoggedInUser(user);
+			return sina;
+		} catch (WeiboException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return sBackMsg;
 	}
 	
 	/*

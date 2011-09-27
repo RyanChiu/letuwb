@@ -79,9 +79,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	final static Integer MAXPERCENTAGE_CACHE = 5; // with %
 	final static int REQUESTCODE_PICKFILE = 1001;
 	final static int REQUESTCODE_BACKFROM = 1002;
-	final static String CONFIG_REMEMBER = "Remember";
-	final static String CONFIG_USERNAME = "Username";
-	final static String CONFIG_PASSWORD = "Password";
+	final static String CONFIG_ACCOUNTS = "Accounts";
 	final static String CONFIG_CLIENTKEY = "ClientKey";
 	final static String CONFIG_RANDOMKEY = "RandomKey";
 	final static String CONFIG_TOPICCHOICE = "TopicChoice";
@@ -481,21 +479,55 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	}
 
     
-    static String getClientKey() {
+    public static String getClientKey() {
     	return mClientKey;
     }
     
-    static String getRandomKey() {
+    public static String getRandomKey() {
     	return mRandomKey;
     }
     
-    static void resetRandomKey(String key) {
+    public static void resetRandomKey(String key) {
     	mRandomKey = key;
     	if (mPreferences != null) {
 	    	SharedPreferences.Editor edit = mPreferences.edit();
 			edit.putString(CONFIG_RANDOMKEY, mRandomKey);
 			edit.commit();
     	}
+    }
+    
+    public static ArrayList<String[]> getStoredAccounts() {
+    	ArrayList<String[]> list = new ArrayList<String[]>();
+    	if (mPreferences == null) return list;
+    	String contents = mPreferences.getString(CONFIG_ACCOUNTS, "");
+    	if (contents.equals("")) return list;
+    	String[] pairs = contents.split(",");
+    	if (pairs.length % 2 != 0) return list; 
+    	
+    	for (int i = 0; i < pairs.length; i += 2) {
+    		list.add(new String[] {pairs[i], pairs[i + 1]});
+    	}
+    	return list;
+    }
+    
+    public static void saveAccount(String usr, String pwd) {
+    	ArrayList<String[]> list = getStoredAccounts();
+    	int i;
+    	for (i = 0; i < list.size(); i++) {
+    		if (list.get(i)[0].equals(usr)) break;
+    	}
+    	if (i != list.size()) {
+     		list.remove(i);
+    	}
+		list.add(new String[] {usr, pwd});
+		String content = "";
+		for (i = 0; i < list.size(); i++) {
+			content += list.get(i)[0] + "," + list.get(i)[1];
+			if (i != list.size() - 1) content += ",";
+		}
+		SharedPreferences.Editor edit = mPreferences.edit();
+		edit.putString(CONFIG_ACCOUNTS, content);
+		edit.commit();
     }
     
 	@Override
@@ -1106,21 +1138,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			/*
 	    	 * Auto login part begin
 	    	 */
-	        boolean bIsRemembered = mPreferences.getBoolean(CONFIG_REMEMBER, false);
-	        String sUsername = mPreferences.getString(CONFIG_USERNAME, "");
-	        String sPassword = mPreferences.getString(CONFIG_PASSWORD, "");
-	        if (bIsRemembered && !sUsername.equals("") && !sPassword.equals("")) {
-	        	String msg = RegLoginActivity.login(sUsername, sPassword);
-	        	String[] msgparts = msg.split("\\.");
-	        	if (msgparts.length == 2 && msgparts[0].equals("Logged-in")) {
-	        		msgs[1] = getString(R.string.tips_loggedin);
-	        		setAccountId(Integer.parseInt(msgparts[1]));
-	        		setPrivilege(0);
-	        	} else {
-	        		msgs[1] = getString(R.string.tips_loginfailed);
-	        		setPrivilege(1);
-	        	}
-	        }
+	        
 	        /*
 	    	 * Auto login part end
 	    	 */

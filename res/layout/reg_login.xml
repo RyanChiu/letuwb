@@ -7,7 +7,7 @@
             <TextView android:layout_marginBottom="3dp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="3dp" android:gravity="center" android:id="@+id/tvRegister" android:text="@string/label_register" android:textSize="28sp" android:textColor="#ffffff"></TextView>
         </LinearLayout>
     </TableRow>
-	<TableRow android:id="@+id/tableRow4" android:layout_width="fill_parent" android:layout_height="wrap_content">
+	<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/trLoginReg">
 		<TableLayout
 		  xmlns:android="http://schemas.android.com/apk/res/android"
 		  android:layout_width="fill_parent"
@@ -36,6 +36,6 @@
 	<RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="wrap_content" android:layout_height="fill_parent">
 		<Button android:id="@+id/btnLetmereg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/label_letmereg" android:background="#22000000" android:paddingBottom="8dp" android:paddingTop="10dp" android:layout_marginTop="3dp" android:textColor="#0000dd" android:visibility="gone"></Button>
 		<Button android:id="@+id/btnGuest" android:text="@string/label_guest" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:layout_width="fill_parent"></Button>
-		<ListView android:layout_width="fill_parent" android:id="@+id/lvAccounts" android:layout_height="fill_parent" android:layout_marginBottom="50dp"></ListView>
+		<ListView android:layout_width="fill_parent" android:id="@+id/lvAccounts" android:layout_height="fill_parent" android:layout_marginBottom="50dp" android:background="#00000000"></ListView>
 	</RelativeLayout>
 </TableLayout>

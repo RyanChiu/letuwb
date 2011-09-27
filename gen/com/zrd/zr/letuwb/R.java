@@ -161,7 +161,6 @@ containing a value of this type.
         public static final int tableRow1=0x7f070054;
         public static final int tableRow2=0x7f070056;
         public static final int tableRow3=0x7f07005a;
-        public static final int tableRow4=0x7f070053;
         public static final int tableRow5=0x7f07005e;
         public static final int text=0x7f070032;
         public static final int textView1=0x7f070003;
@@ -171,6 +170,7 @@ containing a value of this type.
         public static final int textViewFileInfo=0x7f07001b;
         public static final int textViewNums=0x7f070018;
         public static final int tlBackground=0x7f07004e;
+        public static final int trLoginReg=0x7f070053;
         public static final int trRepeat=0x7f070058;
         public static final int trTitle=0x7f07004f;
         public static final int tvAppName=0x7f07002f;
