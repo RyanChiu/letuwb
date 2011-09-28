@@ -33,15 +33,6 @@
             </LinearLayout>
         </RelativeLayout>
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayoutBottom" android:orientation="vertical" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
-            <RelativeLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/relativeLayout1">
-                <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="wrap_content" android:layout_centerInParent="true">
-                    <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/btnMakeFriendsFromBrow" android:background="@drawable/btn_custom" android:textColor="#00ff00" android:textSize="11sp" android:text="@string/label_weibo_friendship"></Button>
-                    <Button android:id="@+id/btnShare" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:textColor="#00ff00" android:textSize="11sp" android:text="@string/label_share"></Button>
-                    <Button android:id="@+id/btnWeiboShow" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:text="@string/label_weibos" android:textColor="#00ff00" android:textSize="11sp"></Button>
-                    <ImageButton android:layout_height="42dp" android:id="@+id/btnZoomin" android:layout_width="42dp" android:visibility="gone" android:scaleType="fitXY" android:background="#00000000" android:src="@drawable/zoomin"></ImageButton>
-                    <ImageButton android:layout_height="42dp" android:id="@+id/btnZoomout" android:layout_width="42dp" android:visibility="gone" android:scaleType="fitXY" android:background="#00000000" android:src="@drawable/zoomout"></ImageButton>
-                </LinearLayout>
-            </RelativeLayout>
             <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/relativeLayout2">
                 <LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout2" android:layout_alignParentLeft="true" android:orientation="vertical" android:layout_height="wrap_content">
                     <ImageButton android:layout_marginLeft="2dp" android:id="@+id/imageButton4" android:layout_marginBottom="2dp" android:background="#00000000" android:src="@drawable/upup" android:layout_marginTop="3dp" android:scaleType="fitXY" android:layout_height="50dp" android:layout_width="50dp"></ImageButton>
@@ -49,13 +40,22 @@
                 <LinearLayout android:layout_width="fill_parent" android:id="@+id/llVoteInfo" android:orientation="vertical" android:layout_height="wrap_content">
                     <ProgressBar android:max="100" android:layout_width="fill_parent" style="?android:attr/progressBarStyleHorizontal" android:paddingTop="2dp" android:layout_height="9dp" android:progressDrawable="@drawable/voterating_progress_horizontal" android:layout_marginBottom="2dp" android:layout_marginTop="14dp" android:secondaryProgress="0" android:progress="0" android:paddingBottom="2dp" android:id="@+id/pbVote" android:layout_marginLeft="54dp" android:layout_marginRight="54dp"></ProgressBar>
                     <RelativeLayout android:background="#36000000" android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/rlVoteText" android:layout_marginLeft="54dp" android:layout_marginRight="54dp">
-                        <TextView android:layout_marginLeft="2dp" android:layout_width="wrap_content" android:id="@+id/tvUpup" android:layout_height="wrap_content" android:text="0" android:textColor="#ffb600"></TextView>
-                        <TextView android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:id="@+id/tvVoteRating" android:layout_height="wrap_content" android:text="0%" android:textColor="#b38006" android:gravity="center"></TextView>
-                        <TextView android:layout_width="wrap_content" android:layout_marginRight="2dp" android:layout_alignParentRight="true" android:id="@+id/tvDwdw" android:layout_height="wrap_content" android:text="0" android:textColor="#4914f4"></TextView>
+                        <TextView android:layout_marginLeft="2dp" android:layout_width="wrap_content" android:id="@+id/tvUpup" android:layout_height="wrap_content" android:text="0" android:textColor="#ffb600" android:textSize="12sp"></TextView>
+                        <TextView android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:id="@+id/tvVoteRating" android:layout_height="wrap_content" android:text="0%" android:textColor="#b38006" android:gravity="center" android:textSize="12sp"></TextView>
+                        <TextView android:layout_width="wrap_content" android:layout_marginRight="2dp" android:layout_alignParentRight="true" android:id="@+id/tvDwdw" android:layout_height="wrap_content" android:text="0" android:textColor="#4914f4" android:textSize="12sp"></TextView>
                     </RelativeLayout>
                 </LinearLayout>
                 <LinearLayout android:layout_width="wrap_content" android:layout_alignParentRight="true" android:id="@+id/linearLayout3" android:orientation="vertical" android:layout_height="wrap_content">
                     <ImageButton android:id="@+id/imageButton3" android:layout_marginBottom="2dp" android:background="#00000000" android:src="@drawable/dwdw" android:layout_marginTop="3dp" android:scaleType="fitXY" android:layout_marginRight="2dp" android:layout_width="50dp" android:layout_height="50dp"></ImageButton>
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/relativeLayout1">
+                <LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_centerInParent="true">
+                    <Button android:layout_width="wrap_content" android:textSize="11sp" android:textColor="#00ff00" android:layout_height="wrap_content" android:id="@+id/btnMakeFriendsFromBrow" android:text="@string/label_weibo_friendship" android:background="@drawable/btn_custom"></Button>
+                    <Button android:layout_width="wrap_content" android:textSize="11sp" android:textColor="#00ff00" android:layout_height="wrap_content" android:id="@+id/btnShare" android:text="@string/label_share" android:background="@drawable/btn_custom"></Button>
+                    <Button android:layout_width="wrap_content" android:textSize="11sp" android:textColor="#00ff00" android:layout_height="wrap_content" android:id="@+id/btnWeiboShow" android:text="@string/label_weibos" android:background="@drawable/btn_custom"></Button>
+                    <ImageButton android:visibility="gone" android:background="#00000000" android:layout_height="42dp" android:src="@drawable/zoomin" android:id="@+id/btnZoomin" android:layout_width="42dp" android:scaleType="fitXY"></ImageButton>
+                    <ImageButton android:visibility="gone" android:background="#00000000" android:layout_height="42dp" android:src="@drawable/zoomout" android:id="@+id/btnZoomout" android:layout_width="42dp" android:scaleType="fitXY"></ImageButton>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
