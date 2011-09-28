@@ -15,7 +15,7 @@
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout2" android:layout_height="fill_parent" android:gravity="center" android:orientation="vertical">
             <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ivStatusImage" android:src="@drawable/brush"></ImageView>
             <LinearLayout android:id="@+id/linearLayout5" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="38dp">
-                <TextView android:id="@+id/tvRetweeted" android:text="..." android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+                <TextView android:id="@+id/tvRetweeted" android:text="..." android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/frame_quote" android:textColor="#000011"></TextView>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout3" android:layout_alignParentBottom="true" android:layout_height="36dp">

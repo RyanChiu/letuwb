@@ -29,7 +29,7 @@
         </LinearLayout>
         <RelativeLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:id="@+id/relativeLayoutZoom" android:layout_marginBottom="52dp">
             <LinearLayout android:orientation="vertical" android:id="@+id/linearLayoutInfo" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="52dp" android:layout_marginLeft="3dp">
-                <TextView android:id="@+id/textViewFileInfo" android:layout_height="wrap_content" android:layout_gravity="center" android:gravity="center" android:layout_width="fill_parent"></TextView>
+                <TextView android:layout_gravity="center" android:gravity="center" android:layout_width="fill_parent" android:textColor="#0000ee" android:id="@+id/tvScreenNameAbovePic" android:background="@drawable/brow_screen_name" android:paddingLeft="5dp" android:paddingRight="5dp" android:layout_height="wrap_content"></TextView>
             </LinearLayout>
         </RelativeLayout>
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayoutBottom" android:orientation="vertical" android:layout_height="wrap_content" android:layout_alignParentBottom="true">

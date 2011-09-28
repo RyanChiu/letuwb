@@ -73,7 +73,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	private LinearLayout llVoteInfo;
 	private LinearLayout mLayoutTop;
 	private TextView tvNums;
-	private TextView tvFileInfo;
+	private TextView mTextScreenName;
 	private TextView mTextUpup;
 	private TextView mTextDwdw;
 	private TextView mTextVoteRating;
@@ -127,7 +127,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		llVoteInfo = (LinearLayout) findViewById(R.id.llVoteInfo);
 		mLayoutTop = (LinearLayout) findViewById(R.id.llBrowTop);
 		tvNums = (TextView) findViewById(R.id.textViewNums);
-		tvFileInfo = (TextView) findViewById(R.id.textViewFileInfo);
+		mTextScreenName = (TextView) findViewById(R.id.tvScreenNameAbovePic);
 		mTextUpup = (TextView) findViewById(R.id.tvUpup);
 		mTextDwdw = (TextView) findViewById(R.id.tvDwdw);
 		mTextVoteRating = (TextView) findViewById(R.id.tvVoteRating);
@@ -202,6 +202,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		
 		mLayoutTop.setVisibility(LinearLayout.INVISIBLE);
 		llVoteInfo.setVisibility(LinearLayout.INVISIBLE);
+		mTextScreenName.setVisibility(TextView.GONE);
 		
 		// Look up the AdView as a resource and load a request.
         AdView adView = (AdView)this.findViewById(R.id.adsBrow);
@@ -777,7 +778,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	}
 	
 	/*
-	 * set current file information on tvFileInfo
+	 * set current file information on mTextScreenName
 	 */
 	public void zrRenewCurFileInfo() {
 		WeibouserInfo wi = EntranceActivity.getPicFromId(mId, mUsrs);
@@ -791,10 +792,10 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 			+ EntranceActivity.getTotalPics()
 		);
 		if (wi.screen_name.trim().equals("")) {
-			tvFileInfo.setVisibility(TextView.GONE);
+			mTextScreenName.setVisibility(TextView.GONE);
 		} else {
-			tvFileInfo.setVisibility(TextView.VISIBLE);
-			tvFileInfo.setText(String.format(getString(R.string.info_picture), wi.screen_name + (wi.verified == 1 ? " (V)" : "")));
+			mTextScreenName.setVisibility(TextView.VISIBLE);
+			mTextScreenName.setText(String.format(getString(R.string.info_picture), wi.screen_name + (wi.verified == 1 ? " (V)" : "")));
 		}
 		mTextUpup.setText(wi.likes.toString());
 		mTextDwdw.setText(wi.dislikes.toString());
