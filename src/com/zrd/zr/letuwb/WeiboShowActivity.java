@@ -25,7 +25,6 @@ import android.os.Message;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +32,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
@@ -48,7 +46,6 @@ public class WeiboShowActivity extends Activity {
 	private TextView mTextCounts;
 	private ListView mListStatus;
 	private ProgressBar mProgressStatusLoading;
-	private LinearLayout mLayoutStatusCtrls;
 	private Button mBtnWeibos;
 	private Button mBtnFriend;
 	private Button mBtnFavorite;
@@ -63,8 +60,8 @@ public class WeiboShowActivity extends Activity {
 	private List<Status> mLastUserTimeline = null;
 	private int mIndexOfSelectedStatus = -1;
 	
-	private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
-	private AlphaAnimation mAnimFadeout = new AlphaAnimation(1.0f, 0.1f);
+	//private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
+	//private AlphaAnimation mAnimFadeout = new AlphaAnimation(1.0f, 0.1f);
 	
 	public enum Action {
 		SHOW_USER,
@@ -156,7 +153,7 @@ public class WeiboShowActivity extends Activity {
 					mTextCounts.setText(
 						"Weibos:" + mLastUser.getStatusesCount()
 						+ "  Favorites:" + mLastUser.getFavouritesCount()
-						+ "\n"
+						+ "  "
 						+ "Followers:" + mLastUser.getFollowersCount()
 						+ "  Friends:" + mLastUser.getFriendsCount()
 					);
@@ -248,14 +245,12 @@ public class WeiboShowActivity extends Activity {
 		mTextCounts = (TextView)findViewById(R.id.tvCounts);
 		mListStatus = (ListView)findViewById(R.id.lvStatus);
 		mProgressStatusLoading = (ProgressBar)findViewById(R.id.pbStatusLoading);
-		mLayoutStatusCtrls = (LinearLayout)findViewById(R.id.llStatusCtrls);
 		mBtnWeibos = (Button)findViewById(R.id.btnWeibos);
 		mBtnFriend = (Button)findViewById(R.id.btnFriend);
 		mBtnFavorite = (Button)findViewById(R.id.btnFavorite);
 		mBtnRepost = (Button)findViewById(R.id.btnRepost);
 		mEditRepost  = new EditText(this);
 		
-		mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 		/*
 		 * show the whole user/info
 		 */
@@ -303,6 +298,7 @@ public class WeiboShowActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
+				/*
 				if (mLayoutStatusCtrls.getVisibility() == LinearLayout.GONE) {
 					mLayoutStatusCtrls.setVisibility(LinearLayout.VISIBLE);
 					mAnimFadein.setDuration(500);
@@ -312,6 +308,7 @@ public class WeiboShowActivity extends Activity {
 					mLayoutStatusCtrls.startAnimation(mAnimFadeout);
 					mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 				}
+				*/
 				
 				int position = arg2;
 				WeiboStatusListAdapter adapter  = (WeiboStatusListAdapter)mListStatus.getAdapter();
@@ -335,7 +332,6 @@ public class WeiboShowActivity extends Activity {
 						mHandler
 					)
 				).start();
-				mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 				turnDealing(true);
 			}
 			
@@ -355,7 +351,6 @@ public class WeiboShowActivity extends Activity {
 							mHandler
 						)
 					).start();
-					mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 					turnDealing(true);
 				} else {
 					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
@@ -393,7 +388,6 @@ public class WeiboShowActivity extends Activity {
 								)
 							).start();
 						}
-						mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 						turnDealing(true);
 					} else {
 						Toast.makeText(
@@ -450,7 +444,6 @@ public class WeiboShowActivity extends Activity {
 										mHandler
 									)
 								).start();
-								mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
 								turnDealing(true);
 							}
 							

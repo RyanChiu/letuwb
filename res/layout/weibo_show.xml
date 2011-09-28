@@ -23,11 +23,11 @@
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout android:id="@+id/linearLayout4" android:layout_height="fill_parent" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginBottom="37dp" android:layout_marginTop="51dp">
+            <LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:gravity="center" android:id="@+id/linearLayout5" android:layout_height="28dp">
+                <TextView android:layout_width="wrap_content" android:id="@+id/tvCounts" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="#f3a000"></TextView>
+            </LinearLayout>
             <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/tvDescription"></TextView>
             <ListView android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/lvStatus"></ListView>
-        </LinearLayout>
-        <LinearLayout android:gravity="center" android:id="@+id/linearLayout5" android:layout_height="36dp" android:orientation="vertical" android:layout_width="fill_parent" android:layout_alignParentBottom="true">
-            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/tvCounts"></TextView>
         </LinearLayout>
     </RelativeLayout>
     <RelativeLayout android:id="@+id/relativeLayout3" android:layout_width="fill_parent" android:layout_height="fill_parent">
