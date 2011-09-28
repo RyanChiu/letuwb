@@ -32,12 +32,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegLoginActivity extends Activity {
+	private static ArrayList<Context> mContexts = new ArrayList<Context>();
+	
 	private TableLayout mTableBackground;
 	private EditText mEditUsername;
 	private EditText mEditPassword;
@@ -159,6 +163,10 @@ public class RegLoginActivity extends Activity {
 						);
 					}
 					initAccountsList();
+					updateTitle(
+						R.id.ivTitleIcon, R.id.tvTitleName,
+						WeiboShowActivity.getSina() == null ? null : WeiboShowActivity.getSina().getLoggedInUser()
+					);
 					finish();
 				} else {
 					Toast.makeText(
@@ -242,6 +250,22 @@ public class RegLoginActivity extends Activity {
 		});
 	}
 	
+	public static void updateTitle(
+		int resTitleIcon, int resTitleName, User user) {
+		if (mContexts.size() == 0) return;
+		for (int i = 0; i < mContexts.size(); i++) {
+			Context context = mContexts.get(i);
+			ImageView iv = (ImageView)((Activity)context).findViewById(resTitleIcon);
+			TextView tv = (TextView)((Activity)context).findViewById(resTitleName);
+			if (iv != null && tv != null && user != null) {
+				AsyncImageLoader loader = new AsyncImageLoader(context,
+					iv, R.drawable.person);
+				loader.execute(user.getProfileImageURL());
+				tv.setText(user.getScreenName());
+			}
+		}
+	}
+	
 	public void initAccountsList() {
 		/*
 		 * initialize the accounts list
@@ -301,10 +325,17 @@ public class RegLoginActivity extends Activity {
 		}
 	}
 	
+	public static void addContext(Context context) {
+		if (!mContexts.contains(context)) {
+			mContexts.add(context);
+		}
+	}
+	
 	/*
 	 * show a dialog that let user select to log in or not
 	 */
 	public static void shallWeLogin(int titleId, final Context context) {
+		addContext(context);
 		AlertDialog dlg = new AlertDialog.Builder(context)
 			.setPositiveButton(context.getString(R.string.label_letmelogin), new DialogInterface.OnClickListener() {
 

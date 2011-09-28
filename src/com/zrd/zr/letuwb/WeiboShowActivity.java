@@ -23,11 +23,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -51,6 +53,7 @@ public class WeiboShowActivity extends Activity {
 	private Button mBtnFriend;
 	private Button mBtnFavorite;
 	private Button mBtnRepost;
+	private ImageButton mBtnExchange;
 	
 	private EditText mEditRepost;
 	
@@ -231,9 +234,13 @@ public class WeiboShowActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.weibo_show);
 		
-		mTextScreenName = (TextView)findViewById(R.id.tvScreenName);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.exchangelist_title);
+		RegLoginActivity.addContext(WeiboShowActivity.this);
+		mBtnExchange = (ImageButton) findViewById(R.id.btnExchange);
+        mTextScreenName = (TextView)findViewById(R.id.tvScreenName);
 		mImageVerified = (ImageView)findViewById(R.id.ivVerified);
 		mTextCreatedAt = (TextView)findViewById(R.id.tvCreatedAt);
 		mTextLocation = (TextView)findViewById(R.id.tvLocation);
@@ -264,6 +271,28 @@ public class WeiboShowActivity extends Activity {
 			)
 		).start();
 		turnDealing(true);
+		
+		/*
+		 * initialize the title bar
+		 */
+		Sina sina = WeiboShowActivity.getSina();
+		if (sina != null && sina.isLoggedIn()) {
+			RegLoginActivity.updateTitle(
+				R.id.ivTitleIcon, R.id.tvTitleName,
+				sina.getLoggedInUser()
+			);
+		}
+		
+		mBtnExchange.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent intent = new Intent();
+                intent.setClass(WeiboShowActivity.this, ExchangeListActivity.class);
+                startActivity(intent);
+            }
+        });
 		
 		/*
 		 * deal actions for components

@@ -118,7 +118,10 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.brow);
+		
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.exchangelist_title);
+		RegLoginActivity.addContext(PicbrowActivity.this);
+		mBtnExchange = (ImageButton) findViewById(R.id.btnExchange);
 		mFrameBackground = (FrameLayout) findViewById(R.id.flBackground);
 		rlCtrl = (RelativeLayout) findViewById(R.id.rlControl);
 		llVoteInfo = (LinearLayout) findViewById(R.id.llVoteInfo);
@@ -138,7 +141,6 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		btnDwdw = (ImageButton) findViewById(R.id.imageButton3);
 		btnZoomIn = (ImageButton) findViewById(R.id.btnZoomin);
 		btnZoomOut = (ImageButton) findViewById(R.id.btnZoomout);
-		mBtnExchange = (ImageButton) findViewById(R.id.btnExchange);
 		mBtnShare = (Button) findViewById(R.id.btnShare);
 		mBtnWeiboShow = (Button) findViewById(R.id.btnWeiboShow);
 		mBtnWeiboFriend = (Button) findViewById(R.id.btnMakeFriendsFromBrow);
@@ -213,6 +215,17 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		zrAsyncShowPic(mId, 0);
 		
 		tvNums.setText("0/" + mUsrs.size());
+		
+		/*
+		 * initialize the title bar
+		 */
+		Sina sina = WeiboShowActivity.getSina();
+		if (sina != null && sina.isLoggedIn()) {
+			RegLoginActivity.updateTitle(
+				R.id.ivTitleIcon, R.id.tvTitleName,
+				sina.getLoggedInUser()
+			);
+		}
 		
 		mBtnShare.setOnClickListener(new OnClickListener() {
 

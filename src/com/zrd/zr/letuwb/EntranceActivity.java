@@ -167,6 +167,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         adView.loadAd(new AdRequest());
                 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.exchangelist_title);
+        RegLoginActivity.addContext(EntranceActivity.this);
         mBtnExchange = (ImageButton) findViewById(R.id.btnExchange);
         mGridPics = (GridView) findViewById(R.id.gridViewPics);
         mTextPageInfo = (TextView) findViewById(R.id.tvPageInfo);
@@ -195,10 +196,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 
             @Override
             public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    Intent intent = new Intent();
-                    intent.setClass(EntranceActivity.this, ExchangeListActivity.class);
-                    startActivity(intent);
+                // TODO Auto-generated method stub
+                Intent intent = new Intent();
+                intent.setClass(EntranceActivity.this, ExchangeListActivity.class);
+                startActivity(intent);
             }
         });
         

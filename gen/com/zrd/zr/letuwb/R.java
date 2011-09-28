@@ -61,11 +61,11 @@ containing a value of this type.
         public static final int file32x32=0x7f020013;
         public static final int folder32x32=0x7f020014;
         public static final int ic_menu_login=0x7f020015;
-        public static final int ic_menu_myplaces=0x7f020016;
-        public static final int ic_menu_refresh=0x7f020017;
-        public static final int icon=0x7f020018;
-        public static final int parent32x32=0x7f020019;
-        public static final int person=0x7f02001a;
+        public static final int ic_menu_refresh=0x7f020016;
+        public static final int icon=0x7f020017;
+        public static final int parent32x32=0x7f020018;
+        public static final int person=0x7f020019;
+        public static final int persons=0x7f02001a;
         public static final int popup_full_dark=0x7f02001b;
         public static final int share=0x7f02001c;
         public static final int theateryellowii128x128=0x7f02001d;
@@ -121,9 +121,9 @@ containing a value of this type.
         public static final int imageButton4=0x7f070024;
         public static final int imageSwitcher=0x7f07000e;
         public static final int imageView1=0x7f070001;
-        public static final int ivIcon=0x7f07002f;
         public static final int ivStatusImage=0x7f070037;
         public static final int ivTinyProfileImage=0x7f070064;
+        public static final int ivTitleIcon=0x7f07002f;
         public static final int ivVerified=0x7f070068;
         public static final int linearLayout1=0x7f070000;
         public static final int linearLayout2=0x7f070002;
@@ -171,7 +171,6 @@ containing a value of this type.
         public static final int trLoginReg=0x7f070053;
         public static final int trRepeat=0x7f070058;
         public static final int trTitle=0x7f07004f;
-        public static final int tvAppName=0x7f070030;
         public static final int tvCounts=0x7f07006e;
         public static final int tvCreatedAt=0x7f07006a;
         public static final int tvCustomDialogTitle=0x7f07002d;
@@ -189,6 +188,7 @@ containing a value of this type.
         public static final int tvStatusCreatedAt=0x7f070035;
         public static final int tvStatusReply=0x7f07003a;
         public static final int tvStatusText=0x7f070036;
+        public static final int tvTitleName=0x7f070030;
         public static final int tvUpdate=0x7f070063;
         public static final int tvUpup=0x7f070028;
         public static final int tvVersion=0x7f070005;
