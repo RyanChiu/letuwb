@@ -62,37 +62,66 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		URL url = (URL) params[0];
 		
 		SecureUrl su = new SecureUrl();
-		URLConnection conn = su.getConnection(url);
-		InputStream is;
-		
-		if (conn == null) return null;
-		try {
-			is = conn.getInputStream();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Log.e("DEBUGTAG", "Remtoe Image Exception", e);
-			e.printStackTrace();
-			return null;
+		/*
+		 * see if local cached.
+		 * it uses value of MD5 the address of URL for the cached image filename
+		 */
+		String pathCacheImg = AsyncSaver.getSdcardDir()
+			+ EntranceActivity.PATH_CACHE;
+		String fileCacheImg = su.phpMd5(url.toString());
+		Bitmap bmp;
+		int probe = AsyncSaver.probeFile(pathCacheImg, fileCacheImg);
+		if (probe == -2) {//means cache image exists
+			/*
+			 * directly load the cached image here
+			 */
+			bmp = BitmapFactory.decodeFile(pathCacheImg + fileCacheImg);
+	    	return bmp == null ? null : bmp;
+		} else {
+			/*
+			 * load the INTERNET image here
+			 */
+			URLConnection conn = su.getConnection(url);
+			InputStream is;
+			
+			if (conn == null) return null;
+			try {
+				is = conn.getInputStream();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.e("DEBUGTAG", "Remtoe Image Exception", e);
+				e.printStackTrace();
+				return null;
+			}
+			
+			if (is == null) return null;
+			BufferedInputStream bis = new BufferedInputStream(is, 8192);
+			bmp = BitmapFactory.decodeStream(bis);
+			if (bmp == null) return null;
+			try {
+				bis.close();
+				is.close();
+				bis = null;
+				is = null;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.e("DEBUGTAG", "Remtoe Image Exception", e);
+				e.printStackTrace();
+				bis = null;
+				is = null;
+				return null;
+			}
+			if (probe == 1) {//means could deal with the cache
+				/*
+				 * cache the image file here
+				 */
+				AsyncSaver saver = new AsyncSaver(mContext, bmp);
+				saver.saveImage(
+					AsyncSaver.getSilentFile(pathCacheImg, fileCacheImg)
+				);
+			}
+			return bmp;
 		}
-		
-		if (is == null) return null;
-		BufferedInputStream bis = new BufferedInputStream(is, 8192);
-		Bitmap bmp = BitmapFactory.decodeStream(bis);
-		if (bmp == null) return null;
-		try {
-			bis.close();
-			is.close();
-			bis = null;
-			is = null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Log.e("DEBUGTAG", "Remtoe Image Exception", e);
-			e.printStackTrace();
-			bis = null;
-			is = null;
-			return null;
-		}
-		return bmp;
 	}
 
 	@Override
