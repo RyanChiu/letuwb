@@ -24,12 +24,20 @@ public class AsyncSaver extends AsyncTask <Object, Object, Object> {
 		mBitmap = bmp;
 	}
 	
+	/*
+	 * @return "" means SDCARD not available.
+	 */
 	public static String getSdcardDir() {
 		if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			return Environment.getExternalStorageDirectory().getAbsolutePath();
         } else return "";
 	}
 	
+	/*
+	 * @return 0 means SDCARD not available, -1 means failed to create directory
+	 * with sPath, -2 means file sPath/sFname already exists, 1 means file
+	 * sPath/sFname could be created directly.
+	 */
 	public static int probeFile(String sPath, String sFname) {
 		if (getSdcardDir().equals("")) return 0;
 		File path = new File(sPath);
