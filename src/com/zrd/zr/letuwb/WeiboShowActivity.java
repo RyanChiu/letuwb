@@ -42,7 +42,7 @@ public class WeiboShowActivity extends Activity {
 	private ImageView mImageVerified;
 	private TextView mTextCreatedAt;
 	private TextView mTextLocation;
-	private TextView mTextDescription;
+	private ImageButton mBtnDescription;
 	private TextView mTextCounts;
 	private ListView mListStatus;
 	private ProgressBar mProgressStatusLoading;
@@ -96,73 +96,28 @@ public class WeiboShowActivity extends Activity {
 			switch (msg.what) {
 			case ThreadSinaDealer.SHOW_USER:
 				mLastUser = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (mLastUser != null) {
+				if (mLastUser != null) {			
+					showLastUserBasicInfo();
+					
 					/*
 					 * show the status info
 					 */
+					/*
 					WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
 						WeiboShowActivity.this,
 						getStatusData(Action.SHOW_USER)
 					);
 					mListStatus.setAdapter(adapter);
-					
-					/*
-					 * show the profile-image
-					 */
-					AsyncImageLoader ail = new AsyncImageLoader(
-						WeiboShowActivity.this,
-						R.id.ivTinyProfileImage,
-						R.drawable.person
-					);
-					ail.execute(mLastUser.getProfileImageURL());
-					
-					/*
-					 * show the screen name
-					 */
-					mTextScreenName.setText(mLastUser.getScreenName());
-					
-					/*
-					 * show "v" if verified
-					 */
-					if (mLastUser.isVerified()) {
-						mImageVerified.setVisibility(ImageView.VISIBLE);
-					} else {
-						mImageVerified.setVisibility(ImageView.GONE);
-					}
-					
-					/*
-					 * show when was the user created
-					 */
-					Date dtCreatedAt = mLastUser.getCreatedAt();
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					mTextCreatedAt.setText(sdf.format(dtCreatedAt));
-					
-					/*
-					 * show the location and the description
-					 */
-					mTextLocation.setText(
-						mLastUser.getLocation()
-					);
-					mTextDescription.setText(
-						mLastUser.getDescription()
-					);
-					
-					/*
-					 * show all kinds of the counts
-					 */
-					mTextCounts.setText(
-						"Weibos:" + mLastUser.getStatusesCount()
-						+ "  Favorites:" + mLastUser.getFavouritesCount()
-						+ "  "
-						+ "Followers:" + mLastUser.getFollowersCount()
-						+ "  Friends:" + mLastUser.getFriendsCount()
-					);
+					*/
+					mBtnWeibos.performClick();
 				} else {
-					mTextCreatedAt.setText("N/A");
-					mTextDescription.setText("Please try again...");
+					mTextCreatedAt.setText("Please try again...");
 				}
 				break;
 			case ThreadSinaDealer.GET_USER_TIMELINE:
+				if (mTextScreenName.getText().equals("")) {
+					showLastUserBasicInfo();
+				}
 				mLastUserTimeline = (ArrayList<weibo4android.Status>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 				if (mLastUserTimeline != null) {
 					/*
@@ -176,6 +131,7 @@ public class WeiboShowActivity extends Activity {
 				} else {
 					//deal with failing to get time_line
 				}
+				turnDealing(false);
 				break;
 			case ThreadSinaDealer.CREATE_FRIENDSHIP:
 				user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
@@ -196,6 +152,7 @@ public class WeiboShowActivity extends Activity {
 				} else {
 					//deal with failing to make friends
 				}
+				turnDealing(false);
 				break;
 			case ThreadSinaDealer.CREATE_FAVORITE:
 				status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
@@ -208,6 +165,7 @@ public class WeiboShowActivity extends Activity {
 				} else {
 					//deal with failing to make favorite
 				}
+				turnDealing(false);
 				break;
 			case ThreadSinaDealer.REPOST:
 				status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
@@ -220,10 +178,70 @@ public class WeiboShowActivity extends Activity {
 				} else {
 					//deal with failing to make favorite
 				}
+				turnDealing(false);
 				break;
 			}
+		}
+
+		private void showLastUserBasicInfo() {
+			// TODO Auto-generated method stub
+			if (mLastUser == null) return;
+			/*
+			 * show the profile-image
+			 */
+			AsyncImageLoader ail = new AsyncImageLoader(
+				WeiboShowActivity.this,
+				R.id.ivTinyProfileImage,
+				R.drawable.person
+			);
+			ail.execute(mLastUser.getProfileImageURL());
 			
-			turnDealing(false);
+			/*
+			 * show the screen name
+			 */
+			mTextScreenName.setText(mLastUser.getScreenName());
+			
+			/*
+			 * show "v" if verified
+			 */
+			if (mLastUser.isVerified()) {
+				mImageVerified.setVisibility(ImageView.VISIBLE);
+			} else {
+				mImageVerified.setVisibility(ImageView.GONE);
+			}
+			
+			/*
+			 * show when was the user created
+			 */
+			Date dtCreatedAt = mLastUser.getCreatedAt();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			mTextCreatedAt.setText(sdf.format(dtCreatedAt));
+			
+			/*
+			 * show the location and the description
+			 */
+			mTextLocation.setText(
+				mLastUser.getLocation()
+			);
+			String description = mLastUser.getDescription();
+			if (!description.equals("")) {
+				mBtnDescription.setVisibility(ImageButton.VISIBLE);
+				mBtnDescription.setTag(description);
+			} else {
+				mBtnDescription.setVisibility(ImageButton.GONE);
+				mBtnDescription.setTag(null);
+			}
+			
+			/*
+			 * show all kinds of the counts
+			 */
+			mTextCounts.setText(
+				"Weibos:" + mLastUser.getStatusesCount()
+				+ "  Favorites:" + mLastUser.getFavouritesCount()
+				+ "  "
+				+ "Followers:" + mLastUser.getFollowersCount()
+				+ "  Friends:" + mLastUser.getFriendsCount()
+			);
 		}
 	};
 	
@@ -241,7 +259,7 @@ public class WeiboShowActivity extends Activity {
 		mImageVerified = (ImageView)findViewById(R.id.ivVerified);
 		mTextCreatedAt = (TextView)findViewById(R.id.tvCreatedAt);
 		mTextLocation = (TextView)findViewById(R.id.tvLocation);
-		mTextDescription = (TextView)findViewById(R.id.tvDescription);
+		mBtnDescription = (ImageButton)findViewById(R.id.btnDescription);
 		mTextCounts = (TextView)findViewById(R.id.tvCounts);
 		mListStatus = (ListView)findViewById(R.id.lvStatus);
 		mProgressStatusLoading = (ProgressBar)findViewById(R.id.pbStatusLoading);
@@ -250,6 +268,9 @@ public class WeiboShowActivity extends Activity {
 		mBtnFavorite = (Button)findViewById(R.id.btnFavorite);
 		mBtnRepost = (Button)findViewById(R.id.btnRepost);
 		mEditRepost  = new EditText(this);
+		
+		mImageVerified.setVisibility(ImageView.GONE);
+		mBtnDescription.setVisibility(ImageButton.GONE);
 		
 		/*
 		 * show the whole user/info
@@ -315,6 +336,25 @@ public class WeiboShowActivity extends Activity {
 				adapter.setSelectedItem(position);
 				adapter.notifyDataSetInvalidated();
 				mIndexOfSelectedStatus = position;
+			}
+			
+		});
+		
+		mBtnDescription.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String description = (String)mBtnDescription.getTag();
+				if (description != null && !description.equals("")) {
+					/*
+					 * show the description here
+					 */
+					new AlertDialog.Builder(WeiboShowActivity.this)
+						.setMessage(description)
+						.create()
+						.show();
+				}
 			}
 			
 		});
