@@ -433,12 +433,44 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		mGridPics.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				// TODO Auto-generated method stub
-				WeibouserInfo wi = (WeibouserInfo) mPageUsrs.get(position);
-				Intent intent = new Intent();
-				intent.setClass(EntranceActivity.this, PicbrowActivity.class);
-				intent.putExtra("id", wi.id);
-				mPageBeforeBrow = mCurPage;
-				startActivityForResult(intent, REQUESTCODE_BACKFROM);
+				mGridPics.setTag(position);
+				
+				CharSequence[] items = {
+					"The bigger picture",
+					"The microblog"
+				};
+				new AlertDialog.Builder(EntranceActivity.this)
+					.setItems(items, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							WeibouserInfo wi;
+							Intent intent = new Intent();
+							int position = (Integer) mGridPics.getTag();
+							switch (which) {
+							case 0:
+								wi = (WeibouserInfo) mPageUsrs.get(position);
+								intent.setClass(EntranceActivity.this, PicbrowActivity.class);
+								intent.putExtra("id", wi.id);
+								mPageBeforeBrow = mCurPage;
+								startActivityForResult(intent, REQUESTCODE_BACKFROM);
+								break;
+							case 1:
+								wi = (WeibouserInfo) mPageUsrs.get(position);
+				                
+				                intent.putExtra("uid", wi.uid.toString());
+								
+								intent.setClass(EntranceActivity.this, WeiboShowActivity.class);
+								startActivity(intent);
+								break;
+							}
+							dialog.dismiss();
+						}
+						
+					})
+					.create()
+					.show();
 			}
         });
         
