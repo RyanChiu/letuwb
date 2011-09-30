@@ -59,8 +59,9 @@ public class AsyncSaver extends AsyncTask <Object, Object, Object> {
 		//BitmapDrawable imgBd = (BitmapDrawable) mBrow.getTag();
 		// TODO Auto-generated method stub
 		ArrayList<String> notes = new ArrayList<String>();
+		if (saveFile == null) return null;
 		String fn = saveFile.getName();
-		if (fn == null) return notes;
+		if (fn == null || fn.equals("")) return notes;
 		try {
 			FileOutputStream outStream = new FileOutputStream(saveFile);
 			mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
