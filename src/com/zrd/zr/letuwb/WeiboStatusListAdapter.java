@@ -127,7 +127,7 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 		}
 		
 		/*
-		 * dealing with selecting item
+		 * dealing with selecting an item
 		 */
 		if (position == mSelectedItem) {
 			convertView.setBackgroundColor(0x66ffc300);

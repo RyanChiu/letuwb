@@ -21,21 +21,24 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	private ImageView mImage;
 	private ProgressBar mProgress = null;
 	
-	public AsyncImageLoader(Context context, Integer resIdImageView, Integer resIdBadImage) {
+	public AsyncImageLoader(Context context,
+		Integer resIdImageView, Integer resIdBadImage) {
 		super();
 		mContext = context;
 		mImage = (ImageView) ((Activity)mContext).findViewById(resIdImageView);
 		mResIdBadImage = resIdBadImage;
 	}
 	
-	public AsyncImageLoader(Context context, ImageView image, Integer resIdBadImage) {
+	public AsyncImageLoader(Context context,
+		ImageView image, Integer resIdBadImage) {
 		super();
 		mContext = context;
 		mImage = image;
 		mResIdBadImage = resIdBadImage;
 	}
 	
-	public AsyncImageLoader(Context context, ImageView image, Integer resIdBadImage, ProgressBar progress) {
+	public AsyncImageLoader(Context context,
+		ImageView image, Integer resIdBadImage, ProgressBar progress) {
 		this(context, image, resIdBadImage);
 		mProgress = progress;
 	}
