@@ -115,10 +115,7 @@ public class WeiboShowActivity extends Activity {
 				}
 				break;
 			case ThreadSinaDealer.GET_USER_TIMELINE:
-				boolean isUserInfoDone = (Boolean)mTextScreenName.getTag();
-				if (!isUserInfoDone) {
-					showLastUserBasicInfo();
-				}
+				showLastUserBasicInfo();
 				mLastUserTimeline = (ArrayList<Sina.XStatus>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 				if (mLastUserTimeline != null) {
 					/*
@@ -201,7 +198,6 @@ public class WeiboShowActivity extends Activity {
 			 * show the screen name
 			 */
 			mTextScreenName.setText(mLastUser.getScreenName());
-			mTextScreenName.setTag(true);
 			
 			/*
 			 * show "v" if verified
