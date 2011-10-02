@@ -67,7 +67,8 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			holder.mTextCreatedAt = (TextView)convertView.findViewById(R.id.tvStatusCreatedAt);
 			holder.mText = (TextView)convertView.findViewById(R.id.tvStatusText);
 			holder.mImage = (ImageView)convertView.findViewById(R.id.ivStatusImage);
-			holder.mTextCounts = (TextView)convertView.findViewById(R.id.tvStatusCounts);
+			holder.mTextComments = (TextView)convertView.findViewById(R.id.tvStatusComments);
+			holder.mTextReposts = (TextView)convertView.findViewById(R.id.tvStatusReposts);
 			holder.mTextSource = (TextView)convertView.findViewById(R.id.tvSource);
 			holder.mTextRetweeted = (TextView)convertView.findViewById(R.id.tvRetweeted);
 			holder.mProgressStatusImageLoading = (ProgressBar)convertView.findViewById(R.id.pbStatusImageLoading);
@@ -111,9 +112,8 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 				holder.mTextReply.setText("Reply:" + sReply);
 			}
 			*/
-			String counts = "comments:" + xstatus.getComments()
-				+ ", reposts:" + xstatus.getReposts();
-			holder.mTextCounts.setText(counts);
+			holder.mTextComments.setText("" + xstatus.getComments());
+			holder.mTextReposts.setText("" + xstatus.getReposts());
 			
 			String sSource = xstatus.getStatus().getSource();
 			if (sSource.trim().equals("")) {

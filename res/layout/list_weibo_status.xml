@@ -20,7 +20,12 @@
         </LinearLayout>
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout3" android:layout_alignParentBottom="true" android:layout_height="36dp">
             <RelativeLayout android:id="@+id/relativeLayout3" android:layout_height="fill_parent" android:layout_width="fill_parent">
-                <TextView android:layout_width="wrap_content" android:text="Reply" android:layout_height="wrap_content" android:id="@+id/tvStatusCounts"></TextView>
+                <LinearLayout android:id="@+id/linearLayout6" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <ImageView android:id="@+id/imageView1" android:scaleType="fitXY" android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/comments"></ImageView>
+                    <TextView android:id="@+id/tvStatusComments" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="comments"></TextView>
+                    <ImageView android:id="@+id/imageView2" android:scaleType="fitXY" android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/reposts"></ImageView>
+                    <TextView android:id="@+id/tvStatusReposts" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="reposts"></TextView>
+                </LinearLayout>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvSource" android:layout_alignParentRight="true" android:text="Source"></TextView>
             </RelativeLayout>
         </LinearLayout>
