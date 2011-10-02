@@ -8,7 +8,7 @@ public final class WeiboStatusViewHolder {
 	public TextView mTextCreatedAt;
 	public TextView mText;
 	public ImageView mImage;
-	public TextView mTextReply;
+	public TextView mTextCounts;
 	public TextView mTextSource;
 	public TextView mTextRetweeted;
 	public ProgressBar mProgressStatusImageLoading;

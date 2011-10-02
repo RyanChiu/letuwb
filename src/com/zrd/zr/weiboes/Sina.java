@@ -92,5 +92,38 @@ public class Sina implements Serializable {
 			return e.toString();
 		}
 	}
+	
+	public XStatus getXStatus() {
+		return new XStatus();
+	}
+	
+	public class XStatus implements Serializable {
+		/**
+		 * just in order to record the comments & reposts
+		 * for the original status
+		 */
+		private static final long serialVersionUID = -4063554782772695640L;
+		private weibo4android.Status status;
+		private long comments;
+		private long reposts;
+		public void setStatus(weibo4android.Status status) {
+			this.status = status;
+		}
+		public weibo4android.Status getStatus() {
+			return status;
+		}
+		public void setComments(long comments) {
+			this.comments = comments;
+		}
+		public long getComments() {
+			return comments;
+		}
+		public void setReposts(long reposts) {
+			this.reposts = reposts;
+		}
+		public long getReposts() {
+			return reposts;
+		}
+	}
 		
 }

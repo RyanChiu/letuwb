@@ -188,8 +188,8 @@ containing a value of this type.
         public static final int tvScreenNameAbovePic=0x7f07001b;
         public static final int tvSeekPos=0x7f070047;
         public static final int tvSource=0x7f07003b;
+        public static final int tvStatusCounts=0x7f07003a;
         public static final int tvStatusCreatedAt=0x7f070035;
-        public static final int tvStatusReply=0x7f07003a;
         public static final int tvStatusText=0x7f070036;
         public static final int tvTitleName=0x7f070030;
         public static final int tvUpdate=0x7f070063;

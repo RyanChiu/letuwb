@@ -57,7 +57,7 @@ public class WeiboShowActivity extends Activity {
 	private String mUid = null;
 	private static Sina mSina = null;
 	private User mLastUser = null;
-	private List<Status> mLastUserTimeline = null;
+	private List<Sina.XStatus> mLastUserTimeline = null;
 	private int mIndexOfSelectedStatus = -1;
 	
 	//private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
@@ -115,10 +115,11 @@ public class WeiboShowActivity extends Activity {
 				}
 				break;
 			case ThreadSinaDealer.GET_USER_TIMELINE:
-				if (mTextScreenName.getText().equals("")) {
+				boolean isUserInfoDone = (Boolean)mTextScreenName.getTag();
+				if (!isUserInfoDone) {
 					showLastUserBasicInfo();
 				}
-				mLastUserTimeline = (ArrayList<weibo4android.Status>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+				mLastUserTimeline = (ArrayList<Sina.XStatus>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 				if (mLastUserTimeline != null) {
 					/*
 					 * show the user time_line
@@ -200,6 +201,7 @@ public class WeiboShowActivity extends Activity {
 			 * show the screen name
 			 */
 			mTextScreenName.setText(mLastUser.getScreenName());
+			mTextScreenName.setTag(true);
 			
 			/*
 			 * show "v" if verified
@@ -423,7 +425,7 @@ public class WeiboShowActivity extends Activity {
 								new ThreadSinaDealer(
 									mSina,
 									ThreadSinaDealer.CREATE_FAVORITE,
-									new String[] {"" + mLastUserTimeline.get(mIndexOfSelectedStatus).getId()},
+									new String[] {"" + mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId()},
 									mHandler
 								)
 							).start();
@@ -474,7 +476,7 @@ public class WeiboShowActivity extends Activity {
 								if (mLastUserTimeline == null) {
 									sid = mLastUser.getStatus().getId();
 								} else {
-									sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getId();
+									sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
 								}
 								new Thread(
 									new ThreadSinaDealer(
@@ -510,14 +512,15 @@ public class WeiboShowActivity extends Activity {
 	private List<Map<String, Object>> getStatusData(Action type) {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map;
-		Status status;
+		Sina.XStatus xstatus;
 		switch (type) {
 		case SHOW_USER:
 			if (mLastUser != null) {
-				status = mLastUser.getStatus();
-				if (status != null) {
+				xstatus = mSina.getXStatus();
+				xstatus.setStatus(mLastUser.getStatus());
+				if (xstatus != null) {
 					map = new HashMap<String, Object>();
-					map.put("status", status);
+					map.put("xstatus", xstatus);
 					list.add(map);
 				}	
 			}
@@ -525,9 +528,9 @@ public class WeiboShowActivity extends Activity {
 		case GET_USER_TIMELINE:
 			if (mLastUserTimeline != null) {
 				for (int i = 0; i < mLastUserTimeline.size(); i++) {
-					status = mLastUserTimeline.get(i);
+					xstatus = mLastUserTimeline.get(i);
 					map = new HashMap<String, Object>();
-					map.put("status", status);
+					map.put("xstatus", xstatus);
 					list.add(map);
 				}
 			}

@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.zrd.zr.weiboes.Sina;
+
 import weibo4android.Status;
 
 import android.content.Context;
@@ -65,7 +67,7 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			holder.mTextCreatedAt = (TextView)convertView.findViewById(R.id.tvStatusCreatedAt);
 			holder.mText = (TextView)convertView.findViewById(R.id.tvStatusText);
 			holder.mImage = (ImageView)convertView.findViewById(R.id.ivStatusImage);
-			holder.mTextReply = (TextView)convertView.findViewById(R.id.tvStatusReply);
+			holder.mTextCounts = (TextView)convertView.findViewById(R.id.tvStatusCounts);
 			holder.mTextSource = (TextView)convertView.findViewById(R.id.tvSource);
 			holder.mTextRetweeted = (TextView)convertView.findViewById(R.id.tvRetweeted);
 			holder.mProgressStatusImageLoading = (ProgressBar)convertView.findViewById(R.id.pbStatusImageLoading);
@@ -75,30 +77,52 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			holder = (WeiboStatusViewHolder)convertView.getTag();
 		}
 		
-		if (mList != null) {
-			Status status = (Status)mList.get(position).get("status");
+		__drawHolder(mList, holder, position);
+		
+		/*
+		 * dealing with selecting an item
+		 */
+		if (position == mSelectedItem) {
+			convertView.setBackgroundColor(0x66ffc300);
+		} else {
+			convertView.setBackgroundColor(Color.TRANSPARENT);
+		}
+		
+		return convertView;
+	}
+
+	private void __drawHolder(List<Map<String, Object>> list,
+			WeiboStatusViewHolder holder, int position) {
+		// TODO Auto-generated method stub
+		if (list != null) {
+			Sina.XStatus xstatus = (Sina.XStatus)mList.get(position).get("xstatus");
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-			Date dt = status.getCreatedAt();
+			Date dt = xstatus.getStatus().getCreatedAt();
 			holder.mTextCreatedAt.setText(sdf.format(dt));
 			
-			holder.mText.setText(status.getText());
+			holder.mText.setText(xstatus.getStatus().getText());
 			
-			String sReply = status.getInReplyToScreenName();
+			/*
+			String sReply = xstatus.status.getInReplyToScreenName();
 			if (sReply.trim().equals("")) {
 				holder.mTextReply.setText("");
 			} else {
 				holder.mTextReply.setText("Reply:" + sReply);
 			}
+			*/
+			String counts = "comments:" + xstatus.getComments()
+				+ ", reposts:" + xstatus.getReposts();
+			holder.mTextCounts.setText(counts);
 			
-			String sSource = status.getSource();
+			String sSource = xstatus.getStatus().getSource();
 			if (sSource.trim().equals("")) {
 				holder.mTextSource.setText("");
 			} else {
 				holder.mTextSource.setText(Html.fromHtml("Source:" + sSource));
 			}
 			
-			Status statusR = status.getRetweeted_status();
+			Status statusR = xstatus.getStatus().getRetweeted_status();
 			if (statusR == null) {
 				holder.mTextRetweeted.setVisibility(TextView.GONE);
 			} else {
@@ -118,24 +142,13 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			);
 			URL url = null;
 			try {
-				String sURL = status.getBmiddle_pic();
+				String sURL = xstatus.getStatus().getBmiddle_pic();
 				url = new URL(sURL);
 				loader.execute(url);
 			} catch (MalformedURLException e) {
 				holder.mImage.setImageResource(R.drawable.empty);
 			}
 		}
-		
-		/*
-		 * dealing with selecting an item
-		 */
-		if (position == mSelectedItem) {
-			convertView.setBackgroundColor(0x66ffc300);
-		} else {
-			convertView.setBackgroundColor(Color.TRANSPARENT);
-		}
-		
-		return convertView;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.zrd.zr.weiboes;
 import java.util.ArrayList;
 import java.util.List;
 
+import weibo4android.Count;
 import weibo4android.Status;
 import weibo4android.User;
 import weibo4android.WeiboException;
@@ -57,7 +58,7 @@ public class ThreadSinaDealer implements Runnable {
 		msg.what = mAction;
 		User user;
 		Status status;
-		ArrayList<Status> statuses = new ArrayList<Status>();
+		ArrayList<Sina.XStatus> statuses = new ArrayList<Sina.XStatus>();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(KEY_SINA, mSina);
 		bundle.putSerializable(KEY_DATA, null);
@@ -80,8 +81,18 @@ public class ThreadSinaDealer implements Runnable {
 			if (mParams != null && mParams.length != 1 && mParams[0] != null) return;
 			try {
 				List<Status> list = mSina.getWeibo().getUserTimeline(mParams[0]);
+				String sids = "";
 				for (int i = 0; i < list.size(); i++) {
-					statuses.add(list.get(i));
+					Sina.XStatus xstatus = mSina.getXStatus();
+					xstatus.setStatus(list.get(i));
+					statuses.add(xstatus);
+					sids += list.get(i).getId();
+					if (i != list.size() - 1) sids += ",";
+				}
+				List<Count> counts = mSina.getWeibo().getCounts(sids);
+				for (int i = 0; i < counts.size() & i < statuses.size(); i++) {
+					statuses.get(i).setComments(counts.get(i).getComments());
+					statuses.get(i).setReposts(counts.get(i).getRt());
 				}
 				bundle.putSerializable(KEY_DATA, statuses);
 			} catch (WeiboException e) {
