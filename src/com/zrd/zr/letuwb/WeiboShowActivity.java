@@ -52,6 +52,7 @@ public class WeiboShowActivity extends Activity {
 	private Button mBtnRepost;
 	private ImageButton mBtnExchange;
 	
+	private AlertDialog mDlgRepost;
 	private EditText mEditRepost;
 	
 	private String mUid = null;
@@ -297,6 +298,39 @@ public class WeiboShowActivity extends Activity {
 			);
 		}
 		
+		mDlgRepost = new AlertDialog.Builder(WeiboShowActivity.this)
+			.setTitle("You could put some words here or just leave it blank.")
+			.setIcon(android.R.drawable.ic_dialog_info)
+			.setView(mEditRepost)
+			.setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
+	
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					/*
+					 * This is the place it handles reposting
+					 */
+					long sid;
+					if (mLastUserTimeline == null) {
+						sid = mLastUser.getStatus().getId();
+					} else {
+						sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
+					}
+					new Thread(
+						new ThreadSinaDealer(
+							mSina,
+							ThreadSinaDealer.REPOST,
+							new String[] {"" + sid, mEditRepost.getText().toString()},
+							mHandler
+						)
+					).start();
+					turnDealing(true);
+				}
+				
+			})
+			.setNegativeButton(R.string.label_cancel, null)
+			.create();
+		
 		mBtnExchange.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -456,39 +490,7 @@ public class WeiboShowActivity extends Activity {
 						return;
 					}
 					
-					new AlertDialog.Builder(WeiboShowActivity.this)
-						.setTitle("You could put some words here or just leave it blank.")
-						.setIcon(android.R.drawable.ic_dialog_info)
-						.setView(mEditRepost)
-						.setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
-	
-							@Override
-							public void onClick(DialogInterface arg0, int arg1) {
-								// TODO Auto-generated method stub
-								/*
-								 * This is the place it handles reposting
-								 */
-								long sid;
-								if (mLastUserTimeline == null) {
-									sid = mLastUser.getStatus().getId();
-								} else {
-									sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
-								}
-								new Thread(
-									new ThreadSinaDealer(
-										mSina,
-										ThreadSinaDealer.REPOST,
-										new String[] {"" + sid, mEditRepost.getText().toString()},
-										mHandler
-									)
-								).start();
-								turnDealing(true);
-							}
-							
-						})
-						.setNegativeButton(R.string.label_cancel, null)
-						.create()
-						.show();
+					mDlgRepost.show();
 				} else {
 					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
 				}
