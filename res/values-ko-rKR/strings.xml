@@ -116,4 +116,8 @@
     <string name="label_followers">Followers</string>
     <string name="label_friends">Friends</string>
     <string name="label_source">Source</string>
+    <string name="label_justnow">Just now</string>
+    <string name="label_minutesago">%1$d minutes ago</string>
+    <string name="label_hoursago">%1$d hours ago</string>
+    <string name="label_daysago">%1$d days ago</string>
 </resources>

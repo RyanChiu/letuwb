@@ -102,9 +102,8 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 		if (list != null) {
 			Sina.XStatus xstatus = (Sina.XStatus)mList.get(position).get("xstatus");
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Date dt = xstatus.getStatus().getCreatedAt();
-			holder.mTextCreatedAt.setText(sdf.format(dt));
+			holder.mTextCreatedAt.setText(getSpecialDateText(dt, 0));
 			
 			holder.mText.setText(xstatus.getStatus().getText());
 			
@@ -162,6 +161,40 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			} catch (MalformedURLException e) {
 				holder.mImage.setImageResource(R.drawable.empty);
 			}
+		}
+	}
+
+	private String getSpecialDateText(Date dt, int type) {
+		// TODO Auto-generated method stub
+		switch (type) {
+		case 0:
+			Date curDt = new Date();
+			float minutes = (float)(curDt.getTime() - dt.getTime()) / 60000;
+			if (minutes < 3) {
+				return mContext.getString(R.string.label_justnow);
+			}
+			if (minutes >= 3 && minutes < 60) {
+				return String.format(
+					mContext.getString(R.string.label_minutesago),
+					(long)Math.floor(minutes)
+				);
+			}
+			if (minutes >= 60 && minutes < 1440) {
+				return String.format(
+					mContext.getString(R.string.label_hoursago), 
+					(long)Math.floor(minutes / 60)
+				);
+			}
+			if (minutes >= 1440 && minutes < 10080) {
+				return String.format(
+					mContext.getString(R.string.label_daysago), 
+					(long)Math.floor(minutes / 1440)
+				);
+			}
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			return sdf.format(dt);
+		default:
+			return "";
 		}
 	}
 

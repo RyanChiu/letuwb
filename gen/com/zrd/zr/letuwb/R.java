@@ -251,12 +251,15 @@ containing a value of this type.
         public static final int item_upload=0x7f050009;
         public static final int label_browse=0x7f050035;
         public static final int label_cancel=0x7f050015;
+        public static final int label_daysago=0x7f050076;
         public static final int label_dwdw=0x7f050048;
         public static final int label_favorites=0x7f05006f;
         public static final int label_followers=0x7f050070;
         public static final int label_friends=0x7f050071;
         public static final int label_guest=0x7f050006;
         public static final int label_hottest=0x7f05005a;
+        public static final int label_hoursago=0x7f050075;
+        public static final int label_justnow=0x7f050073;
         public static final int label_latest=0x7f050059;
         public static final int label_letmebe=0x7f05002c;
         public static final int label_letmelogin=0x7f05002b;
@@ -264,6 +267,7 @@ containing a value of this type.
         public static final int label_letmereg=0x7f050031;
         public static final int label_login=0x7f050005;
         public static final int label_microblogs=0x7f05006e;
+        public static final int label_minutesago=0x7f050074;
         public static final int label_next=0x7f050057;
         public static final int label_no=0x7f05000e;
         public static final int label_ok=0x7f050014;
