@@ -277,7 +277,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
             	
                 Intent intent = new Intent();
                 
-                intent.putExtra("uid", wi.uid.toString());
+                intent.putExtra("uid", wi.uid);
 				
 				intent.setClass(PicbrowActivity.this, WeiboShowActivity.class);
 				startActivity(intent);
