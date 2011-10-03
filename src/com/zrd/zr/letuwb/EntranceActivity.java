@@ -846,9 +846,16 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	    	conn.connect();
 	    	InputStream is = conn.getInputStream();
 	    	Weibousers pbUsrs = Weibousers.parseFrom(is);
+	    	long id, uid;
 	    	for (Weibouser pbUsr: pbUsrs.getUsrList()) {
+	    		try {
+		    		id = Long.parseLong(pbUsr.getId());
+		    		uid = Long.parseLong(pbUsr.getUid());
+		    	} catch (NumberFormatException e) {
+		    		id = uid = 0;
+		    	}
 				WeibouserInfo wi = new WeibouserInfo(
-					Long.parseLong(pbUsr.getId()), Long.parseLong(pbUsr.getUid()), pbUsr.getScreenName(),
+					id, uid, pbUsr.getScreenName(),
 					pbUsr.getName(), pbUsr.getProvince(), pbUsr.getCity(),
 					pbUsr.getLocation(), pbUsr.getDescription(), pbUsr.getUrl(),
 					pbUsr.getProfileImageUrl(), pbUsr.getDomain(), pbUsr.getGender(),
