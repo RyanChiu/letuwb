@@ -436,10 +436,11 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				mGridPics.setTag(position);
 				
 				CharSequence[] items = {
-					"The bigger picture",
-					"The microblog"
+					getString(R.string.label_bigger_pic),
+					getString(R.string.label_microblogs)
 				};
 				new AlertDialog.Builder(EntranceActivity.this)
+					.setTitle(R.string.title_youwanna)
 					.setItems(items, new DialogInterface.OnClickListener() {
 
 						@Override

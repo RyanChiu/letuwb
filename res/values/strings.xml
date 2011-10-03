@@ -120,4 +120,6 @@
     <string name="label_minutesago">%1$d minutes ago</string>
     <string name="label_hoursago">%1$d hours ago</string>
     <string name="label_daysago">%1$d days ago</string>
+    <string name="label_bigger_pic">Bigger image</string>
+    <string name="title_youwanna">You wanna</string>
 </resources>

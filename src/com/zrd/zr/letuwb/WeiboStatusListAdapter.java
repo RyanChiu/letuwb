@@ -144,8 +144,9 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 					String sURL = statusR.getBmiddle_pic();
 					urlR = new URL(sURL);
 					loaderR.execute(urlR);
+					holder.mImageRetweeted.setVisibility(View.VISIBLE);
 				} catch (MalformedURLException e) {
-					holder.mImageRetweeted.setImageResource(R.drawable.empty);
+					holder.mImageRetweeted.setVisibility(View.GONE);
 				}
 			}
 			
@@ -158,8 +159,9 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 				String sURL = xstatus.getStatus().getBmiddle_pic();
 				url = new URL(sURL);
 				loader.execute(url);
+				holder.mImage.setVisibility(View.VISIBLE);
 			} catch (MalformedURLException e) {
-				holder.mImage.setImageResource(R.drawable.empty);
+				holder.mImage.setVisibility(View.GONE);
 			}
 		}
 	}

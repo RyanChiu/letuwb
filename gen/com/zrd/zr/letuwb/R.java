@@ -249,6 +249,7 @@ containing a value of this type.
         public static final int info_picture=0x7f050021;
         public static final int intro_title=0x7f050044;
         public static final int item_upload=0x7f050009;
+        public static final int label_bigger_pic=0x7f050077;
         public static final int label_browse=0x7f050035;
         public static final int label_cancel=0x7f050015;
         public static final int label_daysago=0x7f050076;
@@ -344,6 +345,7 @@ containing a value of this type.
         public static final int tips_voting=0x7f05001c;
         public static final int title_loginfirst=0x7f050066;
         public static final int title_warning=0x7f05004d;
+        public static final int title_youwanna=0x7f050078;
         public static final int update_title=0x7f050036;
     }
     public static final class style {
