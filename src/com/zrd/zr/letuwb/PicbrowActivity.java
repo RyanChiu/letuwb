@@ -826,7 +826,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	 * show the next, previous or current picture following 2 parameters:
 	 * id, direction
 	 */
-	public void zrAsyncShowPic(long id, long direction) {
+	public void zrAsyncShowPic(long id, int direction) {
 		if (mUsrs == null) return;
 		if (mUsrs.size() == 0) return;
 		AsyncPicLoader asyncPicLoader = new AsyncPicLoader(this);
