@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -70,8 +71,11 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			holder.mTextComments = (TextView)convertView.findViewById(R.id.tvStatusComments);
 			holder.mTextReposts = (TextView)convertView.findViewById(R.id.tvStatusReposts);
 			holder.mTextSource = (TextView)convertView.findViewById(R.id.tvSource);
+			holder.mLayoutRetweeted = (LinearLayout)convertView.findViewById(R.id.llRetweeted);
 			holder.mTextRetweeted = (TextView)convertView.findViewById(R.id.tvRetweeted);
+			holder.mImageRetweeted = (ImageView)convertView.findViewById(R.id.ivRetweetedImage);
 			holder.mProgressStatusImageLoading = (ProgressBar)convertView.findViewById(R.id.pbStatusImageLoading);
+			holder.mProgressRetweetedImageLoading = (ProgressBar)convertView.findViewById(R.id.pbRetweetedImageLoading);
 			
 			convertView.setTag(holder);
 		} else {
@@ -124,9 +128,9 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			
 			Status statusR = xstatus.getStatus().getRetweeted_status();
 			if (statusR == null) {
-				holder.mTextRetweeted.setVisibility(TextView.GONE);
+				holder.mLayoutRetweeted.setVisibility(LinearLayout.GONE);
 			} else {
-				holder.mTextRetweeted.setVisibility(TextView.VISIBLE);
+				holder.mLayoutRetweeted.setVisibility(TextView.VISIBLE);
 				holder.mTextRetweeted.setText(
 					Html.fromHtml(
 						"<b><font color='red'>Quote:</font></b>"
@@ -134,6 +138,19 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 						+ statusR.getText()
 					)
 				);
+				
+				AsyncImageLoader loaderR = new AsyncImageLoader(
+					mContext, holder.mImageRetweeted, R.drawable.broken,
+					holder.mProgressRetweetedImageLoading
+				);
+				URL urlR = null;
+				try {
+					String sURL = statusR.getBmiddle_pic();
+					urlR = new URL(sURL);
+					loaderR.execute(urlR);
+				} catch (MalformedURLException e) {
+					holder.mImageRetweeted.setImageResource(R.drawable.empty);
+				}
 			}
 			
 			AsyncImageLoader loader = new AsyncImageLoader(
