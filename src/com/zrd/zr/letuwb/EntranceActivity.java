@@ -44,12 +44,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TableRow;
@@ -104,6 +106,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	OnClickListener listenerBtnView = null;
 	OnClickListener listenerBtnExit = null;
 	Dialog mPrgDlg;
+	private Dialog mDlgWaysToCheck;
 	AlertDialog mQuitDialog;
 	EditText mEditUsername;
 	EditText mEditPassword;
@@ -429,49 +432,56 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			
 			}
 		);
+		
+		mDlgWaysToCheck = new Dialog(EntranceActivity.this, R.style.Dialog_Clean);
+		mDlgWaysToCheck.setContentView(R.layout.custom_dialog_list);
+		ListView lv = (ListView)mDlgWaysToCheck.findViewById(R.id.lvCustomList);
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(getString(R.string.label_bigger_pic));
+		list.add(getString(R.string.label_microblogs));
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+			EntranceActivity.this,
+			android.R.layout.simple_expandable_list_item_1,
+			list
+		);
+		lv.setAdapter(adapter);
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long arg3) {
+				// TODO Auto-generated method stub
+				WeibouserInfo wi;
+				Intent intent = new Intent();
+				int idx = (Integer) mGridPics.getTag();
+				switch (position) {
+				case 0:
+					wi = (WeibouserInfo) mPageUsrs.get(idx);
+					intent.setClass(EntranceActivity.this, PicbrowActivity.class);
+					intent.putExtra("id", wi.id);
+					mPageBeforeBrow = mCurPage;
+					startActivityForResult(intent, REQUESTCODE_BACKFROM);
+					break;
+				case 1:
+					wi = (WeibouserInfo) mPageUsrs.get(idx);
+	                
+	                intent.putExtra("uid", wi.uid);
+					
+					intent.setClass(EntranceActivity.this, WeiboShowActivity.class);
+					startActivity(intent);
+					break;
+				}
+				mDlgWaysToCheck.dismiss();
+			}
+			
+		});
                 
 		mGridPics.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				// TODO Auto-generated method stub
 				mGridPics.setTag(position);
 				
-				CharSequence[] items = {
-					getString(R.string.label_bigger_pic),
-					getString(R.string.label_microblogs)
-				};
-				new AlertDialog.Builder(EntranceActivity.this)
-					.setTitle(R.string.title_youwanna)
-					.setItems(items, new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							WeibouserInfo wi;
-							Intent intent = new Intent();
-							int position = (Integer) mGridPics.getTag();
-							switch (which) {
-							case 0:
-								wi = (WeibouserInfo) mPageUsrs.get(position);
-								intent.setClass(EntranceActivity.this, PicbrowActivity.class);
-								intent.putExtra("id", wi.id);
-								mPageBeforeBrow = mCurPage;
-								startActivityForResult(intent, REQUESTCODE_BACKFROM);
-								break;
-							case 1:
-								wi = (WeibouserInfo) mPageUsrs.get(position);
-				                
-				                intent.putExtra("uid", wi.uid);
-								
-								intent.setClass(EntranceActivity.this, WeiboShowActivity.class);
-								startActivity(intent);
-								break;
-							}
-							dialog.dismiss();
-						}
-						
-					})
-					.create()
-					.show();
+				mDlgWaysToCheck.show();
 			}
         });
         
