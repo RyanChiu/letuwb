@@ -115,7 +115,12 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			if (sSource.trim().equals("")) {
 				holder.mTextSource.setText("");
 			} else {
-				holder.mTextSource.setText(Html.fromHtml("Source:" + sSource));
+				holder.mTextSource.setText(
+					Html.fromHtml(
+						mContext.getString(R.string.label_source)
+						+ ":" + sSource
+					)
+				);
 			}
 			
 			Status statusR = xstatus.getStatus().getRetweeted_status();

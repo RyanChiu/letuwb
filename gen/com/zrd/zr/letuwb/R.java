@@ -103,13 +103,13 @@ containing a value of this type.
         public static final int btnPre=0x7f07004c;
         public static final int btnRandom=0x7f070053;
         public static final int btnReg=0x7f070063;
+        public static final int btnReloadTimelines=0x7f070076;
         public static final int btnRepost=0x7f070079;
         public static final int btnSave=0x7f070014;
         public static final int btnShare=0x7f070028;
         public static final int btnUnhottest=0x7f070054;
         public static final int btnUpload=0x7f070015;
         public static final int btnWeiboShow=0x7f070029;
-        public static final int btnWeibos=0x7f070076;
         public static final int btnZoomin=0x7f07002a;
         public static final int btnZoomout=0x7f07002b;
         public static final int cbRemember=0x7f070064;
@@ -252,6 +252,9 @@ containing a value of this type.
         public static final int label_browse=0x7f050035;
         public static final int label_cancel=0x7f050015;
         public static final int label_dwdw=0x7f050048;
+        public static final int label_favorites=0x7f05006f;
+        public static final int label_followers=0x7f050070;
+        public static final int label_friends=0x7f050071;
         public static final int label_guest=0x7f050006;
         public static final int label_hottest=0x7f05005a;
         public static final int label_latest=0x7f050059;
@@ -260,6 +263,7 @@ containing a value of this type.
         public static final int label_letmelogon=0x7f050032;
         public static final int label_letmereg=0x7f050031;
         public static final int label_login=0x7f050005;
+        public static final int label_microblogs=0x7f05006e;
         public static final int label_next=0x7f050057;
         public static final int label_no=0x7f05000e;
         public static final int label_ok=0x7f050014;
@@ -270,11 +274,13 @@ containing a value of this type.
         public static final int label_random=0x7f050058;
         public static final int label_refresh=0x7f05004e;
         public static final int label_register=0x7f050007;
+        public static final int label_reload=0x7f050067;
         public static final int label_remember=0x7f050008;
         public static final int label_repeat=0x7f050004;
         public static final int label_reset=0x7f050033;
         public static final int label_save=0x7f050052;
         public static final int label_share=0x7f05006b;
+        public static final int label_source=0x7f050072;
         public static final int label_unhottest=0x7f05005b;
         public static final int label_upload=0x7f050053;
         public static final int label_upup=0x7f050047;
@@ -282,7 +288,6 @@ containing a value of this type.
         public static final int label_weibo_favorite=0x7f050069;
         public static final int label_weibo_friendship=0x7f050068;
         public static final int label_weibo_repost=0x7f05006a;
-        public static final int label_weibos=0x7f050067;
         public static final int label_yes=0x7f05000d;
         public static final int label_zoom=0x7f050034;
         public static final int msg_loading=0x7f05000a;
@@ -308,6 +313,8 @@ containing a value of this type.
         public static final int tips_downloading=0x7f050039;
         public static final int tips_enterintro=0x7f050045;
         public static final int tips_firstone=0x7f050024;
+        public static final int tips_friendsalready=0x7f05006d;
+        public static final int tips_friendsmade=0x7f05006c;
         public static final int tips_hottesttheweek=0x7f05005d;
         public static final int tips_howtobacktobrowse=0x7f05004f;
         public static final int tips_isdownloading=0x7f05003c;

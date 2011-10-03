@@ -50,7 +50,7 @@ public class WeiboShowActivity extends Activity {
 	private TextView mTextCounts;
 	private ListView mListStatus;
 	private ProgressBar mProgressStatusLoading;
-	private Button mBtnWeibos;
+	private Button mBtnReload;
 	private Button mBtnFriend;
 	private Button mBtnFavorite;
 	private Button mBtnRepost;
@@ -108,7 +108,7 @@ public class WeiboShowActivity extends Activity {
 					/*
 					 * show the user timeline at the same time
 					 */
-					mBtnWeibos.performClick();
+					mBtnReload.performClick();
 				} else {
 					mTextCreatedAt.setText("Please try again...");
 				}
@@ -142,13 +142,13 @@ public class WeiboShowActivity extends Activity {
 					if (!user.equals(mSina.getLoggedInUser())) {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							"Friends made.",
+							R.string.tips_friendsmade,
 							Toast.LENGTH_LONG
 						).show();
 					} else {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							"Friends already.",
+							R.string.tips_friendsalready,
 							Toast.LENGTH_LONG
 						).show();
 					}
@@ -239,11 +239,13 @@ public class WeiboShowActivity extends Activity {
 			 * show all kinds of the counts
 			 */
 			mTextCounts.setText(
-				"Weibos:" + mLastUser.getStatusesCount()
-				+ "  Favorites:" + mLastUser.getFavouritesCount()
-				+ "  "
-				+ "Followers:" + mLastUser.getFollowersCount()
-				+ "  Friends:" + mLastUser.getFriendsCount()
+				getString(R.string.label_microblogs) + ":" + mLastUser.getStatusesCount()
+				+ " " 
+				+ getString(R.string.label_favorites) + ":" + mLastUser.getFavouritesCount()
+				+ " "
+				+ getString(R.string.label_followers) + ":" + mLastUser.getFollowersCount()
+				+ " " 
+				+ getString(R.string.label_friends) + ":" + mLastUser.getFriendsCount()
 			);
 		}
 	};
@@ -266,7 +268,7 @@ public class WeiboShowActivity extends Activity {
 		mTextCounts = (TextView)findViewById(R.id.tvCounts);
 		mListStatus = (ListView)findViewById(R.id.lvStatus);
 		mProgressStatusLoading = (ProgressBar)findViewById(R.id.pbStatusLoading);
-		mBtnWeibos = (Button)findViewById(R.id.btnWeibos);
+		mBtnReload = (Button)findViewById(R.id.btnReloadTimelines);
 		mBtnFriend = (Button)findViewById(R.id.btnFriend);
 		mBtnFavorite = (Button)findViewById(R.id.btnFavorite);
 		mBtnRepost = (Button)findViewById(R.id.btnRepost);
@@ -448,7 +450,7 @@ public class WeiboShowActivity extends Activity {
 			
 		});
 		
-		mBtnWeibos.setOnClickListener(new OnClickListener() {
+		mBtnReload.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -610,14 +612,14 @@ public class WeiboShowActivity extends Activity {
 	 */
 	private void turnDealing(boolean on) {
 		if (on == true) {
-			mBtnWeibos.setEnabled(false);
+			mBtnReload.setEnabled(false);
 			mBtnFriend.setEnabled(false);
 			mBtnFavorite.setEnabled(false);
 			mBtnRepost.setEnabled(false);
 			mBtnMoreTimelines.setEnabled(false);
 			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
 		} else {
-			mBtnWeibos.setEnabled(true);
+			mBtnReload.setEnabled(true);
 			mBtnFriend.setEnabled(true);
 			mBtnFavorite.setEnabled(true);
 			mBtnRepost.setEnabled(true);
