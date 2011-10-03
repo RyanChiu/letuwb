@@ -208,7 +208,7 @@ containing a value of this type.
     public static final class layout {
         public static final int about=0x7f030000;
         public static final int brow=0x7f030001;
-        public static final int custom_dialog=0x7f030002;
+        public static final int custom_dialog_loading=0x7f030002;
         public static final int exchangelist=0x7f030003;
         public static final int exchangelist_title=0x7f030004;
         public static final int file=0x7f030005;

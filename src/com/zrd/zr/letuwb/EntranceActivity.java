@@ -393,7 +393,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         });
         
         mPrgDlg = new Dialog(this, R.style.Dialog_Clean);
-        mPrgDlg.setContentView(R.layout.custom_dialog);
+        mPrgDlg.setContentView(R.layout.custom_dialog_loading);
         WindowManager.LayoutParams lp = mPrgDlg.getWindow().getAttributes();
         lp.alpha = 1.0f;
         mPrgDlg.getWindow().setAttributes(lp);

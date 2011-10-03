@@ -860,7 +860,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 			super();
 			mContext = c;
 			mPrgDialog = new Dialog(mContext, R.style.Dialog_Clean);
-			mPrgDialog.setContentView(R.layout.custom_dialog);
+			mPrgDialog.setContentView(R.layout.custom_dialog_loading);
 			((TextView) mPrgDialog.findViewById(R.id.tvCustomDialogTitle)).setText(getString(R.string.msg_loading));
 			mPrgDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 				public void onCancel(DialogInterface dialog) {

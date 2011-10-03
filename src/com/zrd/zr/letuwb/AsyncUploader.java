@@ -31,7 +31,7 @@ class AsyncUploader extends AsyncTask <Intent, Object, String> {
 		mContext = c;
 		mAccountId = id;
 		mPrgDlg = new Dialog(mContext, R.style.Dialog_Clean);
-		mPrgDlg.setContentView(R.layout.custom_dialog);
+		mPrgDlg.setContentView(R.layout.custom_dialog_loading);
 		((TextView) mPrgDlg.findViewById(R.id.tvCustomDialogTitle)).setText(c.getString(R.string.msg_uploading));
 		mPrgDlg.setOnCancelListener(new DialogInterface.OnCancelListener() {
 			public void onCancel(DialogInterface dialog) {
