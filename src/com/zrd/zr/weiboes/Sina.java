@@ -104,8 +104,8 @@ public class Sina implements Serializable {
 		 */
 		private static final long serialVersionUID = -4063554782772695640L;
 		private weibo4android.Status status;
-		private long comments;
-		private long reposts;
+		private long comments = 0;
+		private long reposts = 0;
 		public void setStatus(weibo4android.Status status) {
 			this.status = status;
 		}

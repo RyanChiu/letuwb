@@ -59,7 +59,7 @@ public class ThreadSinaDealer implements Runnable {
 		msg.what = mAction;
 		User user;
 		Status status;
-		ArrayList<Sina.XStatus> statuses = new ArrayList<Sina.XStatus>();
+		ArrayList<Sina.XStatus> xstatuses = new ArrayList<Sina.XStatus>();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(KEY_SINA, mSina);
 		bundle.putSerializable(KEY_DATA, null);
@@ -90,16 +90,18 @@ public class ThreadSinaDealer implements Runnable {
 				for (int i = 0; i < list.size(); i++) {
 					Sina.XStatus xstatus = mSina.getXStatus();
 					xstatus.setStatus(list.get(i));
-					statuses.add(xstatus);
+					xstatuses.add(xstatus);
 					sids += list.get(i).getId();
 					if (i != list.size() - 1) sids += ",";
 				}
-				List<Count> counts = mSina.getWeibo().getCounts(sids);
-				for (int i = 0; i < counts.size() & i < statuses.size(); i++) {
-					statuses.get(i).setComments(counts.get(i).getComments());
-					statuses.get(i).setReposts(counts.get(i).getRt());
+				if (!sids.equals("")) {
+					List<Count> counts = mSina.getWeibo().getCounts(sids);
+					for (int i = 0; i < counts.size() & i < xstatuses.size(); i++) {
+						xstatuses.get(i).setComments(counts.get(i).getComments());
+						xstatuses.get(i).setReposts(counts.get(i).getRt());
+					}
 				}
-				bundle.putSerializable(KEY_DATA, statuses);
+				bundle.putSerializable(KEY_DATA, xstatuses);
 			} catch (WeiboException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
