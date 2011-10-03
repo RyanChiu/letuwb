@@ -23,9 +23,9 @@ public class AsyncThumLoader {
 	static Context mContext;
 	static ArrayList<WeibouserInfo> mUsrs = new ArrayList<WeibouserInfo>();
 
-	private HashMap<Integer, SoftReference<Drawable>> imageCache;
+	private HashMap<Long, SoftReference<Drawable>> imageCache;
 	
-	public HashMap<Integer, SoftReference<Drawable>> getImageCache() {
+	public HashMap<Long, SoftReference<Drawable>> getImageCache() {
 		return imageCache;
 	}
 
@@ -34,10 +34,10 @@ public class AsyncThumLoader {
     	 for (int i = 0; i < pics.size(); i++) {
     		 mUsrs.add(pics.get(i));
     	 }
-    	 imageCache = new HashMap<Integer, SoftReference<Drawable>>();
+    	 imageCache = new HashMap<Long, SoftReference<Drawable>>();
      }
   
-     public Drawable loadDrawable(final Integer id, final ImageCallback imageCallback) {
+     public Drawable loadDrawable(final Long id, final ImageCallback imageCallback) {
          if (imageCache.containsKey(id)) {
              SoftReference<Drawable> softReference = imageCache.get(id);
              Drawable drawable = softReference.get();
@@ -73,7 +73,7 @@ public class AsyncThumLoader {
          return null;
      }
   
-	public static Drawable loadImageFromId(Integer id) {
+	public static Drawable loadImageFromId(Long id) {
 		System.gc();
 		System.runFinalization();
 		System.gc();
@@ -118,7 +118,7 @@ public class AsyncThumLoader {
 	}
   
      public interface ImageCallback {
-         public void imageLoaded(Drawable imageDrawable, Integer id);
+         public void imageLoaded(Drawable imageDrawable, Long id);
      }
 
 }

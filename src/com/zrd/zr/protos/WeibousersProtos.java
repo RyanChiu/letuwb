@@ -11,13 +11,13 @@ public final class WeibousersProtos {
   public interface WeibouserOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required int32 id = 1;
+    // required string id = 1;
     boolean hasId();
-    int getId();
+    String getId();
     
-    // required int32 uid = 2;
+    // required string uid = 2;
     boolean hasUid();
-    int getUid();
+    String getUid();
     
     // required string screen_name = 3;
     boolean hasScreenName();
@@ -156,24 +156,68 @@ public final class WeibousersProtos {
     }
     
     private int bitField0_;
-    // required int32 id = 1;
+    // required string id = 1;
     public static final int ID_FIELD_NUMBER = 1;
-    private int id_;
+    private java.lang.Object id_;
     public boolean hasId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public int getId() {
-      return id_;
+    public String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          id_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
-    // required int32 uid = 2;
+    // required string uid = 2;
     public static final int UID_FIELD_NUMBER = 2;
-    private int uid_;
+    private java.lang.Object uid_;
     public boolean hasUid() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public int getUid() {
-      return uid_;
+    public String getUid() {
+      java.lang.Object ref = uid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          uid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUidBytes() {
+      java.lang.Object ref = uid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        uid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
     // required string screen_name = 3;
@@ -667,8 +711,8 @@ public final class WeibousersProtos {
     }
     
     private void initFields() {
-      id_ = 0;
-      uid_ = 0;
+      id_ = "";
+      uid_ = "";
       screenName_ = "";
       name_ = "";
       province_ = 0;
@@ -826,10 +870,10 @@ public final class WeibousersProtos {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, id_);
+        output.writeBytes(1, getIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, uid_);
+        output.writeBytes(2, getUidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBytes(3, getScreenNameBytes());
@@ -923,11 +967,11 @@ public final class WeibousersProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, id_);
+          .computeBytesSize(1, getIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, uid_);
+          .computeBytesSize(2, getUidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1161,9 +1205,9 @@ public final class WeibousersProtos {
       
       public Builder clear() {
         super.clear();
-        id_ = 0;
+        id_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        uid_ = 0;
+        uid_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
         screenName_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -1623,14 +1667,14 @@ public final class WeibousersProtos {
               }
               break;
             }
-            case 8: {
+            case 10: {
               bitField0_ |= 0x00000001;
-              id_ = input.readInt32();
+              id_ = input.readBytes();
               break;
             }
-            case 16: {
+            case 18: {
               bitField0_ |= 0x00000002;
-              uid_ = input.readInt32();
+              uid_ = input.readBytes();
               break;
             }
             case 26: {
@@ -1774,46 +1818,76 @@ public final class WeibousersProtos {
       
       private int bitField0_;
       
-      // required int32 id = 1;
-      private int id_ ;
+      // required string id = 1;
+      private java.lang.Object id_ = "";
       public boolean hasId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public int getId() {
-        return id_;
+      public String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setId(int value) {
-        bitField0_ |= 0x00000001;
+      public Builder setId(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
         id_ = value;
         onChanged();
         return this;
       }
       public Builder clearId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        id_ = 0;
+        id_ = getDefaultInstance().getId();
         onChanged();
         return this;
       }
+      void setId(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000001;
+        id_ = value;
+        onChanged();
+      }
       
-      // required int32 uid = 2;
-      private int uid_ ;
+      // required string uid = 2;
+      private java.lang.Object uid_ = "";
       public boolean hasUid() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public int getUid() {
-        return uid_;
+      public String getUid() {
+        java.lang.Object ref = uid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          uid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUid(int value) {
-        bitField0_ |= 0x00000002;
+      public Builder setUid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
         uid_ = value;
         onChanged();
         return this;
       }
       public Builder clearUid() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        uid_ = 0;
+        uid_ = getDefaultInstance().getUid();
         onChanged();
         return this;
+      }
+      void setUid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        uid_ = value;
+        onChanged();
       }
       
       // required string screen_name = 3;
@@ -3128,8 +3202,8 @@ public final class WeibousersProtos {
   static {
     java.lang.String[] descriptorData = {
       "\n\027weibousers_protos.proto\022\021com.zrd.zr.pr" +
-      "otos\"\276\004\n\tWeibouser\022\n\n\002id\030\001 \002(\005\022\013\n\003uid\030\002 " +
-      "\002(\005\022\023\n\013screen_name\030\003 \002(\t\022\014\n\004name\030\004 \002(\t\022\020" +
+      "otos\"\276\004\n\tWeibouser\022\n\n\002id\030\001 \002(\t\022\013\n\003uid\030\002 " +
+      "\002(\t\022\023\n\013screen_name\030\003 \002(\t\022\014\n\004name\030\004 \002(\t\022\020" +
       "\n\010province\030\005 \002(\005\022\014\n\004city\030\006 \002(\005\022\020\n\010locati" +
       "on\030\007 \002(\t\022\023\n\013description\030\010 \002(\t\022\013\n\003url\030\t \002" +
       "(\t\022\031\n\021profile_image_url\030\n \002(\t\022\016\n\006domain\030" +

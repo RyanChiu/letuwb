@@ -48,12 +48,12 @@ public class WeibouserInfoGridAdapter extends ArrayAdapter<WeibouserInfo> {
 	        WeibouserInfo wi = getItem(position);
 
 	        // Load the image and set it on the ImageView
-	        Integer id = wi.id;
+	        Long id = wi.id;
 	        TextView textView = viewCache.getTextView();
 	        ImageView imageView = viewCache.getImageView();
 	        imageView.setTag(id);
 	        Drawable cachedImage = asyncImageLoader.loadDrawable(id, new ImageCallback() {
-	            public void imageLoaded(Drawable imageDrawable, Integer id) {
+	            public void imageLoaded(Drawable imageDrawable, Long id) {
 	                ImageView imageViewByTag = (ImageView) gridView.findViewWithTag(id);
 	                if (imageViewByTag != null) {
 	                    imageViewByTag.setImageDrawable(imageDrawable);

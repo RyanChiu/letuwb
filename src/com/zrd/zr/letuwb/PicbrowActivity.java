@@ -94,7 +94,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	private static Boolean mIsLoading = false;
 	private Boolean mWasPlaying = false;
 	public Boolean mIsDooming = false;
-	Integer mId = 0;
+	Long mId = (long)0;
 	ArrayList<WeibouserInfo> mUsrs = null;
 	Bitmap bdPicFailed;
 	private GestureDetector mGestureDetector = null;
@@ -212,7 +212,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		//mBrow.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
 		Intent intent = getIntent();
 		mUsrs = EntranceActivity.getmUsrs();
-		mId = intent.getIntExtra("id", 0);
+		mId = intent.getLongExtra("id", 0);
 		zrAsyncShowPic(mId, 0);
 		
 		tvNums.setText("0/" + mUsrs.size());
@@ -826,7 +826,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	 * show the next, previous or current picture following 2 parameters:
 	 * id, direction
 	 */
-	public void zrAsyncShowPic(int id, int direction) {
+	public void zrAsyncShowPic(long id, long direction) {
 		if (mUsrs == null) return;
 		if (mUsrs.size() == 0) return;
 		AsyncPicLoader asyncPicLoader = new AsyncPicLoader(this);
@@ -891,7 +891,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 			
 			if (params.length != 2) return bdPicFailed;
 			
-			Integer id = (Integer) params[0];
+			Long id = (Long) params[0];
 			Integer direction = (Integer) params[1];
 			int idx = EntranceActivity.getUsrIndexFromId(id, mUsrs);
 			if (idx == -1) return bdPicFailed;

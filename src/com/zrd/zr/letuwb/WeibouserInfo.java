@@ -3,8 +3,8 @@ package com.zrd.zr.letuwb;
 import java.util.Date;
 
 public class WeibouserInfo {
-	public Integer id;
-	public Integer uid;
+	public Long id;
+	public Long uid;
 	public String screen_name;
 	public String name;
 	public Integer province;
@@ -15,10 +15,10 @@ public class WeibouserInfo {
 	public String profile_image_url;
 	public String domain;
 	public String gender;
-	public Integer followers_count;
-	public Integer friends_count;
-	public Integer statuses_count;
-	public Integer favourites_count;
+	public Long followers_count;
+	public Long friends_count;
+	public Long statuses_count;
+	public Long favourites_count;
 	public String created_at;
 	public Integer following;
 	public Integer allow_all_act_msg;
@@ -38,8 +38,8 @@ public class WeibouserInfo {
 	public Date mLastVoteTime = null;
 	
 	public WeibouserInfo() {
-		this.id = 0;
-		this.uid = 0;
+		this.id = (long)0;
+		this.uid = (long)0;
 		this.screen_name = "";
 		this.name = "";
 		this.province = -1;
@@ -50,10 +50,10 @@ public class WeibouserInfo {
 		this.profile_image_url = "";
 		this.domain = "";
 		this.gender = "";
-		this.followers_count = 0;
-		this.friends_count = 0;
-		this.statuses_count = 0;
-		this.favourites_count = 0;
+		this.followers_count = (long)0;
+		this.friends_count = (long)0;
+		this.statuses_count = (long)0;
+		this.favourites_count = (long)0;
 		this.created_at = "";
 		this.following = -1;
 		this.allow_all_act_msg = -1;
@@ -93,11 +93,11 @@ public class WeibouserInfo {
 		this.dislikes = 0;
 	}
 	
-	public WeibouserInfo(Integer id, Integer uid, String screen_name, String name,
+	public WeibouserInfo(Long id, Long uid, String screen_name, String name,
 			Integer province, Integer city, String location, String description,
 			String url, String profile_image_url, String domain, String gender,
-			Integer followers_count, Integer friends_count, Integer statuses_count,
-			Integer favourites_count, String created_at, Integer following,
+			Long followers_count, Long friends_count, Long statuses_count,
+			Long favourites_count, String created_at, Integer following,
 			Integer allow_all_act_msg, Integer geo_enabled, Integer verified,
 			Integer status_id, Integer clicks, Integer likes, Integer dislikes) {
 		super();

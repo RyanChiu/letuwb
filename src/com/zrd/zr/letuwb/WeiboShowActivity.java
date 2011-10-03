@@ -60,7 +60,7 @@ public class WeiboShowActivity extends Activity {
 	private EditText mEditRepost;
 	private Button mBtnMoreTimelines;
 	
-	private String mUid = null;
+	private Long mUid = null;
 	private static Sina mSina = null;
 	private User mLastUser = null;
 	private List<Sina.XStatus> mLastUserTimeline = new ArrayList<Sina.XStatus>();
@@ -289,7 +289,7 @@ public class WeiboShowActivity extends Activity {
 						mSina,
 						ThreadSinaDealer.GET_USER_TIMELINE,
 						new String[] {
-							mUid, 
+							mUid.toString(), 
 							"" + (getLastUserTimelineTotalPage() + 1), 
 							"" + COUNT_PERPAGE_TIMELINE
 						},
@@ -306,13 +306,13 @@ public class WeiboShowActivity extends Activity {
 		 * show the whole user/info
 		 */
 		Intent intent = getIntent();
-		mUid = intent.getStringExtra("uid");
+		mUid = intent.getLongExtra("uid", 0);
     	
 		new Thread(
 			new ThreadSinaDealer(
 				mSina, 
 				ThreadSinaDealer.SHOW_USER, 
-				new String[] {mUid}, 
+				new String[] {mUid.toString()}, 
 				mHandler
 			)
 		).start();
@@ -460,7 +460,7 @@ public class WeiboShowActivity extends Activity {
 					new ThreadSinaDealer(
 						mSina,
 						ThreadSinaDealer.GET_USER_TIMELINE,
-						new String[] {mUid, "" + getLastUserTimelineTotalPage(), "" + COUNT_PERPAGE_TIMELINE},
+						new String[] {mUid.toString(), "" + getLastUserTimelineTotalPage(), "" + COUNT_PERPAGE_TIMELINE},
 						mHandler
 					)
 				).start();
@@ -479,7 +479,7 @@ public class WeiboShowActivity extends Activity {
 						new ThreadSinaDealer(
 							mSina,
 							ThreadSinaDealer.CREATE_FRIENDSHIP,
-							new String[] {mUid},
+							new String[] {mUid.toString()},
 							mHandler
 						)
 					).start();

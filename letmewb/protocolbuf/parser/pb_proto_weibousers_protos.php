@@ -5,9 +5,9 @@ class Weibouser extends PBMessage
   public function __construct($reader=null)
   {
     parent::__construct($reader);
-    $this->fields["1"] = "PBInt";
+    $this->fields["1"] = "PBString";
     $this->values["1"] = "";
-    $this->fields["2"] = "PBInt";
+    $this->fields["2"] = "PBString";
     $this->values["2"] = "";
     $this->fields["3"] = "PBString";
     $this->values["3"] = "";

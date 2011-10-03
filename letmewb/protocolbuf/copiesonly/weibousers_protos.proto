@@ -1,7 +1,7 @@
 
 message Weibouser {
-	required int32 id = 1;
-	required int32 uid = 2;
+	required string id = 1;
+	required string uid = 2;
 	required string screen_name = 3;
 	required string name = 4;
 	required int32 province = 5;

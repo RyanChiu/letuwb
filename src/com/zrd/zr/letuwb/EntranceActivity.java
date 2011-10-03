@@ -460,7 +460,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 							case 1:
 								wi = (WeibouserInfo) mPageUsrs.get(position);
 				                
-				                intent.putExtra("uid", wi.uid.toString());
+				                intent.putExtra("uid", wi.uid);
 								
 								intent.setClass(EntranceActivity.this, WeiboShowActivity.class);
 								startActivity(intent);
@@ -489,7 +489,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	/*
 	 * get index of current usr in mUsrs by id
 	 */
-	public static int getUsrIndexFromId(int id, List<WeibouserInfo> usrs) {
+	public static int getUsrIndexFromId(long id, List<WeibouserInfo> usrs) {
 		if (usrs == null) return -1;
 		if (usrs.size() == 0) return -1;
 		int i;
@@ -506,7 +506,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	/*
 	 * get picfileInfo from mUsrs by id
 	 */
-	public static WeibouserInfo getPicFromId(int id, List<WeibouserInfo> pics) {
+	public static WeibouserInfo getPicFromId(long id, List<WeibouserInfo> pics) {
 		int idx = getUsrIndexFromId(id, pics);
 		if (idx < 0 || idx >= pics.size()) return null;
 		return pics.get(idx);
@@ -848,12 +848,13 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	    	Weibousers pbUsrs = Weibousers.parseFrom(is);
 	    	for (Weibouser pbUsr: pbUsrs.getUsrList()) {
 				WeibouserInfo wi = new WeibouserInfo(
-					pbUsr.getId(), pbUsr.getUid(), pbUsr.getScreenName(),
+					Long.parseLong(pbUsr.getId()), Long.parseLong(pbUsr.getUid()), pbUsr.getScreenName(),
 					pbUsr.getName(), pbUsr.getProvince(), pbUsr.getCity(),
 					pbUsr.getLocation(), pbUsr.getDescription(), pbUsr.getUrl(),
 					pbUsr.getProfileImageUrl(), pbUsr.getDomain(), pbUsr.getGender(),
-					pbUsr.getFollowersCount(), pbUsr.getFriendsCount(), pbUsr.getStatusesCount(),
-					pbUsr.getFavouritesCount(), pbUsr.getCreatedAt(), pbUsr.getFollowing(),
+					(long)pbUsr.getFollowersCount(), (long)pbUsr.getFriendsCount(), 
+					(long)pbUsr.getStatusesCount(), (long)pbUsr.getFavouritesCount(), 
+					pbUsr.getCreatedAt(), pbUsr.getFollowing(),
 					pbUsr.getAllowAllActMsg(), pbUsr.getGeoEnabled(), pbUsr.getVerified(), 
 					pbUsr.getStatusId(),
 					pbUsr.getClicks(), pbUsr.getLikes(), pbUsr.getDislikes());

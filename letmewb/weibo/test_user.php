@@ -9,7 +9,7 @@ include_once( 'config.php' );
 include_once( 'weibooauth.php' );
 
 $c = new WeiboClient(WB_AKEY, WB_SKEY, LAST_OAUTH_TOKEN, LAST_OAUTH_TOKEN_SECRET);
-$uinfo = $c->show_user('2169063927');
+$uinfo = $c->show_user('2253016840');
 echo print_r($uinfo, true);
 
 echo "\n<br/><br/>\n";
