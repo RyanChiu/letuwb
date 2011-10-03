@@ -16,6 +16,7 @@ import com.zrd.zr.weiboes.ThreadSinaDealer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -28,6 +29,7 @@ import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HeaderViewListAdapter;
@@ -59,6 +61,7 @@ public class WeiboShowActivity extends Activity {
 	private AlertDialog mDlgRepost;
 	private EditText mEditRepost;
 	private Button mBtnMoreTimelines;
+	private Dialog mDlgDescription;
 	
 	private Long mUid = null;
 	private static Sina mSina = null;
@@ -430,22 +433,37 @@ public class WeiboShowActivity extends Activity {
 			}
 			
 		});
+		
+		mDlgDescription = new Dialog(this, R.style.Dialog_Clean);
+		mDlgDescription.setContentView(R.layout.custom_dialog_list);
 
 		mBtnDescription.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				ListView lv = (ListView)mDlgDescription.findViewById(R.id.lvCustomList);
+				ArrayList<String> list = new ArrayList<String>();
 				String description = (String)mBtnDescription.getTag();
-				if (description != null && !description.equals("")) {
-					/*
-					 * show the description here
-					 */
-					new AlertDialog.Builder(WeiboShowActivity.this)
-						.setMessage(description)
-						.create()
-						.show();
-				}
+				if (description == null) description = "";
+				list.add(description);
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+					WeiboShowActivity.this,
+					R.layout.item_custom_dialog_list,
+					list
+				);
+				lv.setAdapter(adapter);
+				lv.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent,
+							View view, int position, long id) {
+						// TODO Auto-generated method stub
+						mDlgDescription.dismiss();
+					}
+					
+				});
+				mDlgDescription.show();
 			}
 			
 		});

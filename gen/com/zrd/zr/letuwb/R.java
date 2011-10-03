@@ -215,12 +215,13 @@ containing a value of this type.
         public static final int exchangelist_title=0x7f030005;
         public static final int file=0x7f030006;
         public static final int grid_item=0x7f030007;
-        public static final int list_item_icon_text=0x7f030008;
-        public static final int list_weibo_status=0x7f030009;
-        public static final int main=0x7f03000a;
-        public static final int reg_login=0x7f03000b;
-        public static final int update=0x7f03000c;
-        public static final int weibo_show=0x7f03000d;
+        public static final int item_custom_dialog_list=0x7f030008;
+        public static final int list_item_icon_text=0x7f030009;
+        public static final int list_weibo_status=0x7f03000a;
+        public static final int main=0x7f03000b;
+        public static final int reg_login=0x7f03000c;
+        public static final int update=0x7f03000d;
+        public static final int weibo_show=0x7f03000e;
     }
     public static final class string {
         public static final int about_contact=0x7f050065;

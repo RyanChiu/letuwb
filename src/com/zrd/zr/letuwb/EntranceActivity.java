@@ -433,15 +433,15 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			}
 		);
 		
-		mDlgWaysToCheck = new Dialog(EntranceActivity.this, R.style.Dialog_Clean);
+		mDlgWaysToCheck = new Dialog(this, R.style.Dialog_Clean);
 		mDlgWaysToCheck.setContentView(R.layout.custom_dialog_list);
 		ListView lv = (ListView)mDlgWaysToCheck.findViewById(R.id.lvCustomList);
 		ArrayList<String> list = new ArrayList<String>();
 		list.add(getString(R.string.label_bigger_pic));
 		list.add(getString(R.string.label_microblogs));
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-			EntranceActivity.this,
-			android.R.layout.simple_expandable_list_item_1,
+			this,
+			R.layout.item_custom_dialog_list,
 			list
 		);
 		lv.setAdapter(adapter);
