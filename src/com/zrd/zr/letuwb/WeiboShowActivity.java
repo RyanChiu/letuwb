@@ -25,9 +25,12 @@ import android.os.Message;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,6 +41,7 @@ import android.widget.Toast;
 
 public class WeiboShowActivity extends Activity {
 	
+	protected static final int COUNT_PERPAGE_TIMELINE = 10;
 	private TextView mTextScreenName;
 	private ImageView mImageVerified;
 	private TextView mTextCreatedAt;
@@ -54,11 +58,12 @@ public class WeiboShowActivity extends Activity {
 	
 	private AlertDialog mDlgRepost;
 	private EditText mEditRepost;
+	private Button mBtnMoreTimelines;
 	
 	private String mUid = null;
 	private static Sina mSina = null;
 	private User mLastUser = null;
-	private List<Sina.XStatus> mLastUserTimeline = null;
+	private List<Sina.XStatus> mLastUserTimeline = new ArrayList<Sina.XStatus>();
 	private int mIndexOfSelectedStatus = -1;
 	
 	//private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
@@ -101,15 +106,8 @@ public class WeiboShowActivity extends Activity {
 					showLastUserBasicInfo();
 					
 					/*
-					 * show the status info
+					 * show the user timeline at the same time
 					 */
-					/*
-					WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
-						WeiboShowActivity.this,
-						getStatusData(Action.SHOW_USER)
-					);
-					mListStatus.setAdapter(adapter);
-					*/
 					mBtnWeibos.performClick();
 				} else {
 					mTextCreatedAt.setText("Please try again...");
@@ -117,8 +115,11 @@ public class WeiboShowActivity extends Activity {
 				break;
 			case ThreadSinaDealer.GET_USER_TIMELINE:
 				showLastUserBasicInfo();
-				mLastUserTimeline = (ArrayList<Sina.XStatus>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (mLastUserTimeline != null) {
+				ArrayList<Sina.XStatus> xstatuses = (ArrayList<Sina.XStatus>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+				if (xstatuses != null) {
+					for (int i = 0; i < xstatuses.size(); i++) {
+						mLastUserTimeline.add(xstatuses.get(i));
+					}
 					/*
 					 * show the user time_line
 					 */
@@ -127,6 +128,9 @@ public class WeiboShowActivity extends Activity {
 						getStatusData(Action.GET_USER_TIMELINE)
 					);
 					mListStatus.setAdapter(adapter);
+					mListStatus.setSelection(
+						(getLastUserTimelineTotalPage() - 1) * COUNT_PERPAGE_TIMELINE
+					);
 				} else {
 					//deal with failing to get time_line
 				}
@@ -270,6 +274,31 @@ public class WeiboShowActivity extends Activity {
 		
 		mImageVerified.setVisibility(ImageView.GONE);
 		mBtnDescription.setVisibility(ImageButton.GONE);
+			
+		mBtnMoreTimelines = new Button(this);
+		mBtnMoreTimelines.setText("Click to get more...");
+		mBtnMoreTimelines.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				new Thread(
+					new ThreadSinaDealer(
+						mSina,
+						ThreadSinaDealer.GET_USER_TIMELINE,
+						new String[] {
+							mUid, 
+							"" + (getLastUserTimelineTotalPage() + 1), 
+							"" + COUNT_PERPAGE_TIMELINE
+						},
+						mHandler
+					)
+				).start();
+				turnDealing(true);
+			}
+			
+		});
+		mListStatus.addFooterView(mBtnMoreTimelines);
 		
 		/*
 		 * show the whole user/info
@@ -348,7 +377,7 @@ public class WeiboShowActivity extends Activity {
 		mListStatus.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+			public void onItemClick(AdapterView<?> parent, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
 				/*
@@ -364,7 +393,8 @@ public class WeiboShowActivity extends Activity {
 				*/
 				
 				int position = arg2;
-				WeiboStatusListAdapter adapter  = (WeiboStatusListAdapter)mListStatus.getAdapter();
+				HeaderViewListAdapter ha = (HeaderViewListAdapter)parent.getAdapter();
+				WeiboStatusListAdapter adapter  = (WeiboStatusListAdapter)ha.getWrappedAdapter();
 				adapter.setSelectedItem(position);
 				adapter.notifyDataSetInvalidated();
 				mIndexOfSelectedStatus = position;
@@ -372,6 +402,33 @@ public class WeiboShowActivity extends Activity {
 			
 		});
 		
+		mListStatus.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				//when it's not scrolling
+				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
+					//if it's already to the bottom
+					if(view.getLastVisiblePosition()==(view.getCount()-1)){
+						Toast.makeText(
+							WeiboShowActivity.this,
+							"Bottom!",
+							Toast.LENGTH_LONG
+						).show();
+					}
+				}
+			}
+			
+		});
+
 		mBtnDescription.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -396,11 +453,12 @@ public class WeiboShowActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				mLastUserTimeline.clear();
 				new Thread(
 					new ThreadSinaDealer(
 						mSina,
 						ThreadSinaDealer.GET_USER_TIMELINE,
-						new String[] {mUid},
+						new String[] {mUid, "" + getLastUserTimelineTotalPage(), "" + COUNT_PERPAGE_TIMELINE},
 						mHandler
 					)
 				).start();
@@ -499,6 +557,16 @@ public class WeiboShowActivity extends Activity {
 		});
 	}
 	
+	protected int getLastUserTimelineTotalPage() {
+		// TODO Auto-generated method stub
+		if (mLastUserTimeline == null) return 1;
+		int size = mLastUserTimeline.size();
+		if (size == 0) return 1;
+		if (size % COUNT_PERPAGE_TIMELINE != 0) return size / COUNT_PERPAGE_TIMELINE + 1;
+		else return size / COUNT_PERPAGE_TIMELINE;
+		
+	}
+
 	public static Sina getSina() {
 		return mSina;
 	}
@@ -546,12 +614,14 @@ public class WeiboShowActivity extends Activity {
 			mBtnFriend.setEnabled(false);
 			mBtnFavorite.setEnabled(false);
 			mBtnRepost.setEnabled(false);
+			mBtnMoreTimelines.setEnabled(false);
 			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
 		} else {
 			mBtnWeibos.setEnabled(true);
 			mBtnFriend.setEnabled(true);
 			mBtnFavorite.setEnabled(true);
 			mBtnRepost.setEnabled(true);
+			mBtnMoreTimelines.setEnabled(true);
 			mProgressStatusLoading.setVisibility(ProgressBar.GONE);
 		}
 	}

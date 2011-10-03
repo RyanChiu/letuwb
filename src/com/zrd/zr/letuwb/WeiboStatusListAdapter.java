@@ -108,14 +108,6 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			
 			holder.mText.setText(xstatus.getStatus().getText());
 			
-			/*
-			String sReply = xstatus.status.getInReplyToScreenName();
-			if (sReply.trim().equals("")) {
-				holder.mTextReply.setText("");
-			} else {
-				holder.mTextReply.setText("Reply:" + sReply);
-			}
-			*/
 			holder.mTextComments.setText("" + xstatus.getComments());
 			holder.mTextReposts.setText("" + xstatus.getReposts());
 			

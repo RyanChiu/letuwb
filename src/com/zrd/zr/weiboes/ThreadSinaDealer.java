@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import weibo4android.Count;
+import weibo4android.Paging;
 import weibo4android.Status;
 import weibo4android.User;
 import weibo4android.WeiboException;
@@ -78,9 +79,13 @@ public class ThreadSinaDealer implements Runnable {
 			mHandler.sendMessage(msg);
 			break;
 		case GET_USER_TIMELINE:
-			if (mParams != null && mParams.length != 1 && mParams[0] != null) return;
+			if (mParams != null && mParams.length != 3 && mParams[0] != null) return;
 			try {
-				List<Status> list = mSina.getWeibo().getUserTimeline(mParams[0]);
+				Paging paging = new Paging(
+					Integer.parseInt(mParams[1]),
+					Integer.parseInt(mParams[2])
+				);
+				List<Status> list = mSina.getWeibo().getUserTimeline(mParams[0], paging);
 				String sids = "";
 				for (int i = 0; i < list.size(); i++) {
 					Sina.XStatus xstatus = mSina.getXStatus();

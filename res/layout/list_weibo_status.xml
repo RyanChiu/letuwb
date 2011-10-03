@@ -17,7 +17,7 @@
             <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ivStatusImage" android:src="@drawable/empty" android:layout_marginBottom="36dp"></ImageView>
             <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/frame_quote" android:id="@+id/llRetweeted" android:layout_marginBottom="36dp">
                 <TextView android:id="@+id/tvRetweeted" android:text="..." android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#000011"></TextView>
-                <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout7" android:layout_width="fill_parent" android:gravity="center" android:layout_gravity="center">
+                <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout7" android:layout_width="fill_parent" android:gravity="center" android:layout_gravity="center" android:orientation="vertical">
                     <ProgressBar android:layout_centerInParent="true" android:id="@+id/pbRetweetedImageLoading" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"></ProgressBar>
                     <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ivRetweetedImage" android:src="@drawable/empty"></ImageView>
                 </LinearLayout>
