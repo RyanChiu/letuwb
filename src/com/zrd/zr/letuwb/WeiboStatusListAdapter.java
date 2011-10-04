@@ -166,7 +166,7 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 		}
 	}
 
-	private String getSpecialDateText(Date dt, int type) {
+	public String getSpecialDateText(Date dt, int type) {
 		// TODO Auto-generated method stub
 		switch (type) {
 		case 0:
