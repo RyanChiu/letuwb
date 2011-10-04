@@ -3,6 +3,7 @@ package com.zrd.zr.weiboes;
 import java.util.ArrayList;
 import java.util.List;
 
+import weibo4android.Comment;
 import weibo4android.Count;
 import weibo4android.Paging;
 import weibo4android.Status;
@@ -19,6 +20,7 @@ public class ThreadSinaDealer implements Runnable {
 	public static final int CREATE_FRIENDSHIP = 0x7320003;
 	public static final int CREATE_FAVORITE = 0x7320004;
 	public static final int REPOST = 0x7320005;
+	public static final int GET_COMMENTS = 0x7320006;
 	public static final String KEY_DATA = "data";
 	public static final String KEY_SINA = "sina";
 	public static final String KEY_WEIBO_ERR = "err";
@@ -51,7 +53,8 @@ public class ThreadSinaDealer implements Runnable {
 			&& mAction != GET_USER_TIMELINE
 			&& mAction != CREATE_FRIENDSHIP
 			&& mAction != CREATE_FAVORITE
-			&& mAction != REPOST)
+			&& mAction != REPOST
+			&& mAction != GET_COMMENTS)
 			return;
 		if (mHandler == null) return;
 		
@@ -60,6 +63,7 @@ public class ThreadSinaDealer implements Runnable {
 		User user;
 		Status status;
 		ArrayList<Sina.XStatus> xstatuses = new ArrayList<Sina.XStatus>();
+		ArrayList<Comment> comments = new ArrayList<Comment>();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(KEY_SINA, mSina);
 		bundle.putSerializable(KEY_DATA, null);
@@ -85,14 +89,14 @@ public class ThreadSinaDealer implements Runnable {
 					Integer.parseInt(mParams[1]),
 					Integer.parseInt(mParams[2])
 				);
-				List<Status> list = mSina.getWeibo().getUserTimeline(mParams[0], paging);
+				List<Status> tlist = mSina.getWeibo().getUserTimeline(mParams[0], paging);
 				String sids = "";
-				for (int i = 0; i < list.size(); i++) {
+				for (int i = 0; i < tlist.size(); i++) {
 					Sina.XStatus xstatus = mSina.getXStatus();
-					xstatus.setStatus(list.get(i));
+					xstatus.setStatus(tlist.get(i));
 					xstatuses.add(xstatus);
-					sids += list.get(i).getId();
-					if (i != list.size() - 1) sids += ",";
+					sids += tlist.get(i).getId();
+					if (i != tlist.size() - 1) sids += ",";
 				}
 				if (!sids.equals("")) {
 					List<Count> counts = mSina.getWeibo().getCounts(sids);
@@ -145,6 +149,25 @@ public class ThreadSinaDealer implements Runnable {
 				bundle.putSerializable(
 					KEY_DATA,
 					mSina.getWeibo().repost(mParams[0], mParams[1])
+				);
+			} catch (WeiboException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				bundle.putSerializable(KEY_WEIBO_ERR, e);
+			}
+			msg.setData(bundle);
+			mHandler.sendMessage(msg);
+			break;
+		case GET_COMMENTS:
+			if (mParams != null && mParams.length != 1 && mParams[0] != null) return;
+			try {
+				List<Comment> clist = mSina.getWeibo().getComments(mParams[0]);
+				for (int i = 0; i < clist.size(); i++) {
+					comments.add(clist.get(i));
+				}
+				bundle.putSerializable(
+					KEY_DATA,
+					comments
 				);
 			} catch (WeiboException e) {
 				// TODO Auto-generated catch block
