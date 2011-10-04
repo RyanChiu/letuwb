@@ -287,6 +287,7 @@ public class WeiboShowActivity extends Activity {
 							"No comments at all at the moment.",
 							Toast.LENGTH_LONG
 						).show();
+						mDlgComments.dismiss();
 					}
 				} else {
 					//deal with failing to get comments
