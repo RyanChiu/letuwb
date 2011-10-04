@@ -62,6 +62,7 @@ public class WeiboShowActivity extends Activity {
 	private EditText mEditRepost;
 	private Button mBtnMoreTimelines;
 	private Dialog mDlgDescription;
+	private Dialog mDlgComments;
 	
 	private Long mUid = null;
 	private static Sina mSina = null;
@@ -379,23 +380,14 @@ public class WeiboShowActivity extends Activity {
 		/*
 		 * deal actions for components
 		 */
+		mListStatus.setTag((long)0);
 		mListStatus.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				/*
-				if (mLayoutStatusCtrls.getVisibility() == LinearLayout.GONE) {
-					mLayoutStatusCtrls.setVisibility(LinearLayout.VISIBLE);
-					mAnimFadein.setDuration(500);
-					mLayoutStatusCtrls.startAnimation(mAnimFadein);
-				} else {
-					mAnimFadeout.setDuration(300);
-					mLayoutStatusCtrls.startAnimation(mAnimFadeout);
-					mLayoutStatusCtrls.setVisibility(LinearLayout.GONE);
-				}
-				*/
+				long lastClickTime; 
 				
 				int position = arg2;
 				HeaderViewListAdapter ha = (HeaderViewListAdapter)parent.getAdapter();
@@ -403,6 +395,18 @@ public class WeiboShowActivity extends Activity {
 				adapter.setSelectedItem(position);
 				adapter.notifyDataSetInvalidated();
 				mIndexOfSelectedStatus = position;
+				
+				/*
+				 * check if it's double click
+				 */
+				lastClickTime = (Long)mListStatus.getTag();
+				if (Math.abs(lastClickTime-System.currentTimeMillis()) < 1000) {
+					//do some double click stuff here
+					mListStatus.setTag((long)0);
+					mDlgComments.show();
+				} else {
+					mListStatus.setTag(System.currentTimeMillis());
+				}
 			}
 			
 		});
@@ -433,9 +437,12 @@ public class WeiboShowActivity extends Activity {
 			}
 			
 		});
-		
+
 		mDlgDescription = new Dialog(this, R.style.Dialog_Clean);
 		mDlgDescription.setContentView(R.layout.custom_dialog_list);
+		
+		mDlgComments = new Dialog(this, R.style.Dialog_Clean);
+		mDlgComments.setContentView(R.layout.custom_dialog_list);
 
 		mBtnDescription.setOnClickListener(new OnClickListener() {
 
