@@ -21,6 +21,7 @@ public class ThreadSinaDealer implements Runnable {
 	public static final int CREATE_FAVORITE = 0x7320004;
 	public static final int REPOST = 0x7320005;
 	public static final int GET_COMMENTS = 0x7320006;
+	public static final int UPDATE_COMMENT = 0x7320007;
 	public static final String KEY_DATA = "data";
 	public static final String KEY_SINA = "sina";
 	public static final String KEY_WEIBO_ERR = "err";
@@ -54,7 +55,8 @@ public class ThreadSinaDealer implements Runnable {
 			&& mAction != CREATE_FRIENDSHIP
 			&& mAction != CREATE_FAVORITE
 			&& mAction != REPOST
-			&& mAction != GET_COMMENTS)
+			&& mAction != GET_COMMENTS
+			&& mAction != UPDATE_COMMENT)
 			return;
 		if (mHandler == null) return;
 		
@@ -168,6 +170,21 @@ public class ThreadSinaDealer implements Runnable {
 				bundle.putSerializable(
 					KEY_DATA,
 					comments
+				);
+			} catch (WeiboException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				bundle.putSerializable(KEY_WEIBO_ERR, e);
+			}
+			msg.setData(bundle);
+			mHandler.sendMessage(msg);
+			break;
+		case UPDATE_COMMENT:
+			if (mParams != null && mParams.length != 3 && mParams[0] != null) return;
+			try {
+				bundle.putSerializable(
+					KEY_DATA,
+					mSina.getWeibo().updateComment(mParams[0], mParams[1], mParams[2])
 				);
 			} catch (WeiboException e) {
 				// TODO Auto-generated catch block

@@ -122,4 +122,14 @@
     <string name="label_daysago">%1$d days ago</string>
     <string name="label_bigger_pic">Bigger image</string>
     <string name="title_youwanna">You wanna</string>
+    <string name="label_more">More</string>
+    <string name="label_comment">Comment</string>
+    <string name="label_comments">Check comments</string>
+    <string name="tips_favoritemade">Favorite made.</string>
+    <string name="tips_reposted">Reposted.</string>
+    <string name="tips_nocomments">No comments at all at the moment.</string>
+    <string name="tips_alreadylastone">Already the last one.</string>
+    <string name="tips_noitemselected">No item selected.</string>
+    <string name="title_repost">You could put some words here or just leave it blank.</string>
+    <string name="title_comment">Please put your comment below.</string>
 </resources>

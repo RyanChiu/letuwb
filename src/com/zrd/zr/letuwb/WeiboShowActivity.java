@@ -53,17 +53,20 @@ public class WeiboShowActivity extends Activity {
 	private TextView mTextCounts;
 	private ListView mListStatus;
 	private ProgressBar mProgressStatusLoading;
-	private Button mBtnReload;
 	private Button mBtnFriend;
 	private Button mBtnFavorite;
 	private Button mBtnRepost;
+	private Button mBtnMore;
 	private ImageButton mBtnExchange;
 	
 	private AlertDialog mDlgRepost;
 	private EditText mEditRepost;
+	private AlertDialog mDlgComment;
+	private EditText mEditComment;
 	private Button mBtnMoreTimelines;
 	private Dialog mDlgDescription;
 	private Dialog mDlgComments;
+	private Dialog mDlgMore;
 	
 	private Long mUid = null;
 	private static Sina mSina = null;
@@ -89,6 +92,7 @@ public class WeiboShowActivity extends Activity {
 			WeiboException wexp = (WeiboException)msg.getData().getSerializable(ThreadSinaDealer.KEY_WEIBO_ERR);
 			User user;
 			Status status;
+			Comment comment;
 			switch (msg.what) {
 			case ThreadSinaDealer.SHOW_USER:
 				mLastUser = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
@@ -225,7 +229,7 @@ public class WeiboShowActivity extends Activity {
 				if (status != null) {
 					Toast.makeText(
 						WeiboShowActivity.this,
-						"Favorite made.",
+						R.string.tips_favoritemade,
 						Toast.LENGTH_LONG
 					).show();
 				} else {
@@ -245,7 +249,7 @@ public class WeiboShowActivity extends Activity {
 				if (status != null) {
 					Toast.makeText(
 						WeiboShowActivity.this,
-						"Reposted.",
+						R.string.tips_reposted,
 						Toast.LENGTH_LONG
 					).show();
 				} else {
@@ -284,7 +288,7 @@ public class WeiboShowActivity extends Activity {
 					} else {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							"No comments at all at the moment.",
+							R.string.tips_nocomments,
 							Toast.LENGTH_LONG
 						).show();
 						mDlgComments.dismiss();
@@ -293,6 +297,26 @@ public class WeiboShowActivity extends Activity {
 					//deal with failing to get comments
 					mDlgComments.dismiss();
 					
+					if (wexp != null) {
+						Toast.makeText(
+							WeiboShowActivity.this,
+							wexp.toString(),
+							Toast.LENGTH_LONG
+						).show();
+					}
+				}
+				turnDealing(false);
+				break;
+			case ThreadSinaDealer.UPDATE_COMMENT:
+				comment = (Comment)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+				if (comment != null) {
+					Toast.makeText(
+						WeiboShowActivity.this,
+						R.string.tips_commented,
+						Toast.LENGTH_LONG
+					).show();
+				} else {
+					//deal with failing to make favorite
 					if (wexp != null) {
 						Toast.makeText(
 							WeiboShowActivity.this,
@@ -326,11 +350,12 @@ public class WeiboShowActivity extends Activity {
 		mTextCounts = (TextView)findViewById(R.id.tvCounts);
 		mListStatus = (ListView)findViewById(R.id.lvStatus);
 		mProgressStatusLoading = (ProgressBar)findViewById(R.id.pbStatusLoading);
-		mBtnReload = (Button)findViewById(R.id.btnReloadTimelines);
 		mBtnFriend = (Button)findViewById(R.id.btnFriend);
 		mBtnFavorite = (Button)findViewById(R.id.btnFavorite);
 		mBtnRepost = (Button)findViewById(R.id.btnRepost);
 		mEditRepost  = new EditText(this);
+		mBtnMore = (Button)findViewById(R.id.btnMore);
+		mEditComment = new EditText(this);
 		
 		mImageVerified.setVisibility(ImageView.GONE);
 		mBtnDescription.setVisibility(ImageButton.GONE);
@@ -365,36 +390,8 @@ public class WeiboShowActivity extends Activity {
 		 */
 		Intent intent = getIntent();
 		mUid = intent.getLongExtra("uid", 0);
-    	
-		mBtnReload.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				new Thread(
-					new ThreadSinaDealer(
-						mSina, 
-						ThreadSinaDealer.SHOW_USER, 
-						new String[] {mUid.toString()}, 
-						mHandler
-					)
-				).start();
-				
-				mLastUserTimeline.clear();
-				new Thread(
-					new ThreadSinaDealer(
-						mSina,
-						ThreadSinaDealer.GET_USER_TIMELINE,
-						new String[] {mUid.toString(), "" + getLastUserTimelineTotalPage(), "" + COUNT_PERPAGE_TIMELINE},
-						mHandler
-					)
-				).start();
-				turnDealing(true);
-			}
-			
-		});
-		
-		mBtnReload.performClick();
+		reloadAll();
+		turnDealing(true);
 		
 		/*
 		 * initialize the title bar
@@ -407,8 +404,8 @@ public class WeiboShowActivity extends Activity {
 			);
 		}
 		
-		mDlgRepost = new AlertDialog.Builder(WeiboShowActivity.this)
-			.setTitle("You could put some words here or just leave it blank.")
+		mDlgRepost = new AlertDialog.Builder(this)
+			.setTitle(R.string.title_repost)
 			.setIcon(android.R.drawable.ic_dialog_info)
 			.setView(mEditRepost)
 			.setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
@@ -430,6 +427,39 @@ public class WeiboShowActivity extends Activity {
 							mSina,
 							ThreadSinaDealer.REPOST,
 							new String[] {"" + sid, mEditRepost.getText().toString()},
+							mHandler
+						)
+					).start();
+					turnDealing(true);
+				}
+				
+			})
+			.setNegativeButton(R.string.label_cancel, null)
+			.create();
+		
+		mDlgComment = new AlertDialog.Builder(this)
+			.setTitle(R.string.title_comment)
+			.setIcon(android.R.drawable.ic_dialog_info)
+			.setView(mEditComment)
+			.setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
+		
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					/*
+					 * This is the place it handles reposting
+					 */
+					long sid;
+					if (mLastUserTimeline == null) {
+						sid = mLastUser.getStatus().getId();
+					} else {
+						sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
+					}
+					new Thread(
+						new ThreadSinaDealer(
+							mSina,
+							ThreadSinaDealer.UPDATE_COMMENT,
+							new String[] {"" + sid, mEditComment.getText().toString(), null},
 							mHandler
 						)
 					).start();
@@ -494,33 +524,8 @@ public class WeiboShowActivity extends Activity {
 				if (Math.abs(lastClickTime-System.currentTimeMillis()) < 2000) {
 					mListStatus.setTag((long)0);
 					//to do some double click stuff here
-					
-					long sid;
-					if (mLastUserTimeline == null) {
-						sid = mLastUser.getStatus().getId();
-					} else {
-						sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
-					}
-					new Thread(
-						new ThreadSinaDealer(
-							mSina,
-							ThreadSinaDealer.GET_COMMENTS,
-							new String[] {"" + sid},
-							mHandler
-						)
-					).start();
+					showComments();
 					turnDealing(true);
-					ListView lvComments = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
-					ArrayList<String> lstWaiting = new ArrayList<String>();
-					lstWaiting.add("Getting comments, please wait a second...");
-					lvComments.setAdapter(
-						new ArrayAdapter<String>(
-							WeiboShowActivity.this,
-							R.layout.item_custom_dialog_list,
-							lstWaiting
-						)
-					);
-					mDlgComments.show();
 				} else {
 					mListStatus.setTag(System.currentTimeMillis());
 				}
@@ -546,7 +551,7 @@ public class WeiboShowActivity extends Activity {
 					if(view.getLastVisiblePosition()==(view.getCount()-1)){
 						Toast.makeText(
 							WeiboShowActivity.this,
-							"Bottom!",
+							R.string.tips_alreadylastone,
 							Toast.LENGTH_LONG
 						).show();
 					}
@@ -641,7 +646,7 @@ public class WeiboShowActivity extends Activity {
 					} else {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							"No item selected.",
+							R.string.tips_noitemselected,
 							Toast.LENGTH_LONG
 						).show();
 					}
@@ -661,7 +666,7 @@ public class WeiboShowActivity extends Activity {
 					if (mIndexOfSelectedStatus == -1) {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							"No item selected.",
+							R.string.tips_noitemselected,
 							Toast.LENGTH_LONG
 						).show();
 						return;
@@ -674,8 +679,115 @@ public class WeiboShowActivity extends Activity {
 			}
 			
 		});
+		
+		mDlgMore = new Dialog(this, R.style.Dialog_Clean);
+		mDlgMore.setContentView(R.layout.custom_dialog_list);
+		ListView lvMore = (ListView)mDlgMore.findViewById(R.id.lvCustomList);
+		ArrayList<String> mlist = new ArrayList<String>();
+		mlist.add(getString(R.string.label_comment));
+		mlist.add(getString(R.string.label_comments));
+		mlist.add(getString(R.string.label_reload));
+		lvMore.setAdapter(
+			new ArrayAdapter<String> (
+				this,
+				R.layout.item_custom_dialog_list,
+				mlist
+			)
+		);
+		lvMore.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, 
+					int position, long id) {
+				// TODO Auto-generated method stub
+				switch (position) {
+				case 0:
+					mDlgComment.show();
+					break;
+				case 1:
+					showComments();
+					turnDealing(true);
+					break;
+				case 2:
+					reloadAll();
+					turnDealing(true);
+					break;
+				}
+				mDlgMore.dismiss();
+			}
+			
+		});
+		
+		mBtnMore.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mDlgMore.show();
+			}
+			
+		});
 	}
 	
+	protected void showComments() {
+		// TODO Auto-generated method stub
+		if (mIndexOfSelectedStatus == -1) {
+			Toast.makeText(
+				WeiboShowActivity.this,
+				R.string.tips_noitemselected,
+				Toast.LENGTH_LONG
+			).show();
+			return;
+		}
+		long sid;
+		if (mLastUserTimeline == null) {
+			sid = mLastUser.getStatus().getId();
+		} else {
+			sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
+		}
+		new Thread(
+			new ThreadSinaDealer(
+				mSina,
+				ThreadSinaDealer.GET_COMMENTS,
+				new String[] {"" + sid},
+				mHandler
+			)
+		).start();
+		ListView lvComments = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
+		ArrayList<String> lstWaiting = new ArrayList<String>();
+		lstWaiting.add("Getting comments, please wait a second...");
+		lvComments.setAdapter(
+			new ArrayAdapter<String>(
+				WeiboShowActivity.this,
+				R.layout.item_custom_dialog_list,
+				lstWaiting
+			)
+		);
+		mDlgComments.show();
+	}
+
+	protected void reloadAll() {
+		// TODO Auto-generated method stub
+		new Thread(
+			new ThreadSinaDealer(
+				mSina, 
+				ThreadSinaDealer.SHOW_USER, 
+				new String[] {mUid.toString()}, 
+				mHandler
+			)
+		).start();
+		
+		mLastUserTimeline.clear();
+		new Thread(
+			new ThreadSinaDealer(
+				mSina,
+				ThreadSinaDealer.GET_USER_TIMELINE,
+				new String[] {mUid.toString(), "" + getLastUserTimelineTotalPage(), "" + COUNT_PERPAGE_TIMELINE},
+				mHandler
+			)
+		).start();
+	}
+
 	protected int getLastUserTimelineTotalPage() {
 		// TODO Auto-generated method stub
 		if (mLastUserTimeline == null) return 1;
@@ -729,18 +841,18 @@ public class WeiboShowActivity extends Activity {
 	 */
 	private void turnDealing(boolean on) {
 		if (on == true) {
-			mBtnReload.setEnabled(false);
 			mBtnFriend.setEnabled(false);
 			mBtnFavorite.setEnabled(false);
 			mBtnRepost.setEnabled(false);
 			mBtnMoreTimelines.setEnabled(false);
+			mBtnMore.setEnabled(false);
 			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
 		} else {
-			mBtnReload.setEnabled(true);
 			mBtnFriend.setEnabled(true);
 			mBtnFavorite.setEnabled(true);
 			mBtnRepost.setEnabled(true);
 			mBtnMoreTimelines.setEnabled(true);
+			mBtnMore.setEnabled(true);
 			mProgressStatusLoading.setVisibility(ProgressBar.GONE);
 		}
 	}

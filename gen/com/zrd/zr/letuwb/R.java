@@ -87,14 +87,15 @@ containing a value of this type.
         public static final int btnContact=0x7f07000c;
         public static final int btnDescription=0x7f070071;
         public static final int btnExchange=0x7f070032;
-        public static final int btnFavorite=0x7f070079;
-        public static final int btnFriend=0x7f070078;
+        public static final int btnFavorite=0x7f070078;
+        public static final int btnFriend=0x7f070077;
         public static final int btnGuest=0x7f070068;
         public static final int btnHottest=0x7f070053;
         public static final int btnLatest=0x7f070052;
         public static final int btnLetmereg=0x7f070067;
         public static final int btnLogin=0x7f070063;
         public static final int btnMakeFriendsFromBrow=0x7f070027;
+        public static final int btnMore=0x7f07007a;
         public static final int btnNext=0x7f070051;
         public static final int btnOfficialSite=0x7f070008;
         public static final int btnPause=0x7f070017;
@@ -102,8 +103,7 @@ containing a value of this type.
         public static final int btnPre=0x7f07004d;
         public static final int btnRandom=0x7f070054;
         public static final int btnReg=0x7f070064;
-        public static final int btnReloadTimelines=0x7f070077;
-        public static final int btnRepost=0x7f07007a;
+        public static final int btnRepost=0x7f070079;
         public static final int btnSave=0x7f070014;
         public static final int btnShare=0x7f070028;
         public static final int btnUnhottest=0x7f070055;
@@ -254,6 +254,8 @@ containing a value of this type.
         public static final int label_bigger_pic=0x7f050077;
         public static final int label_browse=0x7f050035;
         public static final int label_cancel=0x7f050015;
+        public static final int label_comment=0x7f05007a;
+        public static final int label_comments=0x7f05007b;
         public static final int label_daysago=0x7f050076;
         public static final int label_dwdw=0x7f050048;
         public static final int label_favorites=0x7f05006f;
@@ -271,6 +273,7 @@ containing a value of this type.
         public static final int label_login=0x7f050005;
         public static final int label_microblogs=0x7f05006e;
         public static final int label_minutesago=0x7f050074;
+        public static final int label_more=0x7f050079;
         public static final int label_next=0x7f050057;
         public static final int label_no=0x7f05000e;
         public static final int label_ok=0x7f050014;
@@ -314,11 +317,14 @@ containing a value of this type.
         public static final int sharing_content=0x7f05005f;
         public static final int sharing_title=0x7f050060;
         public static final int tips_alreadylast=0x7f05003e;
+        public static final int tips_alreadylastone=0x7f05007f;
         public static final int tips_alreadyloggedin=0x7f050043;
         public static final int tips_clicks=0x7f050022;
+        public static final int tips_commented=0x7f050081;
         public static final int tips_connecting=0x7f050038;
         public static final int tips_downloading=0x7f050039;
         public static final int tips_enterintro=0x7f050045;
+        public static final int tips_favoritemade=0x7f05007c;
         public static final int tips_firstone=0x7f050024;
         public static final int tips_friendsalready=0x7f05006d;
         public static final int tips_friendsmade=0x7f05006c;
@@ -329,6 +335,8 @@ containing a value of this type.
         public static final int tips_loggedin=0x7f050041;
         public static final int tips_loginfailed=0x7f050042;
         public static final int tips_noadultstuff=0x7f05005c;
+        public static final int tips_nocomments=0x7f05007e;
+        public static final int tips_noitemselected=0x7f050080;
         public static final int tips_nopictures=0x7f05001f;
         public static final int tips_notgetserialyet=0x7f05004c;
         public static final int tips_nothinghappened=0x7f05002a;
@@ -338,6 +346,7 @@ containing a value of this type.
          */
         public static final int tips_pages=0x7f050017;
         public static final int tips_playing=0x7f050020;
+        public static final int tips_reposted=0x7f05007d;
         public static final int tips_saving=0x7f050029;
         public static final int tips_succeededtogetserial=0x7f05004b;
         public static final int tips_unhottesttheweek=0x7f05005e;
@@ -345,7 +354,9 @@ containing a value of this type.
         public static final int tips_uploaded=0x7f050050;
         public static final int tips_voterating=0x7f050046;
         public static final int tips_voting=0x7f05001c;
+        public static final int title_comment=0x7f050083;
         public static final int title_loginfirst=0x7f050066;
+        public static final int title_repost=0x7f050082;
         public static final int title_warning=0x7f05004d;
         public static final int title_youwanna=0x7f050078;
         public static final int update_title=0x7f050036;
