@@ -922,7 +922,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			break;
 		case REQUESTCODE_BACKFROM:
 			if (resultCode == RESULT_OK) {
-				int id = data.getIntExtra("id", 0);
+				long id = data.getLongExtra("id", 0);
 				int idx = getUsrIndexFromId(id, mUsrs);
 				int par = idx / mPageLimit + 1;
 				if (mPageBeforeBrow != mCurPage || par != mCurParagraph)
