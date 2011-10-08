@@ -354,6 +354,7 @@ containing a value of this type.
         public static final int tips_uploaded=0x7f050050;
         public static final int tips_voterating=0x7f050046;
         public static final int tips_voting=0x7f05001c;
+        public static final int tips_waitasecond=0x7f050084;
         public static final int title_comment=0x7f050083;
         public static final int title_loginfirst=0x7f050066;
         public static final int title_repost=0x7f050082;

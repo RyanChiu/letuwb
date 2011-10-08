@@ -132,4 +132,5 @@
     <string name="tips_noitemselected">No item selected.</string>
     <string name="title_repost">You could put some words here or just leave it blank.</string>
     <string name="title_comment">Please put your comment below.</string>
+    <string name="tips_waitasecond">Getting comments, please wait a second...</string>
 </resources>

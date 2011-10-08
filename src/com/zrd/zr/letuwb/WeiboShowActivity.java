@@ -274,7 +274,7 @@ public class WeiboShowActivity extends Activity {
 							new WeiboStatusListAdapter(WeiboShowActivity.this, null);
 						for (int i = 0; i < comments.size(); i++) {
 							contents.add(
-								comments.get(i).getInReplyToScreenName()
+								comments.get(i).getInReplyToUserId()
 								+ "(" + _tmp.getSpecialDateText(comments.get(i).getCreatedAt(), 0) + "):\n"
 								+ comments.get(i).getText()
 							);
@@ -447,7 +447,7 @@ public class WeiboShowActivity extends Activity {
 				public void onClick(DialogInterface arg0, int arg1) {
 					// TODO Auto-generated method stub
 					/*
-					 * This is the place it handles reposting
+					 * This is the place it handles comment
 					 */
 					long sid;
 					if (mLastUserTimeline == null) {
@@ -459,7 +459,7 @@ public class WeiboShowActivity extends Activity {
 						new ThreadSinaDealer(
 							mSina,
 							ThreadSinaDealer.UPDATE_COMMENT,
-							new String[] {"" + sid, mEditComment.getText().toString(), null},
+							new String[] {mEditComment.getText().toString(), "" + sid, null},
 							mHandler
 						)
 					).start();
@@ -702,7 +702,20 @@ public class WeiboShowActivity extends Activity {
 				// TODO Auto-generated method stub
 				switch (position) {
 				case 0:
-					mDlgComment.show();
+					if (mSina != null && mSina.isLoggedIn()) {
+						if (mIndexOfSelectedStatus == -1) {
+							Toast.makeText(
+								WeiboShowActivity.this,
+								R.string.tips_noitemselected,
+								Toast.LENGTH_LONG
+							).show();
+							return;
+						}
+						
+						mDlgComment.show();
+					} else {
+						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
+					}
 					break;
 				case 1:
 					showComments();
@@ -755,7 +768,7 @@ public class WeiboShowActivity extends Activity {
 		).start();
 		ListView lvComments = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
 		ArrayList<String> lstWaiting = new ArrayList<String>();
-		lstWaiting.add("Getting comments, please wait a second...");
+		lstWaiting.add(getString(R.string.tips_waitasecond));
 		lvComments.setAdapter(
 			new ArrayAdapter<String>(
 				WeiboShowActivity.this,
