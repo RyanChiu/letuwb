@@ -8,7 +8,7 @@
 
 include_once('config.php');
 include_once('weibooauth.php');
-include_once('../zmysqlConn.class.php');
+include_once(dirname(__FILE__) . '/../zmysqlConn.class.php');
 include_once("expkits.inc.php");
 
 $o = new WeiboOAuth(WB_AKEY , WB_SKEY , LAST_OAUTH_TOKEN, LAST_OAUTH_TOKEN_SECRET);
