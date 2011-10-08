@@ -719,8 +719,17 @@ public class WeiboShowActivity extends Activity {
 					}
 					break;
 				case 1:
-					showComments();
-					turnDealing(true);
+					if (mIndexOfSelectedStatus == -1) {
+						Toast.makeText(
+							WeiboShowActivity.this,
+							R.string.tips_noitemselected,
+							Toast.LENGTH_LONG
+						).show();
+						return;
+					} else {
+						showComments();
+						turnDealing(true);
+					}
 					break;
 				case 2:
 					reloadAll();
@@ -745,14 +754,6 @@ public class WeiboShowActivity extends Activity {
 	
 	protected void showComments() {
 		// TODO Auto-generated method stub
-		if (mIndexOfSelectedStatus == -1) {
-			Toast.makeText(
-				WeiboShowActivity.this,
-				R.string.tips_noitemselected,
-				Toast.LENGTH_LONG
-			).show();
-			return;
-		}
 		long sid;
 		if (mLastUserTimeline == null) {
 			sid = mLastUser.getStatus().getId();
