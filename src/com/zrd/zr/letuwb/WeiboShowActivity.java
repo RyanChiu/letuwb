@@ -273,8 +273,9 @@ public class WeiboShowActivity extends Activity {
 						WeiboStatusListAdapter _tmp = 
 							new WeiboStatusListAdapter(WeiboShowActivity.this, null);
 						for (int i = 0; i < comments.size(); i++) {
+							user = comments.get(i).getUser();
 							contents.add(
-								comments.get(i).getInReplyToUserId()
+								(user != null ? user.getScreenName() : "")
 								+ "(" + _tmp.getSpecialDateText(comments.get(i).getCreatedAt(), 0) + "):\n"
 								+ comments.get(i).getText()
 							);
