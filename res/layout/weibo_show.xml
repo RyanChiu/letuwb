@@ -6,7 +6,7 @@
     <LinearLayout android:orientation="vertical" android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:layout_height="74dp">
         <RelativeLayout android:layout_width="fill_parent" android:paddingBottom="2dp" android:paddingRight="2dp" android:paddingTop="1dp" android:layout_height="50dp" android:id="@+id/relativeLayout1" android:paddingLeft="2dp">
             <LinearLayout android:id="@+id/linearLayout2" android:layout_width="wrap_content" android:layout_alignParentLeft="true" android:layout_height="wrap_content">
-                <ImageView android:layout_width="36dp" android:layout_marginTop="3dp" android:layout_marginBottom="3dp" android:id="@+id/ivTinyProfileImage" android:scaleType="fitXY" android:layout_height="36dp" android:layout_marginLeft="3dp" android:src="@drawable/person"></ImageView>
+                <ImageButton android:background="#00000000" android:src="@drawable/person" android:layout_height="36dp" android:layout_marginBottom="3dp" android:layout_marginLeft="3dp" android:layout_marginTop="3dp" android:layout_width="36dp" android:scaleType="fitXY" android:id="@+id/btnTinyProfileImage"></ImageButton>
                 <LinearLayout android:layout_width="wrap_content" android:orientation="vertical" android:layout_height="fill_parent" android:id="@+id/linearLayout8">
                     <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/linearLayout7">
                         <TextView android:layout_height="wrap_content" android:id="@+id/tvScreenName" android:layout_width="wrap_content"></TextView>

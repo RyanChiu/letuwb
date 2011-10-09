@@ -106,6 +106,7 @@ containing a value of this type.
         public static final int btnRepost=0x7f070079;
         public static final int btnSave=0x7f070014;
         public static final int btnShare=0x7f070028;
+        public static final int btnTinyProfileImage=0x7f07006c;
         public static final int btnUnhottest=0x7f070055;
         public static final int btnUpload=0x7f070015;
         public static final int btnWeiboShow=0x7f070029;
@@ -128,7 +129,6 @@ containing a value of this type.
         public static final int imageView2=0x7f070042;
         public static final int ivRetweetedImage=0x7f07003e;
         public static final int ivStatusImage=0x7f070039;
-        public static final int ivTinyProfileImage=0x7f07006c;
         public static final int ivTitleIcon=0x7f070030;
         public static final int ivVerified=0x7f07006f;
         public static final int linearLayout1=0x7f070000;
@@ -261,6 +261,7 @@ containing a value of this type.
         public static final int label_favorites=0x7f05006f;
         public static final int label_followers=0x7f050070;
         public static final int label_friends=0x7f050071;
+        public static final int label_getmore=0x7f050085;
         public static final int label_guest=0x7f050006;
         public static final int label_hottest=0x7f05005a;
         public static final int label_hoursago=0x7f050075;

@@ -466,6 +466,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 					wi = (WeibouserInfo) mPageUsrs.get(idx);
 	                
 	                intent.putExtra("uid", wi.uid);
+	                intent.putExtra("id", wi.id);
 					
 					intent.setClass(EntranceActivity.this, WeiboShowActivity.class);
 					startActivity(intent);

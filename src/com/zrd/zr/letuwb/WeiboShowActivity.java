@@ -44,7 +44,7 @@ import android.widget.Toast;
 
 public class WeiboShowActivity extends Activity {
 	
-	protected static final int COUNT_PERPAGE_TIMELINE = 10;
+	protected static final int COUNT_PERPAGE_TIMELINE = 20;
 	private TextView mTextScreenName;
 	private ImageView mImageVerified;
 	private TextView mTextCreatedAt;
@@ -58,6 +58,7 @@ public class WeiboShowActivity extends Activity {
 	private Button mBtnRepost;
 	private Button mBtnMore;
 	private ImageButton mBtnExchange;
+	private ImageView mBtnTinyProfileImage;
 	
 	private AlertDialog mDlgRepost;
 	private EditText mEditRepost;
@@ -69,6 +70,7 @@ public class WeiboShowActivity extends Activity {
 	private Dialog mDlgMore;
 	
 	private Long mUid = null;
+	private Long mId = null;
 	private static Sina mSina = null;
 	private User mLastUser = null;
 	private List<Sina.XStatus> mLastUserTimeline = new ArrayList<Sina.XStatus>();
@@ -102,7 +104,7 @@ public class WeiboShowActivity extends Activity {
 					 */
 					AsyncImageLoader ail = new AsyncImageLoader(
 						WeiboShowActivity.this,
-						R.id.ivTinyProfileImage,
+						R.id.btnTinyProfileImage,
 						R.drawable.person
 					);
 					ail.execute(mLastUser.getProfileImageURL());
@@ -357,12 +359,13 @@ public class WeiboShowActivity extends Activity {
 		mEditRepost  = new EditText(this);
 		mBtnMore = (Button)findViewById(R.id.btnMore);
 		mEditComment = new EditText(this);
+		mBtnTinyProfileImage = (ImageButton)findViewById(R.id.btnTinyProfileImage);
 		
 		mImageVerified.setVisibility(ImageView.GONE);
 		mBtnDescription.setVisibility(ImageButton.GONE);
 			
 		mBtnMoreTimelines = new Button(this);
-		mBtnMoreTimelines.setText("Click to get more...");
+		mBtnMoreTimelines.setText(R.string.label_getmore);
 		mBtnMoreTimelines.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -391,6 +394,7 @@ public class WeiboShowActivity extends Activity {
 		 */
 		Intent intent = getIntent();
 		mUid = intent.getLongExtra("uid", 0);
+		mId = intent.getLongExtra("id", 0);
 		reloadAll();
 		turnDealing(true);
 		
@@ -404,6 +408,19 @@ public class WeiboShowActivity extends Activity {
 				sina.getLoggedInUser()
 			);
 		}
+		
+		mBtnTinyProfileImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(WeiboShowActivity.this, PicbrowActivity.class);
+				intent.putExtra("id", mId);
+				startActivity(intent);
+			}
+			
+		});
 		
 		mDlgRepost = new AlertDialog.Builder(this)
 			.setTitle(R.string.title_repost)

@@ -134,4 +134,5 @@
     <string name="title_repost">You could put some words here or just leave it blank.</string>
     <string name="title_comment">Please put your comment below.</string>
     <string name="tips_waitasecond">Getting comments, please wait a second...</string>
+    <string name="label_getmore">Click to get more...</string>
 </resources>

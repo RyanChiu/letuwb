@@ -170,13 +170,13 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 							if (!user.equals(WeiboShowActivity.getSina().getLoggedInUser())) {
 								Toast.makeText(
 									PicbrowActivity.this,
-									"Friends made.",
+									R.string.tips_friendsmade,
 									Toast.LENGTH_LONG
 								).show();
 							} else {
 								Toast.makeText(
 									PicbrowActivity.this,
-									"Friends already.",
+									R.string.tips_friendsalready,
 									Toast.LENGTH_LONG
 								).show();
 							}
@@ -278,6 +278,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
                 Intent intent = new Intent();
                 
                 intent.putExtra("uid", wi.uid);
+                intent.putExtra("id", wi.id);
 				
 				intent.setClass(PicbrowActivity.this, WeiboShowActivity.class);
 				startActivity(intent);
