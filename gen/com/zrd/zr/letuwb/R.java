@@ -338,6 +338,7 @@ containing a value of this type.
         public static final int tips_noadultstuff=0x7f05005c;
         public static final int tips_nocomments=0x7f05007e;
         public static final int tips_noitemselected=0x7f050080;
+        public static final int tips_nomorecomments=0x7f050086;
         public static final int tips_nopictures=0x7f05001f;
         public static final int tips_notgetserialyet=0x7f05004c;
         public static final int tips_nothinghappened=0x7f05002a;

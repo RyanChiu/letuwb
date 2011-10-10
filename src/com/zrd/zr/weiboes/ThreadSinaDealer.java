@@ -161,9 +161,14 @@ public class ThreadSinaDealer implements Runnable {
 			mHandler.sendMessage(msg);
 			break;
 		case GET_COMMENTS:
-			if (mParams != null && mParams.length != 1 && mParams[0] != null) return;
+			if (mParams != null && mParams.length != 3 && mParams[0] != null) return;
 			try {
-				List<Comment> clist = mSina.getWeibo().getComments(mParams[0]);
+				Paging paging = new Paging(
+					Integer.parseInt(mParams[1]),
+					Integer.parseInt(mParams[2])
+				);
+				
+				List<Comment> clist = mSina.getWeibo().getComments(mParams[0], paging);
 				for (int i = 0; i < clist.size(); i++) {
 					comments.add(clist.get(i));
 				}

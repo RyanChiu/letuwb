@@ -45,6 +45,7 @@ import android.widget.Toast;
 public class WeiboShowActivity extends Activity {
 	
 	protected static final int COUNT_PERPAGE_TIMELINE = 20;
+	protected static final int COUNT_PERPAGE_COMMENTS = 20;
 	private TextView mTextScreenName;
 	private ImageView mImageVerified;
 	private TextView mTextCreatedAt;
@@ -65,6 +66,7 @@ public class WeiboShowActivity extends Activity {
 	private AlertDialog mDlgComment;
 	private EditText mEditComment;
 	private Button mBtnMoreTimelines;
+	private Button mBtnMoreComments;
 	private Dialog mDlgDescription;
 	private Dialog mDlgComments;
 	private Dialog mDlgMore;
@@ -75,6 +77,7 @@ public class WeiboShowActivity extends Activity {
 	private User mLastUser = null;
 	private List<Sina.XStatus> mLastUserTimeline = new ArrayList<Sina.XStatus>();
 	private int mIndexOfSelectedStatus = -1;
+	private List<Comment> mLastComments = new ArrayList<Comment>();
 	
 	//private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
 	//private AlphaAnimation mAnimFadeout = new AlphaAnimation(1.0f, 0.1f);
@@ -270,35 +273,61 @@ public class WeiboShowActivity extends Activity {
 				ArrayList<Comment> comments = (ArrayList<Comment>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 				if (comments != null) {
 					if (comments.size() != 0) {
-						ListView lv = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
-						ArrayList<String> contents = new ArrayList<String>();
-						WeiboStatusListAdapter _tmp = 
-							new WeiboStatusListAdapter(WeiboShowActivity.this, null);
 						for (int i = 0; i < comments.size(); i++) {
-							user = comments.get(i).getUser();
-							contents.add(
-								(user != null ? user.getScreenName() : "")
-								+ "(" + _tmp.getSpecialDateText(comments.get(i).getCreatedAt(), 0) + "):\n"
-								+ comments.get(i).getText()
-							);
+							mLastComments.add(comments.get(i));
 						}
-						ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-							WeiboShowActivity.this,
-							R.layout.item_custom_dialog_list,
-							contents
-						);
-						lv.setAdapter(adapter);
+						if (mLastComments.size() != 0) {
+							ListView lv = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
+							lv.removeFooterView(mBtnMoreComments);
+							lv.addFooterView(mBtnMoreComments);
+							ArrayList<String> contents = new ArrayList<String>();
+							WeiboStatusListAdapter _tmp = 
+								new WeiboStatusListAdapter(WeiboShowActivity.this, null);
+							for (int i = 0; i < mLastComments.size(); i++) {
+								user = mLastComments.get(i).getUser();
+								contents.add(
+									"[" + (i + 1) + "] "
+									+ (user != null ? user.getScreenName() : "")
+									+ "(" + _tmp.getSpecialDateText(mLastComments.get(i).getCreatedAt(), 0) + "):\n"
+									+ mLastComments.get(i).getText()
+								);
+							}
+							lv.setAdapter(
+								new ArrayAdapter<String>(
+									WeiboShowActivity.this,
+									R.layout.item_custom_dialog_list,
+									contents
+								)
+							);
+							lv.setSelection(
+								(getLastCommentsTotalPage() - 1) * COUNT_PERPAGE_COMMENTS
+							);
+						} else {
+							Toast.makeText(
+								WeiboShowActivity.this,
+								R.string.tips_nocomments,
+								Toast.LENGTH_LONG
+							).show();
+						}
 					} else {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							R.string.tips_nocomments,
+							R.string.tips_nomorecomments,
 							Toast.LENGTH_LONG
 						).show();
-						mDlgComments.dismiss();
+						mBtnMoreComments.setTag(2);
+						mBtnMoreComments.setEnabled(false);
 					}
 				} else {
 					//deal with failing to get comments
-					mDlgComments.dismiss();
+					Integer flag = (Integer)mBtnMoreComments.getTag();
+					if (flag != null && flag != 0) {
+						//if mBtnMoreComments was clicked, then do something here
+						mDlgComments.dismiss();
+					} else {
+						//if mBtnMoreComments was not clicked, do something here
+						
+					}
 					
 					if (wexp != null) {
 						Toast.makeText(
@@ -388,6 +417,43 @@ public class WeiboShowActivity extends Activity {
 			
 		});
 		mListStatus.addFooterView(mBtnMoreTimelines);
+		
+		mBtnMoreComments = new Button(this);
+		mBtnMoreComments.setText(R.string.label_getmore);
+		/*
+		 * 0 means not clicked
+		 * 1 means clicked
+		 * 2 means should not be clicked till next comments showing up
+		 */
+		mBtnMoreComments.setTag(0);
+		mBtnMoreComments.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				long sid;
+				if (mLastUserTimeline == null) {
+					sid = mLastUser.getStatus().getId();
+				} else {
+					sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
+				}
+				new Thread(
+					new ThreadSinaDealer(
+						mSina,
+						ThreadSinaDealer.GET_COMMENTS,
+						new String[] {
+							"" + sid,
+							"" + (getLastCommentsTotalPage() + 1),
+							"" + COUNT_PERPAGE_COMMENTS
+						},
+						mHandler
+					)
+				).start();
+				turnDealing(true);
+				mBtnMoreComments.setTag(1);
+			}
+			
+		});
 		
 		/*
 		 * show the whole user/info
@@ -777,17 +843,25 @@ public class WeiboShowActivity extends Activity {
 		} else {
 			sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
 		}
+		mLastComments.clear();
 		new Thread(
 			new ThreadSinaDealer(
 				mSina,
 				ThreadSinaDealer.GET_COMMENTS,
-				new String[] {"" + sid},
+				new String[] {
+					"" + sid,
+					"" + getLastCommentsTotalPage(),
+					"" + COUNT_PERPAGE_COMMENTS
+				},
 				mHandler
 			)
 		).start();
 		ListView lvComments = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
 		ArrayList<String> lstWaiting = new ArrayList<String>();
 		lstWaiting.add(getString(R.string.tips_waitasecond));
+		lvComments.removeFooterView(mBtnMoreComments);
+		mBtnMoreComments.setTag(0);
+		mBtnMoreComments.setEnabled(true);
 		lvComments.setAdapter(
 			new ArrayAdapter<String>(
 				WeiboShowActivity.this,
@@ -828,6 +902,14 @@ public class WeiboShowActivity extends Activity {
 		if (size % COUNT_PERPAGE_TIMELINE != 0) return size / COUNT_PERPAGE_TIMELINE + 1;
 		else return size / COUNT_PERPAGE_TIMELINE;
 		
+	}
+	
+	protected int getLastCommentsTotalPage() {
+		if (mLastComments == null) return 1;
+		int size = mLastComments.size();
+		if (size == 0) return 1;
+		if (size % COUNT_PERPAGE_COMMENTS != 0) return size / COUNT_PERPAGE_COMMENTS + 1;
+		else return size / COUNT_PERPAGE_COMMENTS;
 	}
 
 	public static Sina getSina() {
@@ -878,6 +960,7 @@ public class WeiboShowActivity extends Activity {
 			mBtnRepost.setEnabled(false);
 			mBtnMoreTimelines.setEnabled(false);
 			mBtnMore.setEnabled(false);
+			mBtnMoreComments.setEnabled(false);
 			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
 		} else {
 			mBtnFriend.setEnabled(true);
@@ -885,6 +968,12 @@ public class WeiboShowActivity extends Activity {
 			mBtnRepost.setEnabled(true);
 			mBtnMoreTimelines.setEnabled(true);
 			mBtnMore.setEnabled(true);
+			Integer flag = (Integer)mBtnMoreComments.getTag();
+			if (flag != null && flag == 2) {
+				
+			} else {
+				mBtnMoreComments.setEnabled(true);
+			}
 			mProgressStatusLoading.setVisibility(ProgressBar.GONE);
 		}
 	}
