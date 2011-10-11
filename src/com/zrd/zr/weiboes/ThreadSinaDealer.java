@@ -102,9 +102,14 @@ public class ThreadSinaDealer implements Runnable {
 				}
 				if (!sids.equals("")) {
 					List<Count> counts = mSina.getWeibo().getCounts(sids);
-					for (int i = 0; i < counts.size() & i < xstatuses.size(); i++) {
-						xstatuses.get(i).setComments(counts.get(i).getComments());
-						xstatuses.get(i).setReposts(counts.get(i).getRt());
+					for (int i = 0; i < counts.size(); i++) {
+						for (int j = 0; j < xstatuses.size(); j++) {
+							if (xstatuses.get(j).getStatus().getId()
+								== counts.get(i).getId()) {
+								xstatuses.get(j).setComments(counts.get(i).getComments());
+								xstatuses.get(j).setReposts(counts.get(i).getRt());
+							}
+						}
 					}
 				}
 				bundle.putSerializable(KEY_DATA, xstatuses);
