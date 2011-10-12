@@ -1,15 +1,10 @@
 package com.zrd.zr.letuwb;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +55,7 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.mobclick.android.MobclickAgent;
 import com.zrd.zr.letuwb.R;
+import com.zrd.zr.pnj.PNJ;
 import com.zrd.zr.protos.WeibousersProtos.Weibousers;
 import com.zrd.zr.protos.WeibousersProtos.Weibouser;
 
@@ -767,47 +763,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		return mPrivilege;
 	}
 	
-	public static String getParamsAsStr(String... params) {
-		String sParams = "";
-		if (params.length >= 2 && (params.length % 2 == 0)) {
-			for (int i = 0; i < params.length; i += 2) {
-				sParams += (params[i] + "=" + params[i + 1]);
-				if (i != params.length - 2) {
-					sParams += "&";
-				}
-			}
-		}
-		return sParams;
-	}
-	
-	public static String getPhpContentByGet(String sPhp, String sParams) {
-		URL url;
-		try {
-			url = new URL(EntranceActivity.URL_SITE + sPhp + "?" + sParams);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.connect();
-			InputStream is = conn.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-			String line, content = "";
-			while ((line = reader.readLine()) != null) {
-				content += line;
-			}
-			return content;
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}		
-	}
-	
     public static ArrayList<WeibouserInfo> getPics(String... params) {
     	ArrayList<WeibouserInfo> usrs = new ArrayList<WeibouserInfo>();
     	
-    	String sParams = getParamsAsStr(params);
+    	String sParams = PNJ.getParamsAsStr(params);
     	SecureUrl su = new SecureUrl();
     	URLConnection conn = su.getConnection(URL_SITE + "picsinfo.php?" + sParams);
     	if (conn == null) return usrs;
@@ -909,9 +868,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	 */
     public int getTotalPagesNum() {
 		String sBackMsg = "";
-		sBackMsg = getPhpContentByGet(
-			"stats.php",
-			EntranceActivity.getParamsAsStr("total", "pages", "limit", mLimit.toString())
+		sBackMsg = PNJ.getResponseByGet(
+			EntranceActivity.URL_SITE + "stats.php",
+			PNJ.getParamsAsStr("total", "pages", "limit", mLimit.toString())
 		);
 		if (sBackMsg != null) {
 			String ss[] = getPhpMsg(sBackMsg);
@@ -937,9 +896,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
      */
     public int getTotalPicsNum() {
  		String sBackMsg = "";
-		sBackMsg = getPhpContentByGet(
-			"stats.php",
-			EntranceActivity.getParamsAsStr("total", "usrs")
+		sBackMsg = PNJ.getResponseByGet(
+			EntranceActivity.URL_SITE + "stats.php",
+			PNJ.getParamsAsStr("total", "usrs")
 		);
 		if (sBackMsg != null) {
 			String ss[] = getPhpMsg(sBackMsg);
@@ -1119,9 +1078,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			 */
 			SecureUrl su = new SecureUrl();
 			if (mClientKey.equals("")) {
-				String msg = getPhpContentByGet(
-					"key.php",
-					getParamsAsStr("serial", su.phpMd5(SERIAL_APP))
+				String msg = PNJ.getResponseByGet(
+					EntranceActivity.URL_SITE + "key.php",
+					PNJ.getParamsAsStr("serial", su.phpMd5(SERIAL_APP))
 				);
 				String ss[] = getPhpMsg(msg);
 				if (ss != null && ss[0].equals(SYMBOL_SUCCESSFUL)) {
@@ -1134,9 +1093,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 					msgs[0] = getString(R.string.err_failedtogetserial);
 				}
 			} else {
-				String msg = getPhpContentByGet(
-					"key.php",
-					getParamsAsStr("serial", su.phpMd5(SERIAL_APP), "key", mClientKey)
+				String msg = PNJ.getResponseByGet(
+					EntranceActivity.URL_SITE + "key.php",
+					PNJ.getParamsAsStr("serial", su.phpMd5(SERIAL_APP), "key", mClientKey)
 				);
 				String[] ss = getPhpMsg(msg);
 				if (ss != null && ss[0].equals(SYMBOL_SUCCESSFUL)) {
@@ -1159,7 +1118,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	         */
 	        try {
 				PackageInfo info = EntranceActivity.this.getPackageManager().getPackageInfo(EntranceActivity.this.getPackageName(), 0);
-				String content = getPhpContentByGet("ver.php", "");
+				String content = PNJ.getResponseByGet(EntranceActivity.URL_SITE + "ver.php", "");
 				if (content != null) {
 					String[] infos = content.split(",");
 					if (infos.length == 4) {

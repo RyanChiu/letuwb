@@ -63,6 +63,7 @@ import com.sonyericsson.zoom.DynamicZoomControl;
 import com.sonyericsson.zoom.ImageZoomView;
 import com.sonyericsson.zoom.LongPressZoomListener;
 import com.zrd.zr.letuwb.R;
+import com.zrd.zr.pnj.PNJ;
 import com.zrd.zr.weiboes.Sina;
 import com.zrd.zr.weiboes.ThreadSinaDealer;
 
@@ -1122,11 +1123,11 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	}
 	
 	private boolean vote(String... params) {
-		WeibouserInfo pi = EntranceActivity.getPicFromId(mId, mUsrs);
+		WeibouserInfo wi = EntranceActivity.getPicFromId(mId, mUsrs);
 				
-		String msg = EntranceActivity.getPhpContentByGet(
-			"vote.php",
-			EntranceActivity.getParamsAsStr(params)
+		String msg = PNJ.getResponseByGet(
+			EntranceActivity.URL_SITE + "vote.php",
+			PNJ.getParamsAsStr(params)
 		);
 		if (msg != null) {
 			String ss[] = EntranceActivity.getPhpMsg(msg);
@@ -1136,13 +1137,13 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 				} else {
 					String[] sRecs = ss[1].split(","); 
 					if (sRecs.length == 8) {
-						pi.mLastVote = Integer.parseInt(sRecs[0]);
+						wi.mLastVote = Integer.parseInt(sRecs[0]);
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 						ParsePosition pp = new ParsePosition(0);
-						pi.mLastVoteTime = sdf.parse(sRecs[1], pp);
-						pi.clicks = Integer.parseInt(sRecs[2]);
-						pi.likes = Integer.parseInt(sRecs[3]);
-						pi.dislikes = Integer.parseInt(sRecs[4]);
+						wi.mLastVoteTime = sdf.parse(sRecs[1], pp);
+						wi.clicks = Integer.parseInt(sRecs[2]);
+						wi.likes = Integer.parseInt(sRecs[3]);
+						wi.dislikes = Integer.parseInt(sRecs[4]);
 					}
 				}
 				return true;
