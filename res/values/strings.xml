@@ -137,4 +137,5 @@
     <string name="label_getmore">Click to get more...</string>
     <string name="tips_nomorecomments">No more comments.</string>
     <string name="label_addaccount">Add another account...</string>
+    <string name="label_possess">Possess</string>
 </resources>

@@ -130,10 +130,12 @@
     <string name="tips_nocomments">还没有任何评论呢</string>
     <string name="tips_alreadylastone">最后一条了</string>
     <string name="tips_noitemselected">您还没选择是那条呢</string>
+    <string name="tips_commented">评论成功</string>
     <string name="title_repost">您可以写点儿什么，或者留空也行</string>
     <string name="title_comment">您的评论</string>
     <string name="tips_waitasecond">获取评论中，请稍候...</string>
     <string name="label_getmore">点击获取更多...</string>
     <string name="tips_nomorecomments">已经是最后一条评论了</string>
     <string name="label_addaccount">添加另一个帐号...</string>
+    <string name="label_possess">私藏</string>
 </resources>
