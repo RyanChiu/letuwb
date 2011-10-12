@@ -67,7 +67,7 @@
     <string name="err_wrongversioninfos">服务器返回了错误的版本信息。</string>
     <string name="err_noversioninfos">未能从服务器获取版本信息。</string>
     <string name="tips_loggedin">已登录。</string>
-    <string name="tips_loginfailed">登录失败。</string>
+    <string name="tips_loginfailed">oo，未能登录。\n请您检查一下您的输入或者您的互联网连接是否正确，然后再试试看...</string>
     <string name="tips_alreadyloggedin">您已登录。</string>
     <string name="intro_title">简介</string>
     <string name="tips_enterintro">请在下面输入图片的简介，或者空着也行。</string>
@@ -129,10 +129,11 @@
     <string name="tips_reposted">转发成功</string>
     <string name="tips_nocomments">还没有任何评论呢</string>
     <string name="tips_alreadylastone">最后一条了</string>
-    <string name="tips_noitemselected">还没选择呢</string>
+    <string name="tips_noitemselected">您还没选择是那条呢</string>
     <string name="title_repost">您可以写点儿什么，或者留空也行</string>
     <string name="title_comment">您的评论</string>
     <string name="tips_waitasecond">获取评论中，请稍候...</string>
     <string name="label_getmore">点击获取更多...</string>
     <string name="tips_nomorecomments">已经是最后一条评论了</string>
+    <string name="label_addaccount">添加另一个帐号...</string>
 </resources>

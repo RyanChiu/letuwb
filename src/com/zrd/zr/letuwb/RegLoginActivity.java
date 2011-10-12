@@ -137,7 +137,7 @@ public class RegLoginActivity extends Activity {
 				mRowRepeat.setVisibility(TableRow.GONE);
 				if (mEditUsername.getText().toString().trim().equals("")
 					|| mEditPassword.getText().toString().trim().equals("")) {
-					Toast.makeText(RegLoginActivity.this, getString(R.string.err_needaccount), Toast.LENGTH_LONG).show();
+					Toast.makeText(RegLoginActivity.this, R.string.err_needaccount, Toast.LENGTH_LONG).show();
 					return;
 				}
 				
@@ -152,7 +152,7 @@ public class RegLoginActivity extends Activity {
 					WeiboShowActivity.setSina(sina);
 					Toast.makeText(
 						RegLoginActivity.this,
-						"Logged in.",
+						R.string.tips_loggedin,
 						Toast.LENGTH_LONG
 					).show();
 					
@@ -171,8 +171,7 @@ public class RegLoginActivity extends Activity {
 				} else {
 					Toast.makeText(
 						RegLoginActivity.this, 
-						"Oooops, login failed...\n"
-						+ "Please check your input or the Internet connecton and try again...", 
+						R.string.tips_loginfailed, 
 						Toast.LENGTH_LONG
 					).show();
 					if (WeiboShowActivity.getSina() != null) {
@@ -204,7 +203,7 @@ public class RegLoginActivity extends Activity {
 					if (mEditUsername.getText().toString().trim().equals("")
 						|| mEditPassword.getText().toString().trim().equals("")
 						|| mEditRepeat.getText().toString().trim().equals("")) {
-						Toast.makeText(RegLoginActivity.this, getString(R.string.err_needaccount), Toast.LENGTH_LONG).show();
+						Toast.makeText(RegLoginActivity.this, R.string.err_needaccount, Toast.LENGTH_LONG).show();
 						return;
 					}
 					if (mEditPassword.getText().toString().equals(mEditRepeat.getText().toString())) {
@@ -241,7 +240,7 @@ public class RegLoginActivity extends Activity {
 							EntranceActivity.setPrivilege(1);
 						}
 					} else {
-						Toast.makeText(RegLoginActivity.this, getString(R.string.err_needrepeat), Toast.LENGTH_SHORT).show();
+						Toast.makeText(RegLoginActivity.this, R.string.err_needrepeat, Toast.LENGTH_SHORT).show();
 						return;
 					}
 				}
@@ -272,7 +271,7 @@ public class RegLoginActivity extends Activity {
 		 */
 		ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
 		String[] usernames = new String[list.size() + 1];
-		usernames[0] = "Add another account...";
+		usernames[0] = getString(R.string.label_addaccount);
 		for (int i = 1; i < usernames.length; i++) {
 			usernames[i] = list.get(i - 1)[0];
 		}

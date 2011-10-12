@@ -251,6 +251,7 @@ containing a value of this type.
         public static final int info_picture=0x7f050021;
         public static final int intro_title=0x7f050044;
         public static final int item_upload=0x7f050009;
+        public static final int label_addaccount=0x7f050087;
         public static final int label_bigger_pic=0x7f050077;
         public static final int label_browse=0x7f050035;
         public static final int label_cancel=0x7f050015;
