@@ -3182,6 +3182,1428 @@ public final class WeibousersProtos {
     // @@protoc_insertion_point(class_scope:com.zrd.zr.protos.Weibousers)
   }
   
+  public interface UCMappingOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required string id = 1;
+    boolean hasId();
+    String getId();
+    
+    // required string uid = 2;
+    boolean hasUid();
+    String getUid();
+    
+    // required string channelid = 3;
+    boolean hasChannelid();
+    String getChannelid();
+    
+    // required string clientid = 4;
+    boolean hasClientid();
+    String getClientid();
+    
+    // required string clientkey = 5;
+    boolean hasClientkey();
+    String getClientkey();
+  }
+  public static final class UCMapping extends
+      com.google.protobuf.GeneratedMessage
+      implements UCMappingOrBuilder {
+    // Use UCMapping.newBuilder() to construct.
+    private UCMapping(Builder builder) {
+      super(builder);
+    }
+    private UCMapping(boolean noInit) {}
+    
+    private static final UCMapping defaultInstance;
+    public static UCMapping getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public UCMapping getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.zrd.zr.protos.WeibousersProtos.internal_static_com_zrd_zr_protos_UCMapping_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.zrd.zr.protos.WeibousersProtos.internal_static_com_zrd_zr_protos_UCMapping_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // required string id = 1;
+    public static final int ID_FIELD_NUMBER = 1;
+    private java.lang.Object id_;
+    public boolean hasId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          id_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
+    // required string uid = 2;
+    public static final int UID_FIELD_NUMBER = 2;
+    private java.lang.Object uid_;
+    public boolean hasUid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public String getUid() {
+      java.lang.Object ref = uid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          uid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUidBytes() {
+      java.lang.Object ref = uid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        uid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
+    // required string channelid = 3;
+    public static final int CHANNELID_FIELD_NUMBER = 3;
+    private java.lang.Object channelid_;
+    public boolean hasChannelid() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public String getChannelid() {
+      java.lang.Object ref = channelid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          channelid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getChannelidBytes() {
+      java.lang.Object ref = channelid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        channelid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
+    // required string clientid = 4;
+    public static final int CLIENTID_FIELD_NUMBER = 4;
+    private java.lang.Object clientid_;
+    public boolean hasClientid() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    public String getClientid() {
+      java.lang.Object ref = clientid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          clientid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getClientidBytes() {
+      java.lang.Object ref = clientid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        clientid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
+    // required string clientkey = 5;
+    public static final int CLIENTKEY_FIELD_NUMBER = 5;
+    private java.lang.Object clientkey_;
+    public boolean hasClientkey() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    public String getClientkey() {
+      java.lang.Object ref = clientkey_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          clientkey_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getClientkeyBytes() {
+      java.lang.Object ref = clientkey_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        clientkey_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
+    private void initFields() {
+      id_ = "";
+      uid_ = "";
+      channelid_ = "";
+      clientid_ = "";
+      clientkey_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasChannelid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasClientid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasClientkey()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getUidBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getChannelidBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getClientidBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getClientkeyBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getUidBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getChannelidBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getClientidBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getClientkeyBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.zrd.zr.protos.WeibousersProtos.UCMapping parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMapping parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMapping parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMapping parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMapping parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMapping parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMapping parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMapping parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMapping parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMapping parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.zrd.zr.protos.WeibousersProtos.UCMapping prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.zrd.zr.protos.WeibousersProtos.UCMappingOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.zrd.zr.protos.WeibousersProtos.internal_static_com_zrd_zr_protos_UCMapping_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.zrd.zr.protos.WeibousersProtos.internal_static_com_zrd_zr_protos_UCMapping_fieldAccessorTable;
+      }
+      
+      // Construct using com.zrd.zr.protos.WeibousersProtos.UCMapping.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        id_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uid_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        channelid_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        clientid_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        clientkey_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.zrd.zr.protos.WeibousersProtos.UCMapping.getDescriptor();
+      }
+      
+      public com.zrd.zr.protos.WeibousersProtos.UCMapping getDefaultInstanceForType() {
+        return com.zrd.zr.protos.WeibousersProtos.UCMapping.getDefaultInstance();
+      }
+      
+      public com.zrd.zr.protos.WeibousersProtos.UCMapping build() {
+        com.zrd.zr.protos.WeibousersProtos.UCMapping result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.zrd.zr.protos.WeibousersProtos.UCMapping buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.zrd.zr.protos.WeibousersProtos.UCMapping result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.zrd.zr.protos.WeibousersProtos.UCMapping buildPartial() {
+        com.zrd.zr.protos.WeibousersProtos.UCMapping result = new com.zrd.zr.protos.WeibousersProtos.UCMapping(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.id_ = id_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.uid_ = uid_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.channelid_ = channelid_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.clientid_ = clientid_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.clientkey_ = clientkey_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.zrd.zr.protos.WeibousersProtos.UCMapping) {
+          return mergeFrom((com.zrd.zr.protos.WeibousersProtos.UCMapping)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.zrd.zr.protos.WeibousersProtos.UCMapping other) {
+        if (other == com.zrd.zr.protos.WeibousersProtos.UCMapping.getDefaultInstance()) return this;
+        if (other.hasId()) {
+          setId(other.getId());
+        }
+        if (other.hasUid()) {
+          setUid(other.getUid());
+        }
+        if (other.hasChannelid()) {
+          setChannelid(other.getChannelid());
+        }
+        if (other.hasClientid()) {
+          setClientid(other.getClientid());
+        }
+        if (other.hasClientkey()) {
+          setClientkey(other.getClientkey());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        if (!hasId()) {
+          
+          return false;
+        }
+        if (!hasUid()) {
+          
+          return false;
+        }
+        if (!hasChannelid()) {
+          
+          return false;
+        }
+        if (!hasClientid()) {
+          
+          return false;
+        }
+        if (!hasClientkey()) {
+          
+          return false;
+        }
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              bitField0_ |= 0x00000001;
+              id_ = input.readBytes();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              uid_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              channelid_ = input.readBytes();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
+              clientid_ = input.readBytes();
+              break;
+            }
+            case 42: {
+              bitField0_ |= 0x00000010;
+              clientkey_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // required string id = 1;
+      private java.lang.Object id_ = "";
+      public boolean hasId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setId(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      void setId(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000001;
+        id_ = value;
+        onChanged();
+      }
+      
+      // required string uid = 2;
+      private java.lang.Object uid_ = "";
+      public boolean hasUid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public String getUid() {
+        java.lang.Object ref = uid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          uid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setUid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        uid_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearUid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        uid_ = getDefaultInstance().getUid();
+        onChanged();
+        return this;
+      }
+      void setUid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        uid_ = value;
+        onChanged();
+      }
+      
+      // required string channelid = 3;
+      private java.lang.Object channelid_ = "";
+      public boolean hasChannelid() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      public String getChannelid() {
+        java.lang.Object ref = channelid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          channelid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setChannelid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        channelid_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearChannelid() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        channelid_ = getDefaultInstance().getChannelid();
+        onChanged();
+        return this;
+      }
+      void setChannelid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000004;
+        channelid_ = value;
+        onChanged();
+      }
+      
+      // required string clientid = 4;
+      private java.lang.Object clientid_ = "";
+      public boolean hasClientid() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      public String getClientid() {
+        java.lang.Object ref = clientid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          clientid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setClientid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        clientid_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearClientid() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        clientid_ = getDefaultInstance().getClientid();
+        onChanged();
+        return this;
+      }
+      void setClientid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000008;
+        clientid_ = value;
+        onChanged();
+      }
+      
+      // required string clientkey = 5;
+      private java.lang.Object clientkey_ = "";
+      public boolean hasClientkey() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      public String getClientkey() {
+        java.lang.Object ref = clientkey_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          clientkey_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setClientkey(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        clientkey_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearClientkey() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        clientkey_ = getDefaultInstance().getClientkey();
+        onChanged();
+        return this;
+      }
+      void setClientkey(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000010;
+        clientkey_ = value;
+        onChanged();
+      }
+      
+      // @@protoc_insertion_point(builder_scope:com.zrd.zr.protos.UCMapping)
+    }
+    
+    static {
+      defaultInstance = new UCMapping(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:com.zrd.zr.protos.UCMapping)
+  }
+  
+  public interface UCMappingsOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // repeated .com.zrd.zr.protos.UCMapping mapping = 1;
+    java.util.List<com.zrd.zr.protos.WeibousersProtos.UCMapping> 
+        getMappingList();
+    com.zrd.zr.protos.WeibousersProtos.UCMapping getMapping(int index);
+    int getMappingCount();
+    java.util.List<? extends com.zrd.zr.protos.WeibousersProtos.UCMappingOrBuilder> 
+        getMappingOrBuilderList();
+    com.zrd.zr.protos.WeibousersProtos.UCMappingOrBuilder getMappingOrBuilder(
+        int index);
+    
+    // required int32 flag = 2;
+    boolean hasFlag();
+    int getFlag();
+  }
+  public static final class UCMappings extends
+      com.google.protobuf.GeneratedMessage
+      implements UCMappingsOrBuilder {
+    // Use UCMappings.newBuilder() to construct.
+    private UCMappings(Builder builder) {
+      super(builder);
+    }
+    private UCMappings(boolean noInit) {}
+    
+    private static final UCMappings defaultInstance;
+    public static UCMappings getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public UCMappings getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.zrd.zr.protos.WeibousersProtos.internal_static_com_zrd_zr_protos_UCMappings_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.zrd.zr.protos.WeibousersProtos.internal_static_com_zrd_zr_protos_UCMappings_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // repeated .com.zrd.zr.protos.UCMapping mapping = 1;
+    public static final int MAPPING_FIELD_NUMBER = 1;
+    private java.util.List<com.zrd.zr.protos.WeibousersProtos.UCMapping> mapping_;
+    public java.util.List<com.zrd.zr.protos.WeibousersProtos.UCMapping> getMappingList() {
+      return mapping_;
+    }
+    public java.util.List<? extends com.zrd.zr.protos.WeibousersProtos.UCMappingOrBuilder> 
+        getMappingOrBuilderList() {
+      return mapping_;
+    }
+    public int getMappingCount() {
+      return mapping_.size();
+    }
+    public com.zrd.zr.protos.WeibousersProtos.UCMapping getMapping(int index) {
+      return mapping_.get(index);
+    }
+    public com.zrd.zr.protos.WeibousersProtos.UCMappingOrBuilder getMappingOrBuilder(
+        int index) {
+      return mapping_.get(index);
+    }
+    
+    // required int32 flag = 2;
+    public static final int FLAG_FIELD_NUMBER = 2;
+    private int flag_;
+    public boolean hasFlag() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public int getFlag() {
+      return flag_;
+    }
+    
+    private void initFields() {
+      mapping_ = java.util.Collections.emptyList();
+      flag_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasFlag()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getMappingCount(); i++) {
+        if (!getMapping(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < mapping_.size(); i++) {
+        output.writeMessage(1, mapping_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(2, flag_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      for (int i = 0; i < mapping_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, mapping_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, flag_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.zrd.zr.protos.WeibousersProtos.UCMappings parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMappings parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMappings parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMappings parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMappings parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMappings parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMappings parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMappings parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMappings parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.zrd.zr.protos.WeibousersProtos.UCMappings parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.zrd.zr.protos.WeibousersProtos.UCMappings prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.zrd.zr.protos.WeibousersProtos.UCMappingsOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.zrd.zr.protos.WeibousersProtos.internal_static_com_zrd_zr_protos_UCMappings_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.zrd.zr.protos.WeibousersProtos.internal_static_com_zrd_zr_protos_UCMappings_fieldAccessorTable;
+      }
+      
+      // Construct using com.zrd.zr.protos.WeibousersProtos.UCMappings.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getMappingFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        if (mappingBuilder_ == null) {
+          mapping_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          mappingBuilder_.clear();
+        }
+        flag_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.zrd.zr.protos.WeibousersProtos.UCMappings.getDescriptor();
+      }
+      
+      public com.zrd.zr.protos.WeibousersProtos.UCMappings getDefaultInstanceForType() {
+        return com.zrd.zr.protos.WeibousersProtos.UCMappings.getDefaultInstance();
+      }
+      
+      public com.zrd.zr.protos.WeibousersProtos.UCMappings build() {
+        com.zrd.zr.protos.WeibousersProtos.UCMappings result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.zrd.zr.protos.WeibousersProtos.UCMappings buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.zrd.zr.protos.WeibousersProtos.UCMappings result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.zrd.zr.protos.WeibousersProtos.UCMappings buildPartial() {
+        com.zrd.zr.protos.WeibousersProtos.UCMappings result = new com.zrd.zr.protos.WeibousersProtos.UCMappings(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (mappingBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            mapping_ = java.util.Collections.unmodifiableList(mapping_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.mapping_ = mapping_;
+        } else {
+          result.mapping_ = mappingBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.flag_ = flag_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.zrd.zr.protos.WeibousersProtos.UCMappings) {
+          return mergeFrom((com.zrd.zr.protos.WeibousersProtos.UCMappings)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.zrd.zr.protos.WeibousersProtos.UCMappings other) {
+        if (other == com.zrd.zr.protos.WeibousersProtos.UCMappings.getDefaultInstance()) return this;
+        if (mappingBuilder_ == null) {
+          if (!other.mapping_.isEmpty()) {
+            if (mapping_.isEmpty()) {
+              mapping_ = other.mapping_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureMappingIsMutable();
+              mapping_.addAll(other.mapping_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.mapping_.isEmpty()) {
+            if (mappingBuilder_.isEmpty()) {
+              mappingBuilder_.dispose();
+              mappingBuilder_ = null;
+              mapping_ = other.mapping_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              mappingBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getMappingFieldBuilder() : null;
+            } else {
+              mappingBuilder_.addAllMessages(other.mapping_);
+            }
+          }
+        }
+        if (other.hasFlag()) {
+          setFlag(other.getFlag());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        if (!hasFlag()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getMappingCount(); i++) {
+          if (!getMapping(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder subBuilder = com.zrd.zr.protos.WeibousersProtos.UCMapping.newBuilder();
+              input.readMessage(subBuilder, extensionRegistry);
+              addMapping(subBuilder.buildPartial());
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              flag_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // repeated .com.zrd.zr.protos.UCMapping mapping = 1;
+      private java.util.List<com.zrd.zr.protos.WeibousersProtos.UCMapping> mapping_ =
+        java.util.Collections.emptyList();
+      private void ensureMappingIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          mapping_ = new java.util.ArrayList<com.zrd.zr.protos.WeibousersProtos.UCMapping>(mapping_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.zrd.zr.protos.WeibousersProtos.UCMapping, com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder, com.zrd.zr.protos.WeibousersProtos.UCMappingOrBuilder> mappingBuilder_;
+      
+      public java.util.List<com.zrd.zr.protos.WeibousersProtos.UCMapping> getMappingList() {
+        if (mappingBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(mapping_);
+        } else {
+          return mappingBuilder_.getMessageList();
+        }
+      }
+      public int getMappingCount() {
+        if (mappingBuilder_ == null) {
+          return mapping_.size();
+        } else {
+          return mappingBuilder_.getCount();
+        }
+      }
+      public com.zrd.zr.protos.WeibousersProtos.UCMapping getMapping(int index) {
+        if (mappingBuilder_ == null) {
+          return mapping_.get(index);
+        } else {
+          return mappingBuilder_.getMessage(index);
+        }
+      }
+      public Builder setMapping(
+          int index, com.zrd.zr.protos.WeibousersProtos.UCMapping value) {
+        if (mappingBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMappingIsMutable();
+          mapping_.set(index, value);
+          onChanged();
+        } else {
+          mappingBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      public Builder setMapping(
+          int index, com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder builderForValue) {
+        if (mappingBuilder_ == null) {
+          ensureMappingIsMutable();
+          mapping_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          mappingBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      public Builder addMapping(com.zrd.zr.protos.WeibousersProtos.UCMapping value) {
+        if (mappingBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMappingIsMutable();
+          mapping_.add(value);
+          onChanged();
+        } else {
+          mappingBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      public Builder addMapping(
+          int index, com.zrd.zr.protos.WeibousersProtos.UCMapping value) {
+        if (mappingBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMappingIsMutable();
+          mapping_.add(index, value);
+          onChanged();
+        } else {
+          mappingBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      public Builder addMapping(
+          com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder builderForValue) {
+        if (mappingBuilder_ == null) {
+          ensureMappingIsMutable();
+          mapping_.add(builderForValue.build());
+          onChanged();
+        } else {
+          mappingBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      public Builder addMapping(
+          int index, com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder builderForValue) {
+        if (mappingBuilder_ == null) {
+          ensureMappingIsMutable();
+          mapping_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          mappingBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      public Builder addAllMapping(
+          java.lang.Iterable<? extends com.zrd.zr.protos.WeibousersProtos.UCMapping> values) {
+        if (mappingBuilder_ == null) {
+          ensureMappingIsMutable();
+          super.addAll(values, mapping_);
+          onChanged();
+        } else {
+          mappingBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      public Builder clearMapping() {
+        if (mappingBuilder_ == null) {
+          mapping_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          mappingBuilder_.clear();
+        }
+        return this;
+      }
+      public Builder removeMapping(int index) {
+        if (mappingBuilder_ == null) {
+          ensureMappingIsMutable();
+          mapping_.remove(index);
+          onChanged();
+        } else {
+          mappingBuilder_.remove(index);
+        }
+        return this;
+      }
+      public com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder getMappingBuilder(
+          int index) {
+        return getMappingFieldBuilder().getBuilder(index);
+      }
+      public com.zrd.zr.protos.WeibousersProtos.UCMappingOrBuilder getMappingOrBuilder(
+          int index) {
+        if (mappingBuilder_ == null) {
+          return mapping_.get(index);  } else {
+          return mappingBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      public java.util.List<? extends com.zrd.zr.protos.WeibousersProtos.UCMappingOrBuilder> 
+           getMappingOrBuilderList() {
+        if (mappingBuilder_ != null) {
+          return mappingBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(mapping_);
+        }
+      }
+      public com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder addMappingBuilder() {
+        return getMappingFieldBuilder().addBuilder(
+            com.zrd.zr.protos.WeibousersProtos.UCMapping.getDefaultInstance());
+      }
+      public com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder addMappingBuilder(
+          int index) {
+        return getMappingFieldBuilder().addBuilder(
+            index, com.zrd.zr.protos.WeibousersProtos.UCMapping.getDefaultInstance());
+      }
+      public java.util.List<com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder> 
+           getMappingBuilderList() {
+        return getMappingFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.zrd.zr.protos.WeibousersProtos.UCMapping, com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder, com.zrd.zr.protos.WeibousersProtos.UCMappingOrBuilder> 
+          getMappingFieldBuilder() {
+        if (mappingBuilder_ == null) {
+          mappingBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.zrd.zr.protos.WeibousersProtos.UCMapping, com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder, com.zrd.zr.protos.WeibousersProtos.UCMappingOrBuilder>(
+                  mapping_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          mapping_ = null;
+        }
+        return mappingBuilder_;
+      }
+      
+      // required int32 flag = 2;
+      private int flag_ ;
+      public boolean hasFlag() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public int getFlag() {
+        return flag_;
+      }
+      public Builder setFlag(int value) {
+        bitField0_ |= 0x00000002;
+        flag_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearFlag() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        flag_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:com.zrd.zr.protos.UCMappings)
+    }
+    
+    static {
+      defaultInstance = new UCMappings(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:com.zrd.zr.protos.UCMappings)
+  }
+  
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_com_zrd_zr_protos_Weibouser_descriptor;
   private static
@@ -3192,6 +4614,16 @@ public final class WeibousersProtos {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_zrd_zr_protos_Weibousers_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_zrd_zr_protos_UCMapping_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_zrd_zr_protos_UCMapping_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_zrd_zr_protos_UCMappings_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_zrd_zr_protos_UCMappings_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -3217,7 +4649,12 @@ public final class WeibousersProtos {
       "slikes\030\031 \002(\005\022\024\n\014lastvotetime\030\032 \002(\t\022\024\n\014we" +
       "eklyclicks\030\033 \002(\005\022\023\n\013weeklylikes\030\034 \002(\005\022\026\n" +
       "\016weeklydislikes\030\035 \002(\005\"7\n\nWeibousers\022)\n\003u" +
-      "sr\030\001 \003(\0132\034.com.zrd.zr.protos.Weibouser"
+      "sr\030\001 \003(\0132\034.com.zrd.zr.protos.Weibouser\"\\" +
+      "\n\tUCMapping\022\n\n\002id\030\001 \002(\t\022\013\n\003uid\030\002 \002(\t\022\021\n\t" +
+      "channelid\030\003 \002(\t\022\020\n\010clientid\030\004 \002(\t\022\021\n\tcli" +
+      "entkey\030\005 \002(\t\"I\n\nUCMappings\022-\n\007mapping\030\001 ",
+      "\003(\0132\034.com.zrd.zr.protos.UCMapping\022\014\n\004fla" +
+      "g\030\002 \002(\005"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -3240,6 +4677,22 @@ public final class WeibousersProtos {
               new java.lang.String[] { "Usr", },
               com.zrd.zr.protos.WeibousersProtos.Weibousers.class,
               com.zrd.zr.protos.WeibousersProtos.Weibousers.Builder.class);
+          internal_static_com_zrd_zr_protos_UCMapping_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+          internal_static_com_zrd_zr_protos_UCMapping_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_com_zrd_zr_protos_UCMapping_descriptor,
+              new java.lang.String[] { "Id", "Uid", "Channelid", "Clientid", "Clientkey", },
+              com.zrd.zr.protos.WeibousersProtos.UCMapping.class,
+              com.zrd.zr.protos.WeibousersProtos.UCMapping.Builder.class);
+          internal_static_com_zrd_zr_protos_UCMappings_descriptor =
+            getDescriptor().getMessageTypes().get(3);
+          internal_static_com_zrd_zr_protos_UCMappings_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_com_zrd_zr_protos_UCMappings_descriptor,
+              new java.lang.String[] { "Mapping", "Flag", },
+              com.zrd.zr.protos.WeibousersProtos.UCMappings.class,
+              com.zrd.zr.protos.WeibousersProtos.UCMappings.Builder.class);
           return null;
         }
       };

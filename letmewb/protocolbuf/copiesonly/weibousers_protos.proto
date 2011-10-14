@@ -34,3 +34,16 @@ message Weibouser {
 message Weibousers {
 	repeated Weibouser usr = 1;
 }
+
+message UCMapping {
+    required string id = 1;
+    required string uid = 2;
+    required string channelid = 3;
+    required string clientid = 4;
+    required string clientkey = 5;
+}
+
+message UCMappings {
+    repeated UCMapping mapping = 1;
+    required int32 flag = 2;
+}

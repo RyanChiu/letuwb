@@ -327,4 +327,102 @@ class Weibousers extends PBMessage
     return $this->_get_arr_size("1");
   }
 }
+class UCMapping extends PBMessage
+{
+  var $wired_type = PBMessage::WIRED_LENGTH_DELIMITED;
+  public function __construct($reader=null)
+  {
+    parent::__construct($reader);
+    $this->fields["1"] = "PBString";
+    $this->values["1"] = "";
+    $this->fields["2"] = "PBString";
+    $this->values["2"] = "";
+    $this->fields["3"] = "PBString";
+    $this->values["3"] = "";
+    $this->fields["4"] = "PBString";
+    $this->values["4"] = "";
+    $this->fields["5"] = "PBString";
+    $this->values["5"] = "";
+  }
+  function id()
+  {
+    return $this->_get_value("1");
+  }
+  function set_id($value)
+  {
+    return $this->_set_value("1", $value);
+  }
+  function uid()
+  {
+    return $this->_get_value("2");
+  }
+  function set_uid($value)
+  {
+    return $this->_set_value("2", $value);
+  }
+  function channelid()
+  {
+    return $this->_get_value("3");
+  }
+  function set_channelid($value)
+  {
+    return $this->_set_value("3", $value);
+  }
+  function clientid()
+  {
+    return $this->_get_value("4");
+  }
+  function set_clientid($value)
+  {
+    return $this->_set_value("4", $value);
+  }
+  function clientkey()
+  {
+    return $this->_get_value("5");
+  }
+  function set_clientkey($value)
+  {
+    return $this->_set_value("5", $value);
+  }
+}
+class UCMappings extends PBMessage
+{
+  var $wired_type = PBMessage::WIRED_LENGTH_DELIMITED;
+  public function __construct($reader=null)
+  {
+    parent::__construct($reader);
+    $this->fields["1"] = "UCMapping";
+    $this->values["1"] = array();
+    $this->fields["2"] = "PBInt";
+    $this->values["2"] = "";
+  }
+  function mapping($offset)
+  {
+    return $this->_get_arr_value("1", $offset);
+  }
+  function add_mapping()
+  {
+    return $this->_add_arr_value("1");
+  }
+  function set_mapping($index, $value)
+  {
+    $this->_set_arr_value("1", $index, $value);
+  }
+  function remove_last_mapping()
+  {
+    $this->_remove_last_arr_value("1");
+  }
+  function mapping_size()
+  {
+    return $this->_get_arr_size("1");
+  }
+  function flag()
+  {
+    return $this->_get_value("2");
+  }
+  function set_flag($value)
+  {
+    return $this->_set_value("2", $value);
+  }
+}
 ?>

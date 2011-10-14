@@ -30,7 +30,8 @@ if (array_key_exists('file', $_GET) && array_key_exists('direction', $_GET)) {
 	if ($direction == 2) {
 		$sql = sprintf("select * from weibo_users where id > %d limit 1", $uid);
 	}
-} else {
+}
+if (array_key_exists('top', $_GET)) {
 	if ($_GET['top'] == 0) {// means last registered at SINA
 		$sql = sprintf("select * from weibo_users order by created_at desc");
 	}
@@ -52,6 +53,13 @@ if (array_key_exists('file', $_GET) && array_key_exists('direction', $_GET)) {
 	if ($_GET['top'] == 6) {// means randomly
 		$sql = "select * from weibo_users order by rand()";
 	}
+}
+if (array_key_exists('clientkey', $_GET)) {
+	$sql = sprintf(
+		"select * from weibo_users where uid in"
+		. " (select a.uid from possessions a, clients b where a.clientid = b.id and b.`key` = '%s')",
+		$_GET['clientkey']
+	);
 }
 
 /*
