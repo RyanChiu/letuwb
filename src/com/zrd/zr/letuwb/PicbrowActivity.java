@@ -65,6 +65,8 @@ import com.sonyericsson.zoom.LongPressZoomListener;
 import com.zrd.zr.letuwb.R;
 import com.zrd.zr.pnj.PNJ;
 import com.zrd.zr.pnj.SecureURL;
+import com.zrd.zr.pnj.ThreadPNJDealer;
+import com.zrd.zr.protos.WeibousersProtos.UCMappings;
 import com.zrd.zr.weiboes.Sina;
 import com.zrd.zr.weiboes.ThreadSinaDealer;
 
@@ -93,6 +95,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 	private Button mBtnShare;
 	private Button mBtnWeiboShow;
 	private Button mBtnWeiboFriend;
+	private Button mBtnPossess;
 	private static Boolean mIsLoading = false;
 	private Boolean mWasPlaying = false;
 	public Boolean mIsDooming = false;
@@ -146,6 +149,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		mBtnShare = (Button) findViewById(R.id.btnShare);
 		mBtnWeiboShow = (Button) findViewById(R.id.btnWeiboShow);
 		mBtnWeiboFriend = (Button) findViewById(R.id.btnMakeFriendsFromBrow);
+		mBtnPossess = (Button) findViewById(R.id.btnPossess);
 		bdPicFailed = BitmapFactory.decodeResource(this.getResources(), R.drawable.broken);
 		mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mGestureDetector = new GestureDetector(this, new PicbrowGestureListener());
@@ -186,6 +190,31 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 							//deal with failing to make friends
 						}
 						break;
+					case ThreadPNJDealer.GET_UCMAPPINGS:
+						UCMappings mappings = (UCMappings)msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
+						if (mappings != null) {
+							if (mappings.getFlag() == 1) {
+								Toast.makeText(
+									PicbrowActivity.this,
+									"Already possessed before.",
+									Toast.LENGTH_LONG
+								).show();
+							} else if (mappings.getFlag() == 2) {
+								Toast.makeText(
+									PicbrowActivity.this,
+									"Possessed.",
+									Toast.LENGTH_LONG
+								).show();
+							} else {
+								Toast.makeText(
+									PicbrowActivity.this,
+									"Failed to possess." + mappings.getFlag(),
+									Toast.LENGTH_LONG
+								).show();
+							}
+						} else {
+							//deal with failing to possess
+						}
 				}    
 				super.handleMessage(msg);
 			}
@@ -306,6 +335,28 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 				} else {
 					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, PicbrowActivity.this);
 				}
+			}
+			
+		});
+		
+		mBtnPossess.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				WeibouserInfo wi = EntranceActivity.getPicFromId(mId, mUsrs);
+				
+				new Thread(
+					new ThreadPNJDealer(
+						ThreadPNJDealer.GET_UCMAPPINGS,
+						EntranceActivity.URL_SITE 
+							+ "updpzs.php?"
+							+ "clientkey=" + EntranceActivity.getClientKey()
+							+ "&channelid=0"
+							+ "&uid=" + wi.uid,
+						mHandler
+					)
+				).start();
 			}
 			
 		});
