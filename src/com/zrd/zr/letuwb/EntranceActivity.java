@@ -56,6 +56,8 @@ import com.google.ads.AdView;
 import com.mobclick.android.MobclickAgent;
 import com.zrd.zr.letuwb.R;
 import com.zrd.zr.pnj.PNJ;
+import com.zrd.zr.pnj.SecureURL;
+import com.zrd.zr.protos.WeibousersProtos.UCMappings;
 import com.zrd.zr.protos.WeibousersProtos.Weibousers;
 import com.zrd.zr.protos.WeibousersProtos.Weibouser;
 
@@ -107,11 +109,12 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	TableRow mRowRepeat;
 	CheckBox mCheckRemember;
 	TextView mTextPageInfo;
-	Button mBtnRandom;
-	Button mBtnLatest;
-	Button mBtnHottest;
-	Button mBtnUnhottest;
-	ImageButton mBtnExchange;
+	private Button mBtnRandom;
+	private Button mBtnLatest;
+	private Button mBtnHottest;
+	private Button mBtnUnhottest;
+	private Button mBtnPossessions;
+	private ImageButton mBtnExchange;
 	private ArrayList<Button> mTopicBtns = null;
 	SeekBar mSeekMain;
 	Button mBtnPre;
@@ -171,11 +174,13 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         mBtnLatest = (Button) findViewById(R.id.btnLatest);
         mBtnHottest = (Button) findViewById(R.id.btnHottest);
         mBtnUnhottest = (Button) findViewById(R.id.btnUnhottest);
+        mBtnPossessions = (Button) findViewById(R.id.btnPossessions);
         mTopicBtns = new ArrayList<Button>();
         mTopicBtns.add(mBtnLatest);
         mTopicBtns.add(mBtnHottest);
         mTopicBtns.add(mBtnRandom);
         mTopicBtns.add(mBtnUnhottest);
+        mTopicBtns.add(mBtnPossessions);
         mSeekMain = (SeekBar) findViewById(R.id.sbMain);
         mBtnPre = (Button) findViewById(R.id.btnPre);
         mBtnNext = (Button) findViewById(R.id.btnNext);
@@ -297,6 +302,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				mBtnLatest.setSelected(false);
 				mBtnHottest.setSelected(false);
 				mBtnUnhottest.setSelected(false);
+				mBtnPossessions.setSelected(false);
 				
 				AsyncGridLoader asyncGridLoader = new AsyncGridLoader(EntranceActivity.this);
 				mPrgDlg.show();
@@ -305,7 +311,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		        mCurTerms.add("6");
 		        mCurPage = 1;
 		        mCurParagraph = 1;
-		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString(), "pb", "1");
+		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString());
 			}
         	
         });
@@ -319,6 +325,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				mBtnLatest.setSelected(true);
 				mBtnHottest.setSelected(false);
 				mBtnUnhottest.setSelected(false);
+				mBtnPossessions.setSelected(false);
 				
 				AsyncGridLoader asyncGridLoader = new AsyncGridLoader(EntranceActivity.this);
 				mPrgDlg.show();
@@ -327,7 +334,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		        mCurTerms.add("0");
 		        mCurPage = 1;
 		        mCurParagraph = 1;
-		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString(), "pb", "1");
+		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString());
 			}
         	
         });
@@ -341,6 +348,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				mBtnLatest.setSelected(false);
 				mBtnHottest.setSelected(true);
 				mBtnUnhottest.setSelected(false);
+				mBtnPossessions.setSelected(false);
 				
 				Toast.makeText(
 					EntranceActivity.this,
@@ -355,7 +363,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		        mCurTerms.add("4");
 		        mCurPage = 1;
 		        mCurParagraph = 1;
-		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString(), "pb", "1");
+		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString());
 			}
         	
         });
@@ -369,6 +377,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				mBtnLatest.setSelected(false);
 				mBtnHottest.setSelected(false);
 				mBtnUnhottest.setSelected(true);
+				mBtnPossessions.setSelected(false);
 				
 				Toast.makeText(
 					EntranceActivity.this,
@@ -383,7 +392,36 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		        mCurTerms.add("5");
 		        mCurPage = 1;
 		        mCurParagraph = 1;
-		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString(), "pb", "1");
+		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString());
+			}
+        	
+        });
+        
+        mBtnPossessions.setOnClickListener(new OnClickListener () {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mBtnRandom.setSelected(false);
+				mBtnLatest.setSelected(false);
+				mBtnHottest.setSelected(false);
+				mBtnUnhottest.setSelected(false);
+				mBtnPossessions.setSelected(true);
+				
+				Toast.makeText(
+					EntranceActivity.this,
+					R.string.tips_possessions,
+					Toast.LENGTH_LONG
+				).show();
+				
+				AsyncGridLoader asyncGridLoader = new AsyncGridLoader(EntranceActivity.this);
+				mPrgDlg.show();
+				mCurTerms.clear();
+		        mCurTerms.add("clientkey");
+		        mCurTerms.add(getClientKey());
+		        mCurPage = 1;
+		        mCurParagraph = 1;
+		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString());
 			}
         	
         });
@@ -767,7 +805,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
     	ArrayList<WeibouserInfo> usrs = new ArrayList<WeibouserInfo>();
     	
     	String sParams = PNJ.getParamsAsStr(params);
-    	SecureUrl su = new SecureUrl();
+    	SecureURL su = new SecureURL();
     	URLConnection conn = su.getConnection(URL_SITE + "picsinfo.php?" + sParams);
     	if (conn == null) return usrs;
     	try {
@@ -800,6 +838,27 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			e.printStackTrace();
 		}
 		return usrs;
+    }
+    
+    /*
+     * using protobuf structure to get users information from DB
+     */
+    public UCMappings updateUser(String... params) {
+    	SecureURL su = new SecureURL();
+    	URLConnection conn = su.getConnection(
+    		URL_SITE + "updusr.php"
+    		+ PNJ.getParamsAsStr(params)
+    	);
+    	if (conn == null) return null;
+    	try {
+			conn.connect();
+			InputStream is = conn.getInputStream();
+			return UCMappings.parseFrom(is);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
     }
     
     /*
@@ -933,11 +992,12 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			mTotalPics
 		);
 		*/
+
     	String title = String.format(
 			getString(R.string.tips_pages),
 			(mCurParagraph - 1) * mPageLimit + (mCurPage - 1) * mLimit + 1,
 			(mCurParagraph - 1) * mPageLimit + (mCurPage - 1) * mLimit + mPageUsrs.size(),
-			mTotalPics
+			mBtnPossessions.isSelected() ? mUsrs.size() : mTotalPics
 		);
 
     	mSeekMain.setProgress(
@@ -1076,7 +1136,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			/*
 			 * try to get the client key
 			 */
-			SecureUrl su = new SecureUrl();
+			SecureURL su = new SecureURL();
 			if (mClientKey.equals("")) {
 				String msg = PNJ.getResponseByGet(
 					EntranceActivity.URL_SITE + "key.php",
@@ -1183,7 +1243,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
     public void next() {
     	double maxParagraph = Math.ceil((float)mUsrs.size() / (float) mPageLimit);
     	mCurParagraph++;
-		if (mCurParagraph >  maxParagraph) {
+		if ((mCurParagraph - 1)>  maxParagraph) {
 			mCurParagraph--;
 			String[] args = renewPageArgs(1);
 			if (args != null) {
@@ -1193,14 +1253,19 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				agl.execute(args);
 			}
 		} else {
-			mPrgDlg.show();
-			mPageUsrs.clear();
-			for (int i = (mCurParagraph -1) * mPageLimit; i < mCurParagraph * mPageLimit && i < mUsrs.size(); i++) {
-				mPageUsrs.add(mUsrs.get(i));
+			if ((mCurParagraph -1) * mPageLimit >= mUsrs.size()) {
+				mCurParagraph--;
+			} else {
+				mPrgDlg.show();
+				mPageUsrs.clear();
+				for (int i = (mCurParagraph -1) * mPageLimit; i < mCurParagraph * mPageLimit && i < mUsrs.size(); i++) {
+					mPageUsrs.add(mUsrs.get(i));
+				}
+				WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, mGridPics);
+				mGridPics.setAdapter(adapter);
+				renewCurParagraphTitle();
 			}
-			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, mGridPics);
-			mGridPics.setAdapter(adapter);
-			renewCurParagraphTitle();
+			
 		}
     }
     

@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import com.zrd.zr.pnj.SecureURL;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -64,7 +66,7 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		
 		URL url = (URL) params[0];
 		
-		SecureUrl su = new SecureUrl();
+		SecureURL su = new SecureURL();
 		/*
 		 * see if local cached.
 		 * it uses value of MD5 the address of URL for the cached image filename

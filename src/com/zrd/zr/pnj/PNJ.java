@@ -18,7 +18,7 @@ public class PNJ {
 	 * get all the response contents from PHP server with the way "get".
 	 * and the sParams will be the formated string for PHP such as
 	 * "count=10&page=3" kind of thing. the sPHPURL will be like
-	 * "http://www.xxx.com/getme.php" kind of stuff.
+	 * "http://www.somesite.com/getme.php" kind of stuff.
 	 */
 	public static String getResponseByGet(String sPHPURL, String sParams) {
 		URL url;

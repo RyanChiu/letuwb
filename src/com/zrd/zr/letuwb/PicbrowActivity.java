@@ -64,6 +64,7 @@ import com.sonyericsson.zoom.ImageZoomView;
 import com.sonyericsson.zoom.LongPressZoomListener;
 import com.zrd.zr.letuwb.R;
 import com.zrd.zr.pnj.PNJ;
+import com.zrd.zr.pnj.SecureURL;
 import com.zrd.zr.weiboes.Sina;
 import com.zrd.zr.weiboes.ThreadSinaDealer;
 
@@ -936,7 +937,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 				Bitmap bmp = BitmapFactory.decodeFile(sPath + "/" + sFname);
 		    	return bmp == null ? bdPicFailed : bmp;
 			} else {
-				SecureUrl su = new SecureUrl();
+				SecureURL su = new SecureURL();
 				String sUrl = new String(wi.profile_image_url);
 				sUrl = sUrl.replace("/50/", "/180/");
 				URLConnection conn = su.getConnection(sUrl);

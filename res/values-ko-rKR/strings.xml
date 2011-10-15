@@ -96,6 +96,7 @@
     <string name="tips_noadultstuff">It\'s not allowed to upload picture about adult stuff.</string>
     <string name="tips_hottesttheweek">Hottests the week.</string>
     <string name="tips_unhottesttheweek">Unhottest the week.</string>
+    <string name="tips_possessions">My possessions.</string>
     <string name="sharing_content">And I found it through http://az88.info/letmewb/landing.</string>
     <string name="sharing_title">I found a hot picture, wish you like it.</string>
     <string name="about_version">Version: </string>
@@ -138,4 +139,5 @@
     <string name="tips_nomorecomments">No more comments.</string>
     <string name="label_addaccount">Add another account...</string>
     <string name="label_possess">Possess</string>
+     <string name="label_possessions">Possessions</string>
 </resources>

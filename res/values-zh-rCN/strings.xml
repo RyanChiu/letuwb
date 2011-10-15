@@ -96,6 +96,7 @@
     <string name="tips_noadultstuff">请不要上传淫秽图片，否则后果自负。</string>
     <string name="tips_hottesttheweek">本周最靓。</string>
     <string name="tips_unhottesttheweek">本周最丑。</string>
+    <string name="tips_possessions">我的私藏。</string>
     <string name="sharing_content">是在这儿看到的：http://az88.info/letmewb/landing。</string>
     <string name="sharing_title">我发现了张热图诶，来看看。</string>
     <string name="about_version">版本：</string>
@@ -105,11 +106,11 @@
     <string name="about_contact">请和我们联系：</string>
     <string name="title_loginfirst">您得先登录才能完成这项操作。</string>
     <string name="label_reload">刷新</string>
-    <string name="label_weibo_friendship">关注</string>
-     <string name="label_weibo_favorite">收藏</string>
-     <string name="label_weibo_repost">转发</string>
-     <string name="label_share">分享</string>
-     <string name="tips_friendsmade">关注成功</string>
+    <string name="label_weibo_friendship">+关注</string>
+    <string name="label_weibo_favorite">+收藏</string>
+    <string name="label_weibo_repost">转发</string>
+    <string name="label_share">分享</string>
+    <string name="tips_friendsmade">关注成功</string>
     <string name="tips_friendsalready">已关注</string>
     <string name="label_microblogs">微博</string>
     <string name="label_favorites">收藏</string>
@@ -137,5 +138,6 @@
     <string name="label_getmore">点击获取更多...</string>
     <string name="tips_nomorecomments">已经是最后一条评论了</string>
     <string name="label_addaccount">添加另一个帐号...</string>
-    <string name="label_possess">私藏</string>
+    <string name="label_possess">+私藏</string>
+     <string name="label_possessions">私藏</string>
 </resources>

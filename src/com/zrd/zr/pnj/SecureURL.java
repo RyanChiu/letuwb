@@ -1,4 +1,4 @@
-package com.zrd.zr.letuwb;
+package com.zrd.zr.pnj;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 
 import android.util.Log;
 
-public class SecureUrl {
+public class SecureURL {
 
 	public String phpMd5(String str) {
 		char[] charArray = str.toCharArray();
@@ -75,22 +75,5 @@ public class SecureUrl {
 		}
 		
 		return getConnection(url);
-	}
-	
-	
-	
-	String getUrlStr(String sUrl) {
-		String url = sUrl
-			+ "&rkey=" + EntranceActivity.getRandomKey()
-			+ "&ckey=" + EntranceActivity.getClientKey();
-		return
-			url
-			+ "&check="
-			+ phpMd5(
-				EntranceActivity.SERIAL_APP
-				+ EntranceActivity.getRandomKey()
-				+ EntranceActivity.getClientKey()
-				+ url
-			);
 	}
 }
