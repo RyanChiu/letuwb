@@ -47,12 +47,12 @@ if (mysql_insert_id() === false) {
 	echo $mappings->SerializeToString();
 	exit();
 }
-if (mysql_insert_id() == 0){
-	$mappings->set_flag(1);//means the 3 exist already 
+if (mysql_insert_id() == 0) {
+	$mappings->set_flag(1);//1 means the 3 exist in DB already
 	echo $mappings->SerializeToString();
 	exit();
 } else {
-	$mappings->set_flag(2)//means the 3 are inserted
+	$mappings->set_flag(2);//2 means the 3 are inserted
 	echo $mappings->SerializeToString();
 	exit();
 }
