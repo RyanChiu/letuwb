@@ -566,7 +566,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
     	if (i != list.size()) {
      		list.remove(i);
     	}
-		list.add(new String[] {usr, pwd});
+		list.add(0, new String[] {usr, pwd});
 		String content = "";
 		for (i = 0; i < list.size(); i++) {
 			content += list.get(i)[0] + "," + list.get(i)[1];
@@ -1178,15 +1178,54 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			/*
 	    	 * Auto login part begin
 	    	 */
-			/*
-			Sina sina = RegLoginActivity.login();
-			URLConnection conn = su.getConnection(
-				URL_SITE + "updusr.php?"
-				+ "uid=" + ""
-				+ "&channelid=" + ""
-				+ "&clientkey=" + ""
-			);
-			*/
+			ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
+			//we auto login the first one in the accounts list here
+			if (list.size() != 0) {
+				String usr = list.get(0)[0];
+				String pwd = list.get(1)[1];
+				Sina sina = RegLoginActivity.login(usr, pwd);
+				//if login succeed, then we associate the logged in account with clientkey
+				if (sina != null && sina.isLoggedIn()) {
+					RegLoginActivity.updateTitle(
+						R.id.ivTitleIcon, R.id.tvTitleName,
+						sina.getLoggedInUser()
+					);
+					URLConnection conn = su.getConnection(
+						URL_SITE + "updusr.php?"
+						+ "uid=" + sina.getLoggedInUser().getId()
+						+ "&channelid=" + "0"
+						+ "&clientkey=" + mClientKey
+					);
+					if (conn != null) {
+						try {
+							conn.connect();
+							InputStream is = conn.getInputStream();
+							UCMappings mappings = UCMappings.parseFrom(is);
+							if (mappings.getFlag() == 3
+								&& mappings.getMappingCount() > 0) {
+								//need to replace the client key with the returned one
+								mClientKey = mappings.getMapping(0).getClientkey();
+								SharedPreferences.Editor edit = mPreferences.edit();
+								edit.putString(CONFIG_CLIENTKEY, mClientKey);
+								edit.commit();
+								/*
+								 * and if there are any possessions belong to the old one,
+								 * we should merge them into the new one's.
+								 * and it'll be done on server through script updusr.php.
+								 */
+								Toast.makeText(
+									EntranceActivity.this,
+									"Associated, and your possessions before will be merged.",
+									Toast.LENGTH_LONG
+								).show();
+							}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}
 	        /*
 	    	 * Auto login part end
 	    	 */

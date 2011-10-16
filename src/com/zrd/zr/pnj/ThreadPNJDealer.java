@@ -58,7 +58,7 @@ public class ThreadPNJDealer implements Runnable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					bundle.putSerializable(KEY_DATA, null);
-				}	    	
+				}
 	    	}
 	    	msg.setData(bundle);
 			mHandler.sendMessage(msg);

@@ -7,7 +7,7 @@ $zconn = new zmysqlConn;
  * and it'll update or insert one record into table users according them:
  * if the clientkey from table users according to "uid, channelid" is 
  * different with the one passed from "GET", do nothing to table users but 
- * just return the clientkey from table users. and at the same time set
+ * just return the clientkey from table users. //and at the same time set
  * the flag of the one passed from "GET" in table clients into -1. 
  */
 require_once './protocolbuf/message/pb_message.php';
@@ -78,6 +78,38 @@ if (mysql_num_rows($rs) == 0) {
 		echo $mappings->SerializeToString();
 		exit();
 	} else {
+		//we should merge the possessions in the old clientkey into the new one's
+		$sql = sprintf(
+			"select concat(cast(uid as char), \",\", cast(channelid as char))"
+			. " from possessions where clientid = %s",
+			$r['clientid']
+		);
+		//echo $sql . "<br/>";//for debug
+		$uids = "''";
+		$rs = mysql_query($sql, $zconn->dblink);
+		if ($rs === false) {
+			$mappings->set_flag(-1);//-1 means there is some db related errors
+			echo $mappings->SerializeToString();
+			exit();
+		}
+		while ($row = mysql_fetch_row($rs)) {
+			$uids .= (", '" . $row[0] . "'");
+		}
+		//echo $uids . "<br/>";//for debug
+		$sql = sprintf(
+			"delete from possessions where clientid = %s"
+			. " and concat(cast(uid as char), \",\", cast(channelid as char))"
+			. " in (%s)",
+			$clientid, $uids
+		);
+		//echo $sql . "<br/>";//for debug
+		mysql_query($sql, $zconn->dblink);
+		$sql = sprintf(
+			"update possessions set clientid = %s where clientid = %s",
+			$r['clientid'], $clientid
+		);
+		//echo $sql . "<br/>";//for debug
+		mysql_query($sql, $zconn->dblink);
 		$mappings->set_flag(3);//means the client should replace his key with the returned one
 		$mapping = $mappings->add_mapping();
 		$mapping->set_id($r['id'] . '');
