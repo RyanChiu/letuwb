@@ -1136,6 +1136,15 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				intent.setClass(EntranceActivity.this, UpdateActivity.class);
 				startActivity(intent);
 			}
+			
+			Sina sina = WeiboShowActivity.getSina();
+			if (sina != null && sina.isLoggedIn()) {
+				RegLoginActivity.updateTitle(
+					R.id.ivTitleIcon, R.id.tvTitleName,
+					sina.getLoggedInUser()
+				);
+			}
+				
 			super.onPostExecute(result);
 		}
 
@@ -1182,14 +1191,11 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			//we auto login the first one in the accounts list here
 			if (list.size() != 0) {
 				String usr = list.get(0)[0];
-				String pwd = list.get(1)[1];
+				String pwd = list.get(0)[1];
 				Sina sina = RegLoginActivity.login(usr, pwd);
 				//if login succeed, then we associate the logged in account with clientkey
 				if (sina != null && sina.isLoggedIn()) {
-					RegLoginActivity.updateTitle(
-						R.id.ivTitleIcon, R.id.tvTitleName,
-						sina.getLoggedInUser()
-					);
+					WeiboShowActivity.setSina(sina);
 					URLConnection conn = su.getConnection(
 						URL_SITE + "updusr.php?"
 						+ "uid=" + sina.getLoggedInUser().getId()
