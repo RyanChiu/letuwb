@@ -88,7 +88,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	private static String mClientKey = "";
 	private static String mRandomKey = "";
 	private static Integer mTopicChoice = 0;
-	GridView mGridPics;
+	private GridView mGridPics;
 	private static final Integer mLimit = 28;//how many pictures should be passed to PicbrowActivity, actually multiple of mPageLimit is recommended
 	final Integer mPageLimit = 4;//how many pictures should be loaded into mGridPics.
 	private static Integer mCurPage = 1;
@@ -1049,21 +1049,20 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		protected void onPostExecute(WeibouserInfoGridAdapter result) {
 			// TODO Auto-generated method stub
 			renewCurParagraphTitle();
-			if (result != null) {
-				mGridPics.setAdapter(result);
-			} else {
-				((EntranceActivity) mContext).mPrgDlg.dismiss();
+			((EntranceActivity) mContext).mPrgDlg.dismiss();
+			if (mPageUsrs.size() == 0) {
 				AlertDialog alertDlg = new AlertDialog.Builder(mContext)
+					.setIcon(android.R.drawable.ic_dialog_info)
+					.setTitle(R.string.err_nopictures)
+					.setMessage(R.string.msg_nopictures)
 					.setPositiveButton(R.string.label_ok, null)
 					.create();
-				alertDlg.setIcon(android.R.drawable.ic_dialog_info);
-				alertDlg.setTitle(getString(R.string.err_nopictures));
-				alertDlg.setMessage(getString(R.string.msg_nopictures));
 				WindowManager.LayoutParams lp = alertDlg.getWindow().getAttributes();
 		        lp.alpha = 0.9f;
-		        alertDlg.getWindow().setAttributes(lp);
+				alertDlg.getWindow().setAttributes(lp);
 		        alertDlg.show();	
 			}
+			mGridPics.setAdapter(result);
 			//super.onPostExecute(result);
 		}
 
@@ -1091,10 +1090,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			for (int i = (mCurParagraph - 1) * mPageLimit; i < mUsrs.size() && i < mCurParagraph * mPageLimit; i++) {
 				mPageUsrs.add(mUsrs.get(i));
 			}
-			WeibouserInfoGridAdapter adapter = null;
-			if (mPageUsrs.size() != 0) {
-				adapter = new WeibouserInfoGridAdapter((EntranceActivity) mContext, mPageUsrs, mGridPics);
-			} 
+			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(
+				(EntranceActivity) mContext, mPageUsrs, mGridPics
+			);
 			return adapter;
 		}
     	
@@ -1304,6 +1302,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
     }
     
     public void next() {
+    	if (mUsrs.size() == 0) return;
     	double maxParagraph = Math.ceil((float)mUsrs.size() / (float) mPageLimit);
     	mCurParagraph++;
 		if ((mCurParagraph - 1)>  maxParagraph) {
