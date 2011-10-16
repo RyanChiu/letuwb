@@ -60,6 +60,7 @@ import com.zrd.zr.pnj.SecureURL;
 import com.zrd.zr.protos.WeibousersProtos.UCMappings;
 import com.zrd.zr.protos.WeibousersProtos.Weibousers;
 import com.zrd.zr.protos.WeibousersProtos.Weibouser;
+import com.zrd.zr.weiboes.Sina;
 
 public class EntranceActivity extends Activity implements OnTouchListener {
 
@@ -545,6 +546,15 @@ public class EntranceActivity extends Activity implements OnTouchListener {
     		list.add(new String[] {pairs[i], pairs[i + 1]});
     	}
     	return list;
+    }
+    
+    public static void delAccount(String usr, String pwd) {
+    	String contents = mPreferences.getString(CONFIG_ACCOUNTS, "");
+    	contents = contents.replace(usr + "," + pwd + ",", "");
+    	contents = contents.replace(usr + "," + pwd, "");
+    	SharedPreferences.Editor edit = mPreferences.edit();
+		edit.putString(CONFIG_ACCOUNTS, contents);
+		edit.commit();
     }
     
     public static void saveAccount(String usr, String pwd) {
@@ -1139,7 +1149,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			SecureURL su = new SecureURL();
 			if (mClientKey.equals("")) {
 				String msg = PNJ.getResponseByGet(
-					EntranceActivity.URL_SITE + "key.php",
+					URL_SITE + "key.php",
 					PNJ.getParamsAsStr("serial", su.phpMd5(SERIAL_APP))
 				);
 				String ss[] = getPhpMsg(msg);
@@ -1154,7 +1164,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				}
 			} else {
 				String msg = PNJ.getResponseByGet(
-					EntranceActivity.URL_SITE + "key.php",
+					URL_SITE + "key.php",
 					PNJ.getParamsAsStr("serial", su.phpMd5(SERIAL_APP), "key", mClientKey)
 				);
 				String[] ss = getPhpMsg(msg);
@@ -1168,7 +1178,15 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			/*
 	    	 * Auto login part begin
 	    	 */
-	        
+			/*
+			Sina sina = RegLoginActivity.login();
+			URLConnection conn = su.getConnection(
+				URL_SITE + "updusr.php?"
+				+ "uid=" + ""
+				+ "&channelid=" + ""
+				+ "&clientkey=" + ""
+			);
+			*/
 	        /*
 	    	 * Auto login part end
 	    	 */
