@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -85,7 +86,6 @@ public class RegLoginActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				// TODO Auto-generated method stub
 				int position = arg2;
 				switch (position) {
 				case 0://means going to add a account
@@ -103,6 +103,55 @@ public class RegLoginActivity extends Activity {
 					}
 					break;
 				}
+			}
+			
+		});
+		
+		mListAccounts.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+				// TODO Auto-generated method stub
+				mListAccounts.setTag(position);
+				new AlertDialog.Builder(RegLoginActivity.this)
+					.setTitle("Are you sure to remove the account?")
+					.setPositiveButton(
+						R.string.label_ok,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// TODO Auto-generated method stub
+								int idx = (Integer)mListAccounts.getTag() - 1;
+								if (idx >= 0) {
+									ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
+									String usr = list.get(idx)[0];
+									String pwd = list.get(idx)[1];
+									EntranceActivity.delAccount(usr, pwd);
+									list.remove(idx);
+									String[] usernames = new String[list.size() + 1];
+									usernames[0] = getString(R.string.label_addaccount);
+									for (int i = 1; i < usernames.length; i++) {
+										usernames[i] = list.get(i - 1)[0];
+									}
+									mListAccounts.setAdapter(
+										new ArrayAdapter<String>(
+											RegLoginActivity.this,
+											android.R.layout.simple_list_item_1,
+											usernames
+										)
+									);
+								}
+							}
+							
+						}
+					)
+					.setNegativeButton(R.string.label_cancel, null)
+					.create()
+					.show();
+				return false;
 			}
 			
 		});
