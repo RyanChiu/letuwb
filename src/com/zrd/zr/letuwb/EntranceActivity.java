@@ -795,7 +795,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		return mUsrs;
 	}
 	
-	public static void setmUsrs(ArrayList<WeibouserInfo> pics) {
+	public static void setUsrs(ArrayList<WeibouserInfo> pics) {
 		mUsrs = pics;
 	}
 	
@@ -1007,7 +1007,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			getString(R.string.tips_pages),
 			(mCurParagraph - 1) * mPageLimit + (mCurPage - 1) * mLimit + 1,
 			(mCurParagraph - 1) * mPageLimit + (mCurPage - 1) * mLimit + mPageUsrs.size(),
-			mBtnPossessions.isSelected() ? mUsrs.size() : mTotalPics
+			mTotalPics
 		);
 
     	mSeekMain.setProgress(
@@ -1069,23 +1069,28 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		@Override
 		protected WeibouserInfoGridAdapter doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			if (mTotalPics <= 0) {
-				int i = getTotalPicsNum();
-				if (i < 0) {
+			mUsrs = getPics(params);
+			
+			if (!mBtnPossessions.isSelected()) {
+				int num = getTotalPicsNum();
+				if (num < 0) {
 					Toast.makeText(
 						EntranceActivity.this,
 						getString(R.string.err_noconnection),
 						Toast.LENGTH_LONG
 					).show();
+					mTotalPics = 0;
 				} else {
-					mTotalPics = i;
-					mTotalPages = (int) Math.ceil((float)mTotalPics / (float)mLimit);
+					mTotalPics = num;
 				}
+			} else {
+				mTotalPics = mUsrs.size();
 			}
+			mTotalPages = (int) Math.ceil((float)mTotalPics / (float)mLimit);
 			mSeekMain.setMax(
 				mTotalPics == 0 ? 0 : ((int) Math.ceil((double)mTotalPics / (double)mPageLimit))
 			);
-			mUsrs = getPics(params);
+			
 			mPageUsrs.clear();
 			for (int i = (mCurParagraph - 1) * mPageLimit; i < mUsrs.size() && i < mCurParagraph * mPageLimit; i++) {
 				mPageUsrs.add(mUsrs.get(i));
@@ -1305,7 +1310,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
     	if (mUsrs.size() == 0) return;
     	double maxParagraph = Math.ceil((float)mUsrs.size() / (float) mPageLimit);
     	mCurParagraph++;
-		if ((mCurParagraph - 1)>  maxParagraph) {
+		if (mCurParagraph >  maxParagraph) {
 			mCurParagraph--;
 			String[] args = renewPageArgs(1);
 			if (args != null) {
@@ -1315,19 +1320,14 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				agl.execute(args);
 			}
 		} else {
-			if ((mCurParagraph -1) * mPageLimit >= mUsrs.size()) {
-				mCurParagraph--;
-			} else {
-				mPrgDlg.show();
-				mPageUsrs.clear();
-				for (int i = (mCurParagraph -1) * mPageLimit; i < mCurParagraph * mPageLimit && i < mUsrs.size(); i++) {
-					mPageUsrs.add(mUsrs.get(i));
-				}
-				WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, mGridPics);
-				mGridPics.setAdapter(adapter);
-				renewCurParagraphTitle();
+			mPrgDlg.show();
+			mPageUsrs.clear();
+			for (int i = (mCurParagraph -1) * mPageLimit; i < mCurParagraph * mPageLimit && i < mUsrs.size(); i++) {
+				mPageUsrs.add(mUsrs.get(i));
 			}
-			
+			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, mGridPics);
+			mGridPics.setAdapter(adapter);
+			renewCurParagraphTitle();
 		}
     }
     

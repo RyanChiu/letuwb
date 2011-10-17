@@ -960,7 +960,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 					String[] args = EntranceActivity.renewPageArgs(-1);
 					if (args != null) {
 						mUsrs = EntranceActivity.getPics(args);
-						EntranceActivity.setmUsrs(mUsrs);
+						EntranceActivity.setUsrs(mUsrs);
 					}
 					mId = mUsrs.get(mUsrs.size() - 1).id;
 				}
@@ -971,7 +971,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 					String[] args = EntranceActivity.renewPageArgs(1);
 					if (args != null) {
 						mUsrs = EntranceActivity.getPics(args);
-						EntranceActivity.setmUsrs(mUsrs);
+						EntranceActivity.setUsrs(mUsrs);
 					}
 					mId = mUsrs.get(0).id;
 				}
