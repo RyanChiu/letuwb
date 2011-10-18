@@ -71,15 +71,14 @@ containing a value of this type.
         public static final int popup_full_dark=0x7f02001d;
         public static final int reposts=0x7f02001e;
         public static final int share=0x7f02001f;
-        public static final int theateryellowii128x128=0x7f020020;
-        public static final int upup=0x7f020021;
-        public static final int upup_normal=0x7f020022;
-        public static final int upup_pressed=0x7f020023;
-        public static final int voterating_progress_horizontal=0x7f020024;
-        public static final int weibo_verified=0x7f020025;
-        public static final int white=0x7f020026;
-        public static final int zoomin=0x7f020027;
-        public static final int zoomout=0x7f020028;
+        public static final int upup=0x7f020020;
+        public static final int upup_normal=0x7f020021;
+        public static final int upup_pressed=0x7f020022;
+        public static final int voterating_progress_horizontal=0x7f020023;
+        public static final int weibo_verified=0x7f020024;
+        public static final int white=0x7f020025;
+        public static final int zoomin=0x7f020026;
+        public static final int zoomout=0x7f020027;
     }
     public static final class id {
         public static final int adsBrow=0x7f070011;
@@ -325,11 +324,13 @@ containing a value of this type.
         public static final int tips_alreadylast=0x7f05003e;
         public static final int tips_alreadylastone=0x7f050080;
         public static final int tips_alreadyloggedin=0x7f050043;
+        public static final int tips_alreadypossessed=0x7f05008d;
         public static final int tips_clicks=0x7f050022;
         public static final int tips_commented=0x7f050082;
         public static final int tips_connecting=0x7f050038;
         public static final int tips_downloading=0x7f050039;
         public static final int tips_enterintro=0x7f050045;
+        public static final int tips_failedtopossess=0x7f05008c;
         public static final int tips_favoritemade=0x7f05007d;
         public static final int tips_firstone=0x7f050024;
         public static final int tips_friendsalready=0x7f05006e;
@@ -353,6 +354,7 @@ containing a value of this type.
          */
         public static final int tips_pages=0x7f050017;
         public static final int tips_playing=0x7f050020;
+        public static final int tips_possessed=0x7f05008b;
         public static final int tips_possessions=0x7f05005f;
         public static final int tips_reposted=0x7f05007e;
         public static final int tips_saving=0x7f050029;

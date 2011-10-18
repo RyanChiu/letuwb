@@ -1053,8 +1053,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			if (mPageUsrs.size() == 0) {
 				AlertDialog alertDlg = new AlertDialog.Builder(mContext)
 					.setIcon(android.R.drawable.ic_dialog_info)
-					.setTitle(R.string.err_nopictures)
-					.setMessage(R.string.msg_nopictures)
+					.setTitle(R.string.msg_nopictures)
+					//.setMessage(R.string.msg_nopictures)
 					.setPositiveButton(R.string.label_ok, null)
 					.create();
 				WindowManager.LayoutParams lp = alertDlg.getWindow().getAttributes();

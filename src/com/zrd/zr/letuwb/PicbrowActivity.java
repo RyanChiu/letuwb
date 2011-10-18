@@ -196,19 +196,19 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 							if (mappings.getFlag() == 1) {
 								Toast.makeText(
 									PicbrowActivity.this,
-									"Already possessed before.",
+									R.string.tips_alreadypossessed,
 									Toast.LENGTH_LONG
 								).show();
 							} else if (mappings.getFlag() == 2) {
 								Toast.makeText(
 									PicbrowActivity.this,
-									"Possessed.",
+									R.string.tips_possessed,
 									Toast.LENGTH_LONG
 								).show();
 							} else {
 								Toast.makeText(
 									PicbrowActivity.this,
-									"Failed to possess." + mappings.getFlag(),
+									R.string.tips_failedtopossess,
 									Toast.LENGTH_LONG
 								).show();
 							}

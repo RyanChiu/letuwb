@@ -89,7 +89,7 @@
     <string name="label_pause">暂停</string>
     <string name="label_pre">上页</string>
     <string name="label_next">下页</string>
-    <string name="label_random">随机</string>
+    <string name="label_random">发现</string>
     <string name="label_latest">最新</string>
     <string name="label_hottest">最靓</string>
     <string name="label_unhottest">最丑</string>
@@ -140,4 +140,7 @@
     <string name="label_addaccount">添加另一个帐号...</string>
     <string name="label_possess">+私藏</string>
      <string name="label_possessions">私藏</string>
+     <string name="tips_possessed">私藏成功</string>
+     <string name="tips_failedtopossess">未能收藏</string>
+     <string name="tips_alreadypossessed">已私藏</string>
 </resources>

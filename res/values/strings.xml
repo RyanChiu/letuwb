@@ -140,4 +140,7 @@
     <string name="label_addaccount">Add another account...</string>
     <string name="label_possess">Possess</string>
     <string name="label_possessions">Possessions</string>
+    <string name="tips_possessed">Possessed.</string>
+    <string name="tips_failedtopossess">Failed to possess.</string>
+    <string name="tips_alreadypossessed">Already possessed before.</string>
 </resources>
