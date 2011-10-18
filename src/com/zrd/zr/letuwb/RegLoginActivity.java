@@ -96,10 +96,12 @@ public class RegLoginActivity extends Activity {
 					if (idx < 0) idx = 0;
 					ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
 					if (idx < list.size()) {
-						String[] pairs = list.get(idx);
-						mEditUsername.setText(pairs[0]);
-						mEditPassword.setText(pairs[1]);
+						String[] pair = list.get(idx);
+						mEditUsername.setText(pair[0]);
+						mEditPassword.setText(pair[1]);
 						mBtnLogin.performClick();
+						EntranceActivity.delAccount(pair[0], pair[1]);
+						EntranceActivity.saveAccount(pair[0], pair[1]);
 					}
 					break;
 				}
