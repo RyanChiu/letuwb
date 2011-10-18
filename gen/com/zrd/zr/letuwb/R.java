@@ -327,6 +327,8 @@ containing a value of this type.
         public static final int tips_alreadypossessed=0x7f05008d;
         public static final int tips_clicks=0x7f050022;
         public static final int tips_commented=0x7f050082;
+        public static final int tips_confirmdelaccount=0x7f05008e;
+        public static final int tips_confirmdelpossession=0x7f05008f;
         public static final int tips_connecting=0x7f050038;
         public static final int tips_downloading=0x7f050039;
         public static final int tips_enterintro=0x7f050045;
@@ -355,6 +357,7 @@ containing a value of this type.
         public static final int tips_pages=0x7f050017;
         public static final int tips_playing=0x7f050020;
         public static final int tips_possessed=0x7f05008b;
+        public static final int tips_possessionremoved=0x7f050090;
         public static final int tips_possessions=0x7f05005f;
         public static final int tips_reposted=0x7f05007e;
         public static final int tips_saving=0x7f050029;

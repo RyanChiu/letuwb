@@ -117,7 +117,7 @@ public class RegLoginActivity extends Activity {
 				// TODO Auto-generated method stub
 				mListAccounts.setTag(position);
 				new AlertDialog.Builder(RegLoginActivity.this)
-					.setTitle("Are you sure to remove the account?")
+					.setTitle(R.string.tips_confirmdelaccount)
 					.setPositiveButton(
 						R.string.label_ok,
 						new DialogInterface.OnClickListener() {

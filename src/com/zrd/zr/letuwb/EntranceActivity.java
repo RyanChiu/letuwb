@@ -39,6 +39,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -478,6 +479,80 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				
 			}
         });
+		
+		mGridPics.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View v,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				if (mBtnPossessions.isSelected()) {
+					mGridPics.setTag(position);
+					new AlertDialog.Builder(EntranceActivity.this)
+						.setTitle(R.string.tips_confirmdelpossession)
+						.setPositiveButton(
+							R.string.label_ok,
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// TODO Auto-generated method stub
+									int position = (Integer)mGridPics.getTag();
+									WeibouserInfo wi = mPageUsrs.get(position);
+									
+									SecureURL su = new SecureURL();
+									URLConnection conn = su.getConnection(
+										URL_SITE
+										+ "delpzs.php?"
+										+ "clientkey=" + getClientKey()
+										+ "&channelid=0"
+										+ "&uid=" + wi.uid
+									);
+									if (conn == null) {
+										Toast.makeText(
+											EntranceActivity.this,
+											R.string.err_noconnection,
+											Toast.LENGTH_LONG
+										).show();
+										return;
+									} else {
+										try {
+											conn.connect();
+											InputStream is = conn.getInputStream();
+											UCMappings mappings = UCMappings.parseFrom(is);
+											if (mappings.getFlag() > 0) {
+												WeibouserInfoGridAdapter adapter = (WeibouserInfoGridAdapter) mGridPics.getAdapter();
+												adapter.remove(wi);
+												adapter.notifyDataSetChanged();
+												mPageUsrs.remove(position);
+												mUsrs.remove(getUsrIndexFromId(wi.id, mUsrs));
+												Toast.makeText(
+													EntranceActivity.this,
+													R.string.tips_possessionremoved,
+													Toast.LENGTH_LONG
+												).show();
+												return;
+											}
+										} catch (IOException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+											return;
+										}
+									}
+								}
+								
+							}
+						)
+						.setNegativeButton(R.string.label_cancel, null)
+						.create()
+						.show();
+						
+				}
+				return false;
+			}
+			
+		});
         
         if (mClientKey.equals("")) {
         	mBtnHottest.performClick();

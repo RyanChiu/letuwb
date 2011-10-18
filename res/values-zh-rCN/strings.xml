@@ -143,4 +143,7 @@
      <string name="tips_possessed">私藏成功</string>
      <string name="tips_failedtopossess">未能收藏</string>
      <string name="tips_alreadypossessed">已私藏</string>
+     <string name="tips_confirmdelaccount">您确定要移出这个帐号？</string>
+     <string name="tips_confirmdelpossession">您确定要删除这个私藏么？</string>
+     <string name="tips_possessionremoved">已取消该项私藏。</string>
 </resources>
