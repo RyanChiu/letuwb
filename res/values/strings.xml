@@ -146,4 +146,5 @@
     <string name="tips_confirmdelaccount">Are you sure to remove the account?</string>
     <string name="tips_confirmdelpossession">Are you sure to remove the possession?</string>
     <string name="tips_possessionremoved">Possession removed.</string>
+    <string name="tips_possessioncanceling">Trying to cancel it, please wait a second...</string>
 </resources>

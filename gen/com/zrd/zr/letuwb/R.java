@@ -357,6 +357,7 @@ containing a value of this type.
         public static final int tips_pages=0x7f050017;
         public static final int tips_playing=0x7f050020;
         public static final int tips_possessed=0x7f05008b;
+        public static final int tips_possessioncanceling=0x7f050091;
         public static final int tips_possessionremoved=0x7f050090;
         public static final int tips_possessions=0x7f05005f;
         public static final int tips_reposted=0x7f05007e;

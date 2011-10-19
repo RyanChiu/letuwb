@@ -21,6 +21,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -58,6 +60,7 @@ import com.mobclick.android.MobclickAgent;
 import com.zrd.zr.letuwb.R;
 import com.zrd.zr.pnj.PNJ;
 import com.zrd.zr.pnj.SecureURL;
+import com.zrd.zr.pnj.ThreadPNJDealer;
 import com.zrd.zr.protos.WeibousersProtos.UCMappings;
 import com.zrd.zr.protos.WeibousersProtos.Weibousers;
 import com.zrd.zr.protos.WeibousersProtos.Weibouser;
@@ -131,6 +134,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	private String mOutText;//!!actually not used!!
 	static SharedPreferences mPreferences = null;
 	
+	private Handler mHandler = null;
+	
     /* Called when the activity is firstly created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,6 +199,37 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mGestureDetector = new GestureDetector(this, new LetuseeGestureListener());
         mGridPics.setOnTouchListener(this);
+        
+        mHandler = new Handler() {
+
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case ThreadPNJDealer.DEL_POSSESSION:
+					UCMappings mappings = 
+						(UCMappings) msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
+					if (mappings.getFlag() > 0) {
+						WeibouserInfo wi = (WeibouserInfo) mGridPics.getTag();
+						int idx = getUsrIndexFromId(wi.id, mUsrs);
+						mUsrs.remove(idx);
+						mTotalPics--;
+						if (mPageUsrs.contains(wi)) {
+							WeibouserInfoGridAdapter adapter = (WeibouserInfoGridAdapter) mGridPics.getAdapter();
+							adapter.remove(wi);
+							adapter.notifyDataSetChanged();
+						}
+						//mPageUsrs.remove(position);//kind of repeatedly doing the same thing with "adapter.remove(wi)", so it should not be called
+						renewCurParagraphTitle();
+						Toast.makeText(
+							EntranceActivity.this,
+							R.string.tips_possessionremoved,
+							Toast.LENGTH_SHORT
+						).show();
+						return;
+					}
+					break;
+				}
+			}
+        };
         
         mBtnExchange.setOnClickListener(new OnClickListener() {
 
@@ -500,51 +536,27 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 									// TODO Auto-generated method stub
 									int position = (Integer)mGridPics.getTag();
 									WeibouserInfo wi = mPageUsrs.get(position);
+									mGridPics.setTag(wi);
 									
-									SecureURL su = new SecureURL();
-									URLConnection conn = su.getConnection(
-										URL_SITE
-										+ "delpzs.php?"
-										+ "clientkey=" + getClientKey()
-										+ "&channelid=0"
-										+ "&uid=" + wi.uid
-									);
-									if (conn == null) {
-										Toast.makeText(
-											EntranceActivity.this,
-											R.string.err_noconnection,
-											Toast.LENGTH_LONG
-										).show();
-										return;
-									} else {
-										try {
-											conn.connect();
-											InputStream is = conn.getInputStream();
-											UCMappings mappings = UCMappings.parseFrom(is);
-											if (mappings.getFlag() > 0) {
-												WeibouserInfoGridAdapter adapter = (WeibouserInfoGridAdapter) mGridPics.getAdapter();
-												adapter.remove(wi);
-												adapter.notifyDataSetChanged();
-												//mPageUsrs.remove(position);//kind of repeatedly doing the same thing with "adapter.remove(wi)", so it should not be called
-												int idx = getUsrIndexFromId(wi.id, mUsrs);
-												mUsrs.remove(idx);
-												mTotalPics--;
-												renewCurParagraphTitle();
-												Toast.makeText(
-													EntranceActivity.this,
-													R.string.tips_possessionremoved,
-													Toast.LENGTH_LONG
-												).show();
-												return;
-											}
-										} catch (IOException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-											return;
-										}
-									}
+									new Thread(
+										new ThreadPNJDealer(
+											ThreadPNJDealer.DEL_POSSESSION,
+											URL_SITE
+												+ "delpzs.php?"
+												+ "clientkey=" + getClientKey()
+												+ "&channelid=0"
+												+ "&uid=" + wi.uid,
+											mHandler
+										)
+									).start();
+									Toast.makeText(
+										EntranceActivity.this,
+										R.string.tips_possessioncanceling,
+										Toast.LENGTH_SHORT
+									).show();
+									dialog.dismiss();
 								}
-								
+
 							}
 						)
 						.setNegativeButton(R.string.label_cancel, null)

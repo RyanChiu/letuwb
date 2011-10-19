@@ -190,7 +190,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 							//deal with failing to make friends
 						}
 						break;
-					case ThreadPNJDealer.GET_UCMAPPINGS:
+					case ThreadPNJDealer.GET_POSSESSIONS:
 						UCMappings mappings = (UCMappings)msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
 						if (mappings != null) {
 							if (mappings.getFlag() == 1) {
@@ -348,7 +348,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 				
 				new Thread(
 					new ThreadPNJDealer(
-						ThreadPNJDealer.GET_UCMAPPINGS,
+						ThreadPNJDealer.GET_POSSESSIONS,
 						EntranceActivity.URL_SITE 
 							+ "updpzs.php?"
 							+ "clientkey=" + EntranceActivity.getClientKey()

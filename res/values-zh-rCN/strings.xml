@@ -111,7 +111,7 @@
     <string name="label_weibo_repost">转发</string>
     <string name="label_share">分享</string>
     <string name="tips_friendsmade">关注成功</string>
-    <string name="tips_friendsalready">已关注</string>
+    <string name="tips_friendsalready">已关注过了</string>
     <string name="label_microblogs">看微博</string>
     <string name="label_favorites">收藏</string>
     <string name="label_followers">粉丝</string>
@@ -142,8 +142,9 @@
      <string name="label_possessions">我的私藏</string>
      <string name="tips_possessed">私藏成功</string>
      <string name="tips_failedtopossess">未能收藏</string>
-     <string name="tips_alreadypossessed">已私藏</string>
+     <string name="tips_alreadypossessed">已私藏过了</string>
      <string name="tips_confirmdelaccount">您确定要移出这个帐号？</string>
      <string name="tips_confirmdelpossession">您确定要取消这个私藏么？</string>
      <string name="tips_possessionremoved">已取消该项私藏。</string>
+     <string name="tips_possessioncanceling">正在取消，请稍候...</string>
 </resources>

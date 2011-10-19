@@ -12,7 +12,8 @@ import android.os.Message;
 
 public class ThreadPNJDealer implements Runnable {
 
-	public static final int GET_UCMAPPINGS = 0x7330001;
+	public static final int GET_POSSESSIONS = 0x7330001;
+	public static final int DEL_POSSESSION = 0x7330002;
 	
 	public static final String KEY_DATA = "data"; 
 	
@@ -35,7 +36,8 @@ public class ThreadPNJDealer implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		if (mAction != GET_UCMAPPINGS) {
+		if (mAction != GET_POSSESSIONS
+			&& mAction != DEL_POSSESSION) {
 			return;
 		}
 		if (mHandler == null) return;
@@ -43,27 +45,35 @@ public class ThreadPNJDealer implements Runnable {
 		msg.what = mAction;
 		Bundle bundle = new Bundle();
 		switch (mAction) {
-		case GET_UCMAPPINGS:
-			SecureURL su = new SecureURL();
-	    	URLConnection conn = su.getConnection(mLink);
-	    	if (conn == null) {
-	    		bundle.putSerializable(KEY_DATA, null);
-	    	} else {
-	    		try {
-					conn.connect();
-					InputStream is = conn.getInputStream();
-					UCMappings mappings = UCMappings.parseFrom(is);
-					bundle.putSerializable(KEY_DATA, mappings);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					bundle.putSerializable(KEY_DATA, null);
-				}
-	    	}
+		case GET_POSSESSIONS:
+			bundle.putSerializable(KEY_DATA, getMappings());
+	    	msg.setData(bundle);
+			mHandler.sendMessage(msg);
+			break;
+		case DEL_POSSESSION:
+			bundle.putSerializable(KEY_DATA, getMappings());
 	    	msg.setData(bundle);
 			mHandler.sendMessage(msg);
 			break;
 		}
 	}
 
+	private UCMappings getMappings() {
+		SecureURL su = new SecureURL();
+    	URLConnection conn = su.getConnection(mLink);
+    	if (conn == null) {
+    		return null;
+    	} else {
+    		try {
+				conn.connect();
+				InputStream is = conn.getInputStream();
+				UCMappings mappings = UCMappings.parseFrom(is);
+				return mappings;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+    	}
+	}
 }
