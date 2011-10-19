@@ -102,13 +102,13 @@ containing a value of this type.
         public static final int btnPossess=0x7f070029;
         public static final int btnPossessions=0x7f070053;
         public static final int btnPre=0x7f07004e;
-        public static final int btnRandom=0x7f070056;
+        public static final int btnRandom=0x7f070057;
         public static final int btnReg=0x7f070066;
         public static final int btnRepost=0x7f07007b;
         public static final int btnSave=0x7f070014;
         public static final int btnShare=0x7f07002a;
         public static final int btnTinyProfileImage=0x7f07006e;
-        public static final int btnUnhottest=0x7f070057;
+        public static final int btnUnhottest=0x7f070056;
         public static final int btnUpload=0x7f070015;
         public static final int btnWeiboShow=0x7f07002c;
         public static final int btnZoomin=0x7f07001c;

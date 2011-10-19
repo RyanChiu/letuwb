@@ -525,8 +525,11 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 												WeibouserInfoGridAdapter adapter = (WeibouserInfoGridAdapter) mGridPics.getAdapter();
 												adapter.remove(wi);
 												adapter.notifyDataSetChanged();
-												mPageUsrs.remove(position);
-												mUsrs.remove(getUsrIndexFromId(wi.id, mUsrs));
+												//mPageUsrs.remove(position);//kind of repeatedly doing the same thing with "adapter.remove(wi)", so it should not be called
+												int idx = getUsrIndexFromId(wi.id, mUsrs);
+												mUsrs.remove(idx);
+												mTotalPics--;
+												renewCurParagraphTitle();
 												Toast.makeText(
 													EntranceActivity.this,
 													R.string.tips_possessionremoved,
