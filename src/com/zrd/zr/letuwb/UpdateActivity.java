@@ -98,8 +98,8 @@ public class UpdateActivity extends Activity {
 						};
 						new Thread() {
 							public void run() {
-								String url = EntranceActivity.URL_UPDATE + "letusee.apk";
-								String filepath = "/sdcard/letusee.apk";
+								String url = EntranceActivity.URL_UPDATE + "letuwb.apk";
+								String filepath = "/sdcard/letuwb.apk";
 								sendMsg(handler, MSG_DOWNLOAD_PREPARE, null);
 								URL myURL;
 								try {
