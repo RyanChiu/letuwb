@@ -26,6 +26,19 @@ public class Sina implements Serializable {
 	 */
 	private User mLoggedInUser = null;
 	
+	/*
+	 * implement "tag"
+	 */
+	private Object mTag = null;
+	
+	public Object getTag() {
+		return mTag;
+	}
+
+	public void setTag(Object tag) {
+		this.mTag = tag;
+	}
+
 	public Sina() {
 		this(false);
 	}

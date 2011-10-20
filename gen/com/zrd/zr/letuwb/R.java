@@ -325,6 +325,7 @@ containing a value of this type.
         public static final int tips_alreadylastone=0x7f050080;
         public static final int tips_alreadyloggedin=0x7f050043;
         public static final int tips_alreadypossessed=0x7f05008d;
+        public static final int tips_associated=0x7f050092;
         public static final int tips_clicks=0x7f050022;
         public static final int tips_commented=0x7f050082;
         public static final int tips_confirmdelaccount=0x7f05008e;

@@ -1,6 +1,8 @@
 package com.zrd.zr.letuwb;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +16,8 @@ import weibo4android.http.OAuthVerifier;
 import weibo4android.http.RequestToken;
 
 import com.zrd.zr.letuwb.R;
+import com.zrd.zr.pnj.SecureURL;
+import com.zrd.zr.protos.WeibousersProtos.UCMappings;
 import com.zrd.zr.weiboes.Sina;
 
 import android.app.Activity;
@@ -21,6 +25,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Html;
@@ -201,11 +206,6 @@ public class RegLoginActivity extends Activity {
 				);
 				if (sina != null) {
 					WeiboShowActivity.setSina(sina);
-					Toast.makeText(
-						RegLoginActivity.this,
-						R.string.tips_loggedin,
-						Toast.LENGTH_LONG
-					).show();
 					
 					if (mCheckRemember.isChecked()) {
 						EntranceActivity.saveAccount(
@@ -218,6 +218,30 @@ public class RegLoginActivity extends Activity {
 						R.id.ivTitleIcon, R.id.tvTitleName,
 						WeiboShowActivity.getSina() == null ? null : WeiboShowActivity.getSina().getLoggedInUser()
 					);
+					
+					if (sina.getTag() != null) {
+						if ((Integer)sina.getTag() == R.string.tips_associated) {
+							Toast.makeText(
+								RegLoginActivity.this,
+								getString(R.string.tips_loggedin)
+									+ "\n"
+									+ getString(R.string.tips_associated),
+								Toast.LENGTH_LONG
+							).show();
+						} else {
+							Toast.makeText(
+								RegLoginActivity.this,
+								R.string.tips_loggedin,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					} else {
+						Toast.makeText(
+							RegLoginActivity.this,
+							R.string.tips_loggedin,
+							Toast.LENGTH_LONG
+						).show();
+					}
 					finish();
 				} else {
 					Toast.makeText(
@@ -368,6 +392,39 @@ public class RegLoginActivity extends Activity {
 			);
 			User user = sina.getWeibo().showUser("" + accessToken.getUserId());
 			sina.setLoggedInUser(user);
+			
+			SecureURL su = new SecureURL();
+			URLConnection conn = su.getConnection(
+				EntranceActivity.URL_SITE + "updusr.php?"
+				+ "uid=" + sina.getLoggedInUser().getId()
+				+ "&channelid=" + "0"
+				+ "&clientkey=" + EntranceActivity.getClientKey()
+			);
+			if (conn != null) {
+				try {
+					conn.connect();
+					InputStream is = conn.getInputStream();
+					UCMappings mappings = UCMappings.parseFrom(is);
+					if (mappings.getFlag() == 3
+						&& mappings.getMappingCount() > 0) {
+						//need to replace the client key with the returned one
+						EntranceActivity.setClientKey(mappings.getMapping(0).getClientkey());
+						SharedPreferences.Editor edit = EntranceActivity.mPreferences.edit();
+						edit.putString(EntranceActivity.CONFIG_CLIENTKEY, EntranceActivity.getClientKey());
+						edit.commit();
+						/*
+						 * and if there are any possessions belong to the old one,
+						 * we should merge them into the new one's.
+						 * and it'll be done on server through script updusr.php.
+						 */
+						sina.setTag(R.string.tips_associated);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 			return sina;
 		} catch (WeiboException e) {
 			e.printStackTrace();

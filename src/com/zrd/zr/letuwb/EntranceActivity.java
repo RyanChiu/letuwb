@@ -611,6 +611,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
     	return mClientKey;
     }
     
+    public static void setClientKey(String clientkey) {
+    	mClientKey = clientkey;
+    }
+    
     public static String getRandomKey() {
     	return mRandomKey;
     }
@@ -1215,6 +1219,13 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				}
 			}
 			*/
+			if (msgs[1].equals(getString(R.string.tips_associated))) {
+				Toast.makeText(
+					EntranceActivity.this,
+					R.string.tips_associated,
+					Toast.LENGTH_LONG
+				).show();
+			}
 			if (!msgs[2].equals("")
 				&& !msgs[2].equals(getString(R.string.tips_alreadylast))
 				&& !msgs[2].equals(getString(R.string.err_wrongversioninfos))
@@ -1286,43 +1297,11 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				String usr = list.get(0)[0];
 				String pwd = list.get(0)[1];
 				Sina sina = RegLoginActivity.login(usr, pwd);
+				WeiboShowActivity.setSina(sina);
 				//if login succeed, then we associate the logged in account with clientkey
-				if (sina != null && sina.isLoggedIn()) {
-					WeiboShowActivity.setSina(sina);
-					URLConnection conn = su.getConnection(
-						URL_SITE + "updusr.php?"
-						+ "uid=" + sina.getLoggedInUser().getId()
-						+ "&channelid=" + "0"
-						+ "&clientkey=" + mClientKey
-					);
-					if (conn != null) {
-						try {
-							conn.connect();
-							InputStream is = conn.getInputStream();
-							UCMappings mappings = UCMappings.parseFrom(is);
-							if (mappings.getFlag() == 3
-								&& mappings.getMappingCount() > 0) {
-								//need to replace the client key with the returned one
-								mClientKey = mappings.getMapping(0).getClientkey();
-								SharedPreferences.Editor edit = mPreferences.edit();
-								edit.putString(CONFIG_CLIENTKEY, mClientKey);
-								edit.commit();
-								/*
-								 * and if there are any possessions belong to the old one,
-								 * we should merge them into the new one's.
-								 * and it'll be done on server through script updusr.php.
-								 */
-								Toast.makeText(
-									EntranceActivity.this,
-									"Associated, and your possessions before will be merged.",
-									Toast.LENGTH_LONG
-								).show();
-							}
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
+				if (sina.getTag() != null) {
+					int idTips = (Integer)sina.getTag();
+					msgs[1] = getString(idTips);
 				}
 			}
 	        /*
