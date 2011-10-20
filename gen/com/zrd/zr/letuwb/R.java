@@ -273,6 +273,7 @@ containing a value of this type.
         public static final int label_letmelogin=0x7f05002b;
         public static final int label_letmelogon=0x7f050032;
         public static final int label_letmereg=0x7f050031;
+        public static final int label_logging=0x7f050093;
         public static final int label_login=0x7f050005;
         public static final int label_microblogs=0x7f05006f;
         public static final int label_minutesago=0x7f050075;

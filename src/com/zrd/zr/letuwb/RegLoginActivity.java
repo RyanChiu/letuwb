@@ -22,14 +22,17 @@ import com.zrd.zr.weiboes.Sina;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -200,59 +203,8 @@ public class RegLoginActivity extends Activity {
 				/*
 				 * get SINA_weibo's token and token secret for the account
 				 */
-				Sina sina = login(
-					mEditUsername.getText().toString(), 
-					mEditPassword.getText().toString()
-				);
-				if (sina != null) {
-					WeiboShowActivity.setSina(sina);
-					
-					if (mCheckRemember.isChecked()) {
-						EntranceActivity.saveAccount(
-							mEditUsername.getText().toString(),
-							mEditPassword.getText().toString()
-						);
-					}
-					initAccountsList();
-					updateTitle(
-						R.id.ivTitleIcon, R.id.tvTitleName,
-						WeiboShowActivity.getSina() == null ? null : WeiboShowActivity.getSina().getLoggedInUser()
-					);
-					
-					if (sina.getTag() != null) {
-						if ((Integer)sina.getTag() == R.string.tips_associated) {
-							Toast.makeText(
-								RegLoginActivity.this,
-								getString(R.string.tips_loggedin)
-									+ "\n"
-									+ getString(R.string.tips_associated),
-								Toast.LENGTH_LONG
-							).show();
-						} else {
-							Toast.makeText(
-								RegLoginActivity.this,
-								R.string.tips_loggedin,
-								Toast.LENGTH_LONG
-							).show();
-						}
-					} else {
-						Toast.makeText(
-							RegLoginActivity.this,
-							R.string.tips_loggedin,
-							Toast.LENGTH_LONG
-						).show();
-					}
-					finish();
-				} else {
-					Toast.makeText(
-						RegLoginActivity.this, 
-						R.string.tips_loginfailed, 
-						Toast.LENGTH_LONG
-					).show();
-					if (WeiboShowActivity.getSina() != null) {
-						WeiboShowActivity.getSina().setLoggedInUser(null);
-					}
-				}
+				AsyncLogin asyncLogin = new AsyncLogin();
+				asyncLogin.execute();	
 			}
 		});
 		
@@ -461,5 +413,103 @@ public class RegLoginActivity extends Activity {
 			dlg.setTitle(context.getString(titleId));
 		}
 		dlg.show();
+	}
+	
+	/*
+	 * try to put login at background by using class AsyncTask
+	 */
+	private class AsyncLogin extends AsyncTask<Object, Object, Sina>{
+		
+		private Dialog mDlgProgress;
+		
+		public AsyncLogin() {
+			this.mDlgProgress = new Dialog(RegLoginActivity.this, R.style.Dialog_Clean);
+			mDlgProgress.setContentView(R.layout.custom_dialog_loading);
+			TextView tv = (TextView) mDlgProgress.findViewById(R.id.tvCustomDialogTitle);
+			tv.setText(R.string.label_logging);
+	        WindowManager.LayoutParams lp = mDlgProgress.getWindow().getAttributes();
+	        lp.alpha = 1.0f;
+	        mDlgProgress.getWindow().setAttributes(lp);
+	        mDlgProgress.setCancelable(false);
+		}
+
+		@Override
+		protected void onPostExecute(Sina sina) {
+			// TODO Auto-generated method stub
+			
+			if (sina != null) {
+				WeiboShowActivity.setSina(sina);
+				
+				if (mCheckRemember.isChecked()) {
+					EntranceActivity.saveAccount(
+						mEditUsername.getText().toString(),
+						mEditPassword.getText().toString()
+					);
+				}
+				initAccountsList();
+				updateTitle(
+					R.id.ivTitleIcon, R.id.tvTitleName,
+					WeiboShowActivity.getSina() == null ? null : WeiboShowActivity.getSina().getLoggedInUser()
+				);
+				
+				if (sina.getTag() != null) {
+					if ((Integer)sina.getTag() == R.string.tips_associated) {
+						Toast.makeText(
+							RegLoginActivity.this,
+							getString(R.string.tips_loggedin)
+								+ "\n"
+								+ getString(R.string.tips_associated),
+							Toast.LENGTH_LONG
+						).show();
+					} else {
+						Toast.makeText(
+							RegLoginActivity.this,
+							R.string.tips_loggedin,
+							Toast.LENGTH_LONG
+						).show();
+					}
+				} else {
+					Toast.makeText(
+						RegLoginActivity.this,
+						R.string.tips_loggedin,
+						Toast.LENGTH_LONG
+					).show();
+				}
+				finish();
+			} else {
+				Toast.makeText(
+					RegLoginActivity.this, 
+					R.string.tips_loginfailed, 
+					Toast.LENGTH_LONG
+				).show();
+				if (WeiboShowActivity.getSina() != null) {
+					WeiboShowActivity.getSina().setLoggedInUser(null);
+				}
+			}
+			
+			mDlgProgress.dismiss();
+			
+			super.onPostExecute(sina);
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			mDlgProgress.show();
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Sina doInBackground(Object... params) {
+			// TODO Auto-generated method stub
+			
+			Sina sina = login(
+				mEditUsername.getText().toString(), 
+				mEditPassword.getText().toString()
+			);
+			
+			return sina;
+		}
+		
 	}
 }
