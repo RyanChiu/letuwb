@@ -259,6 +259,7 @@ containing a value of this type.
         public static final int label_comment=0x7f05007b;
         public static final int label_comments=0x7f05007c;
         public static final int label_daysago=0x7f050077;
+        public static final int label_default=0x7f050094;
         public static final int label_dwdw=0x7f050048;
         public static final int label_favorites=0x7f050070;
         public static final int label_followers=0x7f050071;

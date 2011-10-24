@@ -301,6 +301,7 @@ public class RegLoginActivity extends Activity {
 		usernames[0] = getString(R.string.label_addaccount);
 		for (int i = 1; i < usernames.length; i++) {
 			usernames[i] = list.get(i - 1)[0];
+			if (i == 1) usernames[i] += ("(" + getString(R.string.label_default) + ")");
 		}
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 			this,
