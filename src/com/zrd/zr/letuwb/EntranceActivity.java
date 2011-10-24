@@ -70,11 +70,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 
 	final static String SERIAL_APP = "gbhytfvnjurdcmkiesx,lowaz.;p201108282317";
 	final static String TIMEZONE_SERVER = "Asia/Hong_Kong";
-	//final static String URL_SITE = "http://hot88.info/letmewb/";
 	final static String URL_SITE = "http://hot88.info/letmewb/";
-	//final static String URL_UPDATE = "http://az88.info/";
 	final static String URL_UPDATE = "http://az88.info/";
-	//final static String URL_STATS = "http://az88.info/letmewb/";
 	final static String URL_STATS = "http://az88.info/letmewb/";
 	final static String PATH_COLLECTION = "/letuwb/collection/";
 	final static String PATH_CACHE = "/letuwb/cache/";
@@ -710,10 +707,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
-		menu.add(Menu.NONE, Menu.FIRST + 2, 2, getString(R.string.omenuitem_reglogin)).setIcon(R.drawable.ic_menu_login);
-		menu.add(Menu.NONE, Menu.FIRST + 1, 1, getString(R.string.omenuitem_upload)).setIcon(android.R.drawable.ic_menu_upload);
-		menu.add(Menu.NONE, Menu.FIRST + 3, 3, getString(R.string.omenuitem_quit)).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-		menu.add(Menu.NONE, Menu.FIRST + 4, 4, getString(R.string.omenuitem_about)).setIcon(android.R.drawable.ic_menu_help);
+		menu.add(Menu.NONE, Menu.FIRST + 1, 1, getString(R.string.omenuitem_reglogin)).setIcon(R.drawable.ic_menu_login);
+		menu.add(Menu.NONE, Menu.FIRST + 2, 2, getString(R.string.omenuitem_quit)).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+		menu.add(Menu.NONE, Menu.FIRST + 3, 3, getString(R.string.omenuitem_about)).setIcon(android.R.drawable.ic_menu_help);
 		return true;
 	}
 	
@@ -721,10 +717,12 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
 		switch (item.getItemId()) {
+		/*
 		case Menu.FIRST + 1:
 			AsyncUploader.upload(mPrivilege, EntranceActivity.this);
 			break;
-		case Menu.FIRST + 2:
+		*/
+		case Menu.FIRST + 1:
 			if (mPrivilege == 0) {
 				Toast.makeText(
 					this,
@@ -737,10 +735,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				startActivity(intent);
 			}
 			break;
-		case Menu.FIRST + 3:
+		case Menu.FIRST + 2:
 			mQuitDialog.show();
 			break;
-		case Menu.FIRST + 4:
+		case Menu.FIRST + 3:
 			Intent intent = new Intent();
 			intent.setClass(EntranceActivity.this, AboutActivity.class);
 			startActivity(intent);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Hot Portaits</string>
-    <string name="reglogin_title">Login or Register</string>
+    <string name="reglogin_title">Login</string>
     <string name="label_username">Username:</string>
     <string name="label_password">Password:</string>
     <string name="label_repeat">Repeat:</string>
@@ -48,7 +48,7 @@
     <string name="label_letmebe">Let me be</string>
     <string name="omenuitem_upload">Upload</string>
     <string name="omenuitem_topic">Topic</string>
-    <string name="omenuitem_reglogin">Register/Login</string>
+    <string name="omenuitem_reglogin">Login</string>
     <string name="omenuitem_quit">Quit</string>
     <string name="label_letmereg">I don\'t have an account, let me register.</string>
     <string name="label_letmelogon">I have an account, let me login.</string>
