@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
-                    ads:adUnitId="a14dae4f9fc303c"
+                    ads:adUnitId="a14ea4508a712d6"
                     ads:adSize="BANNER"/>
             </LinearLayout>
             <LinearLayout 

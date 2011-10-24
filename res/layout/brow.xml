@@ -4,24 +4,22 @@
   xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" android:background="@drawable/bg" android:id="@+id/flBackground">
-    <com.sonyericsson.zoom.ImageZoomView
-		android:layout_height="fill_parent" 
-		android:id="@+id/imageSwitcher" 
-		android:layout_width="fill_parent"
-		android:longClickable="true"/>    
+    <LinearLayout android:id="@+id/linearLayout4" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingLeft="3dp" android:paddingRight="3dp">
+        <com.sonyericsson.zoom.ImageZoomView android:layout_width="fill_parent" android:longClickable="true" android:id="@+id/imageSwitcher" android:layout_height="fill_parent"></com.sonyericsson.zoom.ImageZoomView>
+    </LinearLayout>    
 	<RelativeLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:longClickable="true" android:id="@+id/rlControl">
         <LinearLayout android:layout_width="fill_parent" android:gravity="center" android:layout_height="wrap_content" android:id="@+id/linearLayoutAd" android:orientation="vertical">
             <com.google.ads.AdView android:id="@+id/adsBrow"
 	            android:layout_width="wrap_content"
 	            android:layout_height="50dp"
 	            android:layout_gravity="center"
-	            ads:adUnitId="a14dae4f9fc303c"
+	            ads:adUnitId="a14ea4508a712d6"
 	            ads:adSize="BANNER"/>
         </LinearLayout>
         <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center" android:orientation="vertical" android:id="@+id/llBrowTop">
             <LinearLayout android:layout_height="wrap_content" android:gravity="center" android:layout_width="fill_parent" android:background="#56000000" android:id="@+id/llOperate">
                 <Button android:layout_marginLeft="6dp" android:layout_marginTop="1dp" android:id="@+id/btnSave" android:layout_marginBottom="1dp" android:layout_marginRight="6dp" android:text="@string/label_save" android:textSize="11sp" android:layout_height="wrap_content" android:background="@drawable/btn_custom" android:layout_width="wrap_content" android:textColor="#1da7ef"></Button>
-                <Button android:layout_marginLeft="6dp" android:layout_marginTop="1dp" android:id="@+id/btnUpload" android:layout_marginBottom="1dp" android:layout_marginRight="6dp" android:text="@string/label_upload" android:textSize="11sp" android:layout_height="wrap_content" android:background="@drawable/btn_custom" android:layout_width="wrap_content" android:textColor="#1da7ef"></Button>
+                <Button android:layout_marginLeft="6dp" android:layout_marginTop="1dp" android:id="@+id/btnUpload" android:layout_marginBottom="1dp" android:layout_marginRight="6dp" android:text="@string/label_upload" android:textSize="11sp" android:layout_height="wrap_content" android:background="@drawable/btn_custom" android:layout_width="wrap_content" android:textColor="#1da7ef" android:visibility="gone"></Button>
                 <Button android:layout_marginLeft="6dp" android:layout_marginTop="1dp" android:id="@+id/btnPlay" android:layout_marginBottom="1dp" android:layout_marginRight="6dp" android:text="@string/label_play" android:textSize="11sp" android:layout_height="wrap_content" android:background="@drawable/btn_custom" android:layout_width="wrap_content" android:textColor="#1da7ef"></Button>
                 <Button android:layout_marginLeft="6dp" android:layout_marginTop="1dp" android:id="@+id/btnPause" android:visibility="gone" android:layout_marginBottom="1dp" android:layout_marginRight="6dp" android:text="@string/label_pause" android:textSize="11sp" android:layout_height="wrap_content" android:background="@drawable/btn_custom" android:layout_width="wrap_content" android:textColor="#1da7ef"></Button>
             </LinearLayout>
@@ -29,7 +27,7 @@
         </LinearLayout>
         <RelativeLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:id="@+id/relativeLayoutZoom" android:layout_marginBottom="52dp">
             <LinearLayout android:orientation="vertical" android:id="@+id/linearLayoutInfo" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="52dp" android:layout_marginLeft="3dp">
-                <TextView android:layout_gravity="center" android:gravity="center" android:layout_width="fill_parent" android:id="@+id/tvScreenNameAbovePic" android:background="@drawable/brow_screen_name" android:layout_height="wrap_content" android:paddingLeft="6dp" android:paddingRight="6dp" android:textColor="#f3a000"></TextView>
+                <TextView android:layout_gravity="center" android:gravity="center" android:layout_width="fill_parent" android:id="@+id/tvScreenNameAbovePic" android:background="@drawable/brow_screen_name" android:layout_height="wrap_content" android:paddingLeft="6dp" android:paddingRight="6dp" android:textColor="#000000"></TextView>
                 <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomin" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomin"></ImageButton>
                 <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomout" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomout"></ImageButton>
             </LinearLayout>
