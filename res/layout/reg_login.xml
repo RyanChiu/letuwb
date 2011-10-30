@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_gravity="center" android:background="@drawable/bg" android:id="@+id/tlBackground">
-    <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center" android:layout_marginBottom="3dp" android:id="@+id/trTitle" android:background="#55000000">
+    <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center" android:layout_marginBottom="3dp" android:id="@+id/trTitle">
         <LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:gravity="center">
-            <TextView android:layout_marginBottom="3dp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="3dp" android:gravity="center" android:id="@+id/tvLogin" android:textSize="28sp" android:text="@string/label_login" android:textColor="#ffffff"></TextView>
+            <TextView android:layout_marginBottom="3dp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="3dp" android:gravity="center" android:id="@+id/tvLogin" android:textSize="28sp" android:textColor="#ffffff" android:text="@string/reglogin_title"></TextView>
             <TextView android:layout_marginBottom="3dp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="3dp" android:gravity="center" android:id="@+id/textView4" android:textSize="28sp" android:text="/" android:textColor="#ffffff" android:visibility="gone"></TextView>
             <TextView android:layout_marginBottom="3dp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="3dp" android:gravity="center" android:id="@+id/tvRegister" android:text="@string/label_register" android:textSize="28sp" android:textColor="#ffffff" android:visibility="gone"></TextView>
         </LinearLayout>
@@ -27,7 +27,7 @@
 		    <TableRow android:layout_width="wrap_content" android:id="@+id/tableRow3" android:layout_height="wrap_content">
 		        <Button android:id="@+id/btnLogin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="@string/label_login"></Button>
 		        <Button android:layout_weight="1.0" android:id="@+id/btnReg" android:text="@string/label_register" android:layout_height="wrap_content" android:layout_width="wrap_content" android:visibility="gone"></Button>
-		        <CheckBox android:layout_width="wrap_content" android:id="@+id/cbRemember" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="@string/label_remember" android:textColor="#ffffff"></CheckBox>
+		        <CheckBox android:layout_width="wrap_content" android:id="@+id/cbRemember" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="@string/label_remember" android:textColor="#ffffff" android:checked="true" android:visibility="gone"></CheckBox>
 		    </TableRow>
 		    <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tableRow5" android:gravity="center">
 		    </TableRow>
@@ -35,7 +35,7 @@
 	</TableRow>
 	<RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="wrap_content" android:layout_height="fill_parent">
 		<Button android:id="@+id/btnLetmereg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/label_letmereg" android:background="#22000000" android:paddingBottom="8dp" android:paddingTop="10dp" android:layout_marginTop="3dp" android:textColor="#0000dd" android:visibility="gone"></Button>
-		<Button android:id="@+id/btnGuest" android:text="@string/label_guest" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:layout_width="fill_parent"></Button>
+		<Button android:id="@+id/btnGuest" android:text="@string/label_guest" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:layout_width="fill_parent" android:visibility="gone"></Button>
 		<ListView android:layout_width="fill_parent" android:id="@+id/lvAccounts" android:layout_height="fill_parent" android:layout_marginBottom="50dp" android:background="#00000000"></ListView>
 	</RelativeLayout>
 </TableLayout>
