@@ -31,6 +31,9 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -49,6 +52,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegLoginActivity extends Activity {
+	private static boolean mIfQuit = false;
 	private static ArrayList<Context> mContexts = new ArrayList<Context>();
 	
 	private TableLayout mTableBackground;
@@ -274,6 +278,10 @@ public class RegLoginActivity extends Activity {
 			}
 			
 		});
+	}
+	
+	public static boolean ifQuitIsSet() {
+		return mIfQuit;
 	}
 	
 	public static void updateTitle(
@@ -512,5 +520,47 @@ public class RegLoginActivity extends Activity {
 			return sina;
 		}
 		
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (WeiboShowActivity.getSina() != null && WeiboShowActivity.getSina().isLoggedIn()) {
+				
+			} else {
+				Toast.makeText(
+					RegLoginActivity.this,
+					R.string.tips_havetologin,
+					Toast.LENGTH_LONG
+				).show();
+				return true;
+			}
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		menu.add(
+			Menu.NONE, 
+			Menu.FIRST + 1, 
+			1, 
+			getString(R.string.omenuitem_quit)
+		).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+		return true;//super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()) {
+		case Menu.FIRST + 1:
+			mIfQuit = true;
+			finish();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

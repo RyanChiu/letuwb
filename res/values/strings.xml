@@ -5,7 +5,7 @@
     <string name="label_username">Username:</string>
     <string name="label_password">Password:</string>
     <string name="label_repeat">Repeat:</string>
-    <string name="label_login">Login</string>
+    <string name="label_login">Listed &amp; Login</string>
     <string name="label_guest">As a guest</string>
     <string name="label_register">Register</string>
     <string name="label_remember">Remember Me</string>
@@ -105,6 +105,7 @@
     <string name="about_content">Thanks for using our program. It\'s our pleasure to recieve any opinions or suggestions to make it better.</string>
     <string name="about_contact">Please contact us: </string>
     <string name="title_loginfirst">You have to login to do this, please.</string>
+    <string name="tips_havetologin">Please login first, thanks.</string>
     <string name="label_reload">Reload</string>
     <string name="label_weibo_friendship">Friend</string>
     <string name="label_weibo_favorite">Favorite</string>

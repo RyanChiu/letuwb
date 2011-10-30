@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">私藏男女</string>
-	<string name="reglogin_title">登录</string>
+	<string name="reglogin_title">登录微博</string>
 	<string name="label_username">用户名:</string>
     <string name="label_password">密  码:</string>
     <string name="label_repeat">重  复:</string>
-    <string name="label_login">登陆</string>
+    <string name="label_login">添加并登陆</string>
     <string name="label_guest">打酱油的</string>
     <string name="label_register">注册</string>
     <string name="label_remember">记住我</string>
@@ -105,6 +105,7 @@
     <string name="about_content">感谢您使用我们的应用！非常高兴能够收到您的意见和建议，帮助我们将应用做得更好！</string>
     <string name="about_contact">请和我们联系：</string>
     <string name="title_loginfirst">您得先登录才能完成这项操作。</string>
+    <string name="tips_havetologin">请您先登录，谢谢。</string>
     <string name="label_reload">刷新</string>
     <string name="label_weibo_friendship">+关注</string>
     <string name="label_weibo_favorite">+收藏</string>
@@ -137,7 +138,7 @@
     <string name="tips_waitasecond">获取评论中，请稍候...</string>
     <string name="label_getmore">点击获取更多...</string>
     <string name="tips_nomorecomments">已经是最后一条评论了</string>
-    <string name="label_addaccount">添加另一个帐号...</string>
+    <string name="label_addaccount">添加帐号并登录...</string>
     <string name="label_possess">+私藏</string>
     <string name="label_possessions">我的私藏</string>
     <string name="tips_possessed">私藏成功</string>

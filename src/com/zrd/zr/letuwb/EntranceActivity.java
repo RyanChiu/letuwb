@@ -152,8 +152,17 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         mClientKey = mPreferences.getString(CONFIG_CLIENTKEY, "");
         mRandomKey = mPreferences.getString(CONFIG_RANDOMKEY, "");
         mTopicChoice = mPreferences.getInt(CONFIG_TOPICCHOICE, 0);
+        
         AsyncInit init = new AsyncInit();
-        init.execute();
+        ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
+        if (list.size() == 0) {
+        	Intent intent = new Intent();
+			intent.setClass(EntranceActivity.this, RegLoginActivity.class);
+			startActivity(intent);
+        	init.execute(true);
+        } else {
+        	init.execute(false);
+        }
         
         /**
          * Clean cache if needed
@@ -680,7 +689,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		// TODO Auto-generated method stub
 		runOnUiThread(new Runnable() {
 			public void run() {
-				final String TAG = "Letusee Stats";
+				final String TAG = "Letuwb Stats";
 				String url = URL_STATS + "count.html";
 				mWebCount.setWebViewClient(new WebViewClient() {
 					 public boolean shouldOverrideUrlLoading (WebView view, String url) {
@@ -702,6 +711,13 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		 * for umeng.com
 		 */
 		MobclickAgent.onResume(this);
+		
+		/*
+		 * for exit
+		 */
+		if (RegLoginActivity.ifQuitIsSet()) {
+			android.os.Process.killProcess(android.os.Process.myPid());
+		}
 	}
 
 	@Override
@@ -1253,6 +1269,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		@Override
 		protected Object doInBackground(Object... params) {
 			// TODO Auto-generated method stub
+			boolean notAutoLogin = (Boolean)params[0];
 			String[] msgs = {"", "", ""};
 			/*
 			 * try to get the client key
@@ -1289,17 +1306,19 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			/*
 	    	 * Auto login part begin
 	    	 */
-			ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
-			//we auto login the first one in the accounts list here
-			if (list.size() != 0) {
-				String usr = list.get(0)[0];
-				String pwd = list.get(0)[1];
-				Sina sina = RegLoginActivity.login(usr, pwd);
-				WeiboShowActivity.setSina(sina);
-				//if login succeed, then we associate the logged in account with clientkey
-				if (sina.getTag() != null) {
-					int idTips = (Integer)sina.getTag();
-					msgs[1] = getString(idTips);
+			if (!notAutoLogin) {
+				ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
+				//we auto login the first one in the accounts list here
+				if (list.size() != 0) {
+					String usr = list.get(0)[0];
+					String pwd = list.get(0)[1];
+					Sina sina = RegLoginActivity.login(usr, pwd);
+					WeiboShowActivity.setSina(sina);
+					//if login succeed, then we associate the logged in account with clientkey
+					if (sina.getTag() != null) {
+						int idTips = (Integer)sina.getTag();
+						msgs[1] = getString(idTips);
+					}
 				}
 			}
 	        /*
