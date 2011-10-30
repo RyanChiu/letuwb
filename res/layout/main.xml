@@ -38,7 +38,7 @@
             	android:layout_width="fill_parent" 
 	        	android:layout_height="wrap_content"
 	        	android:orientation="vertical"
-	            android:layout_alignParentBottom="true" android:id="@+id/linearLayoutMainBottom" android:gravity="center" android:background="#33000000">
+	            android:layout_alignParentBottom="true" android:id="@+id/linearLayoutMainBottom" android:gravity="center">
                 <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="center" android:layout_gravity="center">
                     <Button android:text="@string/label_pre" android:id="@+id/btnPre" android:layout_marginLeft="5dp" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:textSize="11sp" android:background="@drawable/btn_custom" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textColor="#1da7ef"></Button>
                     <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:layout_centerInParent="true" android:layout_centerVertical="true" android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginLeft="66dp" android:layout_marginRight="66dp">
