@@ -2,7 +2,9 @@ package com.zrd.zr.letuwb;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -376,30 +378,35 @@ public class RegLoginActivity extends Activity {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			SecureURL su = new SecureURL();
-			URLConnection conn = su.getConnection(
-				EntranceActivity.URL_SITE + "updusr.php?"
-				+ "user[id]=" + sina.getLoggedInUser().getId()
-				+ "&user[screen_name]=" + sina.getLoggedInUser().getScreenName()
-				+ "&user[name]=" + sina.getLoggedInUser().getName()
-				+ "&user[province]=" + sina.getLoggedInUser().getProvince()
-				+ "&user[city]=" + sina.getLoggedInUser().getCity()
-				+ "&user[location]=" + sina.getLoggedInUser().getLocation()
-				+ "&user[description]=" + sina.getLoggedInUser().getDescription()
-				+ "&user[url]=" + sina.getLoggedInUser().getURL()
-				+ "&user[profile_image_url]=" + sina.getLoggedInUser().getProfileImageURL()
-				+ "&user[domain]=" + sina.getLoggedInUser().getUserDomain()
-				+ "&user[gender]=" + sina.getLoggedInUser().getGender()
-				+ "&user[followers_count]=" + sina.getLoggedInUser().getFollowersCount()
-				+ "&user[friends_count]=" + sina.getLoggedInUser().getFriendsCount()
-				+ "&user[statuses_count]=" + sina.getLoggedInUser().getStatusesCount()
-				+ "&user[favourites_count]=" + sina.getLoggedInUser().getFavouritesCount()
-				+ "&user[created_at]=" + sdf.format(sina.getLoggedInUser().getCreatedAt())
-				+ "&user[allow_all_act_msg]=" + (sina.getLoggedInUser().isAllowAllActMsg() ? 1 : 0)
-				+ "&user[geo_enabled]=" + (sina.getLoggedInUser().isGeoEnabled() ? 1 : 0)
-				+ "&user[verified]=" + (sina.getLoggedInUser().isVerified() ? 1 : 0)
-				+ "&channelid=" + "0"
-				+ "&clientkey=" + EntranceActivity.getClientKey()
-			);
+			String strURL = "";
+			try {
+				strURL = EntranceActivity.URL_SITE + "updusr.php?"
+					+ "user[id]=" + sina.getLoggedInUser().getId()
+					+ "&user[screen_name]=" + URLEncoder.encode(sina.getLoggedInUser().getScreenName(), "UTF-8")
+					+ "&user[name]=" + URLEncoder.encode(sina.getLoggedInUser().getName(), "UTF-8")
+					+ "&user[province]=" + sina.getLoggedInUser().getProvince()
+					+ "&user[city]=" + sina.getLoggedInUser().getCity()
+					+ "&user[location]=" + URLEncoder.encode(sina.getLoggedInUser().getLocation(), "UTF-8")
+					+ "&user[description]=" + URLEncoder.encode(sina.getLoggedInUser().getDescription(), "UTF-8")
+					+ "&user[url]=" + sina.getLoggedInUser().getURL()
+					+ "&user[profile_image_url]=" + sina.getLoggedInUser().getProfileImageURL()
+					+ "&user[domain]=" + sina.getLoggedInUser().getUserDomain()
+					+ "&user[gender]=" + sina.getLoggedInUser().getGender()
+					+ "&user[followers_count]=" + sina.getLoggedInUser().getFollowersCount()
+					+ "&user[friends_count]=" + sina.getLoggedInUser().getFriendsCount()
+					+ "&user[statuses_count]=" + sina.getLoggedInUser().getStatusesCount()
+					+ "&user[favourites_count]=" + sina.getLoggedInUser().getFavouritesCount()
+					+ "&user[created_at]=" + sdf.format(sina.getLoggedInUser().getCreatedAt())
+					+ "&user[allow_all_act_msg]=" + (sina.getLoggedInUser().isAllowAllActMsg() ? 1 : 0)
+					+ "&user[geo_enabled]=" + (sina.getLoggedInUser().isGeoEnabled() ? 1 : 0)
+					+ "&user[verified]=" + (sina.getLoggedInUser().isVerified() ? 1 : 0)
+					+ "&channelid=" + "0"
+					+ "&clientkey=" + EntranceActivity.getClientKey();
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			URLConnection conn = su.getConnection(strURL);
 			if (conn != null) {
 				try {
 					conn.connect();
