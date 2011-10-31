@@ -1315,7 +1315,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 					Sina sina = RegLoginActivity.login(usr, pwd);
 					WeiboShowActivity.setSina(sina);
 					//if login succeed, then we associate the logged in account with clientkey
-					if (sina.getTag() != null) {
+					if (sina != null && sina.getTag() != null) {
 						int idTips = (Integer)sina.getTag();
 						msgs[1] = getString(idTips);
 					}
