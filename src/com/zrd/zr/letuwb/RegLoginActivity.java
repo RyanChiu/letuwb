@@ -3,6 +3,7 @@ package com.zrd.zr.letuwb;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -207,8 +208,27 @@ public class RegLoginActivity extends Activity {
 				/*
 				 * get SINA_weibo's token and token secret for the account
 				 */
-				AsyncLogin asyncLogin = new AsyncLogin();
-				asyncLogin.execute();	
+				new AlertDialog.Builder(RegLoginActivity.this)
+					.setIcon(R.drawable.icon)
+					.setTitle(R.string.title_attention)
+					.setMessage(R.string.tips_wheterprofileimagecouldbeusedornot)
+					.setPositiveButton(
+						R.string.label_allright,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// TODO Auto-generated method stub
+								AsyncLogin asyncLogin = new AsyncLogin();
+								asyncLogin.execute();
+							}
+							
+						}
+					)
+					.setNegativeButton(R.string.label_letmethink, null)
+					.create()
+					.show();	
 			}
 		});
 		
@@ -354,10 +374,29 @@ public class RegLoginActivity extends Activity {
 			User user = sina.getWeibo().showUser("" + accessToken.getUserId());
 			sina.setLoggedInUser(user);
 			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			SecureURL su = new SecureURL();
 			URLConnection conn = su.getConnection(
 				EntranceActivity.URL_SITE + "updusr.php?"
-				+ "uid=" + sina.getLoggedInUser().getId()
+				+ "user[id]=" + sina.getLoggedInUser().getId()
+				+ "&user[screen_name]=" + sina.getLoggedInUser().getScreenName()
+				+ "&user[name]=" + sina.getLoggedInUser().getName()
+				+ "&user[province]=" + sina.getLoggedInUser().getProvince()
+				+ "&user[city]=" + sina.getLoggedInUser().getCity()
+				+ "&user[location]=" + sina.getLoggedInUser().getLocation()
+				+ "&user[description]=" + sina.getLoggedInUser().getDescription()
+				+ "&user[url]=" + sina.getLoggedInUser().getURL()
+				+ "&user[profile_image_url]=" + sina.getLoggedInUser().getProfileImageURL()
+				+ "&user[domain]=" + sina.getLoggedInUser().getUserDomain()
+				+ "&user[gender]=" + sina.getLoggedInUser().getGender()
+				+ "&user[followers_count]=" + sina.getLoggedInUser().getFollowersCount()
+				+ "&user[friends_count]=" + sina.getLoggedInUser().getFriendsCount()
+				+ "&user[statuses_count]=" + sina.getLoggedInUser().getStatusesCount()
+				+ "&user[favourites_count]=" + sina.getLoggedInUser().getFavouritesCount()
+				+ "&user[created_at]=" + sdf.format(sina.getLoggedInUser().getCreatedAt())
+				+ "&user[allow_all_act_msg]=" + (sina.getLoggedInUser().isAllowAllActMsg() ? 1 : 0)
+				+ "&user[geo_enabled]=" + (sina.getLoggedInUser().isGeoEnabled() ? 1 : 0)
+				+ "&user[verified]=" + (sina.getLoggedInUser().isVerified() ? 1 : 0)
 				+ "&channelid=" + "0"
 				+ "&clientkey=" + EntranceActivity.getClientKey()
 			);
@@ -366,7 +405,7 @@ public class RegLoginActivity extends Activity {
 					conn.connect();
 					InputStream is = conn.getInputStream();
 					UCMappings mappings = UCMappings.parseFrom(is);
-					if (mappings.getFlag() == 3
+					if ((mappings.getFlag() % 10) == 3
 						&& mappings.getMappingCount() > 0) {
 						//need to replace the client key with the returned one
 						EntranceActivity.setClientKey(mappings.getMapping(0).getClientkey());

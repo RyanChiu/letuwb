@@ -23,28 +23,32 @@ function __get_user_insert_update_sql($user) {
 		 * piece NO.1
 		 */
 		mysql_real_escape_string($user['screen_name']),
-		mysql_real_escape_string($user['name']), $user['province'], $user['city'],
+		mysql_real_escape_string($user['name']), 
+		$user['province'], $user['city'],
 		mysql_real_escape_string($user['location']),
 		mysql_real_escape_string($user['description']),
 		mysql_real_escape_string($user['url']),
 		mysql_real_escape_string($user['profile_image_url']),
 		mysql_real_escape_string($user['domain']),
-		mysql_real_escape_string($user['gender']), $user['followers_count'], $user['friends_count'],
-		$user['statuses_count'],	$user['favourites_count'],
+		mysql_real_escape_string($user['gender']), 
+		$user['followers_count'], $user['friends_count'],
+		$user['statuses_count'], $user['favourites_count'],
 		mysql_real_escape_string($user['created_at']),
 		$user['allow_all_act_msg'], $user['geo_enabled'], $user['verified'],
 		/*
 		 * piece NO.2
 		 */
 		mysql_real_escape_string($user['screen_name']),
-		mysql_real_escape_string($user['name']), $user['province'], $user['city'],
+		mysql_real_escape_string($user['name']), 
+		$user['province'], $user['city'],
 		mysql_real_escape_string($user['location']),
 		mysql_real_escape_string($user['description']),
 		mysql_real_escape_string($user['url']),
 		mysql_real_escape_string($user['profile_image_url']),
 		mysql_real_escape_string($user['domain']),
-		mysql_real_escape_string($user['gender']), $user['followers_count'], $user['friends_count'],
-		$user['statuses_count'],	$user['favourites_count'],
+		mysql_real_escape_string($user['gender']), 
+		$user['followers_count'], $user['friends_count'],
+		$user['statuses_count'], $user['favourites_count'],
 		mysql_real_escape_string($user['created_at']),
 		$user['allow_all_act_msg'], $user['geo_enabled'], $user['verified']
 	);

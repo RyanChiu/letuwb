@@ -253,6 +253,7 @@ containing a value of this type.
         public static final int intro_title=0x7f050044;
         public static final int item_upload=0x7f050009;
         public static final int label_addaccount=0x7f050089;
+        public static final int label_allright=0x7f050097;
         public static final int label_bigger_pic=0x7f050079;
         public static final int label_browse=0x7f050035;
         public static final int label_cancel=0x7f050015;
@@ -274,6 +275,7 @@ containing a value of this type.
         public static final int label_letmelogin=0x7f05002b;
         public static final int label_letmelogon=0x7f050032;
         public static final int label_letmereg=0x7f050031;
+        public static final int label_letmethink=0x7f050098;
         public static final int label_logging=0x7f050094;
         public static final int label_login=0x7f050005;
         public static final int label_microblogs=0x7f050070;
@@ -373,6 +375,8 @@ containing a value of this type.
         public static final int tips_voterating=0x7f050046;
         public static final int tips_voting=0x7f05001c;
         public static final int tips_waitasecond=0x7f050086;
+        public static final int tips_wheterprofileimagecouldbeusedornot=0x7f050096;
+        public static final int title_attention=0x7f050099;
         public static final int title_comment=0x7f050085;
         public static final int title_loginfirst=0x7f050067;
         public static final int title_repost=0x7f050084;

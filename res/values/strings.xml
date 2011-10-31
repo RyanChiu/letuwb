@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Hot Portaits</string>
-    <string name="reglogin_title">Login</string>
+    <string name="reglogin_title">Login (SINA Weibo)</string>
     <string name="label_username">Username:</string>
     <string name="label_password">Password:</string>
     <string name="label_repeat">Repeat:</string>
@@ -151,4 +151,8 @@
     <string name="tips_associated">Associated, and your possessions before were just merged.</string>
     <string name="label_logging">Logging, please wait a second...</string>
     <string name="label_default">Default</string>
+    <string name="tips_wheterprofileimagecouldbeusedornot">We will put your public profile image out there and let people could +1/-1 to it, would you allow that?</string>
+    <string name="label_allright">That\'s all right.</string>
+    <string name="label_letmethink">Let me think.</string>
+    <string name="title_attention">Attention, please</string>
 </resources>
