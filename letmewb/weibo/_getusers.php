@@ -8,7 +8,7 @@ if (($argc) != 2) {
 	exit("It'll take one parameter point to a file that holds the user ids.\n");
 }
 $path_parts = pathinfo($argv[0]);
-$fn = $path_parts["dirname"] . "/" . $argv[1];
+$fn = $argv[1];
 $ids = array();
 if (file_exists($fn)) {
 	$handle = fopen($fn, 'r');
