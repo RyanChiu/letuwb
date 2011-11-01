@@ -24,10 +24,13 @@ $user =
 		array('source' => WB_AKEY)
 	);
 //var_dump($user);
-
-$sql = __get_user_insert_update_sql($user);
-mysql_query("set names 'utf8';");
-mysql_query($sql, $zconn->dblink)
-	or die ("~failed~~db_err:" . mysql_error() . "~~failed~");
-echo mysql_affected_rows() . " row affected.\n";	
+if (array_key_exists("error", $user)) {
+	echo $user['error'] . "\n";
+} else {
+	$sql = __get_user_insert_update_sql($user);
+	mysql_query("set names 'utf8';");
+	mysql_query($sql, $zconn->dblink)
+		or die ("~failed~~db_err:" . mysql_error() . "~~failed~\n");
+	echo mysql_affected_rows() . " row affected.\n";
+}
 ?>
