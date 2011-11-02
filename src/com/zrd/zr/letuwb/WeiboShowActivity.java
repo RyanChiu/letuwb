@@ -55,7 +55,7 @@ public class WeiboShowActivity extends Activity {
 	private ListView mListStatus;
 	private ProgressBar mProgressStatusLoading;
 	private Button mBtnFriend;
-	private Button mBtnFavorite;
+	private Button mBtnComment;
 	private Button mBtnRepost;
 	private Button mBtnMore;
 	private ImageButton mBtnExchange;
@@ -383,7 +383,7 @@ public class WeiboShowActivity extends Activity {
 		mListStatus = (ListView)findViewById(R.id.lvStatus);
 		mProgressStatusLoading = (ProgressBar)findViewById(R.id.pbStatusLoading);
 		mBtnFriend = (Button)findViewById(R.id.btnFriend);
-		mBtnFavorite = (Button)findViewById(R.id.btnFavorite);
+		mBtnComment = (Button)findViewById(R.id.btnComment);
 		mBtnRepost = (Button)findViewById(R.id.btnRepost);
 		mEditRepost  = new EditText(this);
 		mBtnMore = (Button)findViewById(R.id.btnMore);
@@ -697,43 +697,22 @@ public class WeiboShowActivity extends Activity {
 			
 		});
 		
-		mBtnFavorite.setOnClickListener(new OnClickListener() {
+		mBtnComment.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if (mSina != null && mSina.isLoggedIn()) {
-					if (mIndexOfSelectedStatus != -1) {
-						/*
-						 * make it favorite
-						 */
-						if (mLastUserTimeline == null) {
-							new Thread(
-								new ThreadSinaDealer(
-									mSina,
-									ThreadSinaDealer.CREATE_FAVORITE,
-									new String[] {"" + mLastUser.getStatus().getId()},
-									mHandler
-								)
-							).start();
-						} else {
-							new Thread(
-								new ThreadSinaDealer(
-									mSina,
-									ThreadSinaDealer.CREATE_FAVORITE,
-									new String[] {"" + mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId()},
-									mHandler
-								)
-							).start();
-						}
-						turnDealing(true);
-					} else {
+					if (mIndexOfSelectedStatus == -1) {
 						Toast.makeText(
 							WeiboShowActivity.this,
 							R.string.tips_noitemselected,
 							Toast.LENGTH_LONG
 						).show();
+						return;
 					}
+					
+					mDlgComment.show();
 				} else {
 					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
 				}
@@ -768,7 +747,7 @@ public class WeiboShowActivity extends Activity {
 		mDlgMore.setContentView(R.layout.custom_dialog_list);
 		ListView lvMore = (ListView)mDlgMore.findViewById(R.id.lvCustomList);
 		ArrayList<String> mlist = new ArrayList<String>();
-		mlist.add(getString(R.string.label_comment));
+		mlist.add(getString(R.string.label_weibo_favorite));
 		mlist.add(getString(R.string.label_comments));
 		mlist.add(getString(R.string.label_reload));
 		lvMore.setAdapter(
@@ -787,16 +766,37 @@ public class WeiboShowActivity extends Activity {
 				switch (position) {
 				case 0:
 					if (mSina != null && mSina.isLoggedIn()) {
-						if (mIndexOfSelectedStatus == -1) {
+						if (mIndexOfSelectedStatus != -1) {
+							/*
+							 * make it favorite
+							 */
+							if (mLastUserTimeline == null) {
+								new Thread(
+									new ThreadSinaDealer(
+										mSina,
+										ThreadSinaDealer.CREATE_FAVORITE,
+										new String[] {"" + mLastUser.getStatus().getId()},
+										mHandler
+									)
+								).start();
+							} else {
+								new Thread(
+									new ThreadSinaDealer(
+										mSina,
+										ThreadSinaDealer.CREATE_FAVORITE,
+										new String[] {"" + mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId()},
+										mHandler
+									)
+								).start();
+							}
+							turnDealing(true);
+						} else {
 							Toast.makeText(
 								WeiboShowActivity.this,
 								R.string.tips_noitemselected,
 								Toast.LENGTH_LONG
 							).show();
-							return;
 						}
-						
-						mDlgComment.show();
 					} else {
 						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
 					}
@@ -956,7 +956,7 @@ public class WeiboShowActivity extends Activity {
 	private void turnDealing(boolean on) {
 		if (on == true) {
 			mBtnFriend.setEnabled(false);
-			mBtnFavorite.setEnabled(false);
+			mBtnComment.setEnabled(false);
 			mBtnRepost.setEnabled(false);
 			mBtnMoreTimelines.setEnabled(false);
 			mBtnMore.setEnabled(false);
@@ -964,7 +964,7 @@ public class WeiboShowActivity extends Activity {
 			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
 		} else {
 			mBtnFriend.setEnabled(true);
-			mBtnFavorite.setEnabled(true);
+			mBtnComment.setEnabled(true);
 			mBtnRepost.setEnabled(true);
 			mBtnMoreTimelines.setEnabled(true);
 			mBtnMore.setEnabled(true);

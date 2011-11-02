@@ -108,7 +108,7 @@
     <string name="tips_havetologin">Please login first, thanks.</string>
     <string name="label_reload">Reload</string>
     <string name="label_weibo_friendship">Friend</string>
-    <string name="label_weibo_favorite">Favorite</string>
+    <string name="label_weibo_favorite">Make favorite</string>
     <string name="label_weibo_repost">Repost</string>
     <string name="label_share">Share</string>
     <string name="tips_friendsmade">Friends made.</string>
