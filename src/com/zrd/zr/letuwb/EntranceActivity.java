@@ -477,7 +477,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         mPrgDlg.getWindow().setAttributes(lp);
         mPrgDlg.setCancelable(true);
 		
-		mQuitDialog = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).create();
+		mQuitDialog = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).create();
 		mQuitDialog.setTitle(getString(R.string.quit_title));
 		mQuitDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.label_yes),
 			new DialogInterface.OnClickListener() {
@@ -514,10 +514,17 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				
 				Intent intent = new Intent();
 				WeibouserInfo wi = (WeibouserInfo) mPageUsrs.get(position);
-				intent.setClass(EntranceActivity.this, PicbrowActivity.class);
-				intent.putExtra("id", wi.id);
-				mPageBeforeBrow = mCurPage;
-				startActivityForResult(intent, REQUESTCODE_BACKFROM);
+				if (mBtnPossessions.isSelected()) {
+					intent.putExtra("uid", wi.uid);
+	                intent.putExtra("id", wi.id);
+					intent.setClass(EntranceActivity.this, WeiboShowActivity.class);
+					startActivity(intent);
+				} else {
+					intent.setClass(EntranceActivity.this, PicbrowActivity.class);
+					intent.putExtra("id", wi.id);
+					mPageBeforeBrow = mCurPage;
+					startActivityForResult(intent, REQUESTCODE_BACKFROM);
+				}
 				
 			}
         });

@@ -215,6 +215,7 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 						} else {
 							//deal with failing to possess
 						}
+						break;
 				}    
 				super.handleMessage(msg);
 			}

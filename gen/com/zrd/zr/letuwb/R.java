@@ -83,11 +83,10 @@ containing a value of this type.
     public static final class id {
         public static final int adsBrow=0x7f070011;
         public static final int adsMain=0x7f07004c;
-        public static final int btnComment=0x7f070079;
+        public static final int btnComment=0x7f07007a;
         public static final int btnContact=0x7f07000c;
         public static final int btnDescription=0x7f070073;
         public static final int btnExchange=0x7f070033;
-        public static final int btnFriend=0x7f07007b;
         public static final int btnGuest=0x7f07006a;
         public static final int btnHottest=0x7f070055;
         public static final int btnLatest=0x7f070054;
@@ -104,12 +103,13 @@ containing a value of this type.
         public static final int btnPre=0x7f07004e;
         public static final int btnRandom=0x7f070057;
         public static final int btnReg=0x7f070066;
-        public static final int btnRepost=0x7f07007a;
+        public static final int btnRepost=0x7f07007b;
         public static final int btnSave=0x7f070019;
         public static final int btnShare=0x7f07002a;
         public static final int btnTinyProfileImage=0x7f07006e;
         public static final int btnUnhottest=0x7f070056;
         public static final int btnUpload=0x7f07001a;
+        public static final int btnWeiboPossess=0x7f070079;
         public static final int btnWeiboShow=0x7f07002c;
         public static final int btnZoomin=0x7f070015;
         public static final int btnZoomout=0x7f070016;
