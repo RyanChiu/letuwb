@@ -180,7 +180,7 @@ public class WeiboShowActivity extends Activity {
 					 * show all kinds of the counts
 					 */
 					mTextCounts.setText(
-						getString(R.string.label_microblogs) + ":" + mLastUser.getStatusesCount()
+						getString(R.string.label_weibos) + ":" + mLastUser.getStatusesCount()
 						+ " " 
 						+ getString(R.string.label_favorites) + ":" + mLastUser.getFavouritesCount()
 						+ " "
@@ -621,12 +621,20 @@ public class WeiboShowActivity extends Activity {
 					long arg3) {
 				// TODO Auto-generated method stub
 				
+				/*
+				 * make the selected item different with others
+				 */
 				int position = arg2;
 				HeaderViewListAdapter ha = (HeaderViewListAdapter)parent.getAdapter();
 				WeiboStatusListAdapter adapter  = (WeiboStatusListAdapter)ha.getWrappedAdapter();
 				adapter.setSelectedItem(position);
 				adapter.notifyDataSetInvalidated();
 				mIndexOfSelectedStatus = position;
+				
+				/*
+				 * pop up the "more" list
+				 */
+				mBtnMore.performClick();
 				
 				long lastClickTime;
 				/*

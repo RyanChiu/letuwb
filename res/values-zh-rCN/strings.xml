@@ -114,6 +114,7 @@
     <string name="tips_friendsmade">关注成功</string>
     <string name="tips_friendsalready">已关注过了</string>
     <string name="label_microblogs">看微博</string>
+    <string name="label_weibos">微博</string>
     <string name="label_favorites">收藏</string>
     <string name="label_followers">粉丝</string>
     <string name="label_friends">关注</string>

@@ -114,6 +114,7 @@
     <string name="tips_friendsmade">Friends made.</string>
     <string name="tips_friendsalready">Friends already.</string>
     <string name="label_microblogs">Miniblogs</string>
+    <string name="label_weibos">Microblogs</string>
     <string name="label_favorites">Favorites</string>
     <string name="label_followers">Followers</string>
     <string name="label_friends">Friends</string>
