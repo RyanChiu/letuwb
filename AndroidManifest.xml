@@ -65,6 +65,12 @@
         <!-- google ads -->
         <activity android:name="com.google.ads.AdActivity"
               android:configChanges="keyboard|keyboardHidden|orientation"/>
+        <!-- domob ads -->
+        <activity android:name="cn.domob.android.ads.DomobActivity"
+            android:theme="@android:style/Theme.Translucent" />
+        <!-- adwo ads -->
+        <activity android:name="com.adwo.adsdk.AdwoAdBrowserActivity"
+            android:label="@string/app_name" />
 		<!-- umeng.com -->
 		<meta-data android:value="4e407b18431fe34ecf000021" android:name="UMENG_APPKEY"></meta-data>
 		<meta-data android:value="domestic" android:name="UMENG_CHANNEL"></meta-data>

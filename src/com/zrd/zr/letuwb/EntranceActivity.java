@@ -48,14 +48,15 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
+import com.adwhirl.AdWhirlLayout;
+import com.adwhirl.eventadapter.GmAdWhirlEventAdapterData;
 import com.mobclick.android.MobclickAgent;
 import com.zrd.zr.letuwb.R;
 import com.zrd.zr.pnj.PNJ;
@@ -174,9 +175,11 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         	MAXPERCENTAGE_CACHE.toString()	//in percentage
         );
         
-        // Look up the AdView as a resource and load a request.
-        AdView adView = (AdView)this.findViewById(R.id.adsMain);
-        adView.loadAd(new AdRequest());
+        // implement AdWhirl.
+        RelativeLayout rlAds = (RelativeLayout)this.findViewById(R.id.rlAdsMain);
+        AdWhirlLayout ret = new AdWhirlLayout(this,
+			GmAdWhirlEventAdapterData.CONST_STR_APPID_ADWHIRL, mHandler);
+        rlAds.addView(ret);
                 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.exchangelist_title);
         RegLoginActivity.addContext(EntranceActivity.this);

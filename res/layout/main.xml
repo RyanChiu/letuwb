@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" android:background="@drawable/bg">
@@ -27,12 +26,13 @@
             	android:gravity="center" 
             	android:paddingBottom="6dp" 
             	android:paddingTop="3dp" android:layout_centerHorizontal="true">
-				<com.google.ads.AdView android:id="@+id/adsMain"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    ads:adUnitId="a14ea4508a712d6"
-                    ads:adSize="BANNER"/>
+
+				<RelativeLayout
+				    android:id="@+id/rlAdsMain"
+				    android:layout_width="wrap_content"
+				    android:layout_height="50dp" >
+				</RelativeLayout>
+
             </LinearLayout>
             <LinearLayout 
             	android:layout_width="fill_parent" 

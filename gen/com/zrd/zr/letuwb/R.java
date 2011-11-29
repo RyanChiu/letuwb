@@ -81,8 +81,6 @@ containing a value of this type.
         public static final int zoomout=0x7f020027;
     }
     public static final class id {
-        public static final int adsBrow=0x7f070011;
-        public static final int adsMain=0x7f07004c;
         public static final int btnComment=0x7f07007a;
         public static final int btnContact=0x7f07000c;
         public static final int btnDescription=0x7f070073;
@@ -164,6 +162,8 @@ containing a value of this type.
         public static final int relativeLayout3=0x7f070040;
         public static final int relativeLayoutMain=0x7f07004a;
         public static final int relativeLayoutZoom=0x7f070012;
+        public static final int rlAdsBrow=0x7f070011;
+        public static final int rlAdsMain=0x7f07004c;
         public static final int rlControl=0x7f07000f;
         public static final int rlVoteText=0x7f070023;
         public static final int sbMain=0x7f070051;

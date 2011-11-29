@@ -56,8 +56,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
+import com.adwhirl.AdWhirlLayout;
+import com.adwhirl.eventadapter.GmAdWhirlEventAdapterData;
 import com.mobclick.android.MobclickAgent;
 import com.sonyericsson.zoom.DynamicZoomControl;
 import com.sonyericsson.zoom.ImageZoomView;
@@ -236,9 +236,11 @@ public class PicbrowActivity extends Activity implements ViewFactory, OnTouchLis
 		llVoteInfo.setVisibility(LinearLayout.INVISIBLE);
 		mTextScreenName.setVisibility(TextView.GONE);
 		
-		// Look up the AdView as a resource and load a request.
-        AdView adView = (AdView)this.findViewById(R.id.adsBrow);
-        adView.loadAd(new AdRequest());
+        // implement AdWhirl.
+        RelativeLayout rlAds = (RelativeLayout)this.findViewById(R.id.rlAdsBrow);
+        AdWhirlLayout ret = new AdWhirlLayout(this,
+			GmAdWhirlEventAdapterData.CONST_STR_APPID_ADWHIRL, mHandler);
+        rlAds.addView(ret);
 		
 		//mBrow.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
 		//mBrow.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
