@@ -156,4 +156,5 @@
     <string name="label_allright">没问题</string>
     <string name="label_letmethink">让我再想想...</string>
     <string name="title_attention">请注意了</string>
+    <string name="tips_getweiboinfofailed">获取失败，请您稍后再尝试一下。</string>
 </resources>

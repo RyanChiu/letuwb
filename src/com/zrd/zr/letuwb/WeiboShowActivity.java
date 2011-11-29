@@ -189,12 +189,13 @@ public class WeiboShowActivity extends Activity {
 						+ getString(R.string.label_friends) + ":" + mLastUser.getFriendsCount()
 					);
 				} else {
-					mTextCreatedAt.setText("Please try again...");
+					//mTextCreatedAt.setText("Please try again...");
 					
 					if (wexp != null) {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							wexp.toString(),
+							//wexp.toString(),
+							R.string.tips_getweiboinfofailed,
 							Toast.LENGTH_LONG
 						).show();
 					}
@@ -222,7 +223,8 @@ public class WeiboShowActivity extends Activity {
 					if (wexp != null) {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							wexp.toString(),
+							//wexp.toString(),
+							R.string.tips_getweiboinfofailed,
 							Toast.LENGTH_LONG
 						).show();
 					}
@@ -250,7 +252,8 @@ public class WeiboShowActivity extends Activity {
 					if (wexp != null) {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							wexp.toString(),
+							//wexp.toString(),
+							R.string.tips_getweiboinfofailed,
 							Toast.LENGTH_LONG
 						).show();
 					}
@@ -270,7 +273,8 @@ public class WeiboShowActivity extends Activity {
 					if (wexp != null) {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							wexp.toString(),
+							//wexp.toString(),
+							R.string.tips_getweiboinfofailed,
 							Toast.LENGTH_LONG
 						).show();
 					}
@@ -290,7 +294,8 @@ public class WeiboShowActivity extends Activity {
 					if (wexp != null) {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							wexp.toString(),
+							//wexp.toString(),
+							R.string.tips_getweiboinfofailed,
 							Toast.LENGTH_LONG
 						).show();
 					}
@@ -360,7 +365,8 @@ public class WeiboShowActivity extends Activity {
 					if (wexp != null) {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							wexp.toString(),
+							//wexp.toString(),
+							R.string.tips_getweiboinfofailed,
 							Toast.LENGTH_LONG
 						).show();
 					}
@@ -380,7 +386,8 @@ public class WeiboShowActivity extends Activity {
 					if (wexp != null) {
 						Toast.makeText(
 							WeiboShowActivity.this,
-							wexp.toString(),
+							//wexp.toString(),
+							R.string.tips_getweiboinfofailed,
 							Toast.LENGTH_LONG
 						).show();
 					}

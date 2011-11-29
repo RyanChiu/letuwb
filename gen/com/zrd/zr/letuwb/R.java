@@ -343,6 +343,7 @@ containing a value of this type.
         public static final int tips_firstone=0x7f050024;
         public static final int tips_friendsalready=0x7f05006f;
         public static final int tips_friendsmade=0x7f05006e;
+        public static final int tips_getweiboinfofailed=0x7f05009b;
         public static final int tips_havetologin=0x7f050068;
         public static final int tips_hottesttheweek=0x7f05005d;
         public static final int tips_howtobacktobrowse=0x7f05004f;
