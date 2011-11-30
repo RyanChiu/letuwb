@@ -3,7 +3,6 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="/GmAdwhirlDemo/bin/gmadwhirldemo.jar"/>
 	<classpathentry kind="lib" path="libs/commons-codec.jar"/>
 	<classpathentry kind="lib" path="libs/commons-httpclient-3.1.jar"/>
 	<classpathentry kind="lib" path="libs/commons-logging-1.1.jar"/>
@@ -12,5 +11,7 @@
 	<classpathentry kind="lib" path="/letusee/vendors/ks_exchange.jar"/>
 	<classpathentry kind="lib" path="/letusee/vendors/protobuf-java-2.4.1.jar"/>
 	<classpathentry kind="lib" path="/letusee/vendors/tracedroid.jar"/>
+	<classpathentry kind="lib" path="libs/ads/adwosdk2.5.1.jar"/>
+	<classpathentry kind="lib" path="libs/ads/domob_android_sdk.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
