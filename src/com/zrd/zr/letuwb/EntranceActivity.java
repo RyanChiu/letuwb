@@ -120,8 +120,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	private ImageButton mBtnExchange;
 	private ArrayList<Button> mTopicBtns = null;
 	SeekBar mSeekMain;
-	Button mBtnPre;
-	Button mBtnNext;
+	ImageButton mBtnPrev;
+	ImageButton mBtnNext;
 	TextView mTextSeekPos;
 	LinearLayout mLinearMainBottom;
 	WebView mWebCount;
@@ -198,8 +198,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         mTopicBtns.add(mBtnUnhottest);
         mTopicBtns.add(mBtnPossessions);
         mSeekMain = (SeekBar) findViewById(R.id.sbMain);
-        mBtnPre = (Button) findViewById(R.id.btnPre);
-        mBtnNext = (Button) findViewById(R.id.btnNext);
+        mBtnPrev = (ImageButton) findViewById(R.id.btnPrev);
+        mBtnNext = (ImageButton) findViewById(R.id.btnNext);
         mTextSeekPos = (TextView) findViewById(R.id.tvSeekPos);
         mLinearMainBottom = (LinearLayout) findViewById(R.id.linearLayoutMainBottom);
         mLinearMainBottom.setVisibility(LinearLayout.GONE);
@@ -320,7 +320,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         	}
         );
         
-        mBtnPre.setOnClickListener(new OnClickListener () {
+        mBtnPrev.setOnClickListener(new OnClickListener () {
 
 			@Override
 			public void onClick(View v) {

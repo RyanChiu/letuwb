@@ -15,7 +15,7 @@
             </RelativeLayout>
         </LinearLayout>
         <RelativeLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:id="@+id/relativeLayoutZoom" android:layout_marginBottom="52dp">
-            <LinearLayout android:orientation="vertical" android:id="@+id/linearLayoutInfo" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="52dp" android:layout_marginLeft="3dp">
+            <LinearLayout android:orientation="vertical" android:id="@+id/linearLayoutInfo" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="50dp" android:layout_marginLeft="3dp">
                 <TextView android:layout_gravity="center" android:gravity="center" android:layout_width="fill_parent" android:id="@+id/tvScreenNameAbovePic" android:background="@drawable/brow_screen_name" android:layout_height="wrap_content" android:paddingLeft="16dp" android:paddingRight="16dp" android:textColor="#1da7ef"></TextView>
                 <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomin" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomin"></ImageButton>
                 <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomout" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomout"></ImageButton>
