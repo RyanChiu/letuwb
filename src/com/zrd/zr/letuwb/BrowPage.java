@@ -151,7 +151,7 @@ public class BrowPage {
 					case ThreadSinaDealer.CREATE_FRIENDSHIP:
 						User user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 						if (user != null) {
-							if (!user.equals(WeiboShowActivity.getSina().getLoggedInUser())) {
+							if (!user.equals(WeiboPage.getSina().getLoggedInUser())) {
 								Toast.makeText(
 									parent,
 									R.string.tips_friendsmade,
@@ -217,18 +217,7 @@ public class BrowPage {
 		zrAsyncShowPic(mId, 0);
 		
 		tvNums.setText("0/" + parent.getMainPage().getUsrs().size());
-		
-		/*
-		 * initialize the title bar
-		 */
-		Sina sina = WeiboShowActivity.getSina();
-		if (sina != null && sina.isLoggedIn()) {
-			RegLoginActivity.updateTitle(
-				R.id.ivTitleIcon, R.id.tvTitleName,
-				sina.getLoggedInUser()
-			);
-		}
-		
+				
 		mBtnShare.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -265,6 +254,7 @@ public class BrowPage {
 				//get current weibo user's information
             	WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs());
             	
+            	/*
                 Intent intent = new Intent();
                 
                 intent.putExtra("uid", wi.uid);
@@ -272,6 +262,10 @@ public class BrowPage {
 				
 				intent.setClass(parent, WeiboShowActivity.class);
 				parent.startActivity(intent);
+				*/
+				
+				parent.getWeiboPage().setReferer(R.layout.brow);
+				parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
 			}
 			
 		});
@@ -281,7 +275,7 @@ public class BrowPage {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Sina sina = WeiboShowActivity.getSina();
+				Sina sina = WeiboPage.getSina();
 				if (sina != null && sina.isLoggedIn()) {
 					new Thread(
 						new ThreadSinaDealer(

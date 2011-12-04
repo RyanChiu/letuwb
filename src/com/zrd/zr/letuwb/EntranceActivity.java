@@ -85,6 +85,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	private ViewFlipper mViewFlipper;
 	private MainPage mMainPage;
 	private BrowPage mBrowPage;
+	private WeiboPage mWeiboPage;
 	
     /* Called when the activity is firstly created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -100,10 +101,13 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		vs.setVisibility(View.VISIBLE);
 		vs = (ViewStub) findViewById(R.id.vsBrow);
 		vs.setVisibility(View.VISIBLE);
+		vs = (ViewStub) findViewById(R.id.vsWeibo);
+		vs.setVisibility(View.VISIBLE);
         //get all the views needed in layout "core"
         setViewFlipper((ViewFlipper) findViewById(R.id.vfCore));
         setMainPage(new MainPage(this));
         setBrowPage(new BrowPage(this));
+        setWeiboPage(new WeiboPage(this));
         //show the very first view "main"
         switchPage(R.layout.main);
         
@@ -473,7 +477,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				}
 				break;
 			case 2:
-				
+				switchPage(mWeiboPage.getReferer());
 				break;
 			}
 		}
@@ -594,7 +598,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				startActivity(intent);
 			}
 			
-			Sina sina = WeiboShowActivity.getSina();
+			Sina sina = WeiboPage.getSina();
 			if (sina != null && sina.isLoggedIn()) {
 				RegLoginActivity.updateTitle(
 					R.id.ivTitleIcon, R.id.tvTitleName,
@@ -652,7 +656,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 					String usr = list.get(0)[0];
 					String pwd = list.get(0)[1];
 					Sina sina = RegLoginActivity.login(usr, pwd);
-					WeiboShowActivity.setSina(sina);
+					WeiboPage.setSina(sina);
 					//if login succeed, then we associate the logged in account with clientkey
 					if (sina != null && sina.getTag() != null) {
 						int idTips = (Integer)sina.getTag();
@@ -744,11 +748,30 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			break;
 		case R.layout.brow:
 			mViewFlipper.setDisplayedChild(1);
-			long id = (Long)params[0];
-			mBrowPage.zrAsyncShowPic(id, 0);
+			if (params.length == 1) {
+				long id = (Long)params[0];
+				mBrowPage.zrAsyncShowPic(id, 0);
+			}
 			break;
 		case R.layout.weibo_show:
+			mViewFlipper.setDisplayedChild(2);
+			if (params.length == 2) {
+				long uid = (Long)params[0];
+				long _id = (Long)params[1];
+				mWeiboPage.setUid(uid);
+				mWeiboPage.setId(_id);
+				mWeiboPage.reloadAll();
+				mWeiboPage.turnDealing(true);
+			}
 			break;
 		}
+	}
+
+	public WeiboPage getWeiboPage() {
+		return mWeiboPage;
+	}
+
+	public void setWeiboPage(WeiboPage mWeiboPage) {
+		this.mWeiboPage = mWeiboPage;
 	}
 }

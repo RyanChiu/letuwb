@@ -11,26 +11,14 @@ import weibo4android.Comment;
 import weibo4android.Status;
 import weibo4android.User;
 import weibo4android.WeiboException;
-
-import com.zrd.zr.pnj.ThreadPNJDealer;
-import com.zrd.zr.protos.WeibousersProtos.UCMappings;
-import com.zrd.zr.weiboes.Sina;
-import com.zrd.zr.weiboes.ThreadSinaDealer;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -41,10 +29,18 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class WeiboShowActivity extends Activity {
+import com.zrd.zr.pnj.ThreadPNJDealer;
+import com.zrd.zr.protos.WeibousersProtos.UCMappings;
+import com.zrd.zr.weiboes.Sina;
+import com.zrd.zr.weiboes.ThreadSinaDealer;
+
+public class WeiboPage {
+	private EntranceActivity parent;
+	private int mReferer = -1;
 	
 	protected static final int COUNT_PERPAGE_TIMELINE = 20;
 	protected static final int COUNT_PERPAGE_COMMENTS = 20;
@@ -60,7 +56,6 @@ public class WeiboShowActivity extends Activity {
 	private Button mBtnComment;
 	private Button mBtnRepost;
 	private Button mBtnMore;
-	private ImageButton mBtnExchange;
 	private ImageView mBtnTinyProfileImage;
 	
 	private AlertDialog mDlgRepost;
@@ -74,7 +69,7 @@ public class WeiboShowActivity extends Activity {
 	private Dialog mDlgMore;
 	
 	private Long mUid = null;
-	//private Long mId = null;
+	private Long mId = null;
 	private static Sina mSina = null;
 	private User mLastUser = null;
 	private List<Sina.XStatus> mLastUserTimeline = new ArrayList<Sina.XStatus>();
@@ -87,348 +82,31 @@ public class WeiboShowActivity extends Activity {
 	/*
 	 * Handler for showing all kinds of SINA_weibo data from background thread.
 	 */
-	Handler mHandler = new Handler() {
-		@SuppressWarnings("unchecked")
-		public void handleMessage(Message msg) {
-			Sina sina = (Sina)msg.getData().getSerializable(ThreadSinaDealer.KEY_SINA);
-			if (sina == null) {
-				sina = mSina;
-			} else {
-				setSina(sina);
-			}
-			WeiboException wexp = (WeiboException)msg.getData().getSerializable(ThreadSinaDealer.KEY_WEIBO_ERR);
-			User user;
-			Status status;
-			Comment comment;
-			switch (msg.what) {
-			case ThreadPNJDealer.GET_POSSESSIONS:
-				UCMappings mappings = (UCMappings)msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
-				if (mappings != null) {
-					if (mappings.getFlag() == 1) {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							R.string.tips_alreadypossessed,
-							Toast.LENGTH_LONG
-						).show();
-					} else if (mappings.getFlag() == 2) {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							R.string.tips_possessed,
-							Toast.LENGTH_LONG
-						).show();
-					} else {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							R.string.tips_failedtopossess,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				} else {
-					//deal with failing to possess
-				}
-				break;
-			case ThreadSinaDealer.SHOW_USER:
-				mLastUser = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (mLastUser != null) {			
-					/*
-					 * show the profile-image
-					 */
-					AsyncImageLoader ail = new AsyncImageLoader(
-						WeiboShowActivity.this,
-						R.id.btnTinyProfileImage,
-						R.drawable.person
-					);
-					ail.execute(mLastUser.getProfileImageURL());
-					
-					/*
-					 * show the screen name
-					 */
-					mTextScreenName.setText(mLastUser.getScreenName());
-					
-					/*
-					 * show "v" if verified
-					 */
-					if (mLastUser.isVerified()) {
-						mImageVerified.setVisibility(ImageView.VISIBLE);
-					} else {
-						mImageVerified.setVisibility(ImageView.GONE);
-					}
-					
-					/*
-					 * show when was the user created
-					 */
-					Date dtCreatedAt = mLastUser.getCreatedAt();
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					mTextCreatedAt.setText(sdf.format(dtCreatedAt));
-					
-					/*
-					 * show the location and the description
-					 */
-					mTextLocation.setText(
-						mLastUser.getLocation()
-					);
-					String description = mLastUser.getDescription();
-					if (!description.equals("")) {
-						mBtnDescription.setVisibility(ImageButton.VISIBLE);
-						mBtnDescription.setTag(description);
-					} else {
-						mBtnDescription.setVisibility(ImageButton.GONE);
-						mBtnDescription.setTag(null);
-					}
-					
-					/*
-					 * show all kinds of the counts
-					 */
-					mTextCounts.setText(
-						getString(R.string.label_weibos) + ":" + mLastUser.getStatusesCount()
-						+ " " 
-						+ getString(R.string.label_favorites) + ":" + mLastUser.getFavouritesCount()
-						+ " "
-						+ getString(R.string.label_followers) + ":" + mLastUser.getFollowersCount()
-						+ " " 
-						+ getString(R.string.label_friends) + ":" + mLastUser.getFriendsCount()
-					);
-				} else {
-					//mTextCreatedAt.setText("Please try again...");
-					
-					if (wexp != null) {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				}
-				break;
-			case ThreadSinaDealer.GET_USER_TIMELINE:
-				ArrayList<Sina.XStatus> xstatuses = (ArrayList<Sina.XStatus>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (xstatuses != null) {
-					for (int i = 0; i < xstatuses.size(); i++) {
-						mLastUserTimeline.add(xstatuses.get(i));
-					}
-					/*
-					 * show the user time_line
-					 */
-					WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
-						WeiboShowActivity.this,
-						getStatusData(ThreadSinaDealer.GET_USER_TIMELINE)
-					);
-					mListStatus.setAdapter(adapter);
-					mListStatus.setSelection(
-						(getLastUserTimelineTotalPage() - 1) * COUNT_PERPAGE_TIMELINE
-					);
-				} else {
-					//deal with failing to get time_line
-					if (wexp != null) {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				}
-				turnDealing(false);
-				break;
-			case ThreadSinaDealer.CREATE_FRIENDSHIP:
-				user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (user != null) {
-					if (!user.equals(mSina.getLoggedInUser())) {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							R.string.tips_friendsmade,
-							Toast.LENGTH_LONG
-						).show();
-					} else {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							R.string.tips_friendsalready,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				} else {
-					//deal with failing to make friends
-					if (wexp != null) {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				}
-				turnDealing(false);
-				break;
-			case ThreadSinaDealer.CREATE_FAVORITE:
-				status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (status != null) {
-					Toast.makeText(
-						WeiboShowActivity.this,
-						R.string.tips_favoritemade,
-						Toast.LENGTH_LONG
-					).show();
-				} else {
-					//deal with failing to make favorite
-					if (wexp != null) {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				}
-				turnDealing(false);
-				break;
-			case ThreadSinaDealer.REPOST:
-				status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (status != null) {
-					Toast.makeText(
-						WeiboShowActivity.this,
-						R.string.tips_reposted,
-						Toast.LENGTH_LONG
-					).show();
-				} else {
-					//deal with failing to make favorite
-					if (wexp != null) {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				}
-				turnDealing(false);
-				break;
-			case ThreadSinaDealer.GET_COMMENTS:
-				ArrayList<Comment> comments = (ArrayList<Comment>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (comments != null) {
-					if (comments.size() != 0) {
-						for (int i = 0; i < comments.size(); i++) {
-							mLastComments.add(comments.get(i));
-						}
-						if (mLastComments.size() != 0) {
-							ListView lv = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
-							lv.removeFooterView(mBtnMoreComments);
-							lv.addFooterView(mBtnMoreComments);
-							ArrayList<String> contents = new ArrayList<String>();
-							WeiboStatusListAdapter _tmp = 
-								new WeiboStatusListAdapter(WeiboShowActivity.this, null);
-							for (int i = 0; i < mLastComments.size(); i++) {
-								user = mLastComments.get(i).getUser();
-								contents.add(
-									"[" + (i + 1) + "] "
-									+ (user != null ? user.getScreenName() : "")
-									+ "(" + _tmp.getSpecialDateText(mLastComments.get(i).getCreatedAt(), 0) + "):\n"
-									+ mLastComments.get(i).getText()
-								);
-							}
-							lv.setAdapter(
-								new ArrayAdapter<String>(
-									WeiboShowActivity.this,
-									R.layout.item_custom_dialog_list,
-									contents
-								)
-							);
-							lv.setSelection(
-								(getLastCommentsTotalPage() - 1) * COUNT_PERPAGE_COMMENTS
-							);
-						} else {
-							Toast.makeText(
-								WeiboShowActivity.this,
-								R.string.tips_nocomments,
-								Toast.LENGTH_LONG
-							).show();
-						}
-					} else {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							R.string.tips_nomorecomments,
-							Toast.LENGTH_LONG
-						).show();
-						mBtnMoreComments.setTag(2);
-						mBtnMoreComments.setEnabled(false);
-					}
-				} else {
-					//deal with failing to get comments
-					Integer flag = (Integer)mBtnMoreComments.getTag();
-					if (flag != null && flag != 0) {
-						//if mBtnMoreComments was clicked, then do something here
-						mDlgComments.dismiss();
-					} else {
-						//if mBtnMoreComments was not clicked, do something here
-						
-					}
-					
-					if (wexp != null) {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				}
-				turnDealing(false);
-				break;
-			case ThreadSinaDealer.UPDATE_COMMENT:
-				comment = (Comment)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (comment != null) {
-					Toast.makeText(
-						WeiboShowActivity.this,
-						R.string.tips_commented,
-						Toast.LENGTH_LONG
-					).show();
-				} else {
-					//deal with failing to make favorite
-					if (wexp != null) {
-						Toast.makeText(
-							WeiboShowActivity.this,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				}
-				turnDealing(false);
-				break;
-			}
-		}
-
-	};
+	Handler mHandler = null;
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.weibo_show);
+	WeiboPage(EntranceActivity activity) {
+		this.parent = activity;
 		
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.exchangelist_title);
-		RegLoginActivity.addContext(WeiboShowActivity.this);
-		mBtnExchange = (ImageButton) findViewById(R.id.btnExchange);
-        mTextScreenName = (TextView)findViewById(R.id.tvScreenName);
-		mImageVerified = (ImageView)findViewById(R.id.ivVerified);
-		mTextCreatedAt = (TextView)findViewById(R.id.tvCreatedAt);
-		mTextLocation = (TextView)findViewById(R.id.tvLocation);
-		mBtnDescription = (ImageButton)findViewById(R.id.btnDescription);
-		mTextCounts = (TextView)findViewById(R.id.tvCounts);
-		mListStatus = (ListView)findViewById(R.id.lvStatus);
-		mProgressStatusLoading = (ProgressBar)findViewById(R.id.pbStatusLoading);
-		mBtnPossess = (Button)findViewById(R.id.btnWeiboPossess);
-		mBtnComment = (Button)findViewById(R.id.btnComment);
-		mBtnRepost = (Button)findViewById(R.id.btnRepost);
-		mEditRepost  = new EditText(this);
-		mBtnMore = (Button)findViewById(R.id.btnMore);
-		mEditComment = new EditText(this);
-		mBtnTinyProfileImage = (ImageButton)findViewById(R.id.btnTinyProfileImage);
+		mTextScreenName = (TextView)parent.findViewById(R.id.tvScreenName);
+		mImageVerified = (ImageView)parent.findViewById(R.id.ivVerified);
+		mTextCreatedAt = (TextView)parent.findViewById(R.id.tvCreatedAt);
+		mTextLocation = (TextView)parent.findViewById(R.id.tvLocation);
+		mBtnDescription = (ImageButton)parent.findViewById(R.id.btnDescription);
+		mTextCounts = (TextView)parent.findViewById(R.id.tvCounts);
+		mListStatus = (ListView)parent.findViewById(R.id.lvStatus);
+		mProgressStatusLoading = (ProgressBar)parent.findViewById(R.id.pbStatusLoading);
+		mBtnPossess = (Button)parent.findViewById(R.id.btnWeiboPossess);
+		mBtnComment = (Button)parent.findViewById(R.id.btnComment);
+		mBtnRepost = (Button)parent.findViewById(R.id.btnRepost);
+		mEditRepost  = new EditText(parent);
+		mBtnMore = (Button)parent.findViewById(R.id.btnMore);
+		mEditComment = new EditText(parent);
+		mBtnTinyProfileImage = (ImageButton)parent.findViewById(R.id.btnTinyProfileImage);
 		
 		mImageVerified.setVisibility(ImageView.GONE);
 		mBtnDescription.setVisibility(ImageButton.GONE);
 			
-		mBtnMoreTimelines = new Button(this);
+		mBtnMoreTimelines = new Button(parent);
 		mBtnMoreTimelines.setText(R.string.label_getmore);
 		mBtnMoreTimelines.setOnClickListener(new OnClickListener() {
 
@@ -440,7 +118,7 @@ public class WeiboShowActivity extends Activity {
 						mSina,
 						ThreadSinaDealer.GET_USER_TIMELINE,
 						new String[] {
-							mUid.toString(), 
+							getUid().toString(), 
 							"" + (getLastUserTimelineTotalPage() + 1), 
 							"" + COUNT_PERPAGE_TIMELINE
 						},
@@ -453,7 +131,7 @@ public class WeiboShowActivity extends Activity {
 		});
 		mListStatus.addFooterView(mBtnMoreTimelines);
 		
-		mBtnMoreComments = new Button(this);
+		mBtnMoreComments = new Button(parent);
 		mBtnMoreComments.setText(R.string.label_getmore);
 		/*
 		 * 0 means not clicked
@@ -490,26 +168,6 @@ public class WeiboShowActivity extends Activity {
 			
 		});
 		
-		/*
-		 * show the whole user/info
-		 */
-		Intent intent = getIntent();
-		mUid = intent.getLongExtra("uid", 0);
-		//mId = intent.getLongExtra("id", 0);
-		reloadAll();
-		turnDealing(true);
-		
-		/*
-		 * initialize the title bar
-		 */
-		Sina sina = WeiboShowActivity.getSina();
-		if (sina != null && sina.isLoggedIn()) {
-			RegLoginActivity.updateTitle(
-				R.id.ivTitleIcon, R.id.tvTitleName,
-				sina.getLoggedInUser()
-			);
-		}
-		
 		mBtnTinyProfileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -521,11 +179,13 @@ public class WeiboShowActivity extends Activity {
 				intent.putExtra("id", mId);
 				startActivity(intent);
 				*/
+				parent.getBrowPage().setReferer(R.layout.main);
+				parent.switchPage(R.layout.brow, mId);
 			}
 			
 		});
 		
-		mDlgRepost = new AlertDialog.Builder(this)
+		mDlgRepost = new AlertDialog.Builder(parent)
 			.setTitle(R.string.title_repost)
 			.setIcon(android.R.drawable.ic_dialog_info)
 			.setView(mEditRepost)
@@ -558,7 +218,7 @@ public class WeiboShowActivity extends Activity {
 			.setNegativeButton(R.string.label_cancel, null)
 			.create();
 		
-		mDlgComment = new AlertDialog.Builder(this)
+		mDlgComment = new AlertDialog.Builder(parent)
 			.setTitle(R.string.title_comment)
 			.setIcon(android.R.drawable.ic_dialog_info)
 			.setView(mEditComment)
@@ -591,10 +251,10 @@ public class WeiboShowActivity extends Activity {
 			.setNegativeButton(R.string.label_cancel, null)
 			.create();
 		
-		mDlgDescription = new Dialog(this, R.style.Dialog_Clean);
+		mDlgDescription = new Dialog(parent, R.style.Dialog_Clean);
 		mDlgDescription.setContentView(R.layout.custom_dialog_list);
 		
-		mDlgComments = new Dialog(this, R.style.Dialog_Clean);
+		mDlgComments = new Dialog(parent, R.style.Dialog_Clean);
 		mDlgComments.setContentView(R.layout.custom_dialog_list);
 		ListView lvComments = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
 		lvComments.setOnItemClickListener(new OnItemClickListener() {
@@ -607,17 +267,6 @@ public class WeiboShowActivity extends Activity {
 			}
 			
 		});
-
-		mBtnExchange.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Intent intent = new Intent();
-                intent.setClass(WeiboShowActivity.this, ExchangeListActivity.class);
-                startActivity(intent);
-            }
-        });
 		
 		/*
 		 * deal actions for components
@@ -679,7 +328,7 @@ public class WeiboShowActivity extends Activity {
 					//if it's already to the bottom
 					if(view.getLastVisiblePosition()==(view.getCount()-1)){
 						Toast.makeText(
-							WeiboShowActivity.this,
+							parent,
 							R.string.tips_alreadylastone,
 							Toast.LENGTH_LONG
 						).show();
@@ -700,7 +349,7 @@ public class WeiboShowActivity extends Activity {
 				if (description == null) description = "";
 				list.add(description);
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-					WeiboShowActivity.this,
+					parent,
 					R.layout.item_custom_dialog_list,
 					list
 				);
@@ -732,7 +381,7 @@ public class WeiboShowActivity extends Activity {
 							+ "updpzs.php?"
 							+ "clientkey=" + EntranceActivity.getClientKey()
 							+ "&channelid=0"
-							+ "&uid=" + mUid,
+							+ "&uid=" + getUid(),
 						mHandler
 					)
 				).start();
@@ -748,7 +397,7 @@ public class WeiboShowActivity extends Activity {
 				if (mSina != null && mSina.isLoggedIn()) {
 					if (mIndexOfSelectedStatus == -1) {
 						Toast.makeText(
-							WeiboShowActivity.this,
+							parent,
 							R.string.tips_noitemselected,
 							Toast.LENGTH_LONG
 						).show();
@@ -757,7 +406,7 @@ public class WeiboShowActivity extends Activity {
 					
 					mDlgComment.show();
 				} else {
-					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
+					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
 				}
 			}
 			
@@ -771,7 +420,7 @@ public class WeiboShowActivity extends Activity {
 				if (mSina != null && mSina.isLoggedIn()) {
 					if (mIndexOfSelectedStatus == -1) {
 						Toast.makeText(
-							WeiboShowActivity.this,
+							parent,
 							R.string.tips_noitemselected,
 							Toast.LENGTH_LONG
 						).show();
@@ -780,23 +429,23 @@ public class WeiboShowActivity extends Activity {
 					
 					mDlgRepost.show();
 				} else {
-					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
+					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
 				}
 			}
 			
 		});
 		
-		mDlgMore = new Dialog(this, R.style.Dialog_Clean);
+		mDlgMore = new Dialog(parent, R.style.Dialog_Clean);
 		mDlgMore.setContentView(R.layout.custom_dialog_list);
 		ListView lvMore = (ListView)mDlgMore.findViewById(R.id.lvCustomList);
 		ArrayList<String> mlist = new ArrayList<String>();
-		mlist.add(getString(R.string.label_weibo_friendship));
-		mlist.add(getString(R.string.label_weibo_favorite));
-		mlist.add(getString(R.string.label_comments));
-		mlist.add(getString(R.string.label_reload));
+		mlist.add(parent.getString(R.string.label_weibo_friendship));
+		mlist.add(parent.getString(R.string.label_weibo_favorite));
+		mlist.add(parent.getString(R.string.label_comments));
+		mlist.add(parent.getString(R.string.label_reload));
 		lvMore.setAdapter(
 			new ArrayAdapter<String> (
-				this,
+				parent,
 				R.layout.item_custom_dialog_list,
 				mlist
 			)
@@ -804,7 +453,7 @@ public class WeiboShowActivity extends Activity {
 		lvMore.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, 
+			public void onItemClick(AdapterView<?> av, View view, 
 					int position, long id) {
 				// TODO Auto-generated method stub
 				switch (position) {
@@ -814,13 +463,13 @@ public class WeiboShowActivity extends Activity {
 							new ThreadSinaDealer(
 								mSina,
 								ThreadSinaDealer.CREATE_FRIENDSHIP,
-								new String[] {mUid.toString()},
+								new String[] {getUid().toString()},
 								mHandler
 							)
 						).start();
 						turnDealing(true);
 					} else {
-						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
+						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
 					}
 					break;
 				case 1:
@@ -851,19 +500,19 @@ public class WeiboShowActivity extends Activity {
 							turnDealing(true);
 						} else {
 							Toast.makeText(
-								WeiboShowActivity.this,
+								parent,
 								R.string.tips_noitemselected,
 								Toast.LENGTH_LONG
 							).show();
 						}
 					} else {
-						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, WeiboShowActivity.this);
+						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
 					}
 					break;
 				case 2:
 					if (mIndexOfSelectedStatus == -1) {
 						Toast.makeText(
-							WeiboShowActivity.this,
+							parent,
 							R.string.tips_noitemselected,
 							Toast.LENGTH_LONG
 						).show();
@@ -892,6 +541,318 @@ public class WeiboShowActivity extends Activity {
 			}
 			
 		});
+		
+		mHandler = new Handler() {
+			@SuppressWarnings("unchecked")
+			public void handleMessage(Message msg) {
+				Sina sina = (Sina)msg.getData().getSerializable(ThreadSinaDealer.KEY_SINA);
+				if (sina == null) {
+					sina = mSina;
+				} else {
+					setSina(sina);
+				}
+				WeiboException wexp = (WeiboException)msg.getData().getSerializable(ThreadSinaDealer.KEY_WEIBO_ERR);
+				User user;
+				Status status;
+				Comment comment;
+				switch (msg.what) {
+				case ThreadPNJDealer.GET_POSSESSIONS:
+					UCMappings mappings = (UCMappings)msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
+					if (mappings != null) {
+						if (mappings.getFlag() == 1) {
+							Toast.makeText(
+								parent,
+								R.string.tips_alreadypossessed,
+								Toast.LENGTH_LONG
+							).show();
+						} else if (mappings.getFlag() == 2) {
+							Toast.makeText(
+								parent,
+								R.string.tips_possessed,
+								Toast.LENGTH_LONG
+							).show();
+						} else {
+							Toast.makeText(
+								parent,
+								R.string.tips_failedtopossess,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					} else {
+						//deal with failing to possess
+					}
+					break;
+				case ThreadSinaDealer.SHOW_USER:
+					mLastUser = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+					if (mLastUser != null) {			
+						/*
+						 * show the profile-image
+						 */
+						AsyncImageLoader ail = new AsyncImageLoader(
+							parent,
+							R.id.btnTinyProfileImage,
+							R.drawable.person
+						);
+						ail.execute(mLastUser.getProfileImageURL());
+						
+						/*
+						 * show the screen name
+						 */
+						mTextScreenName.setText(mLastUser.getScreenName());
+						
+						/*
+						 * show "v" if verified
+						 */
+						if (mLastUser.isVerified()) {
+							mImageVerified.setVisibility(ImageView.VISIBLE);
+						} else {
+							mImageVerified.setVisibility(ImageView.GONE);
+						}
+						
+						/*
+						 * show when was the user created
+						 */
+						Date dtCreatedAt = mLastUser.getCreatedAt();
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						mTextCreatedAt.setText(sdf.format(dtCreatedAt));
+						
+						/*
+						 * show the location and the description
+						 */
+						mTextLocation.setText(
+							mLastUser.getLocation()
+						);
+						String description = mLastUser.getDescription();
+						if (!description.equals("")) {
+							mBtnDescription.setVisibility(ImageButton.VISIBLE);
+							mBtnDescription.setTag(description);
+						} else {
+							mBtnDescription.setVisibility(ImageButton.GONE);
+							mBtnDescription.setTag(null);
+						}
+						
+						/*
+						 * show all kinds of the counts
+						 */
+						mTextCounts.setText(
+							parent.getString(R.string.label_weibos) + ":" + mLastUser.getStatusesCount()
+							+ " " 
+							+ parent.getString(R.string.label_favorites) + ":" + mLastUser.getFavouritesCount()
+							+ " "
+							+ parent.getString(R.string.label_followers) + ":" + mLastUser.getFollowersCount()
+							+ " " 
+							+ parent.getString(R.string.label_friends) + ":" + mLastUser.getFriendsCount()
+						);
+					} else {
+						//mTextCreatedAt.setText("Please try again...");
+						
+						if (wexp != null) {
+							Toast.makeText(
+								parent,
+								//wexp.toString(),
+								R.string.tips_getweiboinfofailed,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					}
+					break;
+				case ThreadSinaDealer.GET_USER_TIMELINE:
+					ArrayList<Sina.XStatus> xstatuses = (ArrayList<Sina.XStatus>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+					if (xstatuses != null) {
+						for (int i = 0; i < xstatuses.size(); i++) {
+							mLastUserTimeline.add(xstatuses.get(i));
+						}
+						/*
+						 * show the user time_line
+						 */
+						WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
+							parent,
+							getStatusData(ThreadSinaDealer.GET_USER_TIMELINE)
+						);
+						mListStatus.setAdapter(adapter);
+						mListStatus.setSelection(
+							(getLastUserTimelineTotalPage() - 1) * COUNT_PERPAGE_TIMELINE
+						);
+					} else {
+						//deal with failing to get time_line
+						if (wexp != null) {
+							Toast.makeText(
+								parent,
+								//wexp.toString(),
+								R.string.tips_getweiboinfofailed,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					}
+					turnDealing(false);
+					break;
+				case ThreadSinaDealer.CREATE_FRIENDSHIP:
+					user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+					if (user != null) {
+						if (!user.equals(mSina.getLoggedInUser())) {
+							Toast.makeText(
+								parent,
+								R.string.tips_friendsmade,
+								Toast.LENGTH_LONG
+							).show();
+						} else {
+							Toast.makeText(
+								parent,
+								R.string.tips_friendsalready,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					} else {
+						//deal with failing to make friends
+						if (wexp != null) {
+							Toast.makeText(
+								parent,
+								//wexp.toString(),
+								R.string.tips_getweiboinfofailed,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					}
+					turnDealing(false);
+					break;
+				case ThreadSinaDealer.CREATE_FAVORITE:
+					status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+					if (status != null) {
+						Toast.makeText(
+							parent,
+							R.string.tips_favoritemade,
+							Toast.LENGTH_LONG
+						).show();
+					} else {
+						//deal with failing to make favorite
+						if (wexp != null) {
+							Toast.makeText(
+								parent,
+								//wexp.toString(),
+								R.string.tips_getweiboinfofailed,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					}
+					turnDealing(false);
+					break;
+				case ThreadSinaDealer.REPOST:
+					status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+					if (status != null) {
+						Toast.makeText(
+							parent,
+							R.string.tips_reposted,
+							Toast.LENGTH_LONG
+						).show();
+					} else {
+						//deal with failing to make favorite
+						if (wexp != null) {
+							Toast.makeText(
+								parent,
+								//wexp.toString(),
+								R.string.tips_getweiboinfofailed,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					}
+					turnDealing(false);
+					break;
+				case ThreadSinaDealer.GET_COMMENTS:
+					ArrayList<Comment> comments = (ArrayList<Comment>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+					if (comments != null) {
+						if (comments.size() != 0) {
+							for (int i = 0; i < comments.size(); i++) {
+								mLastComments.add(comments.get(i));
+							}
+							if (mLastComments.size() != 0) {
+								ListView lv = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
+								lv.removeFooterView(mBtnMoreComments);
+								lv.addFooterView(mBtnMoreComments);
+								ArrayList<String> contents = new ArrayList<String>();
+								WeiboStatusListAdapter _tmp = 
+									new WeiboStatusListAdapter(parent, null);
+								for (int i = 0; i < mLastComments.size(); i++) {
+									user = mLastComments.get(i).getUser();
+									contents.add(
+										"[" + (i + 1) + "] "
+										+ (user != null ? user.getScreenName() : "")
+										+ "(" + _tmp.getSpecialDateText(mLastComments.get(i).getCreatedAt(), 0) + "):\n"
+										+ mLastComments.get(i).getText()
+									);
+								}
+								lv.setAdapter(
+									new ArrayAdapter<String>(
+										parent,
+										R.layout.item_custom_dialog_list,
+										contents
+									)
+								);
+								lv.setSelection(
+									(getLastCommentsTotalPage() - 1) * COUNT_PERPAGE_COMMENTS
+								);
+							} else {
+								Toast.makeText(
+									parent,
+									R.string.tips_nocomments,
+									Toast.LENGTH_LONG
+								).show();
+							}
+						} else {
+							Toast.makeText(
+								parent,
+								R.string.tips_nomorecomments,
+								Toast.LENGTH_LONG
+							).show();
+							mBtnMoreComments.setTag(2);
+							mBtnMoreComments.setEnabled(false);
+						}
+					} else {
+						//deal with failing to get comments
+						Integer flag = (Integer)mBtnMoreComments.getTag();
+						if (flag != null && flag != 0) {
+							//if mBtnMoreComments was clicked, then do something here
+							mDlgComments.dismiss();
+						} else {
+							//if mBtnMoreComments was not clicked, do something here
+							
+						}
+						
+						if (wexp != null) {
+							Toast.makeText(
+								parent,
+								//wexp.toString(),
+								R.string.tips_getweiboinfofailed,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					}
+					turnDealing(false);
+					break;
+				case ThreadSinaDealer.UPDATE_COMMENT:
+					comment = (Comment)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+					if (comment != null) {
+						Toast.makeText(
+							parent,
+							R.string.tips_commented,
+							Toast.LENGTH_LONG
+						).show();
+					} else {
+						//deal with failing to make favorite
+						if (wexp != null) {
+							Toast.makeText(
+								parent,
+								//wexp.toString(),
+								R.string.tips_getweiboinfofailed,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					}
+					turnDealing(false);
+					break;
+				}
+			}
+
+		};
 	}
 	
 	protected void showComments() {
@@ -917,13 +878,13 @@ public class WeiboShowActivity extends Activity {
 		).start();
 		ListView lvComments = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
 		ArrayList<String> lstWaiting = new ArrayList<String>();
-		lstWaiting.add(getString(R.string.tips_waitasecond));
+		lstWaiting.add(parent.getString(R.string.tips_waitasecond));
 		lvComments.removeFooterView(mBtnMoreComments);
 		mBtnMoreComments.setTag(0);
 		mBtnMoreComments.setEnabled(true);
 		lvComments.setAdapter(
 			new ArrayAdapter<String>(
-				WeiboShowActivity.this,
+				parent,
 				R.layout.item_custom_dialog_list,
 				lstWaiting
 			)
@@ -937,7 +898,7 @@ public class WeiboShowActivity extends Activity {
 			new ThreadSinaDealer(
 				mSina, 
 				ThreadSinaDealer.SHOW_USER, 
-				new String[] {mUid.toString()}, 
+				new String[] {getUid().toString()}, 
 				mHandler
 			)
 		).start();
@@ -947,7 +908,7 @@ public class WeiboShowActivity extends Activity {
 			new ThreadSinaDealer(
 				mSina,
 				ThreadSinaDealer.GET_USER_TIMELINE,
-				new String[] {mUid.toString(), "" + getLastUserTimelineTotalPage(), "" + COUNT_PERPAGE_TIMELINE},
+				new String[] {getUid().toString(), "" + getLastUserTimelineTotalPage(), "" + COUNT_PERPAGE_TIMELINE},
 				mHandler
 			)
 		).start();
@@ -1012,7 +973,7 @@ public class WeiboShowActivity extends Activity {
 	/*
 	 * change the status for the components when dealing with SINA_weibo data
 	 */
-	private void turnDealing(boolean on) {
+	public void turnDealing(boolean on) {
 		if (on == true) {
 			mBtnPossess.setEnabled(false);
 			mBtnComment.setEnabled(false);
@@ -1037,9 +998,27 @@ public class WeiboShowActivity extends Activity {
 		}
 	}
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		// TODO Auto-generated method stub
-		super.onConfigurationChanged(newConfig);
+	public Long getUid() {
+		return mUid;
+	}
+
+	public void setUid(Long mUid) {
+		this.mUid = mUid;
+	}
+
+	public int getReferer() {
+		return mReferer;
+	}
+
+	public void setReferer(int mReferer) {
+		this.mReferer = mReferer;
+	}
+
+	public Long getId() {
+		return mId;
+	}
+
+	public void setId(Long mId) {
+		this.mId = mId;
 	}
 }

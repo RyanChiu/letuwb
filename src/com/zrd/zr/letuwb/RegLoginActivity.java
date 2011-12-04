@@ -493,7 +493,7 @@ public class RegLoginActivity extends Activity {
 			// TODO Auto-generated method stub
 			
 			if (sina != null) {
-				WeiboShowActivity.setSina(sina);
+				WeiboPage.setSina(sina);
 				
 				if (mCheckRemember.isChecked()) {
 					EntranceActivity.saveAccount(
@@ -504,7 +504,7 @@ public class RegLoginActivity extends Activity {
 				initAccountsList();
 				updateTitle(
 					R.id.ivTitleIcon, R.id.tvTitleName,
-					WeiboShowActivity.getSina() == null ? null : WeiboShowActivity.getSina().getLoggedInUser()
+					WeiboPage.getSina() == null ? null : WeiboPage.getSina().getLoggedInUser()
 				);
 				
 				if (sina.getTag() != null) {
@@ -537,8 +537,8 @@ public class RegLoginActivity extends Activity {
 					R.string.tips_loginfailed, 
 					Toast.LENGTH_LONG
 				).show();
-				if (WeiboShowActivity.getSina() != null) {
-					WeiboShowActivity.getSina().setLoggedInUser(null);
+				if (WeiboPage.getSina() != null) {
+					WeiboPage.getSina().setLoggedInUser(null);
 				}
 			}
 			
@@ -572,7 +572,7 @@ public class RegLoginActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (WeiboShowActivity.getSina() != null && WeiboShowActivity.getSina().isLoggedIn()) {
+			if (WeiboPage.getSina() != null && WeiboPage.getSina().isLoggedIn()) {
 				
 			} else {
 				Toast.makeText(
