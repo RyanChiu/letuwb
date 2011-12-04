@@ -27,8 +27,8 @@
 
 package com.sonyericsson.zoom;
 
+import com.zrd.zr.letuwb.EntranceActivity;
 import com.zrd.zr.letuwb.R;
-import com.zrd.zr.letuwb.PicbrowActivity;
 
 import android.content.Context;
 import android.os.Vibrator;
@@ -221,15 +221,15 @@ public class LongPressZoomListener extends GestureDetector.SimpleOnGestureListen
      */
     @Override
 	public boolean onDoubleTap(MotionEvent e) {
-    	if (mContext instanceof PicbrowActivity) {
-    		PicbrowActivity pa = (PicbrowActivity) mContext;
-    		pa.getBrow().setOnTouchListener(pa);
-    		pa.getCtrlLayout().setOnTouchListener(pa);
-    		pa.mIsDooming = false;
-    		pa.resetZoomState();
+    	if (mContext instanceof EntranceActivity) {
+    		EntranceActivity ea = (EntranceActivity) mContext;
+    		ea.getBrowPage().getBrow().setOnTouchListener(ea);
+    		ea.getBrowPage().getLayoutCtrl().setOnTouchListener(ea);
+    		ea.getBrowPage().setDooming(false);
+    		ea.getBrowPage().resetZoomState();
     		Toast.makeText(
-    			pa,
-    			pa.getString(R.string.label_browse),
+    			ea,
+    			ea.getString(R.string.label_browse),
     			Toast.LENGTH_LONG
     		).show();
     	}

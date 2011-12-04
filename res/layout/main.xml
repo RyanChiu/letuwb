@@ -5,10 +5,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" android:background="@drawable/bg">
 	<FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/frameLayoutMain">
-        <WebView android:id="@+id/wvCount"
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:visibility="gone"/>
         <ViewSwitcher android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/viewSwitcherMain">
             <GridView 
             	android:id="@+id/gridViewPics" 

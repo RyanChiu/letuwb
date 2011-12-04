@@ -1,31 +1,18 @@
 package com.zrd.zr.letuwb;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,27 +20,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewStub;
 import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.adwhirl.AdWhirlLayout;
 import com.adwhirl.eventadapter.GmAdWhirlEventAdapterData;
@@ -61,10 +39,6 @@ import com.mobclick.android.MobclickAgent;
 import com.zrd.zr.letuwb.R;
 import com.zrd.zr.pnj.PNJ;
 import com.zrd.zr.pnj.SecureURL;
-import com.zrd.zr.pnj.ThreadPNJDealer;
-import com.zrd.zr.protos.WeibousersProtos.UCMappings;
-import com.zrd.zr.protos.WeibousersProtos.Weibousers;
-import com.zrd.zr.protos.WeibousersProtos.Weibouser;
 import com.zrd.zr.weiboes.Sina;
 
 public class EntranceActivity extends Activity implements OnTouchListener {
@@ -79,7 +53,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	final static Integer MAXSIZE_CACHE = 100;// in MB
 	final static Integer MAXPERCENTAGE_CACHE = 5; // with %
 	final static int REQUESTCODE_PICKFILE = 1001;
-	final static int REQUESTCODE_BACKFROM = 1002;
 	final static String CONFIG_ACCOUNTS = "Accounts";
 	final static String CONFIG_CLIENTKEY = "ClientKey";
 	final static String CONFIG_RANDOMKEY = "RandomKey";
@@ -89,56 +62,51 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	final static int PERIOD_VOTEAGAIN = 24;//in HOUR
 	private static String mClientKey = "";
 	private static String mRandomKey = "";
-	private static Integer mTopicChoice = 0;
-	private GridView mGridPics;
-	private static final Integer mLimit = 28;//how many pictures should be passed to PicbrowActivity, actually multiple of mPageLimit is recommended
-	final Integer mPageLimit = 4;//how many pictures should be loaded into mGridPics.
-	private static Integer mCurPage = 1;
-	private Integer mPageBeforeBrow = 1;
-	private static Integer mCurParagraph = 1;
-	private static Integer mTotalPages = 0;
-	private static Integer mTotalPics = 0;
-	private static ArrayList<String> mCurTerms = new ArrayList<String>();
-	private static Integer mAccountId = 0;
-	private static ArrayList<WeibouserInfo> mUsrs = new ArrayList<WeibouserInfo>();
-	ArrayList<WeibouserInfo> mPageUsrs = new ArrayList<WeibouserInfo>();
-	OnClickListener listenerBtnView = null;
-	OnClickListener listenerBtnExit = null;
-	Dialog mPrgDlg;
-	AlertDialog mQuitDialog;
+
+	/*
+	 * views for reg/login dialog
+	 */
 	EditText mEditUsername;
 	EditText mEditPassword;
 	EditText mEditRepeat;
 	TableRow mRowRepeat;
 	CheckBox mCheckRemember;
-	TextView mTextPageInfo;
-	private Button mBtnRandom;
-	private Button mBtnLatest;
-	private Button mBtnHottest;
-	private Button mBtnUnhottest;
-	private Button mBtnPossessions;
-	private ImageButton mBtnExchange;
-	private ArrayList<Button> mTopicBtns = null;
-	SeekBar mSeekMain;
-	ImageButton mBtnPrev;
-	ImageButton mBtnNext;
-	TextView mTextSeekPos;
-	LinearLayout mLinearMainBottom;
-	WebView mWebCount;
-	static DisplayMetrics mDisplayMetrics = new DisplayMetrics();
-	private static int mPrivilege = 1;//0 member, 1 guest
-	NotificationManager mNotificationManager;
-	GestureDetector mGestureDetector = null;
-	private String mOutText;//!!actually not used!!
-	static SharedPreferences mPreferences = null;
 	
-	private Handler mHandler = null;
+	private WebView mWebCount;
+	private AlertDialog mQuitDialog;
+	private ImageButton mBtnExchange;
+	private static int mPrivilege = 1;//0 member, 1 guest
+	public static SharedPreferences mPreferences = null;
+	private static Integer mAccountId = 0;
+
+	/*
+	 * ViewFlipper and the pages in it
+	 */
+	private ViewFlipper mViewFlipper;
+	private MainPage mMainPage;
+	private BrowPage mBrowPage;
 	
     /* Called when the activity is firstly created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.main);
+        //setContentView(R.layout.main);
+        
+        //set content view with R.layout.core
+        setContentView(R.layout.core);
+        //inflate all the viewstubs in layout "core"
+        ViewStub vs;
+        vs = (ViewStub) findViewById(R.id.vsMain);
+		vs.setVisibility(View.VISIBLE);
+		vs = (ViewStub) findViewById(R.id.vsBrow);
+		vs.setVisibility(View.VISIBLE);
+        //get all the views needed in layout "core"
+        setViewFlipper((ViewFlipper) findViewById(R.id.vfCore));
+        setMainPage(new MainPage(this));
+        setBrowPage(new BrowPage(this));
+        //show the very first view "main"
+        switchPage(R.layout.main);
+        
         mPreferences = getPreferences(EntranceActivity.MODE_PRIVATE);
         
         /**
@@ -152,10 +120,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
          */
         mClientKey = mPreferences.getString(CONFIG_CLIENTKEY, "");
         mRandomKey = mPreferences.getString(CONFIG_RANDOMKEY, "");
-        mTopicChoice = mPreferences.getInt(CONFIG_TOPICCHOICE, 0);
+        mMainPage.setTopicChoice(mPreferences.getInt(CONFIG_TOPICCHOICE, 0));
         
         AsyncInit init = new AsyncInit();
-        ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
+        ArrayList<String[]> list = getStoredAccounts();
         if (list.size() == 0) {
         	Intent intent = new Intent();
 			intent.setClass(EntranceActivity.this, RegLoginActivity.class);
@@ -178,67 +146,13 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         // implement AdWhirl.
         RelativeLayout rlAds = (RelativeLayout)this.findViewById(R.id.rlAdsMain);
         AdWhirlLayout ret = new AdWhirlLayout(this,
-			GmAdWhirlEventAdapterData.CONST_STR_APPID_ADWHIRL, mHandler);
+			GmAdWhirlEventAdapterData.CONST_STR_APPID_ADWHIRL, null);
         rlAds.addView(ret);
                 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.exchangelist_title);
         RegLoginActivity.addContext(EntranceActivity.this);
         mBtnExchange = (ImageButton) findViewById(R.id.btnExchange);
-        mGridPics = (GridView) findViewById(R.id.gridViewPics);
-        mTextPageInfo = (TextView) findViewById(R.id.tvPageInfo);
-        mBtnRandom = (Button) findViewById(R.id.btnRandom);
-        mBtnLatest = (Button) findViewById(R.id.btnLatest);
-        mBtnHottest = (Button) findViewById(R.id.btnHottest);
-        mBtnUnhottest = (Button) findViewById(R.id.btnUnhottest);
-        mBtnPossessions = (Button) findViewById(R.id.btnPossessions);
-        mTopicBtns = new ArrayList<Button>();
-        mTopicBtns.add(mBtnLatest);
-        mTopicBtns.add(mBtnHottest);
-        mTopicBtns.add(mBtnRandom);
-        mTopicBtns.add(mBtnUnhottest);
-        mTopicBtns.add(mBtnPossessions);
-        mSeekMain = (SeekBar) findViewById(R.id.sbMain);
-        mBtnPrev = (ImageButton) findViewById(R.id.btnPrev);
-        mBtnNext = (ImageButton) findViewById(R.id.btnNext);
-        mTextSeekPos = (TextView) findViewById(R.id.tvSeekPos);
-        mLinearMainBottom = (LinearLayout) findViewById(R.id.linearLayoutMainBottom);
-        mLinearMainBottom.setVisibility(LinearLayout.GONE);
-        mWebCount = (WebView) findViewById(R.id.wvCount);
-        getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
-        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mGestureDetector = new GestureDetector(this, new LetuseeGestureListener());
-        mGridPics.setOnTouchListener(this);
-        
-        mHandler = new Handler() {
-
-			public void handleMessage(Message msg) {
-				switch (msg.what) {
-				case ThreadPNJDealer.DEL_POSSESSION:
-					UCMappings mappings = 
-						(UCMappings) msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
-					if (mappings.getFlag() > 0) {
-						WeibouserInfo wi = (WeibouserInfo) mGridPics.getTag();
-						int idx = getUsrIndexFromId(wi.id, mUsrs);
-						mUsrs.remove(idx);
-						mTotalPics--;
-						if (mPageUsrs.contains(wi)) {
-							WeibouserInfoGridAdapter adapter = (WeibouserInfoGridAdapter) mGridPics.getAdapter();
-							adapter.remove(wi);
-							adapter.notifyDataSetChanged();
-						}
-						//mPageUsrs.remove(position);//kind of repeatedly doing the same thing with "adapter.remove(wi)", so it should not be called
-						renewCurParagraphTitle();
-						Toast.makeText(
-							EntranceActivity.this,
-							R.string.tips_possessionremoved,
-							Toast.LENGTH_SHORT
-						).show();
-						return;
-					}
-					break;
-				}
-			}
-        };
+        mWebCount = (WebView) findViewById(R.id.wvCount);        
         
         mBtnExchange.setOnClickListener(new OnClickListener() {
 
@@ -251,235 +165,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
             }
         });
         
-        mTextSeekPos.setVisibility(TextView.GONE);
-        mSeekMain.setMax(0);
-        mSeekMain.setOnSeekBarChangeListener(
-        	new OnSeekBarChangeListener() {
-
-				@Override
-				public void onProgressChanged(SeekBar seekBar, int progress,
-						boolean fromUser) {
-					// TODO Auto-generated method stub
-					int p;
-					if (progress == 0) p = 1;
-					else p = progress;
-					mTextSeekPos.setText("" + ((p - 1) * mPageLimit + 1) + "~" + (p * mPageLimit));
-					mTextSeekPos.setVisibility(TextView.VISIBLE);
-					mTextPageInfo.setVisibility(TextView.GONE);
-					AlphaAnimation anim = new AlphaAnimation(0.1f, 1.0f);
-					mTextSeekPos.startAnimation(anim);
-				}
-
-				@Override
-				public void onStartTrackingTouch(SeekBar seekBar) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void onStopTrackingTouch(SeekBar seekBar) {
-					// TODO Auto-generated method stub
-					mTextSeekPos.setVisibility(TextView.GONE);
-					mTextPageInfo.setVisibility(TextView.VISIBLE);
-					int progress = seekBar.getProgress();
-					if (progress == 0) progress = 1;
-					int idxPic = mPageLimit * progress;
-					Integer page;
-					if (idxPic % mLimit == 0) {
-						page = idxPic / mLimit;
-					} else {
-						page = (int) Math.ceil((double) idxPic / (double) mLimit);
-					}
-					int max = (int) Math.ceil((double) mLimit / (double) mPageLimit);
-					Integer paragraph = progress % max == 0 ? max : (progress % max);
-					
-					mPrgDlg.show();
-					AsyncGridLoader agl = new AsyncGridLoader(EntranceActivity.this);
-					int m = mCurTerms.size();
-					String[] args = new String[m + 4];
-					for (int i = 0; i < m; i++) {
-						args[i] = mCurTerms.get(i);
-					}
-					args[m] = "limit";
-					args[m + 1] = mLimit.toString();
-					args[m + 2] = "page";
-					args[m + 3] = page.toString();
-					mCurPage = page;
-					mCurParagraph = paragraph;
-					agl.execute(args);
-					
-					/*
-					Toast.makeText(
-						LetuseeActivity.this,
-						"" + ((progress - 1) * mPageLimit + 1) + "~" + (progress * mPageLimit),
-						Toast.LENGTH_SHORT
-					).show();
-					*/
-				}
-        		
-        	}
-        );
-        
-        mBtnPrev.setOnClickListener(new OnClickListener () {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				previous();
-			}
-        	
-        });
-        
-        mBtnNext.setOnClickListener(new OnClickListener () {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				next();
-			}
-        	
-        });
-        
-        mBtnRandom.setOnClickListener(new OnClickListener () {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mBtnRandom.setSelected(true);
-				mBtnLatest.setSelected(false);
-				mBtnHottest.setSelected(false);
-				mBtnUnhottest.setSelected(false);
-				mBtnPossessions.setSelected(false);
-				
-				AsyncGridLoader asyncGridLoader = new AsyncGridLoader(EntranceActivity.this);
-				mPrgDlg.show();
-				mCurTerms.clear();
-		        mCurTerms.add("top");
-		        mCurTerms.add("6");
-		        mCurPage = 1;
-		        mCurParagraph = 1;
-		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString());
-			}
-        	
-        });
-        
-        mBtnLatest.setOnClickListener(new OnClickListener () {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mBtnRandom.setSelected(false);
-				mBtnLatest.setSelected(true);
-				mBtnHottest.setSelected(false);
-				mBtnUnhottest.setSelected(false);
-				mBtnPossessions.setSelected(false);
-				
-				AsyncGridLoader asyncGridLoader = new AsyncGridLoader(EntranceActivity.this);
-				mPrgDlg.show();
-				mCurTerms.clear();
-		        mCurTerms.add("top");
-		        mCurTerms.add("0");
-		        mCurPage = 1;
-		        mCurParagraph = 1;
-		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString());
-			}
-        	
-        });
-        
-        mBtnHottest.setOnClickListener(new OnClickListener () {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mBtnRandom.setSelected(false);
-				mBtnLatest.setSelected(false);
-				mBtnHottest.setSelected(true);
-				mBtnUnhottest.setSelected(false);
-				mBtnPossessions.setSelected(false);
-				
-				Toast.makeText(
-					EntranceActivity.this,
-					R.string.tips_hottesttheweek,
-					Toast.LENGTH_LONG
-				).show();
-				
-				AsyncGridLoader asyncGridLoader = new AsyncGridLoader(EntranceActivity.this);
-				mPrgDlg.show();
-				mCurTerms.clear();
-		        mCurTerms.add("top");
-		        mCurTerms.add("4");
-		        mCurPage = 1;
-		        mCurParagraph = 1;
-		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString());
-			}
-        	
-        });
-        
-        mBtnUnhottest.setOnClickListener(new OnClickListener () {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mBtnRandom.setSelected(false);
-				mBtnLatest.setSelected(false);
-				mBtnHottest.setSelected(false);
-				mBtnUnhottest.setSelected(true);
-				mBtnPossessions.setSelected(false);
-				
-				Toast.makeText(
-					EntranceActivity.this,
-					R.string.tips_unhottesttheweek,
-					Toast.LENGTH_LONG
-				).show();
-				
-				AsyncGridLoader asyncGridLoader = new AsyncGridLoader(EntranceActivity.this);
-				mPrgDlg.show();
-				mCurTerms.clear();
-		        mCurTerms.add("top");
-		        mCurTerms.add("5");
-		        mCurPage = 1;
-		        mCurParagraph = 1;
-		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString());
-			}
-        	
-        });
-        
-        mBtnPossessions.setOnClickListener(new OnClickListener () {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mBtnRandom.setSelected(false);
-				mBtnLatest.setSelected(false);
-				mBtnHottest.setSelected(false);
-				mBtnUnhottest.setSelected(false);
-				mBtnPossessions.setSelected(true);
-				
-				Toast.makeText(
-					EntranceActivity.this,
-					R.string.tips_possessions,
-					Toast.LENGTH_LONG
-				).show();
-				
-				AsyncGridLoader asyncGridLoader = new AsyncGridLoader(EntranceActivity.this);
-				mPrgDlg.show();
-				mCurTerms.clear();
-		        mCurTerms.add("clientkey");
-		        mCurTerms.add(getClientKey());
-		        mCurPage = 1;
-		        mCurParagraph = 1;
-		        asyncGridLoader.execute(mCurTerms.get(0), mCurTerms.get(1), "limit", mLimit.toString(), "page", mCurPage.toString());
-			}
-        	
-        });
-        
-        mPrgDlg = new Dialog(this, R.style.Dialog_Clean);
-        mPrgDlg.setContentView(R.layout.custom_dialog_loading);
-        WindowManager.LayoutParams lp = mPrgDlg.getWindow().getAttributes();
-        lp.alpha = 1.0f;
-        mPrgDlg.getWindow().setAttributes(lp);
-        mPrgDlg.setCancelable(true);
-		
 		mQuitDialog = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).create();
 		mQuitDialog.setTitle(getString(R.string.quit_title));
 		mQuitDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.label_yes),
@@ -490,8 +175,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 					// TODO Auto-generated method stub
 					SharedPreferences.Editor edit = mPreferences.edit();
 					int i;
-					for (i = 0; i < mTopicBtns.size(); i++) {
-						if (mTopicBtns.get(i).isSelected()) break;
+					for (i = 0; i < mMainPage.getTopicBtns().size(); i++) {
+						if (mMainPage.getTopicBtns().get(i).isSelected()) break;
 					}
 					edit.putInt(CONFIG_TOPICCHOICE, i);
 					edit.commit();
@@ -510,118 +195,24 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			
 			}
 		);
-                
-		mGridPics.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				// TODO Auto-generated method stub
-				
-				Intent intent = new Intent();
-				WeibouserInfo wi = (WeibouserInfo) mPageUsrs.get(position);
-				if (mBtnPossessions.isSelected()) {
-					intent.putExtra("uid", wi.uid);
-	                intent.putExtra("id", wi.id);
-					intent.setClass(EntranceActivity.this, WeiboShowActivity.class);
-					startActivity(intent);
-				} else {
-					intent.setClass(EntranceActivity.this, PicbrowActivity.class);
-					intent.putExtra("id", wi.id);
-					mPageBeforeBrow = mCurPage;
-					startActivityForResult(intent, REQUESTCODE_BACKFROM);
-				}
-				
-			}
-        });
 		
-		mGridPics.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View v,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				if (mBtnPossessions.isSelected()) {
-					mGridPics.setTag(position);
-					new AlertDialog.Builder(EntranceActivity.this)
-						.setTitle(R.string.tips_confirmdelpossession)
-						.setPositiveButton(
-							R.string.label_ok,
-							new DialogInterface.OnClickListener() {
-
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// TODO Auto-generated method stub
-									int position = (Integer)mGridPics.getTag();
-									WeibouserInfo wi = mPageUsrs.get(position);
-									mGridPics.setTag(wi);
-									
-									new Thread(
-										new ThreadPNJDealer(
-											ThreadPNJDealer.DEL_POSSESSION,
-											URL_SITE
-												+ "delpzs.php?"
-												+ "clientkey=" + getClientKey()
-												+ "&channelid=0"
-												+ "&uid=" + wi.uid,
-											mHandler
-										)
-									).start();
-									Toast.makeText(
-										EntranceActivity.this,
-										R.string.tips_possessioncanceling,
-										Toast.LENGTH_SHORT
-									).show();
-									dialog.dismiss();
-								}
-
-							}
-						)
-						.setNegativeButton(R.string.label_cancel, null)
-						.create()
-						.show();
-						
-				}
-				return false;
-			}
-			
-		});
-        
-        if (mClientKey.equals("")) {
-        	mBtnHottest.performClick();
-        } else {
-        	if (mTopicChoice < mTopicBtns.size()) {
-        		mTopicBtns.get(mTopicChoice).performClick();
-        	} else {
-        		mBtnLatest.performClick();
-        	}
-        }
+		/*
+		 * show the content for layout "main"
+		 */
+		if (mClientKey.equals("")) {
+			mMainPage.getTopicBtns().get(2).performClick();
+		} else {
+			mMainPage.getTopicBtns().get(1).performClick();
+		}
     }
     
-	/*
-	 * get index of current usr in mUsrs by id
-	 */
-	public static int getUsrIndexFromId(long id, List<WeibouserInfo> usrs) {
-		if (usrs == null) return -1;
-		if (usrs.size() == 0) return -1;
-		int i;
-		for (i = 0; i < usrs.size(); i++) {
-			WeibouserInfo pi = (WeibouserInfo) usrs.get(i); 
-			if (id == pi.id) {
-				break;
-			}
-		}
-		if (i == usrs.size()) return -1;
-		return i;
-	}
-	
-	/*
-	 * get picfileInfo from mUsrs by id
-	 */
-	public static WeibouserInfo getPicFromId(long id, List<WeibouserInfo> pics) {
-		int idx = getUsrIndexFromId(id, pics);
-		if (idx < 0 || idx >= pics.size()) return null;
-		return pics.get(idx);
+	public MainPage getMainPage() {
+		return mMainPage;
 	}
 
+	public void setMainPage(MainPage mMainPage) {
+		this.mMainPage = mMainPage;
+	}
     
     public static String getClientKey() {
     	return mClientKey;
@@ -691,7 +282,20 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		
+		/*
+		 * for umeng.com
+		 */
 		MobclickAgent.onPause(this);
+		
+		/* 
+		 * for playing in BrowPage
+		 */
+		if (mBrowPage.getBtnPause().getVisibility() == ImageButton.VISIBLE) {
+			mBrowPage.setPlaying(true);
+			mBrowPage.getBtnPause().performClick();
+			mBrowPage.setLoading(false);
+		}
 	}
 
 	@Override
@@ -723,19 +327,62 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		MobclickAgent.onResume(this);
 		
 		/*
+		 * for playing in BrowPage
+		 */
+		if (mBrowPage.wasPlaying()) {
+			mBrowPage.setPlaying(false);
+			mBrowPage.getBtnPlay().performClick();
+		}
+		
+		/*
 		 * for exit
 		 */
 		if (RegLoginActivity.ifQuitIsSet()) {
 			android.os.Process.killProcess(android.os.Process.myPid());
 		}
 	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		// TODO Auto-generated method stub
+		super.onConfigurationChanged(newConfig);
+		
+		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			mBrowPage.getFrameBackground().setBackgroundResource(R.drawable.bg_h);
+		} else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			mBrowPage.getFrameBackground().setBackgroundResource(R.drawable.bg);
+		}
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		menu.clear();
+		switch (mViewFlipper.getDisplayedChild()) {
+		case 0:
+			menu.add(Menu.NONE, Menu.FIRST + 4, 4, getString(R.string.omenuitem_reglogin)).setIcon(R.drawable.ic_menu_login);
+			menu.add(Menu.NONE, Menu.FIRST + 5, 5, getString(R.string.omenuitem_quit)).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+			break;
+		case 1:
+			if (mBrowPage.isDooming()) {
+				menu.add(Menu.NONE, Menu.FIRST + 1, 1, R.string.label_browse).setIcon(android.R.drawable.ic_menu_zoom);
+			} else {
+				menu.add(Menu.NONE, Menu.FIRST + 1, 1, R.string.label_zoom).setIcon(android.R.drawable.ic_menu_zoom);
+			}
+			menu.add(Menu.NONE, Menu.FIRST + 2, 1, R.string.label_reset).setIcon(android.R.drawable.ic_menu_revert);
+			menu.add(Menu.NONE, Menu.FIRST + 3, 1, R.string.label_refresh).setIcon(R.drawable.ic_menu_refresh);
+			break;
+		case 2:
+			break;
+		}
+		menu.add(Menu.NONE, Menu.FIRST + 6, 6, getString(R.string.omenuitem_about)).setIcon(android.R.drawable.ic_menu_help);
+
+		return super.onPrepareOptionsMenu(menu);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
-		menu.add(Menu.NONE, Menu.FIRST + 1, 1, getString(R.string.omenuitem_reglogin)).setIcon(R.drawable.ic_menu_login);
-		menu.add(Menu.NONE, Menu.FIRST + 2, 2, getString(R.string.omenuitem_quit)).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-		menu.add(Menu.NONE, Menu.FIRST + 3, 3, getString(R.string.omenuitem_about)).setIcon(android.R.drawable.ic_menu_help);
 		return true;
 	}
 	
@@ -749,6 +396,15 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			break;
 		*/
 		case Menu.FIRST + 1:
+			mBrowPage.switchBrowseZoom(item);
+			break;
+		case Menu.FIRST + 2:
+			mBrowPage.resetZoomState();
+			break;
+		case Menu.FIRST + 3:
+			mBrowPage.zrAsyncShowPic(mBrowPage.mId, 0);
+			break;
+		case Menu.FIRST + 4:
 			if (mPrivilege == 0) {
 				Toast.makeText(
 					this,
@@ -761,10 +417,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				startActivity(intent);
 			}
 			break;
-		case Menu.FIRST + 2:
+		case Menu.FIRST + 5:
 			mQuitDialog.show();
 			break;
-		case Menu.FIRST + 3:
+		case Menu.FIRST + 6:
 			Intent intent = new Intent();
 			intent.setClass(EntranceActivity.this, AboutActivity.class);
 			startActivity(intent);
@@ -777,109 +433,52 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			mQuitDialog.show();
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-		
-	/*
-	 * before called, mOutText should be evaluated.
-	 * !!actually not used!!
-	 */
-	public void saveText2Sd(String fpath, String fname) {
-		if(!AsyncSaver.getSdcardDir().equals("")) {
-			String path = AsyncSaver.getSdcardDir() + "/letusee/" + fpath;
-			File file = new File(path);
-			Boolean couldSave = false;
-			if (!file.exists()) {
-				if (file.mkdirs()) {
-					couldSave = true;
-				} else {
-					Toast.makeText(EntranceActivity.this,
-						String.format(getString(R.string.err_nopath), path),
+			switch (mViewFlipper.getDisplayedChild()) {
+			case 0:
+				mQuitDialog.show();
+				break;
+			case 1:
+				if (mBrowPage.isDooming()) {
+					mBrowPage.getBrow().setOnTouchListener(this);
+					mBrowPage.getLayoutCtrl().setOnTouchListener(this);
+					mBrowPage.setDooming(false);
+					mBrowPage.resetZoomState();
+					Toast.makeText(
+						this,
+						getString(R.string.label_browse),
 						Toast.LENGTH_LONG
 					).show();
-					return;
-				}
-			} else couldSave = true;
-			if (couldSave) {
-				//OK, now we could actually save the file, finally.
-				final File saveFile = new File(file, fname);
-				if (saveFile.exists()) {
-					//if there is already a file exists with same file name
-					AlertDialog alertDlg = new AlertDialog.Builder(EntranceActivity.this).create();
-					alertDlg.setTitle(String.format(getString(R.string.err_filealreadyexists), fname));
-					alertDlg.setButton(
-						DialogInterface.BUTTON_POSITIVE,
-						getString(R.string.label_ok),
-						new DialogInterface.OnClickListener () {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// TODO Auto-generated method stub
-								_saveFile(saveFile);
-							}
-							
-						}
-					);
-					alertDlg.setButton(
-						DialogInterface.BUTTON_NEGATIVE, 
-						getString(R.string.label_cancel), 
-						new DialogInterface.OnClickListener () {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// TODO Auto-generated method stub
-							}
-							
-						}
-					);
-					alertDlg.show();
 				} else {
-					_saveFile(saveFile);
+					switch (mBrowPage.getReferer()) {
+					case R.layout.main:
+						int idx = mMainPage.getUsrIndexFromId(mBrowPage.mId, mMainPage.getUsrs());
+						int par = idx / mMainPage.getPageLimit() + 1;
+						if (mMainPage.getPageBeforeBrow() != mMainPage.getCurPage() || par != mMainPage.getCurParagraph())
+						{
+							mMainPage.mPrgDlg.show();
+							mMainPage.setCurParagraph(par);
+							mMainPage.mPageUsrs.clear();
+							for (int i = (mMainPage.getCurParagraph() - 1) * mMainPage.getPageLimit(); i < mMainPage.getCurParagraph() * mMainPage.getPageLimit(); i++) {
+								mMainPage.mPageUsrs.add(mMainPage.getUsrs().get(i));
+							}
+							WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mMainPage.mPageUsrs, mMainPage.getGridPics());
+							mMainPage.getGridPics().setAdapter(adapter);
+							mMainPage.renewCurParagraphTitle();
+						}
+						break;
+					case R.layout.weibo_show:
+						break;
+					}
+					switchPage(mBrowPage.getReferer());
 				}
+				break;
+			case 2:
+				
+				break;
 			}
-		} else {
-			Toast.makeText(EntranceActivity.this,
-				getString(R.string.err_sdcardnotmounted),
-				Toast.LENGTH_LONG
-			).show();
 		}
-	}
-	
-	/*
-	 * !!actually not used!!
-	 */	
-	private void _saveFile(File saveFile) {
-		FileOutputStream outStream;
-		try {
-			outStream = new FileOutputStream(saveFile);
-			outStream.write(mOutText.getBytes());
-			Toast.makeText(EntranceActivity.this,
-				"Saved.",
-				Toast.LENGTH_LONG
-			).show();
-			return;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Toast.makeText(EntranceActivity.this,
-				"File not found.",
-				Toast.LENGTH_LONG
-			).show();
-			return;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Toast.makeText(EntranceActivity.this,
-				"Failed to do IO.",
-				Toast.LENGTH_LONG
-			).show();
-			return;
-		}
+		//return super.onKeyDown(keyCode, event);
+		return false;
 	}
 
 	public static void setPrivilege(Integer privilege) {
@@ -897,26 +496,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		}
 	}
 	
-	public static Integer getLimit() {
-		return mLimit;
-	}
-	
-	public static Integer getCurPage() {
-		return mCurPage;
-	}
-	
-	public static Integer getTotalPics() {
-		return mTotalPics;
-	}
-	
-	public static ArrayList<WeibouserInfo> getmUsrs() {
-		return mUsrs;
-	}
-	
-	public static void setUsrs(ArrayList<WeibouserInfo> pics) {
-		mUsrs = pics;
-	}
-	
 	public static Integer getAccountId() {
 		return mAccountId;
 	}
@@ -927,67 +506,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	
 	public static int getPrivilege() {
 		return mPrivilege;
-	}
-	
-    public static ArrayList<WeibouserInfo> getPics(String... params) {
-    	ArrayList<WeibouserInfo> usrs = new ArrayList<WeibouserInfo>();
-    	
-    	String sParams = PNJ.getParamsAsStr(params);
-    	SecureURL su = new SecureURL();
-    	URLConnection conn = su.getConnection(URL_SITE + "picsinfo.php?" + sParams);
-    	if (conn == null) return usrs;
-    	try {
-	    	conn.connect();
-	    	InputStream is = conn.getInputStream();
-	    	Weibousers pbUsrs = Weibousers.parseFrom(is);
-	    	long id, uid;
-	    	for (Weibouser pbUsr: pbUsrs.getUsrList()) {
-	    		try {
-		    		id = Long.parseLong(pbUsr.getId());
-		    		uid = Long.parseLong(pbUsr.getUid());
-		    	} catch (NumberFormatException e) {
-		    		id = uid = 0;
-		    	}
-				WeibouserInfo wi = new WeibouserInfo(
-					id, uid, pbUsr.getScreenName(),
-					pbUsr.getName(), pbUsr.getProvince(), pbUsr.getCity(),
-					pbUsr.getLocation(), pbUsr.getDescription(), pbUsr.getUrl(),
-					pbUsr.getProfileImageUrl(), pbUsr.getDomain(), pbUsr.getGender(),
-					(long)pbUsr.getFollowersCount(), (long)pbUsr.getFriendsCount(), 
-					(long)pbUsr.getStatusesCount(), (long)pbUsr.getFavouritesCount(), 
-					pbUsr.getCreatedAt(), pbUsr.getFollowing(),
-					pbUsr.getAllowAllActMsg(), pbUsr.getGeoEnabled(), pbUsr.getVerified(), 
-					pbUsr.getStatusId(),
-					pbUsr.getClicks(), pbUsr.getLikes(), pbUsr.getDislikes());
-				usrs.add(wi);
-	    	}
-    	} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return usrs;
-    }
-    
-    /*
-     * using protobuf structure to get users information from DB
-     */
-    public UCMappings updateUser(String... params) {
-    	SecureURL su = new SecureURL();
-    	URLConnection conn = su.getConnection(
-    		URL_SITE + "updusr.php"
-    		+ PNJ.getParamsAsStr(params)
-    	);
-    	if (conn == null) return null;
-    	try {
-			conn.connect();
-			InputStream is = conn.getInputStream();
-			return UCMappings.parseFrom(is);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-    }
+	}	
     
     /*
      * get the usable msg from post back text.
@@ -1025,202 +544,12 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				asyncUploader.execute(data);
 			}
 			break;
-		case REQUESTCODE_BACKFROM:
-			if (resultCode == RESULT_OK) {
-				long id = data.getLongExtra("id", 0);
-				int idx = getUsrIndexFromId(id, mUsrs);
-				int par = idx / mPageLimit + 1;
-				if (mPageBeforeBrow != mCurPage || par != mCurParagraph)
-				{
-					mPrgDlg.show();
-					mCurParagraph = par;
-					mPageUsrs.clear();
-					for (int i = (mCurParagraph - 1) * mPageLimit; i < mCurParagraph * mPageLimit; i++) {
-						mPageUsrs.add(mUsrs.get(i));
-					}
-					WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, mGridPics);
-					mGridPics.setAdapter(adapter);
-					renewCurParagraphTitle();
-				}
-			}
-			break;
 		default:
 			break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-    
-    /*
-	 * get total pages number
-	 */
-    public int getTotalPagesNum() {
-		String sBackMsg = "";
-		sBackMsg = PNJ.getResponseByGet(
-			EntranceActivity.URL_SITE + "stats.php",
-			PNJ.getParamsAsStr("total", "pages", "limit", mLimit.toString())
-		);
-		if (sBackMsg != null) {
-			String ss[] = getPhpMsg(sBackMsg);
-			if (ss != null && ss[0].equals(EntranceActivity.SYMBOL_SUCCESSFUL)) {
-				sBackMsg = ss[1];
-			} else {
-				sBackMsg = "-2";
-			}
-		} else {
-			sBackMsg = "0";
-		}
-		int i = 0;
-		try {
-			i = Integer.parseInt(sBackMsg);
-		} catch (NumberFormatException e) {
-			i = -1;
-		}
-		return i;
-    }
-    
-    /*
-     * get total pictures number
-     */
-    public int getTotalPicsNum() {
- 		String sBackMsg = "";
-		sBackMsg = PNJ.getResponseByGet(
-			EntranceActivity.URL_SITE + "stats.php",
-			PNJ.getParamsAsStr("total", "usrs")
-		);
-		if (sBackMsg != null) {
-			String ss[] = getPhpMsg(sBackMsg);
-			if (ss != null && ss[0].equals(EntranceActivity.SYMBOL_SUCCESSFUL)) {
-				sBackMsg = ss[1];
-			} else {
-				return mUsrs.size();
-			}
-		} else {
-			return mUsrs.size();
-		}
-		int i = 0;
-		try {
-			i = Integer.parseInt(sBackMsg);
-		} catch (NumberFormatException e) {
-			return mUsrs.size();
-		}
-		return i;
-    }
-    
-    /*
-     * renew the current paragraph informations
-     */
-    private void renewCurParagraphTitle() {
-    	/*
-    	String title = String.format(
-			getString(R.string.tips_pages),
-			(mCurParagraph - 1) * mPageLimit + (mCurPage - 1) * mLimit + 1,
-			(mCurParagraph - 1) * mPageLimit + (mCurPage - 1) * mLimit + mPageUsrs.size(),
-			(mCurPage - 1) * mLimit + 1,
-			mCurPage * mLimit > mTotalPics ? mTotalPics : mCurPage * mLimit,
-			mTotalPics
-		);
-		*/
-
-    	String title = String.format(
-			getString(R.string.tips_pages),
-			(mCurParagraph - 1) * mPageLimit + (mCurPage - 1) * mLimit + 1,
-			(mCurParagraph - 1) * mPageLimit + (mCurPage - 1) * mLimit + mPageUsrs.size(),
-			mTotalPics
-		);
-
-    	mSeekMain.setProgress(
-    		(mCurPage - 1)
-    		* (mLimit % mPageLimit == 0 ? mLimit / mPageLimit : mLimit / mPageLimit + 1)
-    		+ mCurParagraph
-    	);
-    	mTextSeekPos.setVisibility(TextView.GONE);
-    	mTextPageInfo.setVisibility(TextView.VISIBLE);
-    	
-    	/*
-    	Toast.makeText(
-			this,
-			title,
-			Toast.LENGTH_LONG
-		).show();
-    	*/
-			
-		mTextPageInfo.setText(title);
-		mLinearMainBottom.setVisibility(LinearLayout.VISIBLE);
-		AlphaAnimation anim = new AlphaAnimation(0.1f, 1.0f);
-		anim.setDuration(300);
-		mLinearMainBottom.startAnimation(anim);
-    }
-    
-    /*
-     * try to load pictures in mGridPics under background by using AsyncTask:
-     * 1, get picture informations from remote DB
-     * 2, get picture images from remote server and set to mGridPics
-     */
-    private class AsyncGridLoader extends AsyncTask <String, Object, WeibouserInfoGridAdapter> {
-    	Context mContext;
-    	
-    	public AsyncGridLoader(Context c) {
-    		this.mContext = c;
-    	}
-
-		@Override
-		protected void onPostExecute(WeibouserInfoGridAdapter result) {
-			// TODO Auto-generated method stub
-			renewCurParagraphTitle();
-			((EntranceActivity) mContext).mPrgDlg.dismiss();
-			if (mPageUsrs.size() == 0) {
-				AlertDialog alertDlg = new AlertDialog.Builder(mContext)
-					.setIcon(android.R.drawable.ic_dialog_info)
-					.setTitle(R.string.msg_nopictures)
-					//.setMessage(R.string.msg_nopictures)
-					.setPositiveButton(R.string.label_ok, null)
-					.create();
-				WindowManager.LayoutParams lp = alertDlg.getWindow().getAttributes();
-		        lp.alpha = 0.9f;
-				alertDlg.getWindow().setAttributes(lp);
-		        alertDlg.show();	
-			}
-			mGridPics.setAdapter(result);
-			//super.onPostExecute(result);
-		}
-
-		@Override
-		protected WeibouserInfoGridAdapter doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			mUsrs = getPics(params);
-			
-			if (!mBtnPossessions.isSelected()) {
-				int num = getTotalPicsNum();
-				if (num < 0) {
-					Toast.makeText(
-						EntranceActivity.this,
-						getString(R.string.err_noconnection),
-						Toast.LENGTH_LONG
-					).show();
-					mTotalPics = 0;
-				} else {
-					mTotalPics = num;
-				}
-			} else {
-				mTotalPics = mUsrs.size();
-			}
-			mTotalPages = (int) Math.ceil((float)mTotalPics / (float)mLimit);
-			mSeekMain.setMax(
-				mTotalPics == 0 ? 0 : ((int) Math.ceil((double)mTotalPics / (double)mPageLimit))
-			);
-			
-			mPageUsrs.clear();
-			for (int i = (mCurParagraph - 1) * mPageLimit; i < mUsrs.size() && i < mCurParagraph * mPageLimit; i++) {
-				mPageUsrs.add(mUsrs.get(i));
-			}
-			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(
-				(EntranceActivity) mContext, mPageUsrs, mGridPics
-			);
-			return adapter;
-		}
-    	
-    }
-        
+	
     /*
      * Initialize stuff that the app needed, should include:
      * 1.try to get a local key
@@ -1373,108 +702,53 @@ public class EntranceActivity extends Activity implements OnTouchListener {
     	
     }
     
-    public static String[] renewPageArgs(int direction) {
-    	if (direction > 0) {
-    		mCurPage++;
-    		if (mCurPage > mTotalPages) {
-				mCurPage--;
-				return null;
-			}
-    	} else {
-    		mCurPage--;
-    		if (mCurPage < 1) {
-				mCurPage++;
-				return null;
-			}
-    	}
-    	
-		int m = mCurTerms.size();
-		String[] args = new String[m + 6];
-		for (int i = 0; i < m; i++) {
-			args[i] = mCurTerms.get(i);
-		}
-		args[m] = "limit";
-		args[m + 1] = mLimit.toString();
-		args[m + 2] = "page";
-		args[m + 3] = mCurPage.toString();
-		args[m + 4] = "pb";
-		args[m + 5] = "1";
-		return args;
-    }
-    
-    public void next() {
-    	if (mUsrs.size() == 0) return;
-    	double maxParagraph = Math.ceil((float)mUsrs.size() / (float) mPageLimit);
-    	mCurParagraph++;
-		if (mCurParagraph >  maxParagraph) {
-			mCurParagraph--;
-			String[] args = renewPageArgs(1);
-			if (args != null) {
-				mPrgDlg.show();
-				AsyncGridLoader agl = new AsyncGridLoader(EntranceActivity.this);
-				mCurParagraph = 1;
-				agl.execute(args);
-			}
-		} else {
-			mPrgDlg.show();
-			mPageUsrs.clear();
-			for (int i = (mCurParagraph -1) * mPageLimit; i < mCurParagraph * mPageLimit && i < mUsrs.size(); i++) {
-				mPageUsrs.add(mUsrs.get(i));
-			}
-			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, mGridPics);
-			mGridPics.setAdapter(adapter);
-			renewCurParagraphTitle();
-		}
-    }
-    
-    public void previous() {
-    	double maxParagraph = Math.ceil((float)mUsrs.size() / (float) mPageLimit);
-    	mCurParagraph--;
-		if (mCurParagraph < 1) {
-			mCurParagraph++;
-			String[] args = renewPageArgs(-1);
-			if (args != null) {
-				mPrgDlg.show();
-				AsyncGridLoader agl = new AsyncGridLoader(EntranceActivity.this);
-				mCurParagraph = (int) maxParagraph;
-				agl.execute(args);
-			}
-		} else {
-			mPrgDlg.show();
-			mPageUsrs.clear();
-			for (int i = (mCurParagraph -1) * mPageLimit; i < mCurParagraph * mPageLimit && i < mUsrs.size(); i++) {
-				mPageUsrs.add(mUsrs.get(i));
-			}
-			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mPageUsrs, mGridPics);
-			mGridPics.setAdapter(adapter);
-			renewCurParagraphTitle();
-		}
-    }
-    
     /*
      * GestureListsener zone begin
      */
     public boolean onTouch(View view, MotionEvent event) {
-        return mGestureDetector.onTouchEvent(event);
-    }
-    
-    class LetuseeGestureListener extends GestureDetector.SimpleOnGestureListener {
-
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-				float velocityY) {
-			// TODO Auto-generated method stub
-			
-			if(e1.getX() > e2.getX()) {//move to left
-				next();
-			} else if (e1.getX() < e2.getX()) {
-				previous();
-			}
-			return super.onFling(e1, e2, velocityX, velocityY);
-		}
-    	
+    	switch (mViewFlipper.getDisplayedChild()) {
+    	case 0:
+    		return mMainPage.getGestureDetector().onTouchEvent(event);
+    	case 1:
+    		return mBrowPage.getGestureDetector().onTouchEvent(event);
+    	case 2:
+    		break;
+    	}
+		return true;
     }
     /*
      * GestureListsener zone end
      */
+    
+	public BrowPage getBrowPage() {
+		return mBrowPage;
+	}
+
+	public void setBrowPage(BrowPage mBrowPage) {
+		this.mBrowPage = mBrowPage;
+	}
+
+	public ViewFlipper getViewFlipper() {
+		return mViewFlipper;
+	}
+
+	public void setViewFlipper(ViewFlipper mViewFlipper) {
+		this.mViewFlipper = mViewFlipper;
+	}
+
+	public void switchPage(int layout, Object... params) {
+		// TODO Auto-generated method stub
+		switch (layout) {
+		case R.layout.main:
+			mViewFlipper.setDisplayedChild(0);
+			break;
+		case R.layout.brow:
+			mViewFlipper.setDisplayedChild(1);
+			long id = (Long)params[0];
+			mBrowPage.zrAsyncShowPic(id, 0);
+			break;
+		case R.layout.weibo_show:
+			break;
+		}
+	}
 }

@@ -52,7 +52,7 @@ public class AsyncThumLoader {
             	 }
             	 if (message.what == 1) {
             		 EntranceActivity c = (EntranceActivity) mContext;
-            		 c.mPrgDlg.dismiss();
+            		 c.getMainPage().mPrgDlg.dismiss();
             	 }
              }
          };
@@ -64,7 +64,7 @@ public class AsyncThumLoader {
                  Message message = handler.obtainMessage(0, drawable);
                  handler.sendMessage(message);
                  EntranceActivity c = (EntranceActivity) mContext;
-                 if (imageCache.size() == c.mPageUsrs.size()) {
+                 if (imageCache.size() == c.getMainPage().mPageUsrs.size()) {
                 	 Message msg = handler.obtainMessage(1);
                 	 handler.sendMessage(msg);
                  }
@@ -78,7 +78,8 @@ public class AsyncThumLoader {
 		System.runFinalization();
 		System.gc();
 		
-	    WeibouserInfo wi = EntranceActivity.getPicFromId(id, mUsrs);
+		EntranceActivity c = (EntranceActivity) mContext;
+	    WeibouserInfo wi = c.getMainPage().getPicFromId(id, mUsrs);
 	    String sPath = AsyncSaver.getSdcardDir() + EntranceActivity.PATH_CACHE;
 	    String sFname = wi.uid + "t.jg";
 	    if (AsyncSaver.probeFile(sPath, sFname) == -2) {

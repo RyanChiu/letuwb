@@ -74,7 +74,7 @@ public class WeiboShowActivity extends Activity {
 	private Dialog mDlgMore;
 	
 	private Long mUid = null;
-	private Long mId = null;
+	//private Long mId = null;
 	private static Sina mSina = null;
 	private User mLastUser = null;
 	private List<Sina.XStatus> mLastUserTimeline = new ArrayList<Sina.XStatus>();
@@ -495,7 +495,7 @@ public class WeiboShowActivity extends Activity {
 		 */
 		Intent intent = getIntent();
 		mUid = intent.getLongExtra("uid", 0);
-		mId = intent.getLongExtra("id", 0);
+		//mId = intent.getLongExtra("id", 0);
 		reloadAll();
 		turnDealing(true);
 		
@@ -515,10 +515,12 @@ public class WeiboShowActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				/*
 				Intent intent = new Intent();
 				intent.setClass(WeiboShowActivity.this, PicbrowActivity.class);
 				intent.putExtra("id", mId);
 				startActivity(intent);
+				*/
 			}
 			
 		});
