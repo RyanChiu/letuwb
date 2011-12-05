@@ -180,7 +180,8 @@ public class WeiboPage {
 				startActivity(intent);
 				*/
 				parent.getBrowPage().setReferer(R.layout.main);
-				parent.switchPage(R.layout.brow, mId);
+				//parent.switchPage(R.layout.brow, mId);
+				parent.switchPage(R.layout.brow);
 			}
 			
 		});
