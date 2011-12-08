@@ -12,11 +12,13 @@ import com.zrd.zr.pnj.ThreadPNJDealer;
 import com.zrd.zr.protos.WeibousersProtos.UCMappings;
 import com.zrd.zr.protos.WeibousersProtos.Weibouser;
 import com.zrd.zr.protos.WeibousersProtos.Weibousers;
+import com.zrd.zr.weiboes.Sina;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -381,24 +383,42 @@ public class MainPage {
 		mGridPics.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> pv, View v, int position, long id) {
 				// TODO Auto-generated method stub
-				
-				WeibouserInfo wi = (WeibouserInfo) mPageUsrs.get(position);
-				if (mBtnPossessions.isSelected()) {
-					/*
-					Intent intent = new Intent();
-					intent.putExtra("uid", wi.uid);
-	                intent.putExtra("id", wi.id);
-					intent.setClass(parent, WeiboShowActivity.class);
-					parent.startActivity(intent);
-					*/
-					
-					parent.getWeiboPage().setReferer(R.layout.main);
-					parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
+				Sina sina = WeiboPage.getSina();
+				if (EntranceActivity.isNowLoggingIn()) {
+					Toast.makeText(
+						parent,
+						R.string.tips_nowisloggingin,
+						Toast.LENGTH_LONG
+					).show();
 				} else {
-					parent.getBrowPage().setReferer(R.layout.main);
-					parent.switchPage(R.layout.brow, wi.id);
+					if (sina != null && sina.isLoggedIn()) {
+						WeibouserInfo wi = (WeibouserInfo) mPageUsrs.get(position);
+						if (mBtnPossessions.isSelected()) {
+							/*
+							Intent intent = new Intent();
+							intent.putExtra("uid", wi.uid);
+			                intent.putExtra("id", wi.id);
+							intent.setClass(parent, WeiboShowActivity.class);
+							parent.startActivity(intent);
+							*/
+							
+							parent.getWeiboPage().setReferer(R.layout.main);
+							parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
+						} else {
+							parent.getBrowPage().setReferer(R.layout.main);
+							parent.switchPage(R.layout.brow, wi.id);
+						}
+					} else {
+						Toast.makeText(
+							parent,
+							R.string.tips_havetologin,
+							Toast.LENGTH_LONG
+						).show();
+						Intent intent = new Intent();
+						intent.setClass(parent, RegLoginActivity.class);
+						parent.startActivity(intent);
+					}
 				}
-				
 			}
 	    });
 		

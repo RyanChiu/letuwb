@@ -368,6 +368,7 @@ containing a value of this type.
         public static final int tips_nopictures=0x7f05001f;
         public static final int tips_notgetserialyet=0x7f05004c;
         public static final int tips_nothinghappened=0x7f05002a;
+        public static final int tips_nowisloggingin=0x7f05009c;
         /**  <string name="tips_pages">%1$d~%2$d / %3$d~%4$d Total %5$d pictures</string> 
  <string name="tips_pages">%1$d~%2$d / %3$d~%4$d Total %5$d pictures</string> 
  <string name="tips_pages">%1$d~%2$d / %3$d~%4$d 共%5$d张图片</string> 

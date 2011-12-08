@@ -62,6 +62,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	final static int PERIOD_VOTEAGAIN = 24;//in HOUR
 	private static String mClientKey = "";
 	private static String mRandomKey = "";
+	
+	private static boolean mNowLoggingIn = false;
 
 	/*
 	 * views for reg/login dialog
@@ -129,9 +131,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         AsyncInit init = new AsyncInit();
         ArrayList<String[]> list = getStoredAccounts();
         if (list.size() == 0) {
-        	Intent intent = new Intent();
-			intent.setClass(EntranceActivity.this, RegLoginActivity.class);
-			startActivity(intent);
         	init.execute(true);
         } else {
         	init.execute(false);
@@ -510,7 +509,11 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	
 	public static int getPrivilege() {
 		return mPrivilege;
-	}	
+	}
+	
+	public static boolean isNowLoggingIn() {
+		return mNowLoggingIn;
+	}
     
     /*
      * get the usable msg from post back text.
@@ -564,6 +567,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		@Override
 		protected void onPostExecute(Object result) {
 			// TODO Auto-generated method stub
+			mNowLoggingIn = false;
 			String[] msgs = (String[]) result;
 			/*
 			for (int i = 0; i < msgs.length; i++) {
@@ -650,6 +654,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	    	 * Auto login part begin
 	    	 */
 			if (!notAutoLogin) {
+				mNowLoggingIn = true;
 				ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
 				//we auto login the first one in the accounts list here
 				if (list.size() != 0) {
