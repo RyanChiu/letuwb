@@ -105,8 +105,8 @@ public class BrowPage {
 	BrowPage(EntranceActivity activity) {
 		this.parent = activity;
 		
-		setFrameBackground((FrameLayout) activity.findViewById(R.id.flBackground));
-		setLayoutCtrl((RelativeLayout) activity.findViewById(R.id.rlControl));
+		mFrameBackground = (FrameLayout) activity.findViewById(R.id.flBackground);
+		mLayoutCtrl = (RelativeLayout) activity.findViewById(R.id.rlControl);
 		llVoteInfo = (LinearLayout) activity.findViewById(R.id.llVoteInfo);
 		mLayoutTop = (LinearLayout) activity.findViewById(R.id.llBrowTop);
 		tvNums = (TextView) activity.findViewById(R.id.textViewNums);
@@ -115,10 +115,10 @@ public class BrowPage {
 		mTextDwdw = (TextView) activity.findViewById(R.id.tvDwdw);
 		mTextVoteRating = (TextView) activity.findViewById(R.id.tvVoteRating);
 		mProgressVote = (ProgressBar) activity.findViewById(R.id.pbVote);
-		setBrow((ImageZoomView) activity.findViewById(R.id.imageSwitcher));
+		mBrow = (ImageZoomView) activity.findViewById(R.id.imageSwitcher);
 		btnSave = (Button) activity.findViewById(R.id.btnSave);
-		setBtnPlay((Button) activity.findViewById(R.id.btnPlay));
-		setBtnPause((Button) activity.findViewById(R.id.btnPause));
+		btnPlay = (Button) activity.findViewById(R.id.btnPlay);
+		btnPause = (Button) activity.findViewById(R.id.btnPause);
 		btnUpload = (Button) activity.findViewById(R.id.btnUpload);
 		btnUpup = (ImageButton) activity.findViewById(R.id.imageButton4);
 		btnDwdw = (ImageButton) activity.findViewById(R.id.imageButton3);
@@ -626,7 +626,14 @@ public class BrowPage {
 			mTextScreenName.setVisibility(TextView.GONE);
 		} else {
 			mTextScreenName.setVisibility(TextView.VISIBLE);
-			mTextScreenName.setText(String.format(parent.getString(R.string.info_picture), wi.screen_name + (wi.verified == 1 ? " (V)" : "")));
+			mTextScreenName.setText(
+				String.format(
+					parent.getString(R.string.info_picture), 
+					wi.screen_name + (wi.verified == 1 ? " (V)" : ""),
+					wi.location,
+					wi.description
+				)
+			);
 		}
 		mTextUpup.setText(wi.likes.toString());
 		mTextDwdw.setText(wi.dislikes.toString());
@@ -953,10 +960,10 @@ public class BrowPage {
 		@Override
 		protected void onPostExecute(Bitmap result) {
 			// TODO Auto-generated method stub
-			getBrow().setImage(result);
+			mBrow.setImage(result);
 			resetZoomState();
 			fadeinAnim.setDuration(300);
-			getBrow().startAnimation(fadeinAnim);
+			mBrow.startAnimation(fadeinAnim);
 			//mBrow.setTag(result);
 			mPrgDialog.dismiss();
 			setLoading(false);

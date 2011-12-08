@@ -36,6 +36,9 @@ public class GmAdWhirlEventAdapterData {
 	public static final int CONST_DEFAULTADDEBUG_FORCEMODE_TYPE = AdWhirlUtil.NETWORK_TYPE_ADMOB;
 
 	// �Ƿ�Ϊ�Զ�����ǿ�Ƶ���ģʽ������������ĳ�����͵Ĺ�棬��ѡ��ǿ��ģʽ��
+	/*
+	 * changed by anffernee
+	 */
 	public static final boolean CONST_EVENTADDEBUG_FORCEMODE_ENABLED = false;
 	// �Ƿ����Զ�����ǿ�Ƶ���ģʽ�»�ȡ���ʧ��ʱ��Ȼ����ѭ��ǿ����ʾ�ù��
 	// Ĭ��Ϊֱ���л���һ����̣������ý�����30������³��Ի�ȡ��ǰ��棬

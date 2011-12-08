@@ -4,24 +4,34 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" android:id="@+id/flBackground">
     <LinearLayout android:id="@+id/linearLayout4" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingLeft="3dp" android:paddingRight="3dp">
-        <com.sonyericsson.zoom.ImageZoomView android:layout_width="fill_parent" android:longClickable="true" android:id="@+id/imageSwitcher" android:layout_height="fill_parent"></com.sonyericsson.zoom.ImageZoomView>
+        <com.sonyericsson.zoom.ImageZoomView android:layout_width="fill_parent" android:longClickable="true" android:id="@+id/imageSwitcher" android:layout_height="fill_parent" android:layout_marginBottom="50dp" android:layout_marginTop="50dp"></com.sonyericsson.zoom.ImageZoomView>
     </LinearLayout>    
 	<RelativeLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:longClickable="true" android:id="@+id/rlControl">
         <RelativeLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:id="@+id/relativeLayoutZoom">
-            <LinearLayout android:orientation="vertical" android:id="@+id/linearLayoutInfo" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="30dp" android:layout_marginLeft="3dp">
-                <TextView android:layout_gravity="center" android:gravity="center" android:layout_width="fill_parent" android:id="@+id/tvScreenNameAbovePic" android:background="@drawable/brow_screen_name" android:layout_height="wrap_content" android:paddingLeft="16dp" android:paddingRight="16dp" android:textColor="#1da7ef"></TextView>
+            <LinearLayout android:orientation="vertical" android:id="@+id/linearLayoutInfo" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="3dp" android:layout_marginLeft="3dp">
+                <TextView android:layout_width="fill_parent" android:id="@+id/tvScreenNameAbovePic" android:background="@drawable/brow_screen_name" android:layout_height="wrap_content" android:paddingLeft="16dp" android:paddingRight="16dp" android:textColor="#1da7ef"></TextView>
                 <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomin" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomin"></ImageButton>
                 <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomout" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomout"></ImageButton>
             </LinearLayout>
         </RelativeLayout>
         <LinearLayout android:id="@+id/llBrowTop" android:layout_width="fill_parent" android:gravity="center" android:layout_height="wrap_content" android:orientation="vertical">
-            <LinearLayout android:id="@+id/llOperate" android:gravity="center" android:layout_height="wrap_content" android:layout_width="fill_parent">
+            <LinearLayout android:id="@+id/llOperate" android:gravity="right" android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+                <TextView
+                    android:id="@+id/textViewNums"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:gravity="center"
+                    android:paddingBottom="3dp"
+                    android:paddingTop="3dp"
+                    android:text="n/Totals" />
+
                 <Button android:layout_marginRight="6dp" android:layout_marginTop="1dp" android:textColor="#1da7ef" android:layout_marginLeft="6dp" android:layout_height="wrap_content" android:textSize="12sp" android:text="@string/label_save" android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:id="@+id/btnSave" android:layout_marginBottom="1dp" android:paddingBottom="6dp" android:paddingTop="6dp" android:paddingLeft="6dp" android:paddingRight="6dp"></Button>
                 <Button android:layout_marginRight="6dp" android:layout_marginTop="1dp" android:textColor="#1da7ef" android:layout_marginLeft="6dp" android:layout_height="wrap_content" android:textSize="12sp" android:text="@string/label_upload" android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:visibility="gone" android:id="@+id/btnUpload" android:layout_marginBottom="1dp" android:paddingBottom="6dp" android:paddingTop="6dp" android:paddingLeft="6dp" android:paddingRight="6dp"></Button>
                 <Button android:layout_marginRight="6dp" android:layout_marginTop="1dp" android:textColor="#1da7ef" android:layout_marginLeft="6dp" android:layout_height="wrap_content" android:textSize="12sp" android:text="@string/label_play" android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:id="@+id/btnPlay" android:layout_marginBottom="1dp" android:paddingTop="6dp" android:paddingBottom="6dp" android:paddingLeft="6dp" android:paddingRight="6dp"></Button>
                 <Button android:layout_marginRight="6dp" android:layout_marginTop="1dp" android:textColor="#1da7ef" android:layout_marginLeft="6dp" android:layout_height="wrap_content" android:textSize="12sp" android:text="@string/label_pause" android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:visibility="gone" android:id="@+id/btnPause" android:layout_marginBottom="1dp" android:paddingBottom="6dp" android:paddingTop="6dp" android:paddingLeft="6dp" android:paddingRight="6dp"></Button>
             </LinearLayout>
-            <TextView android:id="@+id/textViewNums" android:layout_gravity="center" android:paddingBottom="3dp" android:layout_height="wrap_content" android:text="n/Totals" android:layout_width="fill_parent" android:gravity="center" android:paddingTop="3dp" android:background="#00000000"></TextView>
         </LinearLayout>
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayoutBottom" android:orientation="vertical" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
             <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/relativeLayout2">

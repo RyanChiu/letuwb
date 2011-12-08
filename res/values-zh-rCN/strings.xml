@@ -34,7 +34,7 @@
     <string name="err_logintosave">登陆后才能保存。</string>
     <string name="tips_nopictures">没图片了。</string>
     <string name="tips_playing">播放中...</string>
-    <string name="info_picture">%1$s</string>
+    <string name="info_picture">我叫：%1$s\n我在：%2$s\n我说：%3$s</string>
     <string name="tips_clicks">浏览次数: %1$d</string>
     <string name="tips_lastone">我们会去到第一张。</string>
     <string name="tips_firstone">我们会去到最后一张。</string>
