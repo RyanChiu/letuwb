@@ -436,6 +436,9 @@ public class RegLoginActivity extends Activity {
 		} catch (WeiboException e) {
 			e.printStackTrace();
 			return null;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 	
