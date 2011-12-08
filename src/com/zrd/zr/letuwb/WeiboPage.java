@@ -293,7 +293,7 @@ public class WeiboPage {
 				/*
 				 * pop up the "more" list
 				 */
-				mBtnMore.performClick();
+				//mBtnMore.performClick();
 				
 				long lastClickTime;
 				/*
