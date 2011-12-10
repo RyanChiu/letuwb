@@ -48,7 +48,7 @@
     <string name="label_letmebe">随我吧</string>
     <string name="omenuitem_upload">上传</string>
     <string name="omenuitem_topic">分类</string>
-    <string name="omenuitem_reglogin">登录</string>
+    <string name="omenuitem_reglogin">账户</string>
     <string name="omenuitem_quit">退出</string>
     <string name="label_letmereg">我还没帐号，让我注册一个吧。</string>
     <string name="label_letmelogon">我有账户，让我登录吧。</string>
