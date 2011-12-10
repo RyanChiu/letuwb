@@ -3,8 +3,15 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" android:id="@+id/flBackground">
-    <LinearLayout android:id="@+id/linearLayout4" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingLeft="3dp" android:paddingRight="3dp">
-        <com.sonyericsson.zoom.ImageZoomView android:layout_width="fill_parent" android:longClickable="true" android:id="@+id/imageSwitcher" android:layout_height="fill_parent" android:layout_marginBottom="50dp" android:layout_marginTop="50dp"></com.sonyericsson.zoom.ImageZoomView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:gravity="fill_horizontal|center" android:layout_margin="50dp">
+
+        <com.sonyericsson.zoom.ImageZoomView android:layout_width="fill_parent" android:longClickable="true" android:id="@+id/imageSwitcher" android:layout_height="fill_parent"></com.sonyericsson.zoom.ImageZoomView>
     </LinearLayout>    
 	<RelativeLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:longClickable="true" android:id="@+id/rlControl">
         <RelativeLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:id="@+id/relativeLayoutZoom">
@@ -34,7 +41,7 @@
             </LinearLayout>
         </LinearLayout>
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayoutBottom" android:orientation="vertical" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
-            <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/relativeLayout2">
+            <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/relativeLayout2" android:layout_marginBottom="16dp">
                 <LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout2" android:layout_alignParentLeft="true" android:orientation="vertical" android:layout_height="wrap_content">
                     <ImageButton android:layout_marginLeft="2dp" android:id="@+id/imageButton4" android:layout_marginBottom="2dp" android:background="#00000000" android:src="@drawable/upup" android:layout_marginTop="3dp" android:scaleType="fitXY" android:layout_height="50dp" android:layout_width="50dp"></ImageButton>
                 </LinearLayout>
@@ -52,10 +59,10 @@
             </RelativeLayout>
             <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/relativeLayout1">
                 <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_centerInParent="true" android:layout_width="fill_parent">
-                    <Button android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:layout_weight="25" android:id="@+id/btnPossess" android:textSize="12sp" android:layout_height="wrap_content" android:text="@string/label_possess" android:textColor="#f85c08" android:paddingTop="6dp" android:paddingBottom="6dp"></Button>
-                    <Button android:id="@+id/btnShare" android:text="@string/label_share" android:layout_height="wrap_content" android:textSize="12sp" android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:layout_weight="25" android:textColor="#f85c08" android:paddingBottom="6dp" android:paddingTop="6dp"></Button>
-                    <Button android:layout_width="wrap_content" android:textSize="12sp" android:layout_height="wrap_content" android:id="@+id/btnMakeFriendsFromBrow" android:text="@string/label_weibo_friendship" android:background="@drawable/btn_custom" android:textColor="#1da7ef" android:layout_weight="25" android:paddingTop="6dp" android:paddingBottom="6dp"></Button>
-                    <Button android:layout_width="wrap_content" android:textSize="12sp" android:layout_height="wrap_content" android:id="@+id/btnWeiboShow" android:background="@drawable/btn_custom" android:text="@string/label_microblogs" android:textColor="#1da7ef" android:layout_weight="25" android:paddingBottom="6dp" android:paddingTop="6dp"></Button>
+                    <Button android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:layout_weight="25" android:id="@+id/btnPossess" android:textSize="12sp" android:layout_height="wrap_content" android:text="@string/label_possess" android:textColor="#f85c08" android:paddingTop="9dp" android:paddingBottom="9dp"></Button>
+                    <Button android:id="@+id/btnShare" android:text="@string/label_share" android:layout_height="wrap_content" android:textSize="12sp" android:layout_width="wrap_content" android:background="@drawable/btn_custom" android:layout_weight="25" android:textColor="#f85c08" android:paddingBottom="9dp" android:paddingTop="9dp"></Button>
+                    <Button android:layout_width="wrap_content" android:textSize="12sp" android:layout_height="wrap_content" android:id="@+id/btnMakeFriendsFromBrow" android:text="@string/label_weibo_friendship" android:background="@drawable/btn_custom" android:textColor="#1da7ef" android:layout_weight="25" android:paddingTop="9dp" android:paddingBottom="9dp"></Button>
+                    <Button android:layout_width="wrap_content" android:textSize="12sp" android:layout_height="wrap_content" android:id="@+id/btnWeiboShow" android:background="@drawable/btn_custom" android:text="@string/label_microblogs" android:textColor="#1da7ef" android:layout_weight="25" android:paddingBottom="9dp" android:paddingTop="9dp"></Button>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
