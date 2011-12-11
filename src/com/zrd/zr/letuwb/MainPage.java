@@ -119,13 +119,13 @@ public class MainPage {
 					UCMappings mappings = 
 						(UCMappings) msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
 					if (mappings.getFlag() > 0) {
-						WeibouserInfo wi = (WeibouserInfo) getGridPics().getTag();
+						WeibouserInfo wi = (WeibouserInfo) mGridPics.getTag();
 						int idx = getUsrIndexFromId(wi.id, getUsrs());
 						getUsrs().remove(idx);
 						int totalPics = getTotalPics() - 1;
 						setTotalPics(totalPics);
 						if (mPageUsrs.contains(wi)) {
-							WeibouserInfoGridAdapter adapter = (WeibouserInfoGridAdapter) getGridPics().getAdapter();
+							WeibouserInfoGridAdapter adapter = (WeibouserInfoGridAdapter) mGridPics.getAdapter();
 							adapter.remove(wi);
 							adapter.notifyDataSetChanged();
 						}
@@ -146,7 +146,7 @@ public class MainPage {
 	}
 	
 	private void __init() {
-        getGridPics().setOnTouchListener((OnTouchListener) parent);
+        mGridPics.setOnTouchListener((OnTouchListener) parent);
         mLinearMainBottom.setVisibility(LinearLayout.GONE);
 	    mTextSeekPos.setVisibility(TextView.GONE);
 	    mSeekMain.setMax(0);
@@ -422,14 +422,14 @@ public class MainPage {
 			}
 	    });
 		
-		getGridPics().setOnItemLongClickListener(new OnItemLongClickListener() {
+		mGridPics.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> pv, View v,
 					int position, long id) {
 				// TODO Auto-generated method stub
 				if (mBtnPossessions.isSelected()) {
-					getGridPics().setTag(position);
+					mGridPics.setTag(position);
 					new AlertDialog.Builder(parent)
 						.setTitle(R.string.tips_confirmdelpossession)
 						.setPositiveButton(
@@ -440,9 +440,9 @@ public class MainPage {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									// TODO Auto-generated method stub
-									int position = (Integer)getGridPics().getTag();
+									int position = (Integer)mGridPics.getTag();
 									WeibouserInfo wi = mPageUsrs.get(position);
-									getGridPics().setTag(wi);
+									mGridPics.setTag(wi);
 									
 									new Thread(
 										new ThreadPNJDealer(
@@ -682,8 +682,8 @@ public class MainPage {
 			for (int i = (getCurParagraph() -1) * getPageLimit(); i < getCurParagraph() * getPageLimit() && i < mUsrs.size(); i++) {
 				mPageUsrs.add(mUsrs.get(i));
 			}
-			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(parent, mPageUsrs, getGridPics());
-			getGridPics().setAdapter(adapter);
+			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(parent, mPageUsrs, mGridPics, mBtnPossessions.isSelected());
+			mGridPics.setAdapter(adapter);
 			renewCurParagraphTitle();
 		}
     }
@@ -706,10 +706,14 @@ public class MainPage {
 			for (int i = (getCurParagraph() -1) * getPageLimit(); i < getCurParagraph() * getPageLimit() && i < mUsrs.size(); i++) {
 				mPageUsrs.add(mUsrs.get(i));
 			}
-			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(parent, mPageUsrs, getGridPics());
-			getGridPics().setAdapter(adapter);
+			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(parent, mPageUsrs, mGridPics, mBtnPossessions.isSelected());
+			mGridPics.setAdapter(adapter);
 			renewCurParagraphTitle();
 		}
+    }
+    
+    public Handler getHandler() {
+    	return mHandler;
     }
     
     public GridView getGridPics() {
@@ -869,7 +873,7 @@ public class MainPage {
 				alertDlg.getWindow().setAttributes(lp);
 		        alertDlg.show();	
 			}
-			getGridPics().setAdapter(result);
+			mGridPics.setAdapter(result);
 			//super.onPostExecute(result);
 		}
 
@@ -903,7 +907,8 @@ public class MainPage {
 				mPageUsrs.add(mUsrs.get(i));
 			}
 			WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(
-				(EntranceActivity) mContext, mPageUsrs, getGridPics()
+				(EntranceActivity) mContext, mPageUsrs, mGridPics,
+				mBtnPossessions.isSelected()
 			);
 			return adapter;
 		}
