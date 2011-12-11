@@ -1,11 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_gravity="center" android:background="@drawable/bg" android:id="@+id/tlBackground">
     <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center" android:layout_marginBottom="3dp" android:id="@+id/trTitle">
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center">
-            <TextView android:layout_marginBottom="3dp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="3dp" android:gravity="center" android:id="@+id/tvLogin" android:textSize="28sp" android:textColor="#ffffff" android:text="@string/reglogin_title"></TextView>
-            <TextView android:layout_marginBottom="3dp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="3dp" android:gravity="center" android:textSize="28sp" android:text="/" android:textColor="#ffffff" android:visibility="gone"></TextView>
-            <TextView android:layout_marginBottom="3dp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="3dp" android:gravity="center" android:id="@+id/tvRegister" android:text="@string/label_register" android:textSize="28sp" android:textColor="#ffffff" android:visibility="gone"></TextView>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/tvLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:text="@string/reglogin_title"
+                    android:textColor="#ffffff"
+                    android:textSize="28sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:text="/"
+                    android:textColor="#ffffff"
+                    android:textSize="28sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvRegister"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:text="@string/label_register"
+                    android:textColor="#ffffff"
+                    android:textSize="28sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:gravity="center" android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/label_accountdeltips"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
+
     </TableRow>
 	<TableRow android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/trLoginReg">
 		<TableLayout

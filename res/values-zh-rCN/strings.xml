@@ -158,4 +158,5 @@
     <string name="title_attention">请注意了</string>
     <string name="tips_getweiboinfofailed">获取失败，请您稍后再尝试一下。</string>
     <string name="tips_nowisloggingin">正在尝试登陆微博，请稍后再试。</string>
+    <string name="label_accountdeltips">（长按某帐号可在确认后将其删除。）</string>
 </resources>

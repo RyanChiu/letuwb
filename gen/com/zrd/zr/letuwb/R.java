@@ -263,6 +263,7 @@ containing a value of this type.
         public static final int info_picture=0x7f050021;
         public static final int intro_title=0x7f050044;
         public static final int item_upload=0x7f050009;
+        public static final int label_accountdeltips=0x7f05009d;
         public static final int label_addaccount=0x7f05008a;
         public static final int label_allright=0x7f050098;
         public static final int label_bigger_pic=0x7f05007a;

@@ -158,4 +158,5 @@
     <string name="title_attention">Attention, please</string>
     <string name="tips_getweiboinfofailed">Failed for some reason, please try again.</string>
     <string name="tips_nowisloggingin">In the middle of logging in, please do it after it\'s done.</string>
+    <string name="label_accountdeltips">(Long click to try to remove an account from the list.)</string>
 </resources>
