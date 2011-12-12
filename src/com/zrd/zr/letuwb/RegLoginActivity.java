@@ -578,12 +578,14 @@ public class RegLoginActivity extends Activity {
 			if (WeiboPage.getSina() != null && WeiboPage.getSina().isLoggedIn()) {
 				
 			} else {
+				/*
 				Toast.makeText(
 					RegLoginActivity.this,
 					R.string.tips_havetologin,
 					Toast.LENGTH_LONG
 				).show();
 				return true;
+				*/
 			}
 		}
 		return super.onKeyDown(keyCode, event);
