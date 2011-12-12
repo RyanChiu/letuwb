@@ -3,8 +3,10 @@ package com.zrd.zr.letuwb;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 
 import com.zrd.zr.pnj.SecureURL;
 
@@ -22,6 +24,9 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	private Integer mResIdBadImage;
 	private ImageView mImage;
 	private ProgressBar mProgress = null;
+	
+	private static HashMap<String, SoftReference<Bitmap>> mMemImages
+		= new HashMap<String, SoftReference<Bitmap>>();
 	
 	public AsyncImageLoader(Context context,
 		Integer resIdImageView, Integer resIdBadImage) {
@@ -45,86 +50,119 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		mProgress = progress;
 	}
 	
+	public HashMap<String, SoftReference<Bitmap>> getMemImages() {
+		return mMemImages;
+	}
+	
+	/*
+	 * load the INTERNET image here
+	 */
+	private Bitmap loadImage(URL url) {
+		SecureURL su = new SecureURL();
+		Bitmap bmp;
+		URLConnection conn = su.getConnection(url);
+		InputStream is;
+		
+		if (conn == null) return null;
+		try {
+			is = conn.getInputStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Log.e("DEBUGTAG", "Remtoe Image Exception", e);
+			e.printStackTrace();
+			return null;
+		}
+		
+		if (is == null) return null;
+		BufferedInputStream bis = new BufferedInputStream(is, 8192);
+		bmp = BitmapFactory.decodeStream(bis);
+		if (bmp == null) return null;
+		try {
+			bis.close();
+			is.close();
+			bis = null;
+			is = null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Log.e("DEBUGTAG", "Remtoe Image Exception", e);
+			e.printStackTrace();
+			bis = null;
+			is = null;
+			return null;
+		}
+		return bmp;
+	}
+	
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		if (mProgress != null) {
 			mProgress.setVisibility(ProgressBar.VISIBLE);
+			mImage.setVisibility(ImageView.GONE);
 		}
 		super.onPreExecute();
 	}
 
 	@Override
 	protected Bitmap doInBackground(Object... params) {
-		System.gc();
-		System.runFinalization();
-		System.gc();
-		
 		// TODO Auto-generated method stub
 		
-		if (params.length != 1) return null;
+		if (params.length == 0) return null;
 		
 		URL url = (URL) params[0];
 		
-		SecureURL su = new SecureURL();
-		/*
-		 * see if local cached.
-		 * it uses value of MD5 the address of URL for the cached image filename
-		 */
-		String pathCacheImg = AsyncSaver.getSdcardDir()
-			+ EntranceActivity.PATH_CACHE;
-		String fileCacheImg = su.phpMd5(url.toString());
+		boolean inMemory = false;
+		
+		if (params.length > 1) inMemory = (Boolean)params[1];
+		
 		Bitmap bmp;
-		int probe = AsyncSaver.probeFile(pathCacheImg, fileCacheImg);
-		if (probe == -2) {//means cache image exists
+		if (!inMemory) {
+			System.gc();
+			System.runFinalization();
+			System.gc();
+
 			/*
-			 * directly load the cached image here
+			 * see if local cached.
+			 * it uses value of MD5 the address of URL for the cached image filename.
 			 */
-			bmp = BitmapFactory.decodeFile(pathCacheImg + fileCacheImg);
-	    	return bmp == null ? null : bmp;
-		} else {
-			/*
-			 * load the INTERNET image here
-			 */
-			URLConnection conn = su.getConnection(url);
-			InputStream is;
-			
-			if (conn == null) return null;
-			try {
-				is = conn.getInputStream();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				Log.e("DEBUGTAG", "Remtoe Image Exception", e);
-				e.printStackTrace();
-				return null;
-			}
-			
-			if (is == null) return null;
-			BufferedInputStream bis = new BufferedInputStream(is, 8192);
-			bmp = BitmapFactory.decodeStream(bis);
-			if (bmp == null) return null;
-			try {
-				bis.close();
-				is.close();
-				bis = null;
-				is = null;
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				Log.e("DEBUGTAG", "Remtoe Image Exception", e);
-				e.printStackTrace();
-				bis = null;
-				is = null;
-				return null;
-			}
-			if (probe == 1) {//means could deal with the cache
+			String pathCacheImg = AsyncSaver.getSdcardDir()
+				+ EntranceActivity.PATH_CACHE;
+			SecureURL su = new SecureURL();
+			String fileCacheImg = su.phpMd5(url.toString());
+			int probe = AsyncSaver.probeFile(pathCacheImg, fileCacheImg);
+			if (probe == -2) {//means cache image exists
 				/*
-				 * cache the image file here
+				 * directly load the cached image here
 				 */
-				AsyncSaver saver = new AsyncSaver(mContext, bmp);
-				saver.saveImage(
-					AsyncSaver.getSilentFile(pathCacheImg, fileCacheImg)
-				);
+				bmp = BitmapFactory.decodeFile(pathCacheImg + fileCacheImg);
+		    	return bmp == null ? null : bmp;
+			} else {
+				/*
+				 * load the INTERNET image here
+				 */
+				bmp = loadImage(url);
+				if (probe == 1) {//means could deal with the cache
+					/*
+					 * cache the image file here
+					 */
+					AsyncSaver saver = new AsyncSaver(mContext, bmp);
+					saver.saveImage(
+						AsyncSaver.getSilentFile(pathCacheImg, fileCacheImg)
+					);
+				}
+				return bmp;
 			}
+		} else {
+			String sUrl = url.toString();
+			if (mMemImages.containsKey(sUrl)) {
+				SoftReference<Bitmap> sf = mMemImages.get(sUrl);
+				bmp = sf.get();
+				if (bmp != null) {
+					return bmp;
+				}
+			}
+			bmp = loadImage(url);
+			mMemImages.put(sUrl, new SoftReference<Bitmap>(bmp));
 			return bmp;
 		}
 	}
@@ -142,6 +180,7 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		}
 		if (mProgress != null) {
 			mProgress.setVisibility(ProgressBar.GONE);
+			mImage.setVisibility(ImageView.VISIBLE);
 		}
 		super.onPostExecute(result);
 	}
