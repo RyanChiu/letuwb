@@ -709,13 +709,17 @@ public class WeiboPage {
 						 */
 						if (mLastUser.getGender().equals("f")) {
 							mBtnAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her));
+							parent.getBrowPage().getBtnAtSomeone().setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her));
 						} else if (mLastUser.getGender().equals("m")){
 							mBtnAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_him));
+							parent.getBrowPage().getBtnAtSomeone().setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_him));
 						} else {
 							mBtnAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her) + "/" + parent.getString(R.string.label_him));
+							parent.getBrowPage().getBtnAtSomeone().setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her) + "/" + parent.getString(R.string.label_him));
 						}
 					} else {
 						mBtnAtSomeone.setText(R.string.label_atsomeone);
+						parent.getBrowPage().getBtnAtSomeone().setText(R.string.label_atsomeone);
 						//mTextCreatedAt.setText("Please try again...");
 						
 						if (wexp != null) {
