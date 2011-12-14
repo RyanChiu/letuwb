@@ -74,25 +74,25 @@ containing a value of this type.
         public static final int next_pressed=0x7f02001e;
         public static final int parent32x32=0x7f02001f;
         public static final int person=0x7f020020;
-        public static final int persons=0x7f020021;
-        public static final int popup_full_dark=0x7f020022;
-        public static final int prev_normal=0x7f020023;
-        public static final int prev_pressed=0x7f020024;
-        public static final int reposts=0x7f020025;
-        public static final int share=0x7f020026;
+        public static final int popup_full_dark=0x7f020021;
+        public static final int prev_normal=0x7f020022;
+        public static final int prev_pressed=0x7f020023;
+        public static final int reposts=0x7f020024;
+        public static final int share=0x7f020025;
+        public static final int thumbg=0x7f020026;
         public static final int upup=0x7f020027;
         public static final int upup_normal=0x7f020028;
         public static final int upup_pressed=0x7f020029;
         public static final int voterating_progress_horizontal=0x7f02002a;
         public static final int weibo_verified=0x7f02002b;
-        public static final int white=0x7f02002c;
-        public static final int zoomin=0x7f02002d;
-        public static final int zoomout=0x7f02002e;
+        public static final int zoomin=0x7f02002c;
+        public static final int zoomout=0x7f02002d;
     }
     public static final class id {
-        public static final int btnComment=0x7f07007b;
+        public static final int btnAtSomeone=0x7f07007b;
+        public static final int btnComment=0x7f07007c;
         public static final int btnContact=0x7f07000c;
-        public static final int btnDelPossession=0x7f070039;
+        public static final int btnDelPossession=0x7f07003a;
         public static final int btnDescription=0x7f070074;
         public static final int btnExchange=0x7f070037;
         public static final int btnGuest=0x7f07006b;
@@ -101,7 +101,7 @@ containing a value of this type.
         public static final int btnLetmereg=0x7f07006a;
         public static final int btnLogin=0x7f070066;
         public static final int btnMakeFriendsFromBrow=0x7f070029;
-        public static final int btnMore=0x7f07007d;
+        public static final int btnMore=0x7f07007e;
         public static final int btnNext=0x7f070054;
         public static final int btnOfficialSite=0x7f070008;
         public static final int btnPause=0x7f07001b;
@@ -111,7 +111,7 @@ containing a value of this type.
         public static final int btnPrev=0x7f070050;
         public static final int btnRandom=0x7f070055;
         public static final int btnReg=0x7f070067;
-        public static final int btnRepost=0x7f07007c;
+        public static final int btnRepost=0x7f07007d;
         public static final int btnSave=0x7f070018;
         public static final int btnShare=0x7f070028;
         public static final int btnTinyProfileImage=0x7f07006f;
@@ -178,7 +178,7 @@ containing a value of this type.
         public static final int tableRow2=0x7f070061;
         public static final int tableRow3=0x7f070065;
         public static final int tableRow5=0x7f070069;
-        public static final int text=0x7f07003a;
+        public static final int text=0x7f070039;
         public static final int textView1=0x7f070003;
         public static final int textView2=0x7f070009;
         public static final int textView3=0x7f07000b;
@@ -266,6 +266,7 @@ containing a value of this type.
         public static final int label_accountdeltips=0x7f05009d;
         public static final int label_addaccount=0x7f05008a;
         public static final int label_allright=0x7f050098;
+        public static final int label_atsomeone=0x7f0500a0;
         public static final int label_bigger_pic=0x7f05007a;
         public static final int label_browse=0x7f050035;
         public static final int label_cancel=0x7f050015;
@@ -279,6 +280,8 @@ containing a value of this type.
         public static final int label_friends=0x7f050074;
         public static final int label_getmore=0x7f050088;
         public static final int label_guest=0x7f050006;
+        public static final int label_her=0x7f0500a1;
+        public static final int label_him=0x7f0500a2;
         public static final int label_hottest=0x7f05005a;
         public static final int label_hoursago=0x7f050078;
         public static final int label_justnow=0x7f050076;
@@ -382,7 +385,10 @@ containing a value of this type.
         public static final int tips_possessionremoved=0x7f050092;
         public static final int tips_possessions=0x7f05005f;
         public static final int tips_reposted=0x7f050080;
+        public static final int tips_routinehello=0x7f0500a4;
         public static final int tips_saving=0x7f050029;
+        public static final int tips_statusupdated=0x7f05009f;
+        public static final int tips_statusupdating=0x7f05009e;
         public static final int tips_succeededtogetserial=0x7f05004b;
         public static final int tips_unhottesttheweek=0x7f05005e;
         public static final int tips_update=0x7f050037;
@@ -390,11 +396,13 @@ containing a value of this type.
         public static final int tips_voterating=0x7f050046;
         public static final int tips_voting=0x7f05001c;
         public static final int tips_waitasecond=0x7f050087;
+        public static final int tips_waitforgettinguser=0x7f0500a3;
         public static final int tips_wheterprofileimagecouldbeusedornot=0x7f050097;
         public static final int title_attention=0x7f05009a;
         public static final int title_comment=0x7f050086;
         public static final int title_loginfirst=0x7f050067;
         public static final int title_repost=0x7f050085;
+        public static final int title_updatestatus=0x7f0500a5;
         public static final int title_warning=0x7f05004d;
         public static final int title_youwanna=0x7f05007b;
         public static final int update_title=0x7f050036;

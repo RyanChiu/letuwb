@@ -53,6 +53,7 @@ public class WeiboPage {
 	private ListView mListStatus;
 	private ProgressBar mProgressStatusLoading;
 	private Button mBtnPossess;
+	private Button mBtnAtSomeone;
 	private Button mBtnComment;
 	private Button mBtnRepost;
 	private Button mBtnMore;
@@ -62,6 +63,8 @@ public class WeiboPage {
 	private EditText mEditRepost;
 	private AlertDialog mDlgComment;
 	private EditText mEditComment;
+	private AlertDialog mDlgUpdateStatus;
+	private EditText mEditUpdateStatus;
 	private Button mBtnMoreTimelines;
 	private Button mBtnMoreComments;
 	private Dialog mDlgDescription;
@@ -96,12 +99,14 @@ public class WeiboPage {
 		mListStatus = (ListView)parent.findViewById(R.id.lvStatus);
 		mProgressStatusLoading = (ProgressBar)parent.findViewById(R.id.pbStatusLoading);
 		mBtnPossess = (Button)parent.findViewById(R.id.btnWeiboPossess);
+		mBtnAtSomeone = (Button)parent.findViewById(R.id.btnAtSomeone);
 		mBtnComment = (Button)parent.findViewById(R.id.btnComment);
 		mBtnRepost = (Button)parent.findViewById(R.id.btnRepost);
 		mEditRepost  = new EditText(parent);
 		mBtnMore = (Button)parent.findViewById(R.id.btnMore);
 		mEditComment = new EditText(parent);
 		mBtnTinyProfileImage = (ImageButton)parent.findViewById(R.id.btnTinyProfileImage);
+		mEditUpdateStatus = new EditText(parent);
 		
 		mImageVerified.setVisibility(ImageView.GONE);
 		mBtnDescription.setVisibility(ImageButton.GONE);
@@ -252,6 +257,38 @@ public class WeiboPage {
 			.setNegativeButton(R.string.label_cancel, null)
 			.create();
 		
+		mDlgUpdateStatus = new AlertDialog.Builder(parent)
+			.setTitle(R.string.title_updatestatus)
+			.setIcon(android.R.drawable.ic_dialog_info)
+			.setView(mEditUpdateStatus)
+			.setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
+		
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					/*
+					 * This is the place it handles comment
+					 */
+					Toast.makeText(
+						parent,
+						R.string.tips_statusupdating,
+						Toast.LENGTH_LONG
+					).show();
+					new Thread(
+						new ThreadSinaDealer(
+							mSina,
+							ThreadSinaDealer.UPDATE_STATUS,
+							new String[] {mEditUpdateStatus.getText().toString()},
+							mHandler
+						)
+					).start();
+					turnDealing(true);
+				}
+				
+			})
+			.setNegativeButton(R.string.label_cancel, null)
+			.create();
+		
 		mDlgDescription = new Dialog(parent, R.style.Dialog_Clean);
 		mDlgDescription.setContentView(R.layout.custom_dialog_list);
 		
@@ -386,6 +423,28 @@ public class WeiboPage {
 						mHandler
 					)
 				).start();
+			}
+			
+		});
+		
+		mBtnAtSomeone.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (mLastUser == null) {
+					Toast.makeText(
+						parent,
+						R.string.tips_waitforgettinguser,
+						Toast.LENGTH_LONG
+					).show();
+				} else {
+					mEditUpdateStatus.setText(
+						"@" + mLastUser.getScreenName() + ":"
+						+ parent.getString(R.string.tips_routinehello)
+					);
+					mDlgUpdateStatus.show();
+				}
 			}
 			
 		});
@@ -644,7 +703,19 @@ public class WeiboPage {
 							+ " " 
 							+ parent.getString(R.string.label_friends) + ":" + mLastUser.getFriendsCount()
 						);
+						
+						/*
+						 * alter the label of "@" button according to the gender of the user
+						 */
+						if (mLastUser.getGender().equals("f")) {
+							mBtnAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her));
+						} else if (mLastUser.getGender().equals("m")){
+							mBtnAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_him));
+						} else {
+							mBtnAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her) + "/" + parent.getString(R.string.label_him));
+						}
 					} else {
+						mBtnAtSomeone.setText(R.string.label_atsomeone);
 						//mTextCreatedAt.setText("Please try again...");
 						
 						if (wexp != null) {
@@ -850,6 +921,27 @@ public class WeiboPage {
 					}
 					turnDealing(false);
 					break;
+				case ThreadSinaDealer.UPDATE_STATUS:
+					status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+					if (status != null) {
+						Toast.makeText(
+							parent,
+							R.string.tips_statusupdated,
+							Toast.LENGTH_LONG
+						).show();
+					} else {
+						//deal with failing to make favorite
+						if (wexp != null) {
+							Toast.makeText(
+								parent,
+								//wexp.toString(),
+								R.string.tips_getweiboinfofailed,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					}
+					turnDealing(false);
+					break;
 				}
 			}
 
@@ -895,6 +987,7 @@ public class WeiboPage {
 
 	protected void reloadAll() {
 		// TODO Auto-generated method stub
+		mLastUser = null;
 		new Thread(
 			new ThreadSinaDealer(
 				mSina, 
