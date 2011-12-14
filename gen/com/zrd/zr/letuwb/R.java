@@ -241,7 +241,7 @@ containing a value of this type.
         public static final int about_content=0x7f050066;
         public static final int about_officialsite=0x7f050065;
         public static final int about_version=0x7f050063;
-        public static final int app_name=0x7f050000;
+        public static final int app_name=0x7f050001;
         public static final int choose_title=0x7f05000c;
         public static final int err_failedtoconfirmserial=0x7f05004a;
         public static final int err_failedtogetserial=0x7f05004b;
@@ -326,7 +326,7 @@ containing a value of this type.
         public static final int label_weibos=0x7f050072;
         public static final int label_yes=0x7f05000e;
         public static final int label_zoom=0x7f050035;
-        public static final int locale=0x7f050001;
+        public static final int locale=0x7f050000;
         public static final int msg_loading=0x7f05000b;
         public static final int msg_nopictures=0x7f05001a;
         public static final int msg_uploading=0x7f05001c;

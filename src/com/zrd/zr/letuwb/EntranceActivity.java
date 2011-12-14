@@ -598,7 +598,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				intent.putExtra("code", infos[0]);
 				intent.putExtra("name", infos[1]);
 				intent.putExtra("newname", infos[2]);
-				intent.putExtra("newcontent", getString(R.string.locale).equals("en") ? "" : infos[5]);
+				intent.putExtra("newcontent", getString(R.string.locale).equals("en") ? "" : infos[3]);
 				intent.setClass(EntranceActivity.this, UpdateActivity.class);
 				startActivity(intent);
 			}
@@ -685,6 +685,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 					if (infos.length == 6) {
 						String sNewCode = infos[1];
 						String sNewName = infos[3];
+						String sNewContent = infos[5];
 						Integer iNewCode = 0;
 						try {
 							iNewCode = Integer.parseInt(sNewCode);
@@ -692,7 +693,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 							iNewCode = -1;
 						}
 						if (iNewCode > info.versionCode) {
-							msgs[2] = "" + info.versionCode + "," + info.versionName + "," + sNewName;
+							msgs[2] = "" + info.versionCode + "," + info.versionName + "," + sNewName + "," + sNewContent;
 						} else {
 							msgs[2] = getString(R.string.tips_alreadylast);
 						}
