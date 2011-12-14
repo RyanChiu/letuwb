@@ -598,6 +598,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				intent.putExtra("code", infos[0]);
 				intent.putExtra("name", infos[1]);
 				intent.putExtra("newname", infos[2]);
+				intent.putExtra("newcontent", getString(R.string.locale).equals("en") ? "" : infos[5]);
 				intent.setClass(EntranceActivity.this, UpdateActivity.class);
 				startActivity(intent);
 			}
@@ -681,7 +682,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				String content = PNJ.getResponseByGet(EntranceActivity.URL_SITE + "ver.php", "");
 				if (content != null) {
 					String[] infos = content.split(",");
-					if (infos.length == 4) {
+					if (infos.length == 6) {
 						String sNewCode = infos[1];
 						String sNewName = infos[3];
 						Integer iNewCode = 0;

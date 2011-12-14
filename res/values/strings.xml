@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="locale">en</string>
     <string name="app_name">Hot Portaits</string>
     <string name="reglogin_title">Login (SINA Weibo)</string>
     <string name="label_username">Username:</string>

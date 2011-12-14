@@ -45,6 +45,7 @@ public class UpdateActivity extends Activity {
 		String sVerCode = intent.getStringExtra("code");
 		String sVerName = intent.getStringExtra("name");
 		String sNewVerName = intent.getStringExtra("newname");
+		String sNewContent = intent.getStringExtra("newcontent");
 		if (sVerCode == null || sVerName == null) {
 			Toast.makeText(
 				this,
@@ -56,7 +57,11 @@ public class UpdateActivity extends Activity {
 		Dialog dialog = new AlertDialog.Builder(UpdateActivity.this)
 			.setIcon(android.R.drawable.ic_dialog_info)
 			.setTitle(R.string.update_title)
-			.setMessage(String.format(getString(R.string.tips_update), sVerName, sNewVerName))
+			.setMessage(
+				String.format(getString(R.string.tips_update), sVerName, sNewVerName)
+					+ "\n\n"
+					+ sNewContent
+			)
 			.setPositiveButton(R.string.label_ok,
 				new DialogInterface.OnClickListener() {
 
