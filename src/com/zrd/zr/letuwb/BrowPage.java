@@ -80,6 +80,7 @@ public class BrowPage {
 	private Button mBtnWeiboShow;
 	private Button mBtnWeiboFriend;
 	private Button mBtnPossess;
+	private Button mBtnAtSomeone;
 	private static Boolean mIsLoading = false;
 	private Boolean mWasPlaying = false;
 	private Boolean mIsDooming = false;
@@ -128,6 +129,7 @@ public class BrowPage {
 		mBtnWeiboShow = (Button) activity.findViewById(R.id.btnWeiboShow);
 		mBtnWeiboFriend = (Button) activity.findViewById(R.id.btnMakeFriendsFromBrow);
 		mBtnPossess = (Button) activity.findViewById(R.id.btnPossess);
+		mBtnAtSomeone = (Button) activity.findViewById(R.id.btnAtSomeoneBrow);
 		bdPicFailed = BitmapFactory.decodeResource(activity.getResources(), R.drawable.broken);
 		mGestureDetector = new GestureDetector(activity, new PicbrowGestureListener());
 		//mVibrator = ( Vibrator )getApplication().getSystemService(Service.VIBRATOR_SERVICE);
@@ -217,6 +219,16 @@ public class BrowPage {
 		zrAsyncShowPic(mId, 0);
 		
 		tvNums.setText("0/" + parent.getMainPage().getUsrs().size());
+		
+		mBtnAtSomeone.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				parent.getWeiboPage().getBtnAtSomeone().performClick();
+			}
+			
+		});
 				
 		mBtnShare.setOnClickListener(new OnClickListener() {
 
@@ -548,7 +560,7 @@ public class BrowPage {
 			
 		});
 		
-		getBtnPlay().setOnClickListener(new OnClickListener () {
+		btnPlay.setOnClickListener(new OnClickListener () {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -570,7 +582,7 @@ public class BrowPage {
 			
 		});
 		
-		getBtnPause().setOnClickListener(new OnClickListener() {
+		btnPause.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -614,6 +626,7 @@ public class BrowPage {
 	public void zrRenewCurFileInfo() {
 		WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs());
 		if (wi == null) return;
+		parent.getWeiboPage().reloadLastUser(wi.uid);
 		//tvNums.setText((LetuseeActivity.getPicIndexFromId(mId, mUsrs) + 1) + "/" + mUsrs.size());
 		tvNums.setText(
 			(parent.getMainPage().getUsrIndexFromId(mId, parent.getMainPage().getUsrs())
@@ -755,6 +768,10 @@ public class BrowPage {
 
 	public void setBtnPause(Button btnPause) {
 		this.btnPause = btnPause;
+	}
+	
+	public Button getBtnAtSomeone() {
+		return this.mBtnAtSomeone;
 	}
 
 	public Boolean wasPlaying() {

@@ -985,17 +985,23 @@ public class WeiboPage {
 		mDlgComments.show();
 	}
 
-	protected void reloadAll() {
-		// TODO Auto-generated method stub
+	public void reloadLastUser(Long uid) {
 		mLastUser = null;
 		new Thread(
 			new ThreadSinaDealer(
 				mSina, 
 				ThreadSinaDealer.SHOW_USER, 
-				new String[] {getUid().toString()}, 
+				new String[] {uid.toString()}, 
 				mHandler
 			)
 		).start();
+	}
+	
+	protected void reloadAll() {
+		// TODO Auto-generated method stub
+		if (mLastUser == null) {
+			reloadLastUser(getUid());
+		}
 		
 		mLastUserTimeline.clear();
 		new Thread(
@@ -1114,5 +1120,13 @@ public class WeiboPage {
 
 	public void setId(Long mId) {
 		this.mId = mId;
+	}
+	
+	public User getLastUser() {
+		return this.mLastUser;
+	}
+	
+	public Button getBtnAtSomeone() {
+		return this.mBtnAtSomeone;
 	}
 }
