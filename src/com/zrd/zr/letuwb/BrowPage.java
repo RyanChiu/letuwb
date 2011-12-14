@@ -60,7 +60,6 @@ public class BrowPage {
 	private FrameLayout mFrameBackground;
 	private RelativeLayout mLayoutCtrl;
 	private LinearLayout llVoteInfo;
-	private LinearLayout mLayoutTop;
 	private TextView tvNums;
 	private TextView mTextScreenName;
 	private TextView mTextUpup;
@@ -109,7 +108,6 @@ public class BrowPage {
 		mFrameBackground = (FrameLayout) activity.findViewById(R.id.flBackground);
 		mLayoutCtrl = (RelativeLayout) activity.findViewById(R.id.rlControl);
 		llVoteInfo = (LinearLayout) activity.findViewById(R.id.llVoteInfo);
-		mLayoutTop = (LinearLayout) activity.findViewById(R.id.llBrowTop);
 		tvNums = (TextView) activity.findViewById(R.id.textViewNums);
 		mTextScreenName = (TextView) activity.findViewById(R.id.tvScreenNameAbovePic);
 		mTextUpup = (TextView) activity.findViewById(R.id.tvUpup);
@@ -212,7 +210,6 @@ public class BrowPage {
 		getBrow().setOnTouchListener(parent);
         //mBrow.setOnTouchListener(mZoomListener);
 		
-		mLayoutTop.setVisibility(LinearLayout.INVISIBLE);
 		llVoteInfo.setVisibility(LinearLayout.INVISIBLE);
 		mTextScreenName.setVisibility(TextView.GONE);
 		
@@ -808,21 +805,11 @@ public class BrowPage {
 	
 	public void switchBrowseZoom(MenuItem item) {
 		if (parent.getString(R.string.label_zoom).equals(item.getTitle())) {
-			if (mLayoutTop.getVisibility() == LinearLayout.VISIBLE) {
-				fadeoutAnim.setDuration(300);
-				mLayoutTop.startAnimation(fadeoutAnim);
-				mLayoutTop.setVisibility(LinearLayout.INVISIBLE);
-			}
 			item.setTitle(parent.getString(R.string.label_browse));
 			mBrow.setOnTouchListener(mZoomListener);
 			mLayoutCtrl.setOnTouchListener(mZoomListener);
 			mIsDooming = true;
 		} else {
-			if (mLayoutTop.getVisibility() == LinearLayout.INVISIBLE) {
-				mLayoutTop.setVisibility(LinearLayout.VISIBLE);
-				fadeinAnim.setDuration(500);
-				mLayoutTop.startAnimation(fadeinAnim);
-			}
 			item.setTitle(parent.getString(R.string.label_zoom));
 			mBrow.setOnTouchListener(parent);
 			mLayoutCtrl.setOnTouchListener(parent);
@@ -1069,15 +1056,7 @@ public class BrowPage {
 		public boolean onSingleTapConfirmed(MotionEvent e) {
 			// TODO Auto-generated method stub
 			//return super.onSingleTapConfirmed(e);
-			if (mLayoutTop.getVisibility() == LinearLayout.VISIBLE) {
-				fadeoutAnim.setDuration(300);
-				mLayoutTop.startAnimation(fadeoutAnim);
-				mLayoutTop.setVisibility(LinearLayout.INVISIBLE);
-			} else {
-				mLayoutTop.setVisibility(LinearLayout.VISIBLE);
-				fadeinAnim.setDuration(500);
-				mLayoutTop.startAnimation(fadeinAnim);
-			}
+			mBtnWeiboShow.performClick();
 			return true;
 		}
 
