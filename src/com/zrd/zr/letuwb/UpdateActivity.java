@@ -46,7 +46,7 @@ public class UpdateActivity extends Activity {
 		String sVerName = intent.getStringExtra("name");
 		String sNewVerName = intent.getStringExtra("newname");
 		String sNewContent = intent.getStringExtra("newcontent");
-		sNewContent.replaceAll("#", "\n");
+		sNewContent = sNewContent.replaceAll("#", "\n");
 		if (sVerCode == null || sVerName == null) {
 			Toast.makeText(
 				this,
@@ -55,9 +55,6 @@ public class UpdateActivity extends Activity {
 			).show();
 			this.finish();
 		}
-		TextView textContent = new TextView(this);
-		textContent.setText(sNewContent);
-		textContent.setMinLines(5);
 		Dialog dialog = new AlertDialog.Builder(UpdateActivity.this)
 			.setIcon(R.drawable.icon)
 			.setTitle(R.string.update_title)
@@ -66,7 +63,6 @@ public class UpdateActivity extends Activity {
 					+ "\n\n"
 					+ sNewContent
 			)
-			.setView(textContent)
 			.setPositiveButton(R.string.label_ok,
 				new DialogInterface.OnClickListener() {
 
