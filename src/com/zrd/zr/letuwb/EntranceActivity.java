@@ -364,7 +364,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		switch (mViewFlipper.getDisplayedChild()) {
 		case 0:
 			menu.add(Menu.NONE, Menu.FIRST + 4, 4, getString(R.string.omenuitem_reglogin)).setIcon(R.drawable.ic_menu_login);
-			menu.add(Menu.NONE, Menu.FIRST + 5, 5, getString(R.string.omenuitem_quit)).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 			break;
 		case 1:
 			if (mBrowPage.isDooming()) {
@@ -378,6 +377,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		case 2:
 			break;
 		}
+		menu.add(Menu.NONE, Menu.FIRST + 5, 5, getString(R.string.omenuitem_quit)).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 		menu.add(Menu.NONE, Menu.FIRST + 6, 6, getString(R.string.omenuitem_about)).setIcon(android.R.drawable.ic_menu_help);
 
 		return super.onPrepareOptionsMenu(menu);
