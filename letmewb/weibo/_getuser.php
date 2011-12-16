@@ -9,7 +9,7 @@ include_once('weibooauth.php');
 include_once(dirname(__FILE__) . '/../zmysqlConn.class.php');
 include_once("expkits.inc.php");
 
-$o = new WeiboOAuth(WB_AKEY , WB_SKEY , LAST_OAUTH_TOKEN, LAST_OAUTH_TOKEN_SECRET);
+$c = new WeiboClient(WB_AKEY , WB_SKEY , LAST_OAUTH_TOKEN, LAST_OAUTH_TOKEN_SECRET);
 $zconn = new zmysqlConn;
 
 if ($argc != 2) {
@@ -18,14 +18,10 @@ if ($argc != 2) {
 
 $uid = $argv[1];
 
-$user =
-	$o->get(
-		"http://api.t.sina.com.cn/users/show/$uid.json",
-		array('source' => WB_AKEY)
-	);
+$user =	$c->show_user($uid);
 //var_dump($user);
 if (array_key_exists("error", $user)) {
-	echo $user['error'] . "#$uid#\n";
+	echo $user['error'] . "#$uid#\n" . print_r($user, true);
 } else {
 	$sql = __get_user_insert_update_sql($user);
 	mysql_query("set names 'utf8';");
