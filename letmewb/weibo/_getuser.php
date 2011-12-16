@@ -25,7 +25,7 @@ $user =
 	);
 //var_dump($user);
 if (array_key_exists("error", $user)) {
-	echo $user['error'] . "\n";
+	echo $user['error'] . "#$uid#\n";
 } else {
 	$sql = __get_user_insert_update_sql($user);
 	mysql_query("set names 'utf8';");
