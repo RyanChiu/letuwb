@@ -36,9 +36,10 @@ public class AboutActivity extends Activity {
 		textVersion.setText(getString(R.string.about_version) + sVersionName);
 		
 		Button btnOfficialSite = (Button) findViewById(R.id.btnOfficialSite);
+		String landingURL = EntranceActivity.URL_SITE + "landing";
 		btnOfficialSite.setText(
 			Html.fromHtml(
-				"<a href='http://hot88.info/letmewb/landing'>http://hot88.info/letmewb/landing</a>"
+				String.format("<a href='%s'>%s</a>", landingURL, landingURL)
 			)
 		);
 		btnOfficialSite.setOnClickListener(new OnClickListener() {
