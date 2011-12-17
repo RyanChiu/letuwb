@@ -314,6 +314,8 @@ containing a value of this type.
         public static final int label_repeat=0x7f050005;
         public static final int label_reset=0x7f050034;
         public static final int label_save=0x7f050053;
+        public static final int label_seebiggerimage0=0x7f0500a7;
+        public static final int label_seebiggerimage1=0x7f0500a8;
         public static final int label_share=0x7f05006e;
         public static final int label_source=0x7f050076;
         public static final int label_unhottest=0x7f05005c;
@@ -372,6 +374,8 @@ containing a value of this type.
         public static final int tips_nocomments=0x7f050082;
         public static final int tips_noitemselected=0x7f050084;
         public static final int tips_nomorecomments=0x7f05008a;
+        public static final int tips_nooriginalimage0=0x7f0500a9;
+        public static final int tips_nooriginalimage1=0x7f0500aa;
         public static final int tips_nopictures=0x7f050020;
         public static final int tips_notgetserialyet=0x7f05004d;
         public static final int tips_nothinghappened=0x7f05002b;

@@ -14,6 +14,8 @@ import weibo4android.WeiboException;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -502,6 +504,8 @@ public class WeiboPage {
 		mlist.add(parent.getString(R.string.label_weibo_friendship));
 		mlist.add(parent.getString(R.string.label_weibo_favorite));
 		mlist.add(parent.getString(R.string.label_comments));
+		mlist.add(parent.getString(R.string.label_seebiggerimage0));
+		mlist.add(parent.getString(R.string.label_seebiggerimage1));
 		mlist.add(parent.getString(R.string.label_reload));
 		lvMore.setAdapter(
 			new ArrayAdapter<String> (
@@ -516,6 +520,7 @@ public class WeiboPage {
 			public void onItemClick(AdapterView<?> av, View view, 
 					int position, long id) {
 				// TODO Auto-generated method stub
+				String originalPic;
 				switch (position) {
 				case 0:
 					if (mSina != null && mSina.isLoggedIn()) {
@@ -576,13 +581,67 @@ public class WeiboPage {
 							R.string.tips_noitemselected,
 							Toast.LENGTH_LONG
 						).show();
-						return;
 					} else {
 						showComments();
 						turnDealing(true);
 					}
 					break;
 				case 3:
+					if (mIndexOfSelectedStatus == -1) {
+						Toast.makeText(
+							parent,
+							R.string.tips_noitemselected,
+							Toast.LENGTH_LONG
+						).show();
+					} else {
+						originalPic = mLastUserTimeline
+							.get(mIndexOfSelectedStatus)
+							.getStatus()
+							.getOriginal_pic();
+						if (originalPic != null && !originalPic.trim().equals("")) {
+							Uri uri = Uri.parse(originalPic);
+							Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			                parent.startActivity(intent);
+						} else {
+							Toast.makeText(
+								parent,
+								R.string.tips_nooriginalimage0,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					}
+					break;
+				case 4:
+					if (mIndexOfSelectedStatus == -1) {
+						Toast.makeText(
+							parent,
+							R.string.tips_noitemselected,
+							Toast.LENGTH_LONG
+						).show();
+					} else {
+						Status retweeted = mLastUserTimeline
+							.get(mIndexOfSelectedStatus)
+							.getStatus()
+							.getRetweeted_status();
+						if (retweeted != null) {
+							originalPic = retweeted.getOriginal_pic();
+						} else {
+							originalPic = null;
+						}
+						if (originalPic != null && !originalPic.trim().equals("")) {
+							Uri uri = Uri.parse(originalPic);
+							Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			                parent.startActivity(intent);
+						} else {
+							Toast.makeText(
+								parent,
+								R.string.tips_nooriginalimage1,
+								Toast.LENGTH_LONG
+							).show();
+						}
+					}
+					break;
+				case 5:
 					reloadAll();
 					turnDealing(true);
 					break;
@@ -991,6 +1050,7 @@ public class WeiboPage {
 
 	public void reloadLastUser(Long uid) {
 		mLastUser = null;
+		mIndexOfSelectedStatus = -1;
 		new Thread(
 			new ThreadSinaDealer(
 				mSina, 
