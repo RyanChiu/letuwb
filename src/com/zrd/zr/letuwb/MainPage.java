@@ -403,6 +403,7 @@ public class MainPage {
 							*/
 							
 							parent.getWeiboPage().setReferer(R.layout.main);
+							parent.getWeiboPage().reloadLastUser(wi.uid);
 							parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
 						} else {
 							parent.getBrowPage().setReferer(R.layout.main);
