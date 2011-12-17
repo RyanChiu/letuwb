@@ -14,6 +14,7 @@ import weibo4android.Status;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Html;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,6 +107,7 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			holder.mTextCreatedAt.setText(getSpecialDateText(dt, 0));
 			
 			holder.mText.setText(xstatus.getStatus().getText());
+			Linkify.addLinks(holder.mText, Linkify.ALL);
 			
 			holder.mTextComments.setText("" + xstatus.getComments());
 			holder.mTextReposts.setText("" + xstatus.getReposts());
@@ -134,6 +136,7 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 						+ statusR.getText()
 					)
 				);
+				Linkify.addLinks(holder.mTextRetweeted, Linkify.ALL);
 				
 				AsyncImageLoader loaderR = new AsyncImageLoader(
 					mContext, holder.mImageRetweeted, R.drawable.broken,
