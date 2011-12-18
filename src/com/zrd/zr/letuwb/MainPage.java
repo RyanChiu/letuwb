@@ -865,8 +865,7 @@ public class MainPage {
 			if (mPageUsrs.size() == 0) {
 				AlertDialog alertDlg = new AlertDialog.Builder(mContext)
 					.setIcon(android.R.drawable.ic_dialog_info)
-					.setTitle(R.string.msg_nopictures)
-					//.setMessage(R.string.msg_nopictures)
+					.setTitle(!mBtnPossessions.isSelected() ? R.string.msg_nopictures : R.string.tips_nopossessions)
 					.setPositiveButton(R.string.label_ok, null)
 					.create();
 				WindowManager.LayoutParams lp = alertDlg.getWindow().getAttributes();

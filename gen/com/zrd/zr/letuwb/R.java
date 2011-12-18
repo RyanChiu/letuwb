@@ -377,6 +377,7 @@ containing a value of this type.
         public static final int tips_nooriginalimage0=0x7f0500a9;
         public static final int tips_nooriginalimage1=0x7f0500aa;
         public static final int tips_nopictures=0x7f050020;
+        public static final int tips_nopossessions=0x7f0500ab;
         public static final int tips_notgetserialyet=0x7f05004d;
         public static final int tips_nothinghappened=0x7f05002b;
         public static final int tips_nowisloggingin=0x7f05009d;

@@ -172,4 +172,5 @@
     <string name="label_seebiggerimage1">引用文中原图</string>
     <string name="tips_nooriginalimage0">正文没插图诶。</string>
     <string name="tips_nooriginalimage1">引文没插图诶。</string>
+    <string name="tips_nopossessions">您还没“私藏”呢，赶紧添加您的“私藏”吧。</string>
 </resources>

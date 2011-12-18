@@ -172,4 +172,5 @@
     <string name="label_seebiggerimage1">Original image in retweeted</string>
     <string name="tips_nooriginalimage0">No image in status.</string>
     <string name="tips_nooriginalimage1">No image in retweeted.</string>
+    <string name="tips_nopossessions">You have no possessions right now, go pick ones, please.</string>
 </resources>
