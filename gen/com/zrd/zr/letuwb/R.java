@@ -80,13 +80,14 @@ containing a value of this type.
         public static final int reposts=0x7f020024;
         public static final int share=0x7f020025;
         public static final int thumbg=0x7f020026;
-        public static final int upup=0x7f020027;
-        public static final int upup_normal=0x7f020028;
-        public static final int upup_pressed=0x7f020029;
-        public static final int voterating_progress_horizontal=0x7f02002a;
-        public static final int weibo_verified=0x7f02002b;
-        public static final int zoomin=0x7f02002c;
-        public static final int zoomout=0x7f02002d;
+        public static final int toast_frame=0x7f020027;
+        public static final int upup=0x7f020028;
+        public static final int upup_normal=0x7f020029;
+        public static final int upup_pressed=0x7f02002a;
+        public static final int voterating_progress_horizontal=0x7f02002b;
+        public static final int weibo_verified=0x7f02002c;
+        public static final int zoomin=0x7f02002d;
+        public static final int zoomout=0x7f02002e;
     }
     public static final class id {
         public static final int btnAtSomeone=0x7f07007c;
