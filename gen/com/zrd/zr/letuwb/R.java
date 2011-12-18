@@ -93,7 +93,7 @@ containing a value of this type.
         public static final int btnAtSomeoneBrow=0x7f070027;
         public static final int btnComment=0x7f07007d;
         public static final int btnContact=0x7f07000c;
-        public static final int btnDelPossession=0x7f070039;
+        public static final int btnDelPossession=0x7f070038;
         public static final int btnDescription=0x7f070075;
         public static final int btnExchange=0x7f070036;
         public static final int btnGuest=0x7f07006c;
@@ -179,7 +179,7 @@ containing a value of this type.
         public static final int tableRow2=0x7f070062;
         public static final int tableRow3=0x7f070066;
         public static final int tableRow5=0x7f07006a;
-        public static final int text=0x7f070038;
+        public static final int text=0x7f070039;
         public static final int textView1=0x7f070003;
         public static final int textView2=0x7f070009;
         public static final int textView3=0x7f07000b;
