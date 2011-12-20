@@ -96,7 +96,7 @@ public class MainPage {
         mBtnHottest = (Button) activity.findViewById(R.id.btnHottest);
         mBtnUnhottest = (Button) activity.findViewById(R.id.btnUnhottest);
         mBtnPossessions = (Button) activity.findViewById(R.id.btnPossessions);
-        setTopicBtns(new ArrayList<Button>());
+        mTopicBtns = new ArrayList<Button>();
         getTopicBtns().add(mBtnLatest);
         getTopicBtns().add(mBtnHottest);
         getTopicBtns().add(mBtnRandom);
@@ -743,10 +743,6 @@ public class MainPage {
 
 	public ArrayList<Button> getTopicBtns() {
 		return mTopicBtns;
-	}
-
-	public void setTopicBtns(ArrayList<Button> mTopicBtns) {
-		this.mTopicBtns = mTopicBtns;
 	}
 
 	public Integer getPageLimit() {
