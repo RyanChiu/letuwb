@@ -484,6 +484,30 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		return false;
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		//super.onSaveInstanceState(outState);
+		int idx = -1;
+		for (int i = 0; i < mMainPage.getTopicBtns().size(); i++) {
+			if (mMainPage.getTopicBtns().get(i).isSelected()) {
+				idx = i;
+				break;
+			}
+		}
+		outState.putInt("topic", idx);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		//super.onRestoreInstanceState(savedInstanceState);
+		int topic = savedInstanceState.getInt("topic");
+		if (topic != -1 && topic < mMainPage.getTopicBtns().size()) {
+			mMainPage.getTopicBtns().get(topic).performClick();
+		}
+	}
+
 	public static void setPrivilege(Integer privilege) {
 		if (privilege < 0 || privilege > 1) {
 			privilege = 1;
