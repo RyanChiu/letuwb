@@ -444,6 +444,8 @@ public class WeiboPage {
 					mEditUpdateStatus.setText(
 						"@" + mLastUser.getScreenName() + ":"
 						+ parent.getString(R.string.tips_routinehello)
+						+ " \"" + parent.getString(R.string.app_name)
+						+ "\":" + EntranceActivity.URL_UPDATE + "letuwb.apk"
 					);
 					mDlgUpdateStatus.show();
 				}

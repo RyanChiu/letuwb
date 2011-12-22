@@ -12,6 +12,7 @@ import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AboutActivity extends Activity {
@@ -70,6 +71,26 @@ public class AboutActivity extends Activity {
 				intent.putExtra(Intent.EXTRA_EMAIL, tos);
 				intent.setType("text/plain");
 				startActivity(intent);
+			}
+			
+		});
+		
+		ImageView ivShare = (ImageView)findViewById(R.id.ivShare);
+		ivShare.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("text/*");
+				intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.sharing_title));
+                intent.putExtra(
+                	Intent.EXTRA_TEXT, 
+                	getString(R.string.sharing_title)
+                	+ "\"" + getString(R.string.app_name) + "\" "
+                		+ getString(R.string.sharing_content)
+                );
+                startActivity(Intent.createChooser(intent, getTitle()));
 			}
 			
 		});

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="locale">en</string>
-    <string name="app_name">Hot Portaits</string>
+    <string name="app_name">Hot Portraits</string>
     <string name="reglogin_title">Login (SINA Weibo)</string>
     <string name="label_username">Username:</string>
     <string name="label_password">Password:</string>
@@ -98,8 +98,8 @@
     <string name="tips_hottesttheweek">Hottests the week.</string>
     <string name="tips_unhottesttheweek">Unhottest the week.</string>
     <string name="tips_possessions">My possessions.</string>
-    <string name="sharing_content">And I found it through http://az88.info/letmewb/landing.</string>
-    <string name="sharing_title">I found a hot picture, wish you like it.</string>
+    <string name="sharing_content">You could download it from here: http://az88.info/letuwb.apk</string>
+    <string name="sharing_title">I found a hot application, wish you like it.</string>
     <string name="about_version">Version: </string>
     <string name="omenuitem_about">About</string>
     <string name="about_officialsite">Official site: </string>
@@ -173,4 +173,5 @@
     <string name="tips_nooriginalimage0">No image in status.</string>
     <string name="tips_nooriginalimage1">No image in retweeted.</string>
     <string name="tips_nopossessions">You have no possessions right now, go pick ones, please.</string>
+    <string name="label_sharetheapp">Share this application:</string>
 </resources>
