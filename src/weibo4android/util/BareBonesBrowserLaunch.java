@@ -36,7 +36,8 @@ public class BareBonesBrowserLaunch {
         if (osName.startsWith("Mac OS")) {
             @SuppressWarnings("rawtypes")
 			Class fileMgr = Class.forName("com.apple.eio.FileManager");
-            Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class });
+            @SuppressWarnings("unchecked")
+			Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class });
             openURL.invoke(null, new Object[] { url });
         } else if (osName.startsWith("Windows")) {
             Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
