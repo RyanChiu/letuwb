@@ -420,6 +420,7 @@ containing a value of this type.
     }
     public static final class style {
         public static final int Dialog_Clean=0x7f060000;
+        public static final int Dialog_CleanWithDim=0x7f060001;
     }
     public static final class styleable {
         /** Attributes that can be used with a com_kandian_exchange_ExchangeView.

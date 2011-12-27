@@ -481,7 +481,7 @@ public class RegLoginActivity extends Activity {
 		private Dialog mDlgProgress;
 		
 		public AsyncLogin() {
-			this.mDlgProgress = new Dialog(RegLoginActivity.this, R.style.Dialog_Clean);
+			this.mDlgProgress = new Dialog(RegLoginActivity.this, R.style.Dialog_CleanWithDim);
 			mDlgProgress.setContentView(R.layout.custom_dialog_loading);
 			TextView tv = (TextView) mDlgProgress.findViewById(R.id.tvCustomDialogTitle);
 			tv.setText(R.string.label_logging);
