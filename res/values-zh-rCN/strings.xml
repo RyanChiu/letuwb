@@ -153,7 +153,7 @@
     <string name="tips_associated">您以前的私藏已与登录前的合并。</string>
     <string name="label_logging">正在登录，请稍候...</string>
     <string name="label_default">默认</string>
-    <string name="tips_wheterprofileimagecouldbeusedornot">我们将会把您公开的新浪微博头像展示给其他的用户，让他们可以给您的头像评分，请问您同意么？</string>
+    <string name="tips_whetherprofileimagecouldbeusedornot">我们将会把您公开的新浪微博头像展示给其他的用户，让他们可以给您的头像评分，请问您同意么？</string>
     <string name="label_allright">没问题</string>
     <string name="label_letmethink">让我再想想...</string>
     <string name="title_attention">请注意了</string>

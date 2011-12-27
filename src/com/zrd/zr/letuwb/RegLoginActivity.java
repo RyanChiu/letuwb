@@ -213,7 +213,7 @@ public class RegLoginActivity extends Activity {
 				new AlertDialog.Builder(RegLoginActivity.this)
 					.setIcon(R.drawable.icon)
 					.setTitle(R.string.title_attention)
-					.setMessage(R.string.tips_wheterprofileimagecouldbeusedornot)
+					.setMessage(R.string.tips_whetherprofileimagecouldbeusedornot)
 					.setPositiveButton(
 						R.string.label_allright,
 						new DialogInterface.OnClickListener() {

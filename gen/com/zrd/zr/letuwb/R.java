@@ -408,7 +408,7 @@ containing a value of this type.
         public static final int tips_voting=0x7f05001d;
         public static final int tips_waitasecond=0x7f050088;
         public static final int tips_waitforgettinguser=0x7f0500a4;
-        public static final int tips_wheterprofileimagecouldbeusedornot=0x7f050098;
+        public static final int tips_whetherprofileimagecouldbeusedornot=0x7f050098;
         public static final int title_attention=0x7f05009b;
         public static final int title_comment=0x7f050087;
         public static final int title_loginfirst=0x7f050068;
