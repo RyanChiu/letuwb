@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="ContentDescription">
+        <ignore path="res/layout/list_weibo_status.xml" />
+    </issue>
+    <issue id="HardcodedText">
+        <ignore path="res/layout/brow.xml" />
+        <ignore path="res/layout/list_weibo_status.xml" />
+    </issue>
+    <issue id="MergeRootFrame">
+        <ignore path="res/layout/brow.xml" />
+    </issue>
+    <issue id="ObsoleteLayoutParam">
+        <ignore path="res/layout/list_weibo_status.xml" />
+    </issue>
+    <issue id="UselessParent">
+        <ignore path="res/layout/brow.xml" />
+        <ignore path="res/layout/list_weibo_status.xml" />
+    </issue>
+</lint>

@@ -3,36 +3,115 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" android:orientation="vertical" android:descendantFocusability="blocksDescendants">
-    <RelativeLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/relativeLayout1">
-        <LinearLayout android:layout_alignParentRight="true" android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="wrap_content">
+    <RelativeLayout android:layout_height="wrap_content" android:layout_width="fill_parent">
+        <LinearLayout android:layout_alignParentRight="true" android:layout_height="wrap_content" android:layout_width="wrap_content">
             <TextView android:id="@+id/tvStatusCreatedAt" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="..."></TextView>
         </LinearLayout>
     </RelativeLayout>
-    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout4">
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent">
         <TextView android:id="@+id/tvStatusText" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="..." android:focusable="false" android:focusableInTouchMode="false"></TextView>
     </LinearLayout>
-    <RelativeLayout android:id="@+id/relativeLayout2" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout2" android:layout_height="fill_parent" android:gravity="center" android:orientation="vertical">
-            <ProgressBar android:layout_height="wrap_content" android:id="@+id/pbStatusImageLoading" android:layout_width="wrap_content" android:visibility="gone"></ProgressBar>
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ivStatusImage" android:layout_marginBottom="36dp"></ImageView>
-            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/frame_quote" android:id="@+id/llRetweeted" android:layout_marginBottom="36dp">
-                <TextView android:id="@+id/tvRetweeted" android:text="..." android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#000011" android:focusableInTouchMode="false" android:focusable="false"></TextView>
-                <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout7" android:layout_width="fill_parent" android:gravity="center" android:layout_gravity="center" android:orientation="vertical">
-                    <ProgressBar android:layout_centerInParent="true" android:id="@+id/pbRetweetedImageLoading" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"></ProgressBar>
-                    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ivRetweetedImage"></ImageView>
-                </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ProgressBar
+            android:id="@+id/pbStatusImageLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/ivStatusImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/llRetweeted"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/frame_quote"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tvRetweeted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="..."
+                android:textColor="#000011" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <ProgressBar
+                    android:id="@+id/pbRetweetedImageLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/ivRetweetedImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
-        <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout3" android:layout_alignParentBottom="true" android:layout_height="36dp">
-            <RelativeLayout android:id="@+id/relativeLayout3" android:layout_height="fill_parent" android:layout_width="fill_parent">
-                <LinearLayout android:id="@+id/linearLayout6" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <ImageView android:id="@+id/imageView1" android:scaleType="fitXY" android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/comments"></ImageView>
-                    <TextView android:id="@+id/tvStatusComments" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="comments"></TextView>
-                    <ImageView android:id="@+id/imageView2" android:scaleType="fitXY" android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/reposts"></ImageView>
-                    <TextView android:id="@+id/tvStatusReposts" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="reposts"></TextView>
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvSource" android:layout_alignParentRight="true" android:text="Source"></TextView>
-            </RelativeLayout>
-        </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="36dp" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/comments" />
+
+                <TextView
+                    android:id="@+id/tvStatusComments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="comments" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/reposts" />
+
+                <TextView
+                    android:id="@+id/tvStatusReposts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="reposts" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvSource"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Source" />
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

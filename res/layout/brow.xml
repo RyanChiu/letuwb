@@ -5,20 +5,31 @@
   android:layout_height="fill_parent" android:id="@+id/flBackground">
 
     <LinearLayout
-        android:id="@+id/linearLayout4"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:gravity="fill_horizontal|center" android:layout_margin="50dp">
+        android:gravity="fill_horizontal|center">
 
-        <com.sonyericsson.zoom.ImageZoomView android:layout_width="fill_parent" android:longClickable="true" android:id="@+id/imageSwitcher" android:layout_height="fill_parent"></com.sonyericsson.zoom.ImageZoomView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" android:layout_margin="50dp">
+
+            <com.sonyericsson.zoom.ImageZoomView
+                android:id="@+id/imageSwitcher"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:longClickable="true" />
+
+        </LinearLayout>
+
     </LinearLayout>    
 	<RelativeLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:longClickable="true" android:id="@+id/rlControl">
         <RelativeLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:id="@+id/relativeLayoutZoom">
             <LinearLayout android:orientation="vertical" android:id="@+id/linearLayoutInfo" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="3dp" android:layout_marginLeft="3dp">
                 <TextView android:layout_width="fill_parent" android:id="@+id/tvScreenNameAbovePic" android:background="@drawable/brow_screen_name" android:layout_height="wrap_content" android:paddingLeft="16dp" android:paddingRight="16dp" android:textColor="#1da7ef"></TextView>
-                <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomin" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomin"></ImageButton>
-                <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomout" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomout"></ImageButton>
+                <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomin" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomin" android:contentDescription="zoom in"></ImageButton>
+                <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomout" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomout" android:contentDescription="zoom out"></ImageButton>
             </LinearLayout>
         </RelativeLayout>
         <LinearLayout android:id="@+id/llBrowTop" android:layout_width="fill_parent" android:gravity="center" android:layout_height="wrap_content" android:orientation="vertical">
@@ -43,7 +54,7 @@
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayoutBottom" android:orientation="vertical" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
             <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp">
                 <LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout2" android:layout_alignParentLeft="true" android:orientation="vertical" android:layout_height="wrap_content">
-                    <ImageButton android:layout_marginLeft="2dp" android:id="@+id/imageButton4" android:layout_marginBottom="2dp" android:background="#00000000" android:src="@drawable/upup" android:layout_marginTop="3dp" android:scaleType="fitXY" android:layout_height="50dp" android:layout_width="50dp"></ImageButton>
+                    <ImageButton android:layout_marginLeft="2dp" android:id="@+id/imageButton4" android:layout_marginBottom="2dp" android:background="#00000000" android:src="@drawable/upup" android:layout_marginTop="3dp" android:scaleType="fitXY" android:layout_height="50dp" android:layout_width="50dp" android:contentDescription="hot"></ImageButton>
                 </LinearLayout>
                 <LinearLayout android:layout_width="fill_parent" android:id="@+id/llVoteInfo" android:orientation="vertical" android:layout_height="wrap_content">
                     <ProgressBar android:max="100" android:layout_width="fill_parent" style="?android:attr/progressBarStyleHorizontal" android:paddingTop="2dp" android:layout_height="9dp" android:progressDrawable="@drawable/voterating_progress_horizontal" android:layout_marginBottom="2dp" android:layout_marginTop="14dp" android:secondaryProgress="0" android:progress="0" android:paddingBottom="2dp" android:id="@+id/pbVote" android:layout_marginLeft="54dp" android:layout_marginRight="54dp"></ProgressBar>
@@ -54,7 +65,7 @@
                     </RelativeLayout>
                 </LinearLayout>
                 <LinearLayout android:layout_width="wrap_content" android:layout_alignParentRight="true" android:id="@+id/linearLayout3" android:orientation="vertical" android:layout_height="wrap_content">
-                    <ImageButton android:id="@+id/imageButton3" android:layout_marginBottom="2dp" android:background="#00000000" android:src="@drawable/dwdw" android:layout_marginTop="3dp" android:scaleType="fitXY" android:layout_marginRight="2dp" android:layout_width="50dp" android:layout_height="50dp"></ImageButton>
+                    <ImageButton android:id="@+id/imageButton3" android:layout_marginBottom="2dp" android:background="#00000000" android:src="@drawable/dwdw" android:layout_marginTop="3dp" android:scaleType="fitXY" android:layout_marginRight="2dp" android:layout_width="50dp" android:layout_height="50dp" android:contentDescription="ugly"></ImageButton>
                 </LinearLayout>
             </RelativeLayout>
             <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
