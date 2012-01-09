@@ -830,7 +830,7 @@ public class BrowPage {
 		public AsyncPicLoader(Context c) {
 			super();
 			mContext = c;
-			mPrgDialog = new Dialog(mContext, R.style.Dialog_Clean);
+			mPrgDialog = new Dialog(mContext, R.style.Dialog_CleanWithDim);
 			mPrgDialog.setContentView(R.layout.custom_dialog_loading);
 			((TextView) mPrgDialog.findViewById(R.id.tvCustomDialogTitle)).setText(parent.getString(R.string.msg_loading));
 			mPrgDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {

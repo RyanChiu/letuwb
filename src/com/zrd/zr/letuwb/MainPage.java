@@ -373,7 +373,7 @@ public class MainPage {
 	    	
 	    });
 	    
-	    mPrgDlg = new Dialog(parent, R.style.Dialog_Clean);
+	    mPrgDlg = new Dialog(parent, R.style.Dialog_CleanWithDim);
 	    mPrgDlg.setContentView(R.layout.custom_dialog_loading);
 	    WindowManager.LayoutParams lp = mPrgDlg.getWindow().getAttributes();
 	    lp.alpha = 1.0f;
