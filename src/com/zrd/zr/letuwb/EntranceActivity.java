@@ -45,7 +45,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 
 	final static String SERIAL_APP = "gbhytfvnjurdcmkiesx,lowaz.;p201108282317";
 	final static String TIMEZONE_SERVER = "Asia/Hong_Kong";
-	final static String URL_SITE = "http://hot88.info/letmewb/";
+	//final static String URL_SITE = "http://hot88.info/letmewb/";
+	final static String URL_SITE = "http://183.90.186.96/letmewb/";
 	final static String URL_UPDATE = "http://az88.info/";
 	final static String URL_STATS = "http://az88.info/letmewb/";
 	final static String PATH_COLLECTION = "/letuwb/collection/";

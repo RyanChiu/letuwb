@@ -205,9 +205,9 @@ public class BrowPage {
 		//mZoomListener = new LongPressZoomListener(getApplicationContext());
 		mZoomListener = new LongPressZoomListener(parent);
         mZoomListener.setZoomControl(mZoomControl);
-        getBrow().setZoomState(mZoomControl.getZoomState());
-        mZoomControl.setAspectQuotient(getBrow().getAspectQuotient());
-		getBrow().setOnTouchListener(parent);
+        mBrow.setZoomState(mZoomControl.getZoomState());
+        mZoomControl.setAspectQuotient(mBrow.getAspectQuotient());
+		mBrow.setOnTouchListener(parent);
         //mBrow.setOnTouchListener(mZoomListener);
 		
 		llVoteInfo.setVisibility(LinearLayout.INVISIBLE);

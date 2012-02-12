@@ -1019,6 +1019,7 @@ com.zrd.zr.letuwb.RegLoginActivity
 com.google.ads.AdActivity
 com.mobclick.android.UmengFeedback
 com.adwo.adsdk.AdwoSplashAdActivity
+com.zrd.zr.letuwb.ImageActivity
 com.adwo.adsdk.AdwoAdBrowserActivity
 com.zrd.zr.letuwb.ExchangeListActivity
 com.zrd.zr.letuwb.EntranceActivity

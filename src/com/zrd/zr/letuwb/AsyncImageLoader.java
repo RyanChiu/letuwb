@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 
+import com.sonyericsson.zoom.ImageZoomView;
 import com.zrd.zr.pnj.SecureURL;
 
 import android.app.Activity;
@@ -22,7 +23,8 @@ import android.widget.ProgressBar;
 public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	private Context mContext;
 	private Integer mResIdBadImage;
-	private ImageView mImage;
+	private ImageView mImage = null;
+	private ImageZoomView mImageZoom = null;
 	private ProgressBar mProgress = null;
 	
 	private static HashMap<String, SoftReference<Bitmap>> mMemImages
@@ -47,6 +49,14 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	public AsyncImageLoader(Context context,
 		ImageView image, Integer resIdBadImage, ProgressBar progress) {
 		this(context, image, resIdBadImage);
+		mProgress = progress;
+	}
+	
+	public AsyncImageLoader(Context context,
+		ImageZoomView imageZoom, Integer resIdBadImage, ProgressBar progress) {
+		mContext = context;
+		mImageZoom = imageZoom;
+		mResIdBadImage = resIdBadImage;
 		mProgress = progress;
 	}
 	
@@ -98,7 +108,12 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		// TODO Auto-generated method stub
 		if (mProgress != null) {
 			mProgress.setVisibility(ProgressBar.VISIBLE);
-			mImage.setVisibility(ImageView.GONE);
+			if (mImage != null) {
+				mImage.setVisibility(ImageView.GONE);
+			}
+			if (mImageZoom != null) {
+				mImageZoom.setVisibility(ImageZoomView.GONE);
+			}
 		}
 		super.onPreExecute();
 	}
@@ -178,9 +193,26 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 				mImage.setImageResource(mResIdBadImage);
 			}
 		}
+		if (mImageZoom != null) {
+			if (result != null) {
+				mImageZoom.setImage(result);
+			} else {
+				mImageZoom.setImage(
+					BitmapFactory.decodeResource(
+						mContext.getResources(),
+						mResIdBadImage
+					)
+				);
+			}
+		}
 		if (mProgress != null) {
 			mProgress.setVisibility(ProgressBar.GONE);
-			mImage.setVisibility(ImageView.VISIBLE);
+			if (mImage != null) {
+				mImage.setVisibility(ImageView.VISIBLE);
+			}
+			if (mImageZoom != null) {
+				mImageZoom.setVisibility(ImageZoomView.VISIBLE);
+			}
 		}
 		super.onPostExecute(result);
 	}

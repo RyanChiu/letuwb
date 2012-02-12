@@ -28,6 +28,7 @@
 package com.sonyericsson.zoom;
 
 import com.zrd.zr.letuwb.EntranceActivity;
+import com.zrd.zr.letuwb.ImageActivity;
 import com.zrd.zr.letuwb.R;
 
 import android.content.Context;
@@ -232,6 +233,13 @@ public class LongPressZoomListener extends GestureDetector.SimpleOnGestureListen
     			ea.getString(R.string.label_browse),
     			Toast.LENGTH_LONG
     		).show();
+    	}
+    	
+    	if (mContext instanceof ImageActivity) {
+    		ImageActivity ia = (ImageActivity) mContext;
+    		ia.getImageZoom().setOnTouchListener(ia);
+    		ia.setDooming(false);
+    		ia.resetZoomState();
     	}
     	
     	return true;

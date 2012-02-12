@@ -4777,15 +4777,16 @@ com.zrd.zr.letuwb.AsyncImageLoader -> com.zrd.zr.letuwb.b:
     android.content.Context mContext -> a
     java.lang.Integer mResIdBadImage -> b
     android.widget.ImageView mImage -> c
-    android.widget.ProgressBar mProgress -> d
-    java.util.HashMap mMemImages -> e
+    com.sonyericsson.zoom.ImageZoomView mImageZoom -> d
+    android.widget.ProgressBar mProgress -> e
+    java.util.HashMap mMemImages -> f
     android.graphics.Bitmap loadImage(java.net.URL) -> a
     void onPreExecute() -> onPreExecute
     void onProgressUpdate(java.lang.Object[]) -> onProgressUpdate
     void onCancelled() -> onCancelled
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.zrd.zr.letuwb.AsyncSaver -> com.zrd.zr.letuwb.ct:
+com.zrd.zr.letuwb.AsyncSaver -> com.zrd.zr.letuwb.cu:
     android.content.Context mContext -> a
     android.graphics.Bitmap mBitmap -> b
     java.lang.String getSdcardDir() -> a
@@ -4961,7 +4962,7 @@ com.zrd.zr.letuwb.BrowPage$AsyncVoter -> com.zrd.zr.letuwb.br:
     com.zrd.zr.letuwb.BrowPage this$0 -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.zrd.zr.letuwb.BrowPage$PicbrowGestureListener -> com.zrd.zr.letuwb.cu:
+com.zrd.zr.letuwb.BrowPage$PicbrowGestureListener -> com.zrd.zr.letuwb.cv:
     com.zrd.zr.letuwb.BrowPage this$0 -> a
     boolean onFling(android.view.MotionEvent,android.view.MotionEvent,float,float) -> onFling
     boolean onDoubleTap(android.view.MotionEvent) -> onDoubleTap
@@ -5071,6 +5072,27 @@ com.zrd.zr.letuwb.FilePickerActivity -> com.zrd.zr.letuwb.FilePickerActivity:
 com.zrd.zr.letuwb.FileUtil -> com.zrd.zr.letuwb.cl:
     double getSize(java.lang.String) -> a
     boolean deleteDirectory(java.lang.String) -> b
+com.zrd.zr.letuwb.ImageActivity -> com.zrd.zr.letuwb.ImageActivity:
+    android.widget.ProgressBar mProgressLoading -> a
+    com.sonyericsson.zoom.ImageZoomView mImageZoom -> b
+    com.sonyericsson.zoom.DynamicZoomControl mZoomControl -> c
+    com.sonyericsson.zoom.LongPressZoomListener mZoomListener -> d
+    android.view.GestureDetector mGestureDetector -> e
+    boolean mIsDooming -> f
+    void onCreate(android.os.Bundle) -> onCreate
+    boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+    boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
+    void resetZoomState() -> a
+    com.sonyericsson.zoom.ImageZoomView getImageZoom() -> b
+    void setDooming$1385ff() -> c
+    boolean access$0(com.zrd.zr.letuwb.ImageActivity) -> a
+    com.sonyericsson.zoom.DynamicZoomControl access$1(com.zrd.zr.letuwb.ImageActivity) -> b
+    com.sonyericsson.zoom.LongPressZoomListener access$2(com.zrd.zr.letuwb.ImageActivity) -> c
+    void access$3$419984b2(com.zrd.zr.letuwb.ImageActivity) -> d
+com.zrd.zr.letuwb.ImageActivity$ImagebrowGestureListener -> com.zrd.zr.letuwb.cs:
+    com.zrd.zr.letuwb.ImageActivity this$0 -> a
+    boolean onDoubleTap(android.view.MotionEvent) -> onDoubleTap
+    boolean onSingleTapConfirmed(android.view.MotionEvent) -> onSingleTapConfirmed
 com.zrd.zr.letuwb.MainPage -> com.zrd.zr.letuwb.af:
     com.zrd.zr.letuwb.EntranceActivity parent -> c
     android.widget.GridView mGridPics -> d
@@ -5241,7 +5263,7 @@ com.zrd.zr.letuwb.RegLoginActivity$3 -> com.zrd.zr.letuwb.ax:
 com.zrd.zr.letuwb.RegLoginActivity$4 -> com.zrd.zr.letuwb.as:
     com.zrd.zr.letuwb.RegLoginActivity this$0 -> a
     void onClick(android.view.View) -> onClick
-com.zrd.zr.letuwb.RegLoginActivity$4$1 -> com.zrd.zr.letuwb.cw:
+com.zrd.zr.letuwb.RegLoginActivity$4$1 -> com.zrd.zr.letuwb.cx:
     com.zrd.zr.letuwb.RegLoginActivity$4 this$1 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
 com.zrd.zr.letuwb.RegLoginActivity$5 -> com.zrd.zr.letuwb.ar:
@@ -5279,7 +5301,7 @@ com.zrd.zr.letuwb.UpdateActivity$1$2 -> com.zrd.zr.letuwb.cj:
 com.zrd.zr.letuwb.UpdateActivity$2 -> com.zrd.zr.letuwb.bw:
     com.zrd.zr.letuwb.UpdateActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.zrd.zr.letuwb.ViewCache -> com.zrd.zr.letuwb.cv:
+com.zrd.zr.letuwb.ViewCache -> com.zrd.zr.letuwb.cw:
     android.view.View baseView -> a
     android.widget.TextView textView -> b
     android.widget.ImageView imageView -> c
@@ -5331,6 +5353,7 @@ com.zrd.zr.letuwb.WeiboPage -> com.zrd.zr.letuwb.bs:
     com.zrd.zr.weiboes.Sina getSina() -> e
     void setSina(com.zrd.zr.weiboes.Sina) -> a
     void turnDealing(boolean) -> a
+    void showOriginalImage(java.lang.String) -> a
     java.lang.Long getUid() -> f
     void setUid(java.lang.Long) -> b
     int getReferer() -> g
@@ -5470,7 +5493,7 @@ com.zrd.zr.letuwb.WeibouserInfo -> com.zrd.zr.letuwb.d:
     java.lang.Integer dislikes -> j
     java.lang.Integer mLastVote -> k
     java.util.Date mLastVoteTime -> l
-com.zrd.zr.letuwb.WeibouserInfoGridAdapter -> com.zrd.zr.letuwb.cs:
+com.zrd.zr.letuwb.WeibouserInfoGridAdapter -> com.zrd.zr.letuwb.ct:
     android.widget.GridView gridView -> a
     com.zrd.zr.letuwb.AsyncThumLoader asyncImageLoader -> b
     android.content.Context mContext -> c
@@ -5478,10 +5501,10 @@ com.zrd.zr.letuwb.WeibouserInfoGridAdapter -> com.zrd.zr.letuwb.cs:
     android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
     android.widget.GridView access$0(com.zrd.zr.letuwb.WeibouserInfoGridAdapter) -> a
     android.content.Context access$1(com.zrd.zr.letuwb.WeibouserInfoGridAdapter) -> b
-com.zrd.zr.letuwb.WeibouserInfoGridAdapter$1 -> com.zrd.zr.letuwb.cy:
+com.zrd.zr.letuwb.WeibouserInfoGridAdapter$1 -> com.zrd.zr.letuwb.cz:
     com.zrd.zr.letuwb.WeibouserInfoGridAdapter this$0 -> a
     void imageLoaded(android.graphics.drawable.Drawable,java.lang.Long) -> a
-com.zrd.zr.letuwb.WeibouserInfoGridAdapter$2 -> com.zrd.zr.letuwb.cx:
+com.zrd.zr.letuwb.WeibouserInfoGridAdapter$2 -> com.zrd.zr.letuwb.cy:
     com.zrd.zr.letuwb.WeibouserInfoGridAdapter this$0 -> a
     void onClick(android.view.View) -> onClick
 com.zrd.zr.letuwb.WeibouserInfoGridAdapter$2$1 -> com.zrd.zr.letuwb.bg:

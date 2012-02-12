@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="@drawable/roundsquare">
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ProgressBar
+            android:id="@+id/pbImageBrowser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <com.sonyericsson.zoom.ImageZoomView
+                android:id="@+id/imageBrowser"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:longClickable="true" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+ </LinearLayout>

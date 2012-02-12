@@ -15,7 +15,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -601,9 +600,7 @@ public class WeiboPage {
 							.getStatus()
 							.getOriginal_pic();
 						if (originalPic != null && !originalPic.trim().equals("")) {
-							Uri uri = Uri.parse(originalPic);
-							Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-			                parent.startActivity(intent);
+							showOriginalImage(originalPic);
 						} else {
 							Toast.makeText(
 								parent,
@@ -631,9 +628,7 @@ public class WeiboPage {
 							originalPic = null;
 						}
 						if (originalPic != null && !originalPic.trim().equals("")) {
-							Uri uri = Uri.parse(originalPic);
-							Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-			                parent.startActivity(intent);
+							showOriginalImage(originalPic);
 						} else {
 							Toast.makeText(
 								parent,
@@ -1162,6 +1157,17 @@ public class WeiboPage {
 			}
 			mProgressStatusLoading.setVisibility(ProgressBar.GONE);
 		}
+	}
+	
+	/*
+	 * try to show pictures from weibo in a dialog
+	 * with given uri
+	 */
+	protected void showOriginalImage(String sUrl) {
+		Intent intent = new Intent();
+		intent.putExtra("url", sUrl);
+		intent.setClass(parent, ImageActivity.class);
+		parent.startActivity(intent);
 	}
 
 	public Long getUid() {

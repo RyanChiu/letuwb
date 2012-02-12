@@ -2350,9 +2350,9 @@ com.sonyericsson.zoom.DynamicZoomControl:
     private static final float PAN_OUTSIDE_SNAP_FACTOR
 com.sonyericsson.zoom.LongPressZoomListener:
     private static final long VIBRATE_TIME
-    100:100:public android.view.GestureDetector getGestureDetector()
+    101:101:public android.view.GestureDetector getGestureDetector()
 com.zrd.zr.letuwb.AsyncImageLoader:
-    54:54:public java.util.HashMap getMemImages()
+    64:64:public java.util.HashMap getMemImages()
 com.zrd.zr.letuwb.AsyncThumLoader:
     29:29:public java.util.HashMap getImageCache()
 com.zrd.zr.letuwb.BrowPage:
@@ -2385,10 +2385,10 @@ com.zrd.zr.letuwb.EntranceActivity:
     android.widget.EditText mEditRepeat
     android.widget.TableRow mRowRepeat
     android.widget.CheckBox mCheckRemember
-    229:229:public static java.lang.String getRandomKey()
-    233:239:public static void resetRandomKey(java.lang.String)
-    527:527:public static java.lang.Integer getAccountId()
-    767:767:public android.widget.ViewFlipper getViewFlipper()
+    230:230:public static java.lang.String getRandomKey()
+    234:240:public static void resetRandomKey(java.lang.String)
+    528:528:public static java.lang.Integer getAccountId()
+    768:768:public android.widget.ViewFlipper getViewFlipper()
 com.zrd.zr.letuwb.FileListView:
     177:181:public void refresh()
     184:184:public java.lang.String getCurrentDirectory()
@@ -2420,8 +2420,8 @@ com.zrd.zr.letuwb.UpdateActivity:
 com.zrd.zr.letuwb.WeiboPage:
     protected static final int COUNT_PERPAGE_TIMELINE
     protected static final int COUNT_PERPAGE_COMMENTS
-    1184:1184:public java.lang.Long getId()
-    1192:1192:public weibo4android.User getLastUser()
+    1190:1190:public java.lang.Long getId()
+    1198:1198:public weibo4android.User getLastUser()
 com.zrd.zr.letuwb.WeibouserInfo:
     68:94:public WeibouserInfo(com.zrd.zr.letuwb.WeibouserInfo)
 com.zrd.zr.letuwb.WeibouserInfoGridAdapter:
