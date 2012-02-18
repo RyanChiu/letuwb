@@ -4789,10 +4789,11 @@ com.zrd.zr.letuwb.AsyncImageLoader -> com.zrd.zr.letuwb.b:
 com.zrd.zr.letuwb.AsyncSaver -> com.zrd.zr.letuwb.cu:
     android.content.Context mContext -> a
     android.graphics.Bitmap mBitmap -> b
+    java.net.URL mUrl -> c
     java.lang.String getSdcardDir() -> a
     int probeFile(java.lang.String,java.lang.String) -> a
     java.io.File getSilentFile(java.lang.String,java.lang.String) -> b
-    java.util.ArrayList saveImage(java.io.File) -> a
+    java.lang.String saveImage(java.io.File) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
 com.zrd.zr.letuwb.AsyncThumLoader -> com.zrd.zr.letuwb.aw:
@@ -5078,8 +5079,11 @@ com.zrd.zr.letuwb.ImageActivity -> com.zrd.zr.letuwb.ImageActivity:
     com.sonyericsson.zoom.DynamicZoomControl mZoomControl -> c
     com.sonyericsson.zoom.LongPressZoomListener mZoomListener -> d
     android.view.GestureDetector mGestureDetector -> e
-    boolean mIsDooming -> f
+    java.net.URL mUrl -> f
+    boolean mIsDooming -> g
     void onCreate(android.os.Bundle) -> onCreate
+    boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    boolean onMenuItemSelected(int,android.view.MenuItem) -> onMenuItemSelected
     boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
     boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
     void resetZoomState() -> a

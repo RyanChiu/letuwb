@@ -337,11 +337,8 @@ containing a value of this type.
         public static final int msg_loading=0x7f05000b;
         public static final int msg_nopictures=0x7f05001a;
         public static final int msg_uploading=0x7f05001c;
-        public static final int noti_notcreated=0x7f050029;
-        public static final int noti_notsavedtitle=0x7f050028;
-        public static final int noti_saved=0x7f050027;
-        public static final int noti_savedtitle=0x7f050026;
         public static final int omenuitem_about=0x7f050064;
+        public static final int omenuitem_goback=0x7f0500ad;
         public static final int omenuitem_quit=0x7f050031;
         public static final int omenuitem_reglogin=0x7f050030;
         public static final int omenuitem_topic=0x7f05002f;
@@ -364,6 +361,7 @@ containing a value of this type.
         public static final int tips_enterintro=0x7f050046;
         public static final int tips_failedtopossess=0x7f05008f;
         public static final int tips_favoritemade=0x7f050080;
+        public static final int tips_filenotcreated=0x7f050029;
         public static final int tips_firstone=0x7f050025;
         public static final int tips_friendsalready=0x7f050070;
         public static final int tips_friendsmade=0x7f05006f;
@@ -371,6 +369,8 @@ containing a value of this type.
         public static final int tips_havetologin=0x7f050069;
         public static final int tips_hottesttheweek=0x7f05005e;
         public static final int tips_howtobacktobrowse=0x7f050050;
+        public static final int tips_imagenotsaved=0x7f050028;
+        public static final int tips_imagesaved=0x7f050026;
         public static final int tips_isdownloading=0x7f05003d;
         public static final int tips_lastone=0x7f050024;
         public static final int tips_loggedin=0x7f050042;
@@ -385,6 +385,7 @@ containing a value of this type.
         public static final int tips_nopossessions=0x7f0500ab;
         public static final int tips_notgetserialyet=0x7f05004d;
         public static final int tips_nothinghappened=0x7f05002b;
+        public static final int tips_nothingtosave=0x7f050027;
         public static final int tips_nowisloggingin=0x7f05009d;
         /**  <string name="tips_pages">%1$d~%2$d / %3$d~%4$d Total %5$d pictures</string> 
  <string name="tips_pages">%1$d~%2$d / %3$d~%4$d 共%5$d张图片</string> 

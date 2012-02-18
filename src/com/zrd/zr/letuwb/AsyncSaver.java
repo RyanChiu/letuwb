@@ -1,10 +1,14 @@
 package com.zrd.zr.letuwb;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,10 +22,16 @@ import android.widget.Toast;
 public class AsyncSaver extends AsyncTask <Object, Object, Object> {
 	Context mContext;
 	Bitmap mBitmap;
+	URL mUrl;
 	
 	AsyncSaver(Context context, Bitmap bmp) {
 		mContext = context;
 		mBitmap = bmp;
+	}
+	
+	AsyncSaver(Context context, URL url) {
+		mContext = context;
+		mUrl = url;
 	}
 	
 	/*
@@ -55,51 +65,71 @@ public class AsyncSaver extends AsyncTask <Object, Object, Object> {
 		else return new File(new File(sPath), sFname);
 	}
 	
-	public ArrayList<String> saveImage(File saveFile) {
+	public String saveImage(File saveFile) {
 		//BitmapDrawable imgBd = (BitmapDrawable) mBrow.getTag();
 		// TODO Auto-generated method stub
-		ArrayList<String> notes = new ArrayList<String>();
 		if (saveFile == null) {
-			notes.add(String.format(mContext.getString(R.string.noti_notcreated), ""));
-			notes.add(mContext.getString(R.string.noti_notsavedtitle));
-			return notes;
+			return mContext.getString(R.string.tips_filenotcreated);
 		}
 		String fn = saveFile.getName();
 		if (fn == null || fn.equals("")) {
-			notes.add(String.format(mContext.getString(R.string.noti_notcreated), ""));
-			notes.add(mContext.getString(R.string.noti_notsavedtitle));
-			return notes;
+			return mContext.getString(R.string.tips_filenotcreated);
 		}
-		try {
-			FileOutputStream outStream = new FileOutputStream(saveFile);
-			mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-			outStream.flush();
-			outStream.close();
-			notes.add(String.format(mContext.getString(R.string.noti_saved), fn));
-			notes.add(mContext.getString(R.string.noti_savedtitle));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			notes.add(String.format(mContext.getString(R.string.noti_notcreated), fn));
-			notes.add(mContext.getString(R.string.noti_notsavedtitle));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			notes.add(String.format(mContext.getString(R.string.noti_notcreated), fn));
-			notes.add(mContext.getString(R.string.noti_notsavedtitle));
+		if (mBitmap == null && mUrl == null) {
+			return mContext.getString(R.string.tips_nothingtosave);
 		}
 		
-		return notes;
+		if (mBitmap != null)
+		{
+			try {
+				FileOutputStream outStream = new FileOutputStream(saveFile);
+				mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+				outStream.flush();
+				outStream.close();
+				return mContext.getString(R.string.tips_imagesaved);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return mContext.getString(R.string.tips_imagenotsaved);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return mContext.getString(R.string.tips_imagenotsaved);
+			}
+		}
+		
+		if (mUrl != null) {
+			try {
+				URLConnection conexion = mUrl.openConnection();
+	            conexion.connect();
+	            // download the file
+	            InputStream input = new BufferedInputStream(mUrl.openStream());
+	            OutputStream output = new FileOutputStream(saveFile);
+	            byte data[] = new byte[1024];
+	            int count;
+	            while ((count = input.read(data)) != -1) {
+	            	output.write(data, 0, count);
+	            }
+	            output.flush();
+	            output.close();
+	            input.close();
+	            return mContext.getString(R.string.tips_imagesaved);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return mContext.getString(R.string.tips_imagenotsaved);
+			}
+		}
+		
+		return mContext.getString(R.string.tips_imagenotsaved); 
 	}
 	
 	@Override
 	protected void onPostExecute(Object result) {
 		// TODO Auto-generated method stub
-		@SuppressWarnings("unchecked")
-		ArrayList<String> notes = (ArrayList<String>) result;
+		String msg = (String) result;
 		Toast.makeText(
 			mContext,
-			notes.get(1) + ":" + notes.get(0),
+			msg,
 			Toast.LENGTH_LONG
 		).show();
 		super.onPostExecute(result);

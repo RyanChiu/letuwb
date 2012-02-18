@@ -11,10 +11,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class ImageActivity extends Activity implements OnTouchListener {
 	private ProgressBar mProgressLoading;
@@ -25,6 +28,7 @@ public class ImageActivity extends Activity implements OnTouchListener {
     private LongPressZoomListener mZoomListener;
     private GestureDetector mGestureDetector = null;
     
+    private URL mUrl;
     private boolean mIsDooming = false;
 
 	@Override
@@ -44,6 +48,18 @@ public class ImageActivity extends Activity implements OnTouchListener {
         mGestureDetector = new GestureDetector(this, new ImagebrowGestureListener());
         
         String sUrl = getIntent().getStringExtra("url");
+        int idx = sUrl.lastIndexOf(".");
+        String sExt = "";
+        if (idx != -1) {
+        	sExt = sUrl.substring(idx).toLowerCase();
+        }
+        if (sExt.equals(".gif")) {
+        	Toast.makeText(
+        		this,
+        		"A GIF image.",
+        		Toast.LENGTH_LONG
+        	).show();
+        }
         URL url = null;
         try {
 			url = new URL(sUrl);
@@ -55,9 +71,46 @@ public class ImageActivity extends Activity implements OnTouchListener {
         	);
         	loader.execute(url);
         }
+        mUrl = url;
         resetZoomState();
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		menu.add(Menu.NONE, Menu.FIRST + 1, 1, getString(R.string.label_save));
+		menu.add(Menu.NONE, Menu.FIRST + 2, 1, getString(R.string.omenuitem_goback));
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()) {
+		case Menu.FIRST + 1://save
+			Toast.makeText(
+				this,
+				R.string.tips_saving,
+				Toast.LENGTH_SHORT
+			).show();
+			AsyncSaver saver = new AsyncSaver(this, mUrl);
+			String sPath = AsyncSaver.getSdcardDir() + EntranceActivity.PATH_COLLECTION;
+			String sFile = mUrl.getFile();
+			int idxFind = sFile.lastIndexOf("/");
+			if (idxFind != -1) {
+				sFile = sFile.substring(idxFind);
+			}
+			saver.execute(AsyncSaver.getSilentFile(sPath, sFile));
+			break;
+		case Menu.FIRST + 2://go back
+			this.finish();
+			break;
+		}
+		
+		return super.onMenuItemSelected(featureId, item);
+	}
+
 	public boolean onTouch(View view, MotionEvent event) {
 		// TODO Auto-generated method stub
 		return mGestureDetector.onTouchEvent(event);
@@ -93,6 +146,8 @@ public class ImageActivity extends Activity implements OnTouchListener {
 		@Override
 		public boolean onSingleTapConfirmed(MotionEvent e) {
 			// TODO Auto-generated method stub
+			ImageActivity.this.openOptionsMenu();
+			
 			return true;
 		}
 		
