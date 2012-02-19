@@ -1,8 +1,12 @@
 package com.zrd.zr.letuwb;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.ant.liao.GifView;
+import com.ant.liao.GifView.GifImageType;
 import com.sonyericsson.zoom.DynamicZoomControl;
 import com.sonyericsson.zoom.ImageZoomView;
 import com.sonyericsson.zoom.LongPressZoomListener;
@@ -22,6 +26,7 @@ import android.widget.Toast;
 public class ImageActivity extends Activity implements OnTouchListener {
 	private ProgressBar mProgressLoading;
 	private ImageZoomView mImageZoom;
+	private GifView mImageGif;
 	/** Zoom control */
     private DynamicZoomControl mZoomControl;
     /** On touch listener for zoom view */
@@ -39,12 +44,15 @@ public class ImageActivity extends Activity implements OnTouchListener {
 		
 		mProgressLoading = (ProgressBar) findViewById(R.id.pbImageBrowser);
 		mImageZoom = (ImageZoomView) findViewById(R.id.imageBrowser);
+		mImageGif = (GifView) findViewById(R.id.imageGif);
+		mImageGif.setGifImageType(GifImageType.WAIT_FINISH);
+		mImageGif.setOnTouchListener(this);
 		mZoomControl = new DynamicZoomControl();
 		mZoomListener = new LongPressZoomListener(this);
         mZoomListener.setZoomControl(mZoomControl);
-        getImageZoom().setZoomState(mZoomControl.getZoomState());
-        mZoomControl.setAspectQuotient(getImageZoom().getAspectQuotient());
-        getImageZoom().setOnTouchListener(this);
+        mImageZoom.setZoomState(mZoomControl.getZoomState());
+        mZoomControl.setAspectQuotient(mImageZoom.getAspectQuotient());
+        mImageZoom.setOnTouchListener(this);
         mGestureDetector = new GestureDetector(this, new ImagebrowGestureListener());
         
         String sUrl = getIntent().getStringExtra("url");
@@ -53,26 +61,44 @@ public class ImageActivity extends Activity implements OnTouchListener {
         if (idx != -1) {
         	sExt = sUrl.substring(idx).toLowerCase();
         }
-        if (sExt.equals(".gif")) {
-        	Toast.makeText(
-        		this,
-        		"A GIF image.",
-        		Toast.LENGTH_LONG
-        	).show();
-        }
+        
         URL url = null;
         try {
 			url = new URL(sUrl);
 		} catch (MalformedURLException e) {
 		}
-        if (url != null) {
-        	AsyncImageLoader loader = new AsyncImageLoader(
-        		this, getImageZoom(), R.drawable.thumbg, mProgressLoading
-        	);
-        	loader.execute(url);
-        }
         mUrl = url;
-        resetZoomState();
+        
+        if (sExt.equals(".gif")) {
+        	Toast.makeText(
+        		this,
+        		R.string.tips_gifimage,
+        		Toast.LENGTH_SHORT
+        	).show();
+        	mImageZoom.setVisibility(View.GONE);
+        	mImageGif.setVisibility(View.VISIBLE);
+        	try {
+	            InputStream input = new BufferedInputStream(mUrl.openStream());
+	        	mImageGif.setGifImage(input);
+        	} catch (Exception e) {
+        		Toast.makeText(
+            		this,
+            		R.string.tips_failedtoshowgif,
+            		Toast.LENGTH_LONG
+            	).show();
+        	}
+        } else {
+        	mImageZoom.setVisibility(View.VISIBLE);
+        	mImageGif.setVisibility(View.GONE);
+        	if (mUrl != null) {
+            	AsyncImageLoader loader = new AsyncImageLoader(
+            		this, mImageZoom, R.drawable.thumbg, mProgressLoading
+            	);
+            	loader.execute(mUrl);
+            }
+            
+            resetZoomState();
+        }
 	}
 	
 	@Override

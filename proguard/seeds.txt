@@ -1,5 +1,7 @@
 com.google.ads.AdView
 com.google.ads.AdView: AdView(android.content.Context,android.util.AttributeSet)
+com.ant.liao.GifView
+com.ant.liao.GifView: GifView(android.content.Context,android.util.AttributeSet)
 com.adwo.adsdk.AdwoAdView
 com.adwo.adsdk.AdwoAdView: AdwoAdView(android.content.Context,android.util.AttributeSet)
 com.kandian.exchange.ExchangeView
@@ -12,6 +14,8 @@ com.adwhirl.AdWhirlLayout
 com.adwhirl.AdWhirlLayout: AdWhirlLayout(android.content.Context,android.util.AttributeSet)
 com.google.ads.AdView
 com.google.ads.AdView: AdView(android.content.Context,android.util.AttributeSet,int)
+com.ant.liao.GifView
+com.ant.liao.GifView: GifView(android.content.Context,android.util.AttributeSet,int)
 com.adwo.adsdk.AdwoAdView
 com.adwo.adsdk.AdwoAdView: AdwoAdView(android.content.Context,android.util.AttributeSet,int)
 com.kandian.exchange.ExchangeView
@@ -52,6 +56,8 @@ com.google.ads.AdRequest$ErrorCode: com.google.ads.AdRequest$ErrorCode[] values(
 com.google.ads.AdRequest$ErrorCode: com.google.ads.AdRequest$ErrorCode valueOf(java.lang.String)
 com.google.protobuf.Descriptors$FieldDescriptor$JavaType: com.google.protobuf.Descriptors$FieldDescriptor$JavaType[] values()
 com.google.protobuf.Descriptors$FieldDescriptor$JavaType: com.google.protobuf.Descriptors$FieldDescriptor$JavaType valueOf(java.lang.String)
+com.ant.liao.GifView$GifImageType: com.ant.liao.GifView$GifImageType[] values()
+com.ant.liao.GifView$GifImageType: com.ant.liao.GifView$GifImageType valueOf(java.lang.String)
 cn.domob.android.ads.g$b: cn.domob.android.ads.g$b[] values()
 cn.domob.android.ads.g$b: cn.domob.android.ads.g$b valueOf(java.lang.String)
 com.google.protobuf.WireFormat$JavaType: com.google.protobuf.WireFormat$JavaType[] values()

@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="/letusee/vendors/tracedroid.jar"/>
 	<classpathentry kind="lib" path="libs/ads/adwosdk2.5.1.jar"/>
 	<classpathentry kind="lib" path="libs/ads/domob_android_sdk.jar"/>
+	<classpathentry kind="lib" path="libs/GifView.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

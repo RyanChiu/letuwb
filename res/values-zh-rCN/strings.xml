@@ -175,4 +175,6 @@
     <string name="tips_nopossessions">您还没“私藏”呢，赶紧添加您的“私藏”吧。</string>
     <string name="label_sharetheapp">分享此应用：</string>
     <string name="omenuitem_goback">返回</string>
+    <string name="tips_gifimage">GIF动态图片，载入中，请稍后…</string>
+    <string name="tips_failedtoshowgif">载入GIF图片失败。</string>
 </resources>

@@ -100,6 +100,31 @@ com.adwhirl.util.AdWhirlUtil:
     public static final int CUSTOM_TYPE_ICON
     72:86:public static int getContextLanguage(android.content.Context)
     90:119:public static int getADSupportLangSet(int)
+com.ant.liao.GifDecoder:
+    public static final int STATUS_PARSING
+    public static final int STATUS_FORMAT_ERROR
+    public static final int STATUS_OPEN_ERROR
+    public static final int STATUS_FINISH
+    private static final int MaxStackSize
+    81:84:public GifDecoder(byte[],com.ant.liao.GifAction)
+    125:125:public int getStatus()
+    133:133:public boolean parseOk()
+    142:149:public int getDelay(int)
+    157:165:public int[] getDelays()
+    186:186:public int getLoopCount()
+    288:288:public com.ant.liao.GifFrame getCurrentFrame()
+    314:315:public void reset()
+com.ant.liao.GifView:
+    89:95:private void setGifDecoderImage(byte[])
+    115:116:public void setGifImage(byte[])
+    131:134:public void setGifImage(int)
+    194:199:public void showCover()
+    206:209:public void showAnimation()
+    228:237:public void setShowDimension(int,int)
+com.ant.liao.R
+com.ant.liao.R$attr
+com.ant.liao.R$drawable
+com.ant.liao.R$string
 com.google.protobuf.AbstractMessage:
     90:112:public void writeTo(com.google.protobuf.CodedOutputStream)
     117:148:public int getSerializedSize()

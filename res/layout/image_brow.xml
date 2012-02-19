@@ -25,6 +25,12 @@
                 android:longClickable="true" />
 
         </LinearLayout>
+        
+        <com.ant.liao.GifView android:id="@+id/imageGif"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:enabled="false"
+            android:layout_gravity="center" android:visibility="gone"/>
 
     </FrameLayout>
 

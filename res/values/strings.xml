@@ -175,4 +175,6 @@
     <string name="tips_nopossessions">You have no possessions right now, go pick ones, please.</string>
     <string name="label_sharetheapp">Share this application:</string>
     <string name="omenuitem_goback">Go back</string>
+    <string name="tips_gifimage">A GIF image, loading, please wait…</string>
+    <string name="tips_failedtoshowgif">Failed to show GIF.</string>
 </resources>

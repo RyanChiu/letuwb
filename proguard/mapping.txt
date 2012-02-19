@@ -1834,6 +1834,110 @@ com.adwo.adsdk.z -> com.adwo.adsdk.ba:
     void onAnimationEnd(android.view.animation.Animation) -> onAnimationEnd
     void onAnimationRepeat(android.view.animation.Animation) -> onAnimationRepeat
     void onAnimationStart(android.view.animation.Animation) -> onAnimationStart
+com.ant.liao.GifAction -> com.ant.liao.c:
+    void parseOk(boolean,int) -> a
+com.ant.liao.GifDecoder -> com.ant.liao.f:
+    java.io.InputStream in -> c
+    int status -> d
+    int width -> a
+    int height -> b
+    boolean gctFlag -> e
+    int gctSize -> f
+    int loopCount -> g
+    int[] gct -> h
+    int[] lct -> i
+    int[] act -> j
+    int bgIndex -> k
+    int bgColor -> l
+    int lastBgColor -> m
+    int pixelAspect -> n
+    boolean lctFlag -> o
+    boolean interlace -> p
+    int lctSize -> q
+    int ix -> r
+    int iy -> s
+    int iw -> t
+    int ih -> u
+    int lrx -> v
+    int lry -> w
+    int lrw -> x
+    int lrh -> y
+    android.graphics.Bitmap image -> z
+    android.graphics.Bitmap lastImage -> A
+    com.ant.liao.GifFrame currentFrame -> B
+    boolean isShow -> C
+    byte[] block -> D
+    int blockSize -> E
+    int dispose -> F
+    int lastDispose -> G
+    boolean transparency -> H
+    int delay -> I
+    int transIndex -> J
+    short[] prefix -> K
+    byte[] suffix -> L
+    byte[] pixelStack -> M
+    byte[] pixels -> N
+    com.ant.liao.GifFrame gifFrame -> O
+    int frameCount -> P
+    com.ant.liao.GifAction action -> Q
+    byte[] gifData -> R
+    void run() -> run
+    void free() -> a
+    int getFrameCount() -> b
+    android.graphics.Bitmap getImage() -> c
+    android.graphics.Bitmap getFrameImage(int) -> a
+    com.ant.liao.GifFrame next() -> d
+    int readStream() -> e
+    boolean err() -> f
+    int read() -> g
+    int readBlock() -> h
+    int[] readColorTable(int) -> b
+    void readContents() -> i
+    void readNetscapeExt() -> j
+    int readShort() -> k
+    void skip() -> l
+com.ant.liao.GifFrame -> com.ant.liao.d:
+    android.graphics.Bitmap image -> a
+    int delay -> b
+    com.ant.liao.GifFrame nextFrame -> c
+com.ant.liao.GifView -> com.ant.liao.GifView:
+    com.ant.liao.GifDecoder gifDecoder -> a
+    android.graphics.Bitmap currentImage -> b
+    boolean isRun -> c
+    boolean pause -> d
+    int showWidth -> e
+    int showHeight -> f
+    android.graphics.Rect rect -> g
+    com.ant.liao.GifView$DrawThread drawThread -> h
+    com.ant.liao.GifView$GifImageType animationType -> i
+    android.os.Handler redrawHandler -> j
+    int[] $SWITCH_TABLE$com$ant$liao$GifView$GifImageType -> k
+    void setGifImage(java.io.InputStream) -> a
+    void onDraw(android.graphics.Canvas) -> onDraw
+    void onMeasure(int,int) -> onMeasure
+    void setGifImageType(com.ant.liao.GifView$GifImageType) -> a
+    void parseOk(boolean,int) -> a
+    void reDraw() -> a
+    com.ant.liao.GifDecoder access$0(com.ant.liao.GifView) -> a
+    boolean access$1(com.ant.liao.GifView) -> b
+    boolean access$2(com.ant.liao.GifView) -> c
+    void access$3(com.ant.liao.GifView,android.graphics.Bitmap) -> a
+    android.os.Handler access$4(com.ant.liao.GifView) -> d
+    int[] $SWITCH_TABLE$com$ant$liao$GifView$GifImageType() -> b
+com.ant.liao.GifView$1 -> com.ant.liao.a:
+    com.ant.liao.GifView this$0 -> a
+    void handleMessage(android.os.Message) -> handleMessage
+com.ant.liao.GifView$DrawThread -> com.ant.liao.b:
+    com.ant.liao.GifView this$0 -> a
+    void run() -> run
+com.ant.liao.GifView$GifImageType -> com.ant.liao.e:
+    com.ant.liao.GifView$GifImageType WAIT_FINISH -> a
+    com.ant.liao.GifView$GifImageType SYNC_DECODER -> b
+    com.ant.liao.GifView$GifImageType COVER -> c
+    int nativeInt -> d
+    com.ant.liao.GifView$GifImageType[] ENUM$VALUES -> e
+    com.ant.liao.GifView$GifImageType[] values() -> values
+    com.ant.liao.GifView$GifImageType valueOf(java.lang.String) -> valueOf
 com.google.ads.Ad -> com.google.ads.Ad:
     boolean isReady() -> isReady
     void loadAd(com.google.ads.AdRequest) -> loadAd
@@ -5076,11 +5180,12 @@ com.zrd.zr.letuwb.FileUtil -> com.zrd.zr.letuwb.cl:
 com.zrd.zr.letuwb.ImageActivity -> com.zrd.zr.letuwb.ImageActivity:
     android.widget.ProgressBar mProgressLoading -> a
     com.sonyericsson.zoom.ImageZoomView mImageZoom -> b
-    com.sonyericsson.zoom.DynamicZoomControl mZoomControl -> c
-    com.sonyericsson.zoom.LongPressZoomListener mZoomListener -> d
-    android.view.GestureDetector mGestureDetector -> e
-    java.net.URL mUrl -> f
-    boolean mIsDooming -> g
+    com.ant.liao.GifView mImageGif -> c
+    com.sonyericsson.zoom.DynamicZoomControl mZoomControl -> d
+    com.sonyericsson.zoom.LongPressZoomListener mZoomListener -> e
+    android.view.GestureDetector mGestureDetector -> f
+    java.net.URL mUrl -> g
+    boolean mIsDooming -> h
     void onCreate(android.os.Bundle) -> onCreate
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
     boolean onMenuItemSelected(int,android.view.MenuItem) -> onMenuItemSelected
