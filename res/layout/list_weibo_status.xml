@@ -24,10 +24,23 @@
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/ivStatusImage"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/ivStatusImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/ivPlayable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/gif" />
+
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/llRetweeted"
@@ -59,12 +72,27 @@
                     android:layout_centerInParent="true"
                     android:visibility="gone" />
 
-                <ImageView
-                    android:id="@+id/ivRetweetedImage"
+                <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:id="@+id/ivRetweetedImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    
+                    <ImageView
+                        android:id="@+id/ivPlayableR"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/gif" />
+
+                </FrameLayout>
+
             </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

@@ -69,12 +69,14 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			holder.mTextCreatedAt = (TextView)convertView.findViewById(R.id.tvStatusCreatedAt);
 			holder.mText = (TextView)convertView.findViewById(R.id.tvStatusText);
 			holder.mImage = (ImageView)convertView.findViewById(R.id.ivStatusImage);
+			holder.mImagePlayable = (ImageView)convertView.findViewById(R.id.ivPlayable);
 			holder.mTextComments = (TextView)convertView.findViewById(R.id.tvStatusComments);
 			holder.mTextReposts = (TextView)convertView.findViewById(R.id.tvStatusReposts);
 			holder.mTextSource = (TextView)convertView.findViewById(R.id.tvSource);
 			holder.mLayoutRetweeted = (LinearLayout)convertView.findViewById(R.id.llRetweeted);
 			holder.mTextRetweeted = (TextView)convertView.findViewById(R.id.tvRetweeted);
 			holder.mImageRetweeted = (ImageView)convertView.findViewById(R.id.ivRetweetedImage);
+			holder.mImagePlayableR = (ImageView)convertView.findViewById(R.id.ivPlayableR);
 			holder.mProgressStatusImageLoading = (ProgressBar)convertView.findViewById(R.id.pbStatusImageLoading);
 			holder.mProgressRetweetedImageLoading = (ProgressBar)convertView.findViewById(R.id.pbRetweetedImageLoading);
 			
@@ -145,6 +147,18 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 				URL urlR = null;
 				try {
 					String sURL = statusR.getBmiddle_pic();
+					
+					int idx = sURL.lastIndexOf(".");
+			        String sExt = "";
+			        if (idx != -1) {
+			        	sExt = sURL.substring(idx).toLowerCase();
+			        }
+			        if (sExt.equals(".gif")) {
+			        	holder.mImagePlayableR.setVisibility(View.VISIBLE);
+			        } else {
+			        	holder.mImagePlayableR.setVisibility(View.GONE);
+			        }
+					
 					urlR = new URL(sURL);
 					loaderR.execute(urlR, true);
 					holder.mImageRetweeted.setVisibility(View.VISIBLE);
@@ -160,6 +174,18 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 			URL url = null;
 			try {
 				String sURL = xstatus.getStatus().getBmiddle_pic();
+				
+				int idx = sURL.lastIndexOf(".");
+		        String sExt = "";
+		        if (idx != -1) {
+		        	sExt = sURL.substring(idx).toLowerCase();
+		        }
+		        if (sExt.equals(".gif")) {
+		        	holder.mImagePlayable.setVisibility(View.VISIBLE);
+		        } else {
+		        	holder.mImagePlayable.setVisibility(View.GONE);
+		        }
+				
 				url = new URL(sURL);
 				loader.execute(url, true);
 				holder.mImage.setVisibility(View.VISIBLE);

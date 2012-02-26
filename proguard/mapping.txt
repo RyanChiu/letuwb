@@ -4978,15 +4978,15 @@ com.zrd.zr.letuwb.BrowPage -> com.zrd.zr.letuwb.bh:
     com.sonyericsson.zoom.ImageZoomView getBrow() -> e
     android.widget.RelativeLayout getLayoutCtrl() -> f
     int getReferer() -> g
-    void setReferer$13462e() -> h
-    android.widget.Button getBtnPause() -> i
-    android.widget.Button getBtnAtSomeone() -> j
-    java.lang.Boolean wasPlaying() -> k
+    void setReferer(int) -> a
+    android.widget.Button getBtnPause() -> h
+    android.widget.Button getBtnAtSomeone() -> i
+    java.lang.Boolean wasPlaying() -> j
     void setPlaying(java.lang.Boolean) -> a
-    java.lang.Boolean isLoading() -> l
+    java.lang.Boolean isLoading() -> k
     void setLoading(java.lang.Boolean) -> b
-    android.widget.Button getBtnPlay() -> m
-    java.lang.Boolean isDooming() -> n
+    android.widget.Button getBtnPlay() -> l
+    java.lang.Boolean isDooming() -> m
     void setDooming(java.lang.Boolean) -> c
     void switchBrowseZoom(android.view.MenuItem) -> a
     com.zrd.zr.letuwb.EntranceActivity access$0(com.zrd.zr.letuwb.BrowPage) -> a
@@ -5566,14 +5566,16 @@ com.zrd.zr.letuwb.WeiboStatusViewHolder -> com.zrd.zr.letuwb.ai:
     android.widget.TextView mTextCreatedAt -> a
     android.widget.TextView mText -> b
     android.widget.ImageView mImage -> c
-    android.widget.TextView mTextComments -> d
-    android.widget.TextView mTextReposts -> e
-    android.widget.TextView mTextSource -> f
-    android.widget.LinearLayout mLayoutRetweeted -> g
-    android.widget.TextView mTextRetweeted -> h
-    android.widget.ImageView mImageRetweeted -> i
-    android.widget.ProgressBar mProgressStatusImageLoading -> j
-    android.widget.ProgressBar mProgressRetweetedImageLoading -> k
+    android.widget.ImageView mImagePlayable -> d
+    android.widget.TextView mTextComments -> e
+    android.widget.TextView mTextReposts -> f
+    android.widget.TextView mTextSource -> g
+    android.widget.LinearLayout mLayoutRetweeted -> h
+    android.widget.TextView mTextRetweeted -> i
+    android.widget.ImageView mImageRetweeted -> j
+    android.widget.ImageView mImagePlayableR -> k
+    android.widget.ProgressBar mProgressStatusImageLoading -> l
+    android.widget.ProgressBar mProgressRetweetedImageLoading -> m
 com.zrd.zr.letuwb.WeibouserInfo -> com.zrd.zr.letuwb.d:
     java.lang.Long id -> a
     java.lang.Long uid -> b
