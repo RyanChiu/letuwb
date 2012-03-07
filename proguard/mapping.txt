@@ -4978,15 +4978,15 @@ com.zrd.zr.letuwb.BrowPage -> com.zrd.zr.letuwb.bh:
     com.sonyericsson.zoom.ImageZoomView getBrow() -> e
     android.widget.RelativeLayout getLayoutCtrl() -> f
     int getReferer() -> g
-    void setReferer(int) -> a
-    android.widget.Button getBtnPause() -> h
-    android.widget.Button getBtnAtSomeone() -> i
-    java.lang.Boolean wasPlaying() -> j
+    void setReferer$13462e() -> h
+    android.widget.Button getBtnPause() -> i
+    android.widget.Button getBtnAtSomeone() -> j
+    java.lang.Boolean wasPlaying() -> k
     void setPlaying(java.lang.Boolean) -> a
-    java.lang.Boolean isLoading() -> k
+    java.lang.Boolean isLoading() -> l
     void setLoading(java.lang.Boolean) -> b
-    android.widget.Button getBtnPlay() -> l
-    java.lang.Boolean isDooming() -> m
+    android.widget.Button getBtnPlay() -> m
+    java.lang.Boolean isDooming() -> n
     void setDooming(java.lang.Boolean) -> c
     void switchBrowseZoom(android.view.MenuItem) -> a
     com.zrd.zr.letuwb.EntranceActivity access$0(com.zrd.zr.letuwb.BrowPage) -> a
