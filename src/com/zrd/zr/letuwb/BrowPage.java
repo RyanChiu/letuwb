@@ -898,8 +898,20 @@ public class BrowPage {
 			String sPath, sFname;
 			sPath = AsyncSaver.getSdcardDir() + EntranceActivity.PATH_CACHE;
 			sFname = wi.uid + ".jg";
+
+			/*
+			 * we +1 for this click, and get back all the "likes, dislikes..."
+			 * kinda stuff from the sever with the function "vote" here.
+			 */
+			vote(
+				"weibouserid", 
+				mId.toString(), 
+				"clientkey", 
+				EntranceActivity.getClientKey(), 
+				"vote", 
+				"2" //means a click
+			);
 			if (AsyncSaver.probeFile(sPath, sFname) == -2) {
-				vote("weibouserid", mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "2");
 				Bitmap bmp = BitmapFactory.decodeFile(sPath + "/" + sFname);
 		    	return bmp == null ? bdPicFailed : bmp;
 			} else {
@@ -942,6 +954,10 @@ public class BrowPage {
 					saver.saveImage(file);
 					saver = null;
 				}
+				/*
+				 * the marked block below was trying to get the "likes, dislikes..."
+				 * kinda info from some php script on the server which could provide
+				 * the info in the header of the http respondings.
 				String sLastVote = conn.getHeaderField("lastvote");
 				String sLastVoteTime = conn.getHeaderField("lastvotetime");
 				String sClicks = conn.getHeaderField("clicks");
@@ -957,6 +973,7 @@ public class BrowPage {
 					wi.likes = Integer.parseInt(sLikes);
 					wi.dislikes = Integer.parseInt(sDislikes);
 				}
+				*/
 				return bmp;
 			}
 		}

@@ -2412,8 +2412,8 @@ com.zrd.zr.letuwb.EntranceActivity:
     android.widget.CheckBox mCheckRemember
     230:230:public static java.lang.String getRandomKey()
     234:240:public static void resetRandomKey(java.lang.String)
-    528:528:public static java.lang.Integer getAccountId()
-    768:768:public android.widget.ViewFlipper getViewFlipper()
+    536:536:public static java.lang.Integer getAccountId()
+    776:776:public android.widget.ViewFlipper getViewFlipper()
 com.zrd.zr.letuwb.FileListView:
     177:181:public void refresh()
     184:184:public java.lang.String getCurrentDirectory()
