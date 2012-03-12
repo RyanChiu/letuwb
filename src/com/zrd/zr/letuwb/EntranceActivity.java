@@ -489,6 +489,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	protected void onSaveInstanceState(Bundle outState) {
 		// TODO Auto-generated method stub
 		//super.onSaveInstanceState(outState);
+		/*
+		 * try to save the instance environment when it's
+		 * switched to the background.
+		 */
 		int idx = -1;
 		for (int i = 0; i < mMainPage.getTopicBtns().size(); i++) {
 			if (mMainPage.getTopicBtns().get(i).isSelected()) {
@@ -503,6 +507,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		//super.onRestoreInstanceState(savedInstanceState);
+		/*
+		 * try to get the instance back from the saved instance
+		 * environment data.
+		 */
 		int topic = savedInstanceState.getInt("topic");
 		if (topic != -1 && topic < mMainPage.getTopicBtns().size()) {
 			mMainPage.getTopicBtns().get(topic).performClick();
