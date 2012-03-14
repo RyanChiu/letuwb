@@ -87,6 +87,13 @@ public class WeibouserInfoGridAdapter extends ArrayAdapter<WeibouserInfo> {
 	        	+ (wi.verified == 1 ? " (V)" : "")
 	        );
 	        btnDel.setTag(wi);
+	        // Set the upup/dwdw text for the views
+	        viewCache.getTextUpup().setText(
+	        	"+" + wi.likes
+	        );
+	        viewCache.getTextDwdw().setText(
+	        	"-" + wi.dislikes
+	        );
 	        
 	        /*
              * show the del button or not determinated by

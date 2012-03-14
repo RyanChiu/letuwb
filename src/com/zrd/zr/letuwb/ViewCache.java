@@ -9,6 +9,8 @@ public class ViewCache {
 
 	    private View baseView;
 	    private TextView textView;
+	    private TextView textUpup;
+	    private TextView textDwdw;
 	    private ImageView imageView;
 	    private ImageButton btnDel;
 
@@ -21,6 +23,20 @@ public class ViewCache {
 	            textView = (TextView) baseView.findViewById(R.id.text);
 	        }
 	        return textView;
+	    }
+	    
+	    public TextView getTextUpup() {
+	        if (textUpup == null) {
+	            textUpup = (TextView) baseView.findViewById(R.id.textUpup);
+	        }
+	        return textUpup;
+	    }
+	    
+	    public TextView getTextDwdw() {
+	        if (textDwdw == null) {
+	            textDwdw = (TextView) baseView.findViewById(R.id.textDwdw);
+	        }
+	        return textDwdw;
 	    }
 
 	    public ImageView getImageView() {

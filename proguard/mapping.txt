@@ -5413,11 +5413,15 @@ com.zrd.zr.letuwb.UpdateActivity$2 -> com.zrd.zr.letuwb.bw:
 com.zrd.zr.letuwb.ViewCache -> com.zrd.zr.letuwb.cw:
     android.view.View baseView -> a
     android.widget.TextView textView -> b
-    android.widget.ImageView imageView -> c
-    android.widget.ImageButton btnDel -> d
+    android.widget.TextView textUpup -> c
+    android.widget.TextView textDwdw -> d
+    android.widget.ImageView imageView -> e
+    android.widget.ImageButton btnDel -> f
     android.widget.TextView getTextView() -> a
-    android.widget.ImageView getImageView() -> b
-    android.widget.ImageButton getBtnDel() -> c
+    android.widget.TextView getTextUpup() -> b
+    android.widget.TextView getTextDwdw() -> c
+    android.widget.ImageView getImageView() -> d
+    android.widget.ImageButton getBtnDel() -> e
 com.zrd.zr.letuwb.WeiboPage -> com.zrd.zr.letuwb.bs:
     com.zrd.zr.letuwb.EntranceActivity parent -> b
     int mReferer -> c

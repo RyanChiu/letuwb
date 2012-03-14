@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
-    <issue id="ContentDescription">
+    <issue id="ContentDescription" severity="ignore">
         <ignore path="res/layout/list_weibo_status.xml" />
     </issue>
-    <issue id="HardcodedText">
+    <issue id="HardcodedText" severity="ignore">
         <ignore path="res/layout/brow.xml" />
         <ignore path="res/layout/list_weibo_status.xml" />
     </issue>
@@ -15,6 +15,7 @@
     </issue>
     <issue id="UselessParent">
         <ignore path="res/layout/brow.xml" />
+        <ignore path="res/layout/grid_item.xml" />
         <ignore path="res/layout/image_brow.xml" />
         <ignore path="res/layout/list_weibo_status.xml" />
     </issue>
