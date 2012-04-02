@@ -1027,7 +1027,6 @@ com.mobclick.android.UmengFeedback
 com.adwo.adsdk.AdwoSplashAdActivity
 com.zrd.zr.letuwb.ImageActivity
 com.adwo.adsdk.AdwoAdBrowserActivity
-com.zrd.zr.letuwb.ExchangeListActivity
 com.zrd.zr.letuwb.EntranceActivity
 com.google.ads.InstallReceiver
 cn.domob.android.ads.e

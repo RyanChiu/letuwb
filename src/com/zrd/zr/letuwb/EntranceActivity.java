@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewStub;
 import android.view.Window;
@@ -77,7 +76,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	
 	private WebView mWebCount;
 	private AlertDialog mQuitDialog;
-	private ImageButton mBtnExchange;
 	private static int mPrivilege = 1;//0 member, 1 guest
 	public static SharedPreferences mPreferences = null;
 	private static Integer mAccountId = 0;
@@ -155,19 +153,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
                 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.exchangelist_title);
         RegLoginActivity.addContext(EntranceActivity.this);
-        mBtnExchange = (ImageButton) findViewById(R.id.btnExchange);
-        mWebCount = (WebView) findViewById(R.id.wvCount);        
-        
-        mBtnExchange.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Intent intent = new Intent();
-                intent.setClass(EntranceActivity.this, ExchangeListActivity.class);
-                startActivity(intent);
-            }
-        });
+        mWebCount = (WebView) findViewById(R.id.wvCount);
         
 		mQuitDialog = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).create();
 		mQuitDialog.setTitle(getString(R.string.quit_title));

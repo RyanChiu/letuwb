@@ -4890,7 +4890,7 @@ com.zrd.zr.letuwb.AsyncImageLoader -> com.zrd.zr.letuwb.b:
     void onCancelled() -> onCancelled
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.zrd.zr.letuwb.AsyncSaver -> com.zrd.zr.letuwb.cu:
+com.zrd.zr.letuwb.AsyncSaver -> com.zrd.zr.letuwb.ct:
     android.content.Context mContext -> a
     android.graphics.Bitmap mBitmap -> b
     java.net.URL mUrl -> c
@@ -4919,7 +4919,7 @@ com.zrd.zr.letuwb.AsyncThumLoader$2 -> com.zrd.zr.letuwb.bb:
     void run() -> run
 com.zrd.zr.letuwb.AsyncThumLoader$ImageCallback -> com.zrd.zr.letuwb.n:
     void imageLoaded(android.graphics.drawable.Drawable,java.lang.Long) -> a
-com.zrd.zr.letuwb.AsyncUploader -> com.zrd.zr.letuwb.cr:
+com.zrd.zr.letuwb.AsyncUploader -> com.zrd.zr.letuwb.cq:
     android.content.Context mContext -> a
     java.lang.Integer mAccountId -> b
     android.app.Dialog mPrgDlg -> c
@@ -5067,7 +5067,7 @@ com.zrd.zr.letuwb.BrowPage$AsyncVoter -> com.zrd.zr.letuwb.br:
     com.zrd.zr.letuwb.BrowPage this$0 -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.zrd.zr.letuwb.BrowPage$PicbrowGestureListener -> com.zrd.zr.letuwb.cv:
+com.zrd.zr.letuwb.BrowPage$PicbrowGestureListener -> com.zrd.zr.letuwb.cu:
     com.zrd.zr.letuwb.BrowPage this$0 -> a
     boolean onFling(android.view.MotionEvent,android.view.MotionEvent,float,float) -> onFling
     boolean onDoubleTap(android.view.MotionEvent) -> onDoubleTap
@@ -5081,14 +5081,13 @@ com.zrd.zr.letuwb.EntranceActivity -> com.zrd.zr.letuwb.EntranceActivity:
     boolean mNowLoggingIn -> f
     android.webkit.WebView mWebCount -> g
     android.app.AlertDialog mQuitDialog -> h
-    android.widget.ImageButton mBtnExchange -> i
-    int mPrivilege -> j
+    int mPrivilege -> i
     android.content.SharedPreferences mPreferences -> a
-    java.lang.Integer mAccountId -> k
-    android.widget.ViewFlipper mViewFlipper -> l
-    com.zrd.zr.letuwb.MainPage mMainPage -> m
-    com.zrd.zr.letuwb.BrowPage mBrowPage -> n
-    com.zrd.zr.letuwb.WeiboPage mWeiboPage -> o
+    java.lang.Integer mAccountId -> j
+    android.widget.ViewFlipper mViewFlipper -> k
+    com.zrd.zr.letuwb.MainPage mMainPage -> l
+    com.zrd.zr.letuwb.BrowPage mBrowPage -> m
+    com.zrd.zr.letuwb.WeiboPage mWeiboPage -> n
     void onCreate(android.os.Bundle) -> onCreate
     com.zrd.zr.letuwb.MainPage getMainPage() -> a
     java.lang.String getClientKey() -> b
@@ -5122,26 +5121,20 @@ com.zrd.zr.letuwb.EntranceActivity -> com.zrd.zr.letuwb.EntranceActivity:
     android.webkit.WebView access$4(com.zrd.zr.letuwb.EntranceActivity) -> b
 com.zrd.zr.letuwb.EntranceActivity$1 -> com.zrd.zr.letuwb.co:
     com.zrd.zr.letuwb.EntranceActivity this$0 -> a
-    void onClick(android.view.View) -> onClick
+    void onClick(android.content.DialogInterface,int) -> onClick
 com.zrd.zr.letuwb.EntranceActivity$2 -> com.zrd.zr.letuwb.cn:
     com.zrd.zr.letuwb.EntranceActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.zrd.zr.letuwb.EntranceActivity$3 -> com.zrd.zr.letuwb.cq:
-    com.zrd.zr.letuwb.EntranceActivity this$0 -> a
-    void onClick(android.content.DialogInterface,int) -> onClick
-com.zrd.zr.letuwb.EntranceActivity$4 -> com.zrd.zr.letuwb.cp:
+com.zrd.zr.letuwb.EntranceActivity$3 -> com.zrd.zr.letuwb.cp:
     com.zrd.zr.letuwb.EntranceActivity this$0 -> a
     void run() -> run
-com.zrd.zr.letuwb.EntranceActivity$4$1 -> com.zrd.zr.letuwb.bf:
-    com.zrd.zr.letuwb.EntranceActivity$4 this$1 -> a
+com.zrd.zr.letuwb.EntranceActivity$3$1 -> com.zrd.zr.letuwb.bg:
+    com.zrd.zr.letuwb.EntranceActivity$3 this$1 -> a
     boolean shouldOverrideUrlLoading(android.webkit.WebView,java.lang.String) -> shouldOverrideUrlLoading
 com.zrd.zr.letuwb.EntranceActivity$AsyncInit -> com.zrd.zr.letuwb.bd:
     com.zrd.zr.letuwb.EntranceActivity this$0 -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.zrd.zr.letuwb.ExchangeListActivity -> com.zrd.zr.letuwb.ExchangeListActivity:
-    java.lang.String TAG -> a
-    void onCreate(android.os.Bundle) -> onCreate
 com.zrd.zr.letuwb.FileListView -> com.zrd.zr.letuwb.ae:
     android.content.Context context -> a
     android.widget.EditText mEditIntro -> b
@@ -5198,7 +5191,7 @@ com.zrd.zr.letuwb.ImageActivity -> com.zrd.zr.letuwb.ImageActivity:
     com.sonyericsson.zoom.DynamicZoomControl access$1(com.zrd.zr.letuwb.ImageActivity) -> b
     com.sonyericsson.zoom.LongPressZoomListener access$2(com.zrd.zr.letuwb.ImageActivity) -> c
     void access$3$419984b2(com.zrd.zr.letuwb.ImageActivity) -> d
-com.zrd.zr.letuwb.ImageActivity$ImagebrowGestureListener -> com.zrd.zr.letuwb.cs:
+com.zrd.zr.letuwb.ImageActivity$ImagebrowGestureListener -> com.zrd.zr.letuwb.cr:
     com.zrd.zr.letuwb.ImageActivity this$0 -> a
     boolean onDoubleTap(android.view.MotionEvent) -> onDoubleTap
     boolean onSingleTapConfirmed(android.view.MotionEvent) -> onSingleTapConfirmed
@@ -5372,7 +5365,7 @@ com.zrd.zr.letuwb.RegLoginActivity$3 -> com.zrd.zr.letuwb.ax:
 com.zrd.zr.letuwb.RegLoginActivity$4 -> com.zrd.zr.letuwb.as:
     com.zrd.zr.letuwb.RegLoginActivity this$0 -> a
     void onClick(android.view.View) -> onClick
-com.zrd.zr.letuwb.RegLoginActivity$4$1 -> com.zrd.zr.letuwb.cx:
+com.zrd.zr.letuwb.RegLoginActivity$4$1 -> com.zrd.zr.letuwb.cw:
     com.zrd.zr.letuwb.RegLoginActivity$4 this$1 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
 com.zrd.zr.letuwb.RegLoginActivity$5 -> com.zrd.zr.letuwb.ar:
@@ -5410,7 +5403,7 @@ com.zrd.zr.letuwb.UpdateActivity$1$2 -> com.zrd.zr.letuwb.cj:
 com.zrd.zr.letuwb.UpdateActivity$2 -> com.zrd.zr.letuwb.bw:
     com.zrd.zr.letuwb.UpdateActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.zrd.zr.letuwb.ViewCache -> com.zrd.zr.letuwb.cw:
+com.zrd.zr.letuwb.ViewCache -> com.zrd.zr.letuwb.cv:
     android.view.View baseView -> a
     android.widget.TextView textView -> b
     android.widget.TextView textUpup -> c
@@ -5608,7 +5601,7 @@ com.zrd.zr.letuwb.WeibouserInfo -> com.zrd.zr.letuwb.d:
     java.lang.Integer dislikes -> j
     java.lang.Integer mLastVote -> k
     java.util.Date mLastVoteTime -> l
-com.zrd.zr.letuwb.WeibouserInfoGridAdapter -> com.zrd.zr.letuwb.ct:
+com.zrd.zr.letuwb.WeibouserInfoGridAdapter -> com.zrd.zr.letuwb.cs:
     android.widget.GridView gridView -> a
     com.zrd.zr.letuwb.AsyncThumLoader asyncImageLoader -> b
     android.content.Context mContext -> c
@@ -5616,13 +5609,13 @@ com.zrd.zr.letuwb.WeibouserInfoGridAdapter -> com.zrd.zr.letuwb.ct:
     android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
     android.widget.GridView access$0(com.zrd.zr.letuwb.WeibouserInfoGridAdapter) -> a
     android.content.Context access$1(com.zrd.zr.letuwb.WeibouserInfoGridAdapter) -> b
-com.zrd.zr.letuwb.WeibouserInfoGridAdapter$1 -> com.zrd.zr.letuwb.cz:
+com.zrd.zr.letuwb.WeibouserInfoGridAdapter$1 -> com.zrd.zr.letuwb.cy:
     com.zrd.zr.letuwb.WeibouserInfoGridAdapter this$0 -> a
     void imageLoaded(android.graphics.drawable.Drawable,java.lang.Long) -> a
-com.zrd.zr.letuwb.WeibouserInfoGridAdapter$2 -> com.zrd.zr.letuwb.cy:
+com.zrd.zr.letuwb.WeibouserInfoGridAdapter$2 -> com.zrd.zr.letuwb.cx:
     com.zrd.zr.letuwb.WeibouserInfoGridAdapter this$0 -> a
     void onClick(android.view.View) -> onClick
-com.zrd.zr.letuwb.WeibouserInfoGridAdapter$2$1 -> com.zrd.zr.letuwb.bg:
+com.zrd.zr.letuwb.WeibouserInfoGridAdapter$2$1 -> com.zrd.zr.letuwb.bf:
     com.zrd.zr.letuwb.WeibouserInfoGridAdapter$2 this$1 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
 com.zrd.zr.pnj.PNJ -> com.zrd.zr.b.a:
