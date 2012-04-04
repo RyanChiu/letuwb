@@ -1073,7 +1073,6 @@ com.adwhirl.AdWhirlLayout -> com.adwhirl.AdWhirlLayout:
     java.util.concurrent.ScheduledFuture mSchedulerFeature -> r
     android.os.Handler getHandler() -> getHandler
     java.lang.String getAdWhirlKey(android.content.Context) -> a
-    void init(android.app.Activity,java.lang.String) -> a
     void onMeasure(int,int) -> onMeasure
     void onWindowVisibilityChanged(int) -> onWindowVisibilityChanged
     void rotateThreadedNow() -> a
