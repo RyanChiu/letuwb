@@ -4,7 +4,6 @@ com.adwhirl.AdWhirlLayout:
     96:97:public void setMaxHeight(int)
     116:116:public com.adwhirl.AdWhirlLayout$IGmOnEventAdapterChangedListener getOnEventAdapterChangedListener()
     121:122:public synchronized void setOnEventAdapterChangedListener(com.adwhirl.AdWhirlLayout$IGmOnEventAdapterChangedListener)
-    126:131:public AdWhirlLayout(android.app.Activity,java.lang.String,android.os.Handler)
     134:136:public AdWhirlLayout(android.app.Activity,java.lang.String)
 com.adwhirl.AdWhirlManager:
     private static final java.lang.String PREFS_STRING_TIMESTAMP
@@ -2411,10 +2410,10 @@ com.zrd.zr.letuwb.EntranceActivity:
     android.widget.EditText mEditRepeat
     android.widget.TableRow mRowRepeat
     android.widget.CheckBox mCheckRemember
-    218:218:public static java.lang.String getRandomKey()
-    222:228:public static void resetRandomKey(java.lang.String)
-    524:524:public static java.lang.Integer getAccountId()
-    764:764:public android.widget.ViewFlipper getViewFlipper()
+    216:216:public static java.lang.String getRandomKey()
+    220:226:public static void resetRandomKey(java.lang.String)
+    522:522:public static java.lang.Integer getAccountId()
+    762:762:public android.widget.ViewFlipper getViewFlipper()
 com.zrd.zr.letuwb.FileListView:
     177:181:public void refresh()
     184:184:public java.lang.String getCurrentDirectory()

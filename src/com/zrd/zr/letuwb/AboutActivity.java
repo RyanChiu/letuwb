@@ -87,8 +87,9 @@ public class AboutActivity extends Activity {
                 intent.putExtra(
                 	Intent.EXTRA_TEXT, 
                 	getString(R.string.sharing_title)
-                	+ "\"" + getString(R.string.app_name) + "\" "
+                		+ "\"" + getString(R.string.app_name) + "\" "
                 		+ getString(R.string.sharing_content)
+                		+ EntranceActivity.URL_SITE + "landing"
                 );
                 startActivity(Intent.createChooser(intent, getTitle()));
 			}
