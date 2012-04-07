@@ -24,7 +24,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -54,10 +53,8 @@ public class WeiboPage {
 	private ListView mListStatus;
 	private ProgressBar mProgressStatusLoading;
 	private Button mBtnPossess;
+	private Button mBtnFriendship;
 	private Button mBtnAtSomeone;
-	private Button mBtnComment;
-	private Button mBtnRepost;
-	private Button mBtnMore;
 	private ImageView mBtnTinyProfileImage;
 	
 	private AlertDialog mDlgRepost;
@@ -100,11 +97,9 @@ public class WeiboPage {
 		mListStatus = (ListView)parent.findViewById(R.id.lvStatus);
 		mProgressStatusLoading = (ProgressBar)parent.findViewById(R.id.pbStatusLoading);
 		mBtnPossess = (Button)parent.findViewById(R.id.btnWeiboPossess);
+		mBtnFriendship = (Button)parent.findViewById(R.id.btnFriendship);
 		mBtnAtSomeone = (Button)parent.findViewById(R.id.btnAtSomeone);
-		mBtnComment = (Button)parent.findViewById(R.id.btnComment);
-		mBtnRepost = (Button)parent.findViewById(R.id.btnRepost);
 		mEditRepost  = new EditText(parent);
-		mBtnMore = (Button)parent.findViewById(R.id.btnMore);
 		mEditComment = new EditText(parent);
 		mBtnTinyProfileImage = (ImageButton)parent.findViewById(R.id.btnTinyProfileImage);
 		mEditUpdateStatus = new EditText(parent);
@@ -322,16 +317,18 @@ public class WeiboPage {
 				 * make the selected item different with others
 				 */
 				int position = arg2;
+				/*
 				HeaderViewListAdapter ha = (HeaderViewListAdapter)parent.getAdapter();
 				WeiboStatusListAdapter adapter  = (WeiboStatusListAdapter)ha.getWrappedAdapter();
 				adapter.setSelectedItem(position);
 				adapter.notifyDataSetInvalidated();
+				*/
 				mIndexOfSelectedStatus = position;
 				
 				/*
 				 * pop up the "more" list
 				 */
-				//mBtnMore.performClick();
+				mDlgMore.show();
 				
 				long lastClickTime;
 				/*
@@ -428,6 +425,28 @@ public class WeiboPage {
 			
 		});
 		
+		mBtnFriendship.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (mSina != null && mSina.isLoggedIn()) {
+					new Thread(
+						new ThreadSinaDealer(
+							mSina,
+							ThreadSinaDealer.CREATE_FRIENDSHIP,
+							new String[] {getUid().toString()},
+							mHandler
+						)
+					).start();
+					turnDealing(true);
+				} else {
+					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
+				}
+			}
+			
+		});
+		
 		mBtnAtSomeone.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -452,58 +471,13 @@ public class WeiboPage {
 			
 		});
 		
-		mBtnComment.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (mSina != null && mSina.isLoggedIn()) {
-					if (mIndexOfSelectedStatus == -1) {
-						Toast.makeText(
-							parent,
-							R.string.tips_noitemselected,
-							Toast.LENGTH_LONG
-						).show();
-						return;
-					}
-					
-					mDlgComment.show();
-				} else {
-					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
-				}
-			}
-			
-		});
-		
-		mBtnRepost.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (mSina != null && mSina.isLoggedIn()) {
-					if (mIndexOfSelectedStatus == -1) {
-						Toast.makeText(
-							parent,
-							R.string.tips_noitemselected,
-							Toast.LENGTH_LONG
-						).show();
-						return;
-					}
-					
-					mDlgRepost.show();
-				} else {
-					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
-				}
-			}
-			
-		});
-		
 		mDlgMore = new Dialog(parent, R.style.Dialog_Clean);
 		mDlgMore.setContentView(R.layout.custom_dialog_list);
 		ListView lvMore = (ListView)mDlgMore.findViewById(R.id.lvCustomList);
 		ArrayList<String> mlist = new ArrayList<String>();
-		mlist.add(parent.getString(R.string.label_weibo_friendship));
 		mlist.add(parent.getString(R.string.label_weibo_favorite));
+		mlist.add(parent.getString(R.string.label_comment));
+		mlist.add(parent.getString(R.string.label_weibo_repost));
 		mlist.add(parent.getString(R.string.label_comments));
 		mlist.add(parent.getString(R.string.label_seebiggerimage0));
 		mlist.add(parent.getString(R.string.label_seebiggerimage1));
@@ -524,21 +498,6 @@ public class WeiboPage {
 				String originalPic;
 				switch (position) {
 				case 0:
-					if (mSina != null && mSina.isLoggedIn()) {
-						new Thread(
-							new ThreadSinaDealer(
-								mSina,
-								ThreadSinaDealer.CREATE_FRIENDSHIP,
-								new String[] {getUid().toString()},
-								mHandler
-							)
-						).start();
-						turnDealing(true);
-					} else {
-						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
-					}
-					break;
-				case 1:
 					if (mSina != null && mSina.isLoggedIn()) {
 						if (mIndexOfSelectedStatus != -1) {
 							/*
@@ -575,7 +534,39 @@ public class WeiboPage {
 						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
 					}
 					break;
+				case 1:
+					if (mSina != null && mSina.isLoggedIn()) {
+						if (mIndexOfSelectedStatus == -1) {
+							Toast.makeText(
+								parent,
+								R.string.tips_noitemselected,
+								Toast.LENGTH_LONG
+							).show();
+							return;
+						}
+						
+						mDlgComment.show();
+					} else {
+						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
+					}
+					break;
 				case 2:
+					if (mSina != null && mSina.isLoggedIn()) {
+						if (mIndexOfSelectedStatus == -1) {
+							Toast.makeText(
+								parent,
+								R.string.tips_noitemselected,
+								Toast.LENGTH_LONG
+							).show();
+							return;
+						}
+						
+						mDlgRepost.show();
+					} else {
+						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
+					}
+					break;
+				case 3:
 					if (mIndexOfSelectedStatus == -1) {
 						Toast.makeText(
 							parent,
@@ -587,7 +578,7 @@ public class WeiboPage {
 						turnDealing(true);
 					}
 					break;
-				case 3:
+				case 4:
 					if (mIndexOfSelectedStatus == -1) {
 						Toast.makeText(
 							parent,
@@ -610,7 +601,7 @@ public class WeiboPage {
 						}
 					}
 					break;
-				case 4:
+				case 5:
 					if (mIndexOfSelectedStatus == -1) {
 						Toast.makeText(
 							parent,
@@ -638,22 +629,12 @@ public class WeiboPage {
 						}
 					}
 					break;
-				case 5:
+				case 6:
 					reloadAll();
 					turnDealing(true);
 					break;
 				}
 				mDlgMore.dismiss();
-			}
-			
-		});
-		
-		mBtnMore.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mDlgMore.show();
 			}
 			
 		});
@@ -1137,18 +1118,12 @@ public class WeiboPage {
 	public void turnDealing(boolean on) {
 		if (on == true) {
 			mBtnPossess.setEnabled(false);
-			mBtnComment.setEnabled(false);
-			mBtnRepost.setEnabled(false);
 			mBtnMoreTimelines.setEnabled(false);
-			mBtnMore.setEnabled(false);
 			mBtnMoreComments.setEnabled(false);
 			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
 		} else {
 			mBtnPossess.setEnabled(true);
-			mBtnComment.setEnabled(true);
-			mBtnRepost.setEnabled(true);
 			mBtnMoreTimelines.setEnabled(true);
-			mBtnMore.setEnabled(true);
 			Integer flag = (Integer)mBtnMoreComments.getTag();
 			if (flag != null && flag == 2) {
 				

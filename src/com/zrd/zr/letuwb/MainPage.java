@@ -72,8 +72,8 @@ public class MainPage {
 	public Dialog mPrgDlg;
 	
 	private static Integer mTopicChoice = 0;
-	private static final Integer mLimit = 28;//how many pictures should be passed to PicbrowActivity, actually multiple of mPageLimit is recommended
-	private final Integer mPageLimit = 4;//how many pictures should be loaded into mGridPics.
+	private static final Integer mLimit = 24;//how many pictures should be passed to PicbrowActivity, actually multiple of mPageLimit is recommended
+	private final Integer mPageLimit = 6;//how many pictures should be loaded into mGridPics.
 	private static Integer mCurPage = 1;
 	private Integer mPageBeforeBrow = 1;
 	private static Integer mCurParagraph = 1;

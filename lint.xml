@@ -13,6 +13,9 @@
     <issue id="ObsoleteLayoutParam">
         <ignore path="res/layout/list_weibo_status.xml" />
     </issue>
+    <issue id="UseCompoundDrawables">
+        <ignore path="res/layout/weibo_show.xml" />
+    </issue>
     <issue id="UselessParent">
         <ignore path="res/layout/brow.xml" />
         <ignore path="res/layout/grid_item.xml" />
