@@ -9,3 +9,4 @@ letmewb/manager/app/tmp/cache/models
 letmewb/manager/app/tmp/cache/persistent
 letmewb/manager/app/vendors/cache
 *.log
+proguard/*.txt
