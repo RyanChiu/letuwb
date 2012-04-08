@@ -563,6 +563,7 @@ public class BrowPage {
 		} else {
 			parent.getLayoutVoteInfo().setVisibility(LinearLayout.INVISIBLE);
 		}
+		parent.getLayoutVote().setVisibility(RelativeLayout.VISIBLE);
 	}
 	
 	/*
