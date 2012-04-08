@@ -717,7 +717,7 @@ public class WeiboPage {
 						 * show the location and the description
 						 */
 						mTextLocation.setText(
-							mLastUser.getLocation()
+							" [" + mLastUser.getLocation() + "]"
 						);
 						String description = mLastUser.getDescription();
 						if (!description.equals("")) {
@@ -754,6 +754,7 @@ public class WeiboPage {
 							mTextAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her) + "/" + parent.getString(R.string.label_him));
 							parent.getBrowPage().getBtnAtSomeone().setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her) + "/" + parent.getString(R.string.label_him));
 						}
+						
 					} else {
 						mTextAtSomeone.setText(R.string.label_atsomeone);
 						parent.getBrowPage().getBtnAtSomeone().setText(R.string.label_atsomeone);
