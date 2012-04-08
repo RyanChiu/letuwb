@@ -52,9 +52,9 @@ public class WeiboPage {
 	private TextView mTextCounts;
 	private ListView mListStatus;
 	private ProgressBar mProgressStatusLoading;
-	private Button mBtnPossess;
-	private Button mBtnFriendship;
-	private Button mBtnAtSomeone;
+	private TextView mTextPossess;
+	private TextView mTextFriendship;
+	private TextView mTextAtSomeone;
 	private ImageView mBtnTinyProfileImage;
 	
 	private AlertDialog mDlgRepost;
@@ -96,9 +96,9 @@ public class WeiboPage {
 		mTextCounts = (TextView)parent.findViewById(R.id.tvCounts);
 		mListStatus = (ListView)parent.findViewById(R.id.lvStatus);
 		mProgressStatusLoading = (ProgressBar)parent.findViewById(R.id.pbStatusLoading);
-		mBtnPossess = (Button)parent.findViewById(R.id.btnWeiboPossess);
-		mBtnFriendship = (Button)parent.findViewById(R.id.btnFriendship);
-		mBtnAtSomeone = (Button)parent.findViewById(R.id.btnAtSomeone);
+		mTextPossess = (TextView)parent.findViewById(R.id.tvPossess);
+		mTextFriendship = (TextView)parent.findViewById(R.id.tvFriendship);
+		mTextAtSomeone = (TextView)parent.findViewById(R.id.tvAtSomeone);
 		mEditRepost  = new EditText(parent);
 		mEditComment = new EditText(parent);
 		mBtnTinyProfileImage = (ImageButton)parent.findViewById(R.id.btnTinyProfileImage);
@@ -404,8 +404,8 @@ public class WeiboPage {
 			}
 			
 		});
-		
-		mBtnPossess.setOnClickListener(new OnClickListener() {
+				
+		mTextPossess.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -425,7 +425,7 @@ public class WeiboPage {
 			
 		});
 		
-		mBtnFriendship.setOnClickListener(new OnClickListener() {
+		mTextFriendship.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -447,7 +447,7 @@ public class WeiboPage {
 			
 		});
 		
-		mBtnAtSomeone.setOnClickListener(new OnClickListener() {
+		mTextAtSomeone.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -745,17 +745,17 @@ public class WeiboPage {
 						 * alter the label of "@" button according to the gender of the user
 						 */
 						if (mLastUser.getGender().equals("f")) {
-							mBtnAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her));
+							mTextAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her));
 							parent.getBrowPage().getBtnAtSomeone().setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her));
 						} else if (mLastUser.getGender().equals("m")){
-							mBtnAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_him));
+							mTextAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_him));
 							parent.getBrowPage().getBtnAtSomeone().setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_him));
 						} else {
-							mBtnAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her) + "/" + parent.getString(R.string.label_him));
+							mTextAtSomeone.setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her) + "/" + parent.getString(R.string.label_him));
 							parent.getBrowPage().getBtnAtSomeone().setText(parent.getString(R.string.label_atsomeone) + parent.getString(R.string.label_her) + "/" + parent.getString(R.string.label_him));
 						}
 					} else {
-						mBtnAtSomeone.setText(R.string.label_atsomeone);
+						mTextAtSomeone.setText(R.string.label_atsomeone);
 						parent.getBrowPage().getBtnAtSomeone().setText(R.string.label_atsomeone);
 						//mTextCreatedAt.setText("Please try again...");
 						
@@ -1117,12 +1117,12 @@ public class WeiboPage {
 	 */
 	public void turnDealing(boolean on) {
 		if (on == true) {
-			mBtnPossess.setEnabled(false);
+			mTextPossess.setEnabled(false);
 			mBtnMoreTimelines.setEnabled(false);
 			mBtnMoreComments.setEnabled(false);
 			mProgressStatusLoading.setVisibility(ProgressBar.VISIBLE);
 		} else {
-			mBtnPossess.setEnabled(true);
+			mTextPossess.setEnabled(true);
 			mBtnMoreTimelines.setEnabled(true);
 			Integer flag = (Integer)mBtnMoreComments.getTag();
 			if (flag != null && flag == 2) {
@@ -1173,7 +1173,7 @@ public class WeiboPage {
 		return this.mLastUser;
 	}
 	
-	public Button getBtnAtSomeone() {
-		return this.mBtnAtSomeone;
+	public TextView getTextAtSomeone() {
+		return this.mTextAtSomeone;
 	}
 }

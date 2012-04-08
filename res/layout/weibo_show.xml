@@ -3,76 +3,134 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" android:orientation="vertical">
-    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="74dp">
-        <RelativeLayout android:layout_width="fill_parent" android:paddingBottom="2dp" android:paddingRight="2dp" android:paddingTop="1dp" android:layout_height="50dp" android:paddingLeft="2dp">
-            <LinearLayout android:layout_width="wrap_content" android:layout_alignParentLeft="true" android:layout_height="wrap_content">
-                <ImageButton android:background="#00000000" android:src="@drawable/person" android:layout_height="36dp" android:layout_marginBottom="3dp" android:layout_marginLeft="3dp" android:layout_marginTop="3dp" android:layout_width="36dp" android:scaleType="fitXY" android:id="@+id/btnTinyProfileImage"></ImageButton>
-                <LinearLayout android:layout_width="wrap_content" android:orientation="vertical" android:layout_height="fill_parent">
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-                        <TextView android:layout_height="wrap_content" android:id="@+id/tvScreenName" android:layout_width="wrap_content"></TextView>
-                        <ImageView android:layout_width="18dp" android:id="@+id/ivVerified" android:scaleType="fitXY" android:layout_height="22dp" android:src="@drawable/weibo_verified"></ImageView>
-                    </LinearLayout>
-                    <TextView android:layout_height="wrap_content" android:id="@+id/tvLocation" android:layout_width="wrap_content"></TextView>
-                </LinearLayout>
-                <ImageButton android:id="@+id/btnDescription" android:background="#00000000" android:src="@drawable/description_quote" android:scaleType="fitXY" android:layout_height="28dp" android:layout_width="32dp"></ImageButton>
-            </LinearLayout>
-            <LinearLayout android:layout_alignParentRight="true" android:layout_centerVertical="true" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                <TextView android:layout_height="wrap_content" android:id="@+id/tvCreatedAt" android:layout_width="wrap_content"></TextView>
-                <ProgressBar android:layout_width="18dp" android:id="@+id/pbStatusLoading" android:layout_height="18dp"></ProgressBar>
-            </LinearLayout>
-        </RelativeLayout>
-        <LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:gravity="center" android:layout_height="18dp">
-            <TextView android:layout_height="wrap_content" android:textSize="11sp" android:id="@+id/tvCounts" android:layout_width="wrap_content" android:textColor="#f3a000"></TextView>
-        </LinearLayout>
-    </LinearLayout>
-    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <ListView android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/lvStatus" android:layout_marginBottom="46dp"></ListView>
-        <LinearLayout 
-            android:layout_width="fill_parent" 
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="1dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/llStatusCtrls" 
-            android:background="#56000000" 
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentLeft="true" >
 
-               <Button
-                   android:id="@+id/btnWeiboPossess"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_weight="40"
-                   android:background="@drawable/btn_custom"
-                   android:lines="1"
-                   android:paddingBottom="9dp"
-                   android:paddingTop="9dp"
-                   android:text="@string/label_possess"
-                   android:textColor="#f85c08"
-                   android:textSize="12sp" />
+            <ImageButton
+                android:id="@+id/btnTinyProfileImage"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="3dp"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/person" />
 
-            <Button
-                android:id="@+id/btnFriendship"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="30"
-                android:background="@drawable/btn_custom"
-                android:lines="1"
-                android:paddingBottom="9dp"
-                android:paddingTop="9dp"
-                android:text="@string/label_weibo_friendship"
-                android:textColor="#1da7ef"
-                android:textSize="12sp" />
-            
-            <Button
-                   android:id="@+id/btnAtSomeone"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_weight="30"
-                   android:background="@drawable/btn_custom"
-                   android:lines="1"
-                   android:paddingBottom="9dp"
-                   android:paddingTop="9dp"
-                   android:text="@string/label_atsomeone"
-                   android:textColor="#1da7ef"
-                   android:textSize="12sp" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:layout_marginLeft="2dp">
+
+                    <TextView
+                        android:id="@+id/tvScreenName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp" />
+
+                    <ImageView
+                        android:id="@+id/ivVerified"
+                        android:layout_width="14dp"
+                        android:layout_height="18dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/weibo_verified" />
+
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvCounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#f3a000"
+                    android:textSize="9sp" android:layout_marginLeft="2dp"/>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" 
+                    android:layout_marginLeft="2dp">
+
+                    <TextView
+                        android:id="@+id/tvCreatedAt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="9sp" />
+                    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true" >
+                        
+                        <TextView
+                            android:id="@+id/tvPossess"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_possess"
+                            android:textSize="10sp"
+                            android:layout_marginLeft="9dp" android:textColor="#f85c08" android:clickable="true"/>
+                        
+                        <TextView
+                            android:id="@+id/tvFriendship"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_weibo_friendship"
+                            android:textSize="10sp"
+                            android:layout_marginLeft="9dp" android:textColor="#1da7ef" android:clickable="true"/>
+                        
+                        <TextView
+                            android:id="@+id/tvAtSomeone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_atsomeone"
+                            android:textSize="10sp"
+                            android:layout_marginLeft="9dp" android:textColor="#1da7ef" android:layout_marginRight="3dp" android:clickable="true"/>
+                        
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" >
+
+            <ImageButton
+                android:id="@+id/btnDescription"
+                android:layout_width="28dp"
+                android:layout_height="24dp"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/description_quote" />
+
+            <ProgressBar
+                android:id="@+id/pbStatusLoading"
+                android:layout_width="18dp"
+                android:layout_height="18dp" />
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <ListView android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/lvStatus" android:layout_marginBottom="40dp"></ListView>
     </RelativeLayout>
 </LinearLayout>

@@ -5,12 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,7 +34,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +41,6 @@ import android.widget.Toast;
 import com.sonyericsson.zoom.DynamicZoomControl;
 import com.sonyericsson.zoom.ImageZoomView;
 import com.sonyericsson.zoom.LongPressZoomListener;
-import com.zrd.zr.pnj.PNJ;
 import com.zrd.zr.pnj.SecureURL;
 import com.zrd.zr.pnj.ThreadPNJDealer;
 import com.zrd.zr.protos.WeibousersProtos.UCMappings;
@@ -59,20 +52,13 @@ public class BrowPage {
 	
 	private FrameLayout mFrameBackground;
 	private RelativeLayout mLayoutCtrl;
-	private LinearLayout llVoteInfo;
 	private TextView tvNums;
 	private TextView mTextScreenName;
-	private TextView mTextUpup;
-	private TextView mTextDwdw;
-	private TextView mTextVoteRating;
-	private ProgressBar mProgressVote;
 	private ImageZoomView mBrow;
 	private Button btnSave;
 	private Button btnUpload;
 	private Button btnPlay;
 	private Button btnPause;
-	private ImageButton btnUpup;
-	private ImageButton btnDwdw;
 	private ImageButton btnZoomIn;
 	private ImageButton btnZoomOut;
 	private Button mBtnShare;
@@ -107,20 +93,13 @@ public class BrowPage {
 		
 		mFrameBackground = (FrameLayout) activity.findViewById(R.id.flBackground);
 		mLayoutCtrl = (RelativeLayout) activity.findViewById(R.id.rlControl);
-		llVoteInfo = (LinearLayout) activity.findViewById(R.id.llVoteInfo);
 		tvNums = (TextView) activity.findViewById(R.id.textViewNums);
 		mTextScreenName = (TextView) activity.findViewById(R.id.tvScreenNameAbovePic);
-		mTextUpup = (TextView) activity.findViewById(R.id.tvUpup);
-		mTextDwdw = (TextView) activity.findViewById(R.id.tvDwdw);
-		mTextVoteRating = (TextView) activity.findViewById(R.id.tvVoteRating);
-		mProgressVote = (ProgressBar) activity.findViewById(R.id.pbVote);
 		mBrow = (ImageZoomView) activity.findViewById(R.id.imageSwitcher);
 		btnSave = (Button) activity.findViewById(R.id.btnSave);
 		btnPlay = (Button) activity.findViewById(R.id.btnPlay);
 		btnPause = (Button) activity.findViewById(R.id.btnPause);
 		btnUpload = (Button) activity.findViewById(R.id.btnUpload);
-		btnUpup = (ImageButton) activity.findViewById(R.id.imageButton4);
-		btnDwdw = (ImageButton) activity.findViewById(R.id.imageButton3);
 		btnZoomIn = (ImageButton) activity.findViewById(R.id.btnZoomin);
 		btnZoomOut = (ImageButton) activity.findViewById(R.id.btnZoomout);
 		mBtnShare = (Button) activity.findViewById(R.id.btnShare);
@@ -210,7 +189,6 @@ public class BrowPage {
 		mBrow.setOnTouchListener(parent);
         //mBrow.setOnTouchListener(mZoomListener);
 		
-		llVoteInfo.setVisibility(LinearLayout.INVISIBLE);
 		mTextScreenName.setVisibility(TextView.GONE);
 		
 		zrAsyncShowPic(mId, 0);
@@ -222,7 +200,7 @@ public class BrowPage {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				parent.getWeiboPage().getBtnAtSomeone().performClick();
+				parent.getWeiboPage().getTextAtSomeone().performClick();
 			}
 			
 		});
@@ -385,89 +363,6 @@ public class BrowPage {
 					.setTitle(R.string.tips_noadultstuff)
 					.create();
 				dlg.show();
-			}
-			
-		});
-		
-		btnUpup.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (EntranceActivity.getClientKey().equals("")) {
-					Toast.makeText(
-						parent,
-						R.string.tips_notgetserialyet,
-						Toast.LENGTH_SHORT
-					).show();
-				} else {
-					WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs());
-					Calendar now = Calendar.getInstance();
-					now.setTimeZone(TimeZone.getTimeZone(EntranceActivity.TIMEZONE_SERVER));
-					
-					if ((wi.mLastVoteTime != null
-						&& now.getTime().getTime() - wi.mLastVoteTime.getTime() > EntranceActivity.PERIOD_VOTEAGAIN * 3600000)
-						|| wi.mLastVoteTime == null) {
-						/**
-						 * we let the voters think they'll see the result immediately,
-						 * and we actually do the voting at background and it'll refresh
-						 * the real result lately.
-						 */
-						//mVibrator.vibrate( new long[]{50, 400, 30, 800},-1);
-						wi.likes++;
-						wi.mLastVote = 1;
-						zrRenewCurFileInfo();
-						AsyncVoter asyncVoter = new AsyncVoter();
-						asyncVoter.execute("weibouserid", mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "1");
-					} else {
-						Toast.makeText(
-							parent, 
-							String.format(parent.getString(R.string.err_voted), wi.mLastVote == 1 ? parent.getString(R.string.label_upup) : parent.getString(R.string.label_dwdw), EntranceActivity.PERIOD_VOTEAGAIN),
-							Toast.LENGTH_SHORT
-						).show();
-					}
-				}
-			}
-			
-		});
-		
-		btnDwdw.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (EntranceActivity.getClientKey().equals("")) {
-					Toast.makeText(
-						parent,
-						R.string.tips_notgetserialyet,
-						Toast.LENGTH_SHORT
-					).show();
-				} else {
-					WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs());
-					Date now = Calendar.getInstance(TimeZone.getTimeZone(EntranceActivity.TIMEZONE_SERVER)).getTime();
-					
-					if ((wi.mLastVoteTime != null
-						&& now.getTime() - wi.mLastVoteTime.getTime() > EntranceActivity.PERIOD_VOTEAGAIN * 3600000)
-						|| wi.mLastVoteTime == null) {
-						/**
-						 * we let the voters think they'll see the result immediately,
-						 * and we actually do the voting at background and it'll refresh
-						 * the real result lately.
-						 */
-						//mVibrator.vibrate( new long[]{100,10,100,10},-1);
-						wi.dislikes++;
-						wi.mLastVote = -1;
-						zrRenewCurFileInfo();
-						AsyncVoter asyncVoter = new AsyncVoter();
-						asyncVoter.execute("weibouserid", mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "-1");
-					} else {
-						Toast.makeText(
-							parent, 
-							String.format(parent.getString(R.string.err_voted), wi.mLastVote == 1 ? parent.getString(R.string.label_upup) : parent.getString(R.string.label_dwdw), EntranceActivity.PERIOD_VOTEAGAIN),
-							Toast.LENGTH_SHORT
-						).show();
-					}
-				}
 			}
 			
 		});
@@ -645,18 +540,18 @@ public class BrowPage {
 				)
 			);
 		}
-		mTextUpup.setText(wi.likes.toString());
-		mTextDwdw.setText(wi.dislikes.toString());
+		parent.getTextUpup().setText(wi.likes.toString());
+		parent.getTextDwdw().setText(wi.dislikes.toString());
 		int iTotalVotes = wi.likes + wi.dislikes;
 		int iPercentage = iTotalVotes <= 0 ? 0 : (wi.likes * 100 / iTotalVotes);
 		if (iTotalVotes <= 0) {
-			mProgressVote.setSecondaryProgress(0);
-			mProgressVote.setProgress(0);
+			parent.getProgressVote().setSecondaryProgress(0);
+			parent.getProgressVote().setProgress(0);
 		} else {
-			mProgressVote.setProgress(iPercentage);
-			mProgressVote.setSecondaryProgress(100);
+			parent.getProgressVote().setProgress(iPercentage);
+			parent.getProgressVote().setSecondaryProgress(100);
 		}
-		mTextVoteRating.setText(
+		parent.getTextVoteRating().setText(
 			String.format(
 				parent.getString(R.string.tips_voterating), 
 				iPercentage, 
@@ -664,9 +559,9 @@ public class BrowPage {
 			)
 		);
 		if (wi.mLastVote != 0) {
-			llVoteInfo.setVisibility(LinearLayout.VISIBLE);
+			parent.getLayoutVoteInfo().setVisibility(LinearLayout.VISIBLE);
 		} else {
-			llVoteInfo.setVisibility(LinearLayout.INVISIBLE);
+			parent.getLayoutVoteInfo().setVisibility(LinearLayout.INVISIBLE);
 		}
 	}
 	
@@ -680,35 +575,6 @@ public class BrowPage {
 		if (usrs.size() == 0) return;
 		AsyncPicLoader asyncPicLoader = new AsyncPicLoader(parent);
 		asyncPicLoader.execute(id, direction);
-	}
-	
-	private boolean vote(String... params) {
-		WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs());
-				
-		String msg = PNJ.getResponseByGet(
-			EntranceActivity.URL_SITE + "vote.php",
-			PNJ.getParamsAsStr(params)
-		);
-		if (msg != null) {
-			String ss[] = EntranceActivity.getPhpMsg(msg);
-			if (ss != null && ss[0].equals(EntranceActivity.SYMBOL_SUCCESSFUL)) {
-				if (ss[1].equals("")) {// means it's never voted
-					// do nothing
-				} else {
-					String[] sRecs = ss[1].split(","); 
-					if (sRecs.length == 8) {
-						wi.mLastVote = Integer.parseInt(sRecs[0]);
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-						ParsePosition pp = new ParsePosition(0);
-						wi.mLastVoteTime = sdf.parse(sRecs[1], pp);
-						wi.clicks = Integer.parseInt(sRecs[2]);
-						wi.likes = Integer.parseInt(sRecs[3]);
-						wi.dislikes = Integer.parseInt(sRecs[4]);
-					}
-				}
-				return true;
-			} else return false;
-		} else return false;
 	}
 	
 	public Boolean getWasPlaying() {
@@ -903,7 +769,7 @@ public class BrowPage {
 			 * we +1 for this click, and get back all the "likes, dislikes..."
 			 * kinda stuff from the sever with the function "vote" here.
 			 */
-			vote(
+			parent.vote(
 				"weibouserid", 
 				mId.toString(), 
 				"clientkey", 
@@ -1083,25 +949,6 @@ public class BrowPage {
 			
 			//return super.onSingleTapUp(e);
 			return false;
-		}
-		
-	}
-	
-	/*
-	 * try to vote under background by using AsyncTask
-	 */
-	private class AsyncVoter extends AsyncTask <String, Object, Boolean> {
-		
-		@Override
-		protected void onPostExecute(Boolean result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-		}
-
-		@Override
-		protected Boolean doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			return vote(params);
 		}
 		
 	}

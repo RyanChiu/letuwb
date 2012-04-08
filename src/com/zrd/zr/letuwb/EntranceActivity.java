@@ -1,6 +1,11 @@
 package com.zrd.zr.letuwb;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewStub;
 import android.view.Window;
@@ -27,8 +33,11 @@ import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -88,6 +97,18 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	private BrowPage mBrowPage;
 	private WeiboPage mWeiboPage;
 	
+	/*
+	 * the set of "vote components"
+	 */
+	private RelativeLayout mLayoutVote;
+	private LinearLayout mLayoutVoteInfo;
+	private TextView mTextUpup;
+	private TextView mTextDwdw;
+	private TextView mTextVoteRating;
+	private ProgressBar mProgressVote;
+	private ImageButton mBtnUpup;
+	private ImageButton mBtnDwdw;
+	
     /* Called when the activity is firstly created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,8 +130,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         setMainPage(new MainPage(this));
         setBrowPage(new BrowPage(this));
         setWeiboPage(new WeiboPage(this));
-        //show the very first view "main"
-        switchPage(R.layout.main);
         
         mPreferences = getPreferences(EntranceActivity.MODE_PRIVATE);
         
@@ -155,6 +174,17 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         RegLoginActivity.addContext(EntranceActivity.this);
         mWebCount = (WebView) findViewById(R.id.wvCount);
         
+        mLayoutVote = (RelativeLayout) findViewById(R.id.rlVote);
+        mLayoutVoteInfo = (LinearLayout) findViewById(R.id.llVoteInfo);
+        mTextUpup = (TextView) findViewById(R.id.tvUpup);
+        mTextDwdw = (TextView) findViewById(R.id.tvDwdw);
+        mTextVoteRating = (TextView) findViewById(R.id.tvVoteRating);
+        mProgressVote = (ProgressBar) findViewById(R.id.pbVote);
+        mBtnUpup = (ImageButton) findViewById(R.id.btnUpup);
+		mBtnDwdw = (ImageButton) findViewById(R.id.btnDwdw);
+        
+        mLayoutVoteInfo.setVisibility(LinearLayout.INVISIBLE);
+        
 		mQuitDialog = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).create();
 		mQuitDialog.setTitle(getString(R.string.quit_title));
 		mQuitDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.label_yes),
@@ -185,6 +215,95 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			
 			}
 		);
+		
+		/*
+		 * event handling with the set of "vote components"
+		 */
+		mBtnUpup.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (EntranceActivity.getClientKey().equals("")) {
+					Toast.makeText(
+						EntranceActivity.this,
+						R.string.tips_notgetserialyet,
+						Toast.LENGTH_SHORT
+					).show();
+				} else {
+					WeibouserInfo wi = getMainPage().getPicFromId(getBrowPage().mId, getMainPage().getUsrs());
+					Calendar now = Calendar.getInstance();
+					now.setTimeZone(TimeZone.getTimeZone(EntranceActivity.TIMEZONE_SERVER));
+					
+					if ((wi.mLastVoteTime != null
+						&& now.getTime().getTime() - wi.mLastVoteTime.getTime() > EntranceActivity.PERIOD_VOTEAGAIN * 3600000)
+						|| wi.mLastVoteTime == null) {
+						/**
+						 * we let the voters think they'll see the result immediately,
+						 * and we actually do the voting at background and it'll refresh
+						 * the real result lately.
+						 */
+						//mVibrator.vibrate( new long[]{50, 400, 30, 800},-1);
+						wi.likes++;
+						wi.mLastVote = 1;
+						getBrowPage().zrRenewCurFileInfo();
+						AsyncVoter asyncVoter = new AsyncVoter();
+						asyncVoter.execute("weibouserid", getBrowPage().mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "1");
+					} else {
+						Toast.makeText(
+							EntranceActivity.this, 
+							String.format(getString(R.string.err_voted), wi.mLastVote == 1 ? getString(R.string.label_upup) : getString(R.string.label_dwdw), EntranceActivity.PERIOD_VOTEAGAIN),
+							Toast.LENGTH_SHORT
+						).show();
+					}
+				}
+			}
+			
+		});
+		
+		mBtnDwdw.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (EntranceActivity.getClientKey().equals("")) {
+					Toast.makeText(
+						EntranceActivity.this,
+						R.string.tips_notgetserialyet,
+						Toast.LENGTH_SHORT
+					).show();
+				} else {
+					WeibouserInfo wi = getMainPage().getPicFromId(getBrowPage().mId, getMainPage().getUsrs());
+					Date now = Calendar.getInstance(TimeZone.getTimeZone(EntranceActivity.TIMEZONE_SERVER)).getTime();
+					
+					if ((wi.mLastVoteTime != null
+						&& now.getTime() - wi.mLastVoteTime.getTime() > EntranceActivity.PERIOD_VOTEAGAIN * 3600000)
+						|| wi.mLastVoteTime == null) {
+						/**
+						 * we let the voters think they'll see the result immediately,
+						 * and we actually do the voting at background and it'll refresh
+						 * the real result lately.
+						 */
+						//mVibrator.vibrate( new long[]{100,10,100,10},-1);
+						wi.dislikes++;
+						wi.mLastVote = -1;
+						getBrowPage().zrRenewCurFileInfo();
+						AsyncVoter asyncVoter = new AsyncVoter();
+						asyncVoter.execute("weibouserid", getBrowPage().mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "-1");
+					} else {
+						Toast.makeText(
+							EntranceActivity.this, 
+							String.format(getString(R.string.err_voted), wi.mLastVote == 1 ? getString(R.string.label_upup) : getString(R.string.label_dwdw), EntranceActivity.PERIOD_VOTEAGAIN),
+							Toast.LENGTH_SHORT
+						).show();
+					}
+				}
+			}
+			
+		});
+		
+        //show the very first view "main"
+        switchPage(R.layout.main);
 		
 		/*
 		 * show the content for layout "main"
@@ -770,9 +889,11 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		// TODO Auto-generated method stub
 		switch (layout) {
 		case R.layout.main:
+			mLayoutVote.setVisibility(View.GONE);
 			mViewFlipper.setDisplayedChild(0);
 			break;
 		case R.layout.brow:
+			mLayoutVote.setVisibility(View.VISIBLE);
 			mViewFlipper.setDisplayedChild(1);
 			if (params.length == 1) {
 				long id = (Long)params[0];
@@ -780,6 +901,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			}
 			break;
 		case R.layout.weibo_show:
+			mLayoutVote.setVisibility(View.VISIBLE);
 			mViewFlipper.setDisplayedChild(2);
 			if (params.length == 2) {
 				long uid = (Long)params[0];
@@ -799,5 +921,73 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 
 	public void setWeiboPage(WeiboPage mWeiboPage) {
 		this.mWeiboPage = mWeiboPage;
+	}
+	
+	public TextView getTextUpup() {
+		return mTextUpup;
+	}
+	
+	public TextView getTextDwdw() {
+		return mTextDwdw;
+	}
+	
+	public TextView getTextVoteRating() {
+		return mTextVoteRating;
+	}
+	
+	public ProgressBar getProgressVote() {
+		return mProgressVote;
+	}
+	
+	public LinearLayout getLayoutVoteInfo() {
+		return mLayoutVoteInfo;
+	}
+	
+	public boolean vote(String... params) {
+		WeibouserInfo wi = getMainPage().getPicFromId(getBrowPage().mId, getMainPage().getUsrs());
+				
+		String msg = PNJ.getResponseByGet(
+			EntranceActivity.URL_SITE + "vote.php",
+			PNJ.getParamsAsStr(params)
+		);
+		if (msg != null) {
+			String ss[] = EntranceActivity.getPhpMsg(msg);
+			if (ss != null && ss[0].equals(EntranceActivity.SYMBOL_SUCCESSFUL)) {
+				if (ss[1].equals("")) {// means it's never voted
+					// do nothing
+				} else {
+					String[] sRecs = ss[1].split(","); 
+					if (sRecs.length == 8) {
+						wi.mLastVote = Integer.parseInt(sRecs[0]);
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						ParsePosition pp = new ParsePosition(0);
+						wi.mLastVoteTime = sdf.parse(sRecs[1], pp);
+						wi.clicks = Integer.parseInt(sRecs[2]);
+						wi.likes = Integer.parseInt(sRecs[3]);
+						wi.dislikes = Integer.parseInt(sRecs[4]);
+					}
+				}
+				return true;
+			} else return false;
+		} else return false;
+	}
+	
+	/*
+	 * try to vote under background by using AsyncTask
+	 */
+	private class AsyncVoter extends AsyncTask <String, Object, Boolean> {
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			return vote(params);
+		}
+		
 	}
 }
