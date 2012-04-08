@@ -46,7 +46,7 @@
                     <ImageView
                         android:id="@+id/ivVerified"
                         android:layout_width="14dp"
-                        android:layout_height="18dp"
+                        android:layout_height="16dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/weibo_verified" />
 
