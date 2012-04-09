@@ -47,7 +47,7 @@ public class SecureURL {
 			conn = url.openConnection();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			Log.e("DEBUGTAG", "Remtoe Image Exception", e);
+			Log.e("DEBUGTAG", "Remtoe Exception", e);
 			e.printStackTrace();
 			return null;
 		}
@@ -55,7 +55,7 @@ public class SecureURL {
 			conn.connect();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			Log.e("DEBUGTAG", "Remtoe Image Exception", e);
+			Log.e("DEBUGTAG", "Remtoe Exception", e);
 			e.printStackTrace();
 			return null;
 		}
@@ -67,6 +67,20 @@ public class SecureURL {
 		URL url = null;
 		try {
 			url = new URL(sUrl);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			Log.e("DEBUGTAG", "Remtoe Exception", e);
+			e.printStackTrace();
+			return null;
+		}
+		
+		return getConnection(url);
+	}
+	
+	public URLConnection getConnection(String sProto, String sHost, int nPort, String sFile) {		
+		URL url = null;
+		try {
+			url = new URL(sProto, sHost, nPort, sFile);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			Log.e("DEBUGTAG", "Remtoe Exception", e);

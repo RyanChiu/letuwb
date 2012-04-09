@@ -54,9 +54,13 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	final static String SERIAL_APP = "gbhytfvnjurdcmkiesx,lowaz.;p201108282317";
 	final static String TIMEZONE_SERVER = "Asia/Hong_Kong";
 	//final static String URL_SITE = "http://hot88.info/letmewb/";
-	final static String URL_SITE = "http://122.224.249.74:8080/letmewb/";
-	final static String URL_UPDATE = "http://122.224.249.74:8080/";
-	final static String URL_STATS = "http://122.224.249.74:8080/letmewb/";
+	final static String URL_PROTOCOL = "http";
+	final static String URL_HOST = "122.224.249.74";
+	final static int URL_PORT = 8080;
+	final static String URL_DIRECTORY = "/letmewb/";
+	final static String URL_SITE = URL_PROTOCOL + "://" + URL_HOST + ":" + URL_PORT + URL_DIRECTORY; //"http://122.224.249.74:8080/letmewb/";
+	final static String URL_UPDATE = URL_PROTOCOL + "://" + URL_HOST + ":" + URL_PORT + "/"; //"http://122.224.249.74:8080/";
+	final static String URL_STATS = URL_PROTOCOL + "://" + URL_HOST + ":" + URL_PORT + URL_DIRECTORY; //"http://122.224.249.74:8080/letmewb/";
 	final static String PATH_COLLECTION = "/letuwb/collection/";
 	final static String PATH_CACHE = "/letuwb/cache/";
 	final static Integer MAXSIZE_CACHE = 100;// in MB

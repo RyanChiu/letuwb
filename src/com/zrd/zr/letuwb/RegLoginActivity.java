@@ -378,9 +378,9 @@ public class RegLoginActivity extends Activity {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			SecureURL su = new SecureURL();
-			String strURL = "";
+			String strURLfile = "";
 			try {
-				strURL = EntranceActivity.URL_SITE + "updusr.php?"
+				strURLfile = "updusr.php?"
 					+ "user[id]=" + sina.getLoggedInUser().getId()
 					+ "&user[screen_name]=" + URLEncoder.encode(sina.getLoggedInUser().getScreenName(), "UTF-8")
 					+ "&user[name]=" + URLEncoder.encode(sina.getLoggedInUser().getName(), "UTF-8")
@@ -406,7 +406,12 @@ public class RegLoginActivity extends Activity {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			URLConnection conn = su.getConnection(strURL);
+			URLConnection conn = su.getConnection(
+				EntranceActivity.URL_PROTOCOL, 
+				EntranceActivity.URL_HOST, 
+				EntranceActivity.URL_PORT,
+				EntranceActivity.URL_DIRECTORY + strURLfile
+			);
 			if (conn != null) {
 				try {
 					conn.connect();
