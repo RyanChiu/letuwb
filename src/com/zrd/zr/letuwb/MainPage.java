@@ -788,12 +788,19 @@ public class MainPage {
     /*
      * get total pictures number
      */
-    public static int getTotalPicsNum() {
+    public static int getTotalPicsNum(String... params) {
  		String sBackMsg = "";
-		sBackMsg = PNJ.getResponseByGet(
-			EntranceActivity.URL_SITE + "stats.php",
-			PNJ.getParamsAsStr("total", "usrs")
-		);
+ 		if (params.length == 0) {
+			sBackMsg = PNJ.getResponseByGet(
+				EntranceActivity.URL_SITE + "stats.php",
+				PNJ.getParamsAsStr("total", "usrs")
+			);
+ 		} else {
+ 			sBackMsg = PNJ.getResponseByGet(
+				EntranceActivity.URL_SITE + "stats.php",
+				PNJ.getParamsAsStr("total", "usrs", "clientkey", params[0])
+			);
+ 		}
 		if (sBackMsg != null) {
 			String ss[] = EntranceActivity.getPhpMsg(sBackMsg);
 			if (ss != null && ss[0].equals(EntranceActivity.SYMBOL_SUCCESSFUL)) {
@@ -878,8 +885,9 @@ public class MainPage {
 			// TODO Auto-generated method stub
 			mUsrs = getPics(params);
 			
+			int num;
 			if (!mBtnPossessions.isSelected()) {
-				int num = getTotalPicsNum();
+				num = getTotalPicsNum();
 				if (num < 0) {
 					Toast.makeText(
 						parent,
@@ -891,7 +899,17 @@ public class MainPage {
 					mTotalPics = num;
 				}
 			} else {
-				mTotalPics = mUsrs.size();
+				num = getTotalPicsNum(EntranceActivity.getClientKey());
+				if (num < 0) {
+					Toast.makeText(
+						parent,
+						R.string.err_noconnection,
+						Toast.LENGTH_LONG
+					).show();
+					mTotalPics = 0;
+				} else {
+					mTotalPics = num;
+				}
 			}
 			mTotalPages = (int) Math.ceil((float)mTotalPics / (float)mLimit);
 			mSeekMain.setMax(
