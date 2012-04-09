@@ -69,7 +69,7 @@ public class SecureURL {
 			url = new URL(sUrl);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			Log.e("DEBUGTAG", "Remtoe Image Exception", e);
+			Log.e("DEBUGTAG", "Remtoe Exception", e);
 			e.printStackTrace();
 			return null;
 		}

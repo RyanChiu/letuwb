@@ -344,7 +344,7 @@ public class MainPage {
 	    	
 	    });
 	    
-	    mBtnPossessions.setOnClickListener(new OnClickListener () {
+	    mBtnPossessions.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
