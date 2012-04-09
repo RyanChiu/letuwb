@@ -183,7 +183,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         mBtnUpup = (ImageButton) findViewById(R.id.btnUpup);
 		mBtnDwdw = (ImageButton) findViewById(R.id.btnDwdw);
         
-        mLayoutVoteInfo.setVisibility(LinearLayout.INVISIBLE);
+        //mLayoutVoteInfo.setVisibility(LinearLayout.INVISIBLE);
+        //mLayoutVote.setVisibility(LinearLayout.GONE);
         
 		mQuitDialog = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).create();
 		mQuitDialog.setTitle(getString(R.string.quit_title));
@@ -893,16 +894,13 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			mViewFlipper.setDisplayedChild(0);
 			break;
 		case R.layout.brow:
-			mLayoutVote.setVisibility(View.VISIBLE);
-			mViewFlipper.setDisplayedChild(1);
 			if (params.length == 1) {
 				long id = (Long)params[0];
 				mBrowPage.zrAsyncShowPic(id, 0);
 			}
+			mViewFlipper.setDisplayedChild(1);
 			break;
 		case R.layout.weibo_show:
-			mLayoutVote.setVisibility(View.VISIBLE);
-			mViewFlipper.setDisplayedChild(2);
 			if (params.length == 2) {
 				long uid = (Long)params[0];
 				long _id = (Long)params[1];
@@ -910,7 +908,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				mWeiboPage.setId(_id);
 				mWeiboPage.reloadAll();
 				mWeiboPage.turnDealing(true);
+				mBrowPage.zrAsyncShowPic(_id, 0);
 			}
+			mViewFlipper.setDisplayedChild(2);
 			break;
 		}
 	}
@@ -941,6 +941,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	
 	public LinearLayout getLayoutVoteInfo() {
 		return mLayoutVoteInfo;
+	}
+	
+	public RelativeLayout getLayoutVote() {
+		return mLayoutVote;
 	}
 	
 	public boolean vote(String... params) {
