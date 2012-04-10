@@ -33,6 +33,7 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ public class BrowPage {
 	private RelativeLayout mLayoutCtrl;
 	private TextView tvNums;
 	private TextView mTextScreenName;
+	private ImageView mImgVerified;
 	private ImageZoomView mBrow;
 	private Button btnSave;
 	private Button btnUpload;
@@ -95,6 +97,7 @@ public class BrowPage {
 		mLayoutCtrl = (RelativeLayout) activity.findViewById(R.id.rlControl);
 		tvNums = (TextView) activity.findViewById(R.id.textViewNums);
 		mTextScreenName = (TextView) activity.findViewById(R.id.tvScreenNameAbovePic);
+		mImgVerified = (ImageView) activity.findViewById(R.id.imgVerified_brow);
 		mBrow = (ImageZoomView) activity.findViewById(R.id.imageSwitcher);
 		btnSave = (Button) activity.findViewById(R.id.btnSave);
 		btnPlay = (Button) activity.findViewById(R.id.btnPlay);
@@ -190,6 +193,7 @@ public class BrowPage {
         //mBrow.setOnTouchListener(mZoomListener);
 		
 		mTextScreenName.setVisibility(TextView.GONE);
+		mImgVerified.setVisibility(View.GONE);
 		
 		zrAsyncShowPic(mId, 0);
 		
@@ -534,12 +538,13 @@ public class BrowPage {
 			mTextScreenName.setText(
 				String.format(
 					parent.getString(R.string.info_picture), 
-					wi.screen_name + (wi.verified == 1 ? " (V)" : ""),
+					wi.screen_name,
 					wi.location,
 					wi.description
 				)
 			);
 		}
+		mImgVerified.setVisibility((wi.verified == 1 ? View.VISIBLE : View.GONE));
 		parent.getTextUpup().setText(wi.likes.toString());
 		parent.getTextDwdw().setText(wi.dislikes.toString());
 		int iTotalVotes = wi.likes + wi.dislikes;
