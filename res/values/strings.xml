@@ -177,4 +177,5 @@
     <string name="omenuitem_goback">Go back</string>
     <string name="tips_gifimage">A GIF image, loading, please wait…</string>
     <string name="tips_failedtoshowgif">Failed to show GIF.</string>
+    <string name="label_novotetips">You\'ve not voted yet.Vote to see the rating.</string>
 </resources>

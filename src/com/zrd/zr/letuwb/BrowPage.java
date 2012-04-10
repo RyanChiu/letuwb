@@ -560,8 +560,10 @@ public class BrowPage {
 		);
 		if (wi.mLastVote != 0) {
 			parent.getLayoutVoteInfo().setVisibility(LinearLayout.VISIBLE);
+			parent.getTextNoVoteTips().setVisibility(View.GONE);
 		} else {
-			parent.getLayoutVoteInfo().setVisibility(LinearLayout.INVISIBLE);
+			parent.getLayoutVoteInfo().setVisibility(LinearLayout.GONE);
+			parent.getTextNoVoteTips().setVisibility(View.VISIBLE);
 		}
 		parent.getLayoutVote().setVisibility(RelativeLayout.VISIBLE);
 	}

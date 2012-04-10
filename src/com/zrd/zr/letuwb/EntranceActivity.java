@@ -106,6 +106,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	 */
 	private RelativeLayout mLayoutVote;
 	private LinearLayout mLayoutVoteInfo;
+	private TextView mTextNoVoteTips;
 	private TextView mTextUpup;
 	private TextView mTextDwdw;
 	private TextView mTextVoteRating;
@@ -180,6 +181,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         
         mLayoutVote = (RelativeLayout) findViewById(R.id.rlVote);
         mLayoutVoteInfo = (LinearLayout) findViewById(R.id.llVoteInfo);
+        mTextNoVoteTips = (TextView) findViewById(R.id.tvNoVoteTips);
         mTextUpup = (TextView) findViewById(R.id.tvUpup);
         mTextDwdw = (TextView) findViewById(R.id.tvDwdw);
         mTextVoteRating = (TextView) findViewById(R.id.tvVoteRating);
@@ -474,7 +476,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		menu.clear();
 		switch (mViewFlipper.getDisplayedChild()) {
 		case 0:
-			menu.add(Menu.NONE, Menu.FIRST + 4, 4, getString(R.string.omenuitem_reglogin)).setIcon(R.drawable.ic_menu_login);
 			break;
 		case 1:
 			if (mBrowPage.isDooming()) {
@@ -488,6 +489,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		case 2:
 			break;
 		}
+		menu.add(Menu.NONE, Menu.FIRST + 4, 4, getString(R.string.omenuitem_reglogin)).setIcon(R.drawable.ic_menu_login);
 		menu.add(Menu.NONE, Menu.FIRST + 5, 5, getString(R.string.omenuitem_quit)).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 		menu.add(Menu.NONE, Menu.FIRST + 6, 6, getString(R.string.omenuitem_about)).setIcon(android.R.drawable.ic_menu_help);
 
@@ -945,6 +947,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	
 	public LinearLayout getLayoutVoteInfo() {
 		return mLayoutVoteInfo;
+	}
+	
+	public TextView getTextNoVoteTips() {
+		return mTextNoVoteTips;
 	}
 	
 	public RelativeLayout getLayoutVote() {
