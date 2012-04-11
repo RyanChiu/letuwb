@@ -55,6 +55,8 @@ public class BrowPage {
 	private RelativeLayout mLayoutCtrl;
 	private TextView tvNums;
 	private TextView mTextScreenName;
+	private TextView mTextCounts_brow;
+	private ImageButton mBtnDescriptionMore;
 	private ImageView mImgVerified;
 	private ImageZoomView mBrow;
 	private Button btnSave;
@@ -97,6 +99,8 @@ public class BrowPage {
 		mLayoutCtrl = (RelativeLayout) activity.findViewById(R.id.rlControl);
 		tvNums = (TextView) activity.findViewById(R.id.textViewNums);
 		mTextScreenName = (TextView) activity.findViewById(R.id.tvScreenNameAbovePic);
+		mTextCounts_brow = (TextView) activity.findViewById(R.id.tvCounts_brow);
+		mBtnDescriptionMore = (ImageButton) activity.findViewById(R.id.btnDescriptionMore);
 		mImgVerified = (ImageView) activity.findViewById(R.id.imgVerified_brow);
 		mBrow = (ImageZoomView) activity.findViewById(R.id.imageSwitcher);
 		btnSave = (Button) activity.findViewById(R.id.btnSave);
@@ -491,6 +495,16 @@ public class BrowPage {
 			}
 			
 		});
+		
+		mBtnDescriptionMore.setOnClickListener (new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				parent.popupDescription((String) mBtnDescriptionMore.getTag());
+			}
+			
+		});
 	}
 	
 	/**
@@ -535,12 +549,20 @@ public class BrowPage {
 			mTextScreenName.setVisibility(TextView.GONE);
 		} else {
 			mTextScreenName.setVisibility(TextView.VISIBLE);
+			String s = wi.description;
+			mBtnDescriptionMore.setTag(wi.description);
+			if (s.toCharArray().length >= 14) {
+				s = s.substring(0, 12) + "...";
+				mBtnDescriptionMore.setVisibility(View.VISIBLE);
+			} else {
+				mBtnDescriptionMore.setVisibility(View.GONE);
+			}
 			mTextScreenName.setText(
 				String.format(
 					parent.getString(R.string.info_picture), 
 					wi.screen_name,
 					wi.location,
-					wi.description
+					s
 				)
 			);
 		}
@@ -643,6 +665,10 @@ public class BrowPage {
 	
 	public Button getBtnAtSomeone() {
 		return this.mBtnAtSomeone;
+	}
+	
+	public TextView getTextCounts_brow() {
+		return this.mTextCounts_brow;
 	}
 
 	public Boolean wasPlaying() {

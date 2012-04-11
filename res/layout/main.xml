@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout 
-	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-	<FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/frameLayoutMain">
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/frameLayoutMain">
         <ViewSwitcher android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/viewSwitcherMain" android:layout_marginBottom="90dp">
             <GridView 
-            	android:id="@+id/gridViewPics" 
-            	android:layout_width="fill_parent" 
-            	android:layout_height="fill_parent"
-            	android:stretchMode="columnWidth"
-            	android:gravity="center" android:horizontalSpacing="3dp" android:verticalSpacing="1dp" android:numColumns="2">
+                android:id="@+id/gridViewPics" 
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:stretchMode="columnWidth"
+                android:gravity="center" android:horizontalSpacing="3dp" android:verticalSpacing="1dp" android:numColumns="2">
             </GridView>
         </ViewSwitcher>
         <RelativeLayout android:layout_width="fill_parent" android:id="@+id/relativeLayoutMain" android:layout_height="wrap_content">
             <LinearLayout 
-            	android:layout_width="fill_parent" 
-	        	android:layout_height="wrap_content"
-	        	android:orientation="vertical"
-	            android:layout_alignParentBottom="true" android:id="@+id/linearLayoutMainBottom" android:gravity="center">
+                android:layout_width="fill_parent" 
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true" android:id="@+id/linearLayoutMainBottom" android:gravity="center">
                 <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="center" android:layout_gravity="center" android:layout_marginBottom="2dp">
 
                     <ImageButton
@@ -48,7 +48,7 @@
                         <Button android:text="@string/label_random" android:textSize="12sp" android:background="@drawable/btn_custom" android:layout_height="wrap_content" android:id="@+id/btnRandom" android:textColor="#1da7ef" android:lines="1" android:layout_width="wrap_content" android:layout_weight="17.5" android:paddingBottom="9dp" android:paddingTop="9dp"></Button>
                         <Button android:text="@string/label_latest" android:id="@+id/btnLatest" android:textSize="12sp" android:background="@drawable/btn_custom" android:layout_height="wrap_content" android:textColor="#1da7ef" android:lines="1" android:layout_width="wrap_content" android:layout_weight="17.5" android:paddingBottom="9dp" android:paddingTop="9dp"></Button>
                         <Button android:text="@string/label_hottest" android:id="@+id/btnHottest" android:textSize="12sp" android:background="@drawable/btn_custom" android:layout_height="wrap_content" android:textColor="#1da7ef" android:lines="1" android:layout_width="wrap_content" android:layout_weight="17.5" android:paddingBottom="9dp" android:paddingTop="9dp"></Button>
-                        <Button android:background="@drawable/btn_custom" android:layout_width="wrap_content" android:textColor="#1da7ef" android:layout_height="wrap_content" android:textSize="12sp" android:id="@+id/btnUnhottest" android:text="@string/label_unhottest" android:lines="1" android:layout_weight="17.5" android:paddingTop="9dp" android:paddingBottom="9dp"></Button>
+                        <Button android:background="@drawable/btn_custom" android:layout_width="wrap_content" android:textColor="#1da7ef" android:layout_height="wrap_content" android:textSize="12sp" android:id="@+id/btnUnhottest" android:text="@string/label_unhottest" android:lines="1" android:layout_weight="17.5" android:paddingTop="9dp" android:paddingBottom="9dp" android:visibility="gone"></Button>
                         <Button android:layout_width="wrap_content" android:lines="1" android:background="@drawable/btn_custom" android:layout_weight="30" android:id="@+id/btnPossessions" android:textSize="12sp" android:layout_height="wrap_content" android:text="@string/label_possessions" android:textColor="#f85c08" android:paddingBottom="9dp" android:paddingTop="9dp"></Button>
                     </LinearLayout>
                 </RelativeLayout>

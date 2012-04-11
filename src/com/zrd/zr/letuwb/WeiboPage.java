@@ -65,7 +65,6 @@ public class WeiboPage {
 	private EditText mEditUpdateStatus;
 	private Button mBtnMoreTimelines;
 	private Button mBtnMoreComments;
-	private Dialog mDlgDescription;
 	private Dialog mDlgComments;
 	private Dialog mDlgMore;
 	
@@ -285,9 +284,6 @@ public class WeiboPage {
 			.setNegativeButton(R.string.label_cancel, null)
 			.create();
 		
-		mDlgDescription = new Dialog(parent, R.style.Dialog_Clean);
-		mDlgDescription.setContentView(R.layout.custom_dialog_list);
-		
 		mDlgComments = new Dialog(parent, R.style.Dialog_Clean);
 		mDlgComments.setContentView(R.layout.custom_dialog_list);
 		ListView lvComments = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
@@ -379,28 +375,7 @@ public class WeiboPage {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				ListView lv = (ListView)mDlgDescription.findViewById(R.id.lvCustomList);
-				ArrayList<String> list = new ArrayList<String>();
-				String description = (String)mBtnDescription.getTag();
-				if (description == null) description = "";
-				list.add(description);
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-					parent,
-					R.layout.item_custom_dialog_list,
-					list
-				);
-				lv.setAdapter(adapter);
-				lv.setOnItemClickListener(new OnItemClickListener() {
-
-					@Override
-					public void onItemClick(AdapterView<?> parent,
-							View view, int position, long id) {
-						// TODO Auto-generated method stub
-						mDlgDescription.dismiss();
-					}
-					
-				});
-				mDlgDescription.show();
+				parent.popupDescription((String) mBtnDescription.getTag());
 			}
 			
 		});
@@ -731,15 +706,15 @@ public class WeiboPage {
 						/*
 						 * show all kinds of the counts
 						 */
-						mTextCounts.setText(
-							parent.getString(R.string.label_weibos) + ":" + mLastUser.getStatusesCount()
+						String sCounts = parent.getString(R.string.label_weibos) + ":" + mLastUser.getStatusesCount()
 							+ " " 
 							+ parent.getString(R.string.label_favorites) + ":" + mLastUser.getFavouritesCount()
 							+ " "
 							+ parent.getString(R.string.label_followers) + ":" + mLastUser.getFollowersCount()
 							+ " " 
-							+ parent.getString(R.string.label_friends) + ":" + mLastUser.getFriendsCount()
-						);
+							+ parent.getString(R.string.label_friends) + ":" + mLastUser.getFriendsCount(); 
+						mTextCounts.setText(sCounts);
+						parent.getBrowPage().getTextCounts_brow().setText(sCounts);
 						
 						/*
 						 * alter the label of "@" button according to the gender of the user

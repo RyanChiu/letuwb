@@ -9,6 +9,7 @@ import java.util.TimeZone;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,16 +31,20 @@ import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.adwhirl.AdWhirlLayout;
 import com.adwhirl.eventadapter.GmAdWhirlEventAdapterData;
@@ -113,6 +118,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	private ProgressBar mProgressVote;
 	private ImageButton mBtnUpup;
 	private ImageButton mBtnDwdw;
+	private Dialog mDlgDescription;
 	
     /* Called when the activity is firstly created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -191,6 +197,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         
         //mLayoutVoteInfo.setVisibility(LinearLayout.INVISIBLE);
         //mLayoutVote.setVisibility(LinearLayout.GONE);
+		
+		mDlgDescription = new Dialog(this, R.style.Dialog_Clean);
+		mDlgDescription.setContentView(R.layout.custom_dialog_list);
         
 		mQuitDialog = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).create();
 		mQuitDialog.setTitle(getString(R.string.quit_title));
@@ -392,6 +401,30 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		SharedPreferences.Editor edit = mPreferences.edit();
 		edit.putString(CONFIG_ACCOUNTS, content);
 		edit.commit();
+    }
+    
+    public void popupDescription(String description) {
+    	ListView lv = (ListView)mDlgDescription.findViewById(R.id.lvCustomList);
+		ArrayList<String> list = new ArrayList<String>();
+		if (description == null) description = "";
+		list.add(description);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+			this,
+			R.layout.item_custom_dialog_list,
+			list
+		);
+		lv.setAdapter(adapter);
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent,
+					View view, int position, long id) {
+				// TODO Auto-generated method stub
+				mDlgDescription.dismiss();
+			}
+			
+		});
+		mDlgDescription.show();
     }
     
 	@Override
