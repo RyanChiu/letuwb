@@ -733,7 +733,18 @@ public class WeiboPage {
 					} else {
 						mTextAtSomeone.setText(R.string.label_atsomeone);
 						parent.getBrowPage().getBtnAtSomeone().setText(R.string.label_atsomeone);
-						//mTextCreatedAt.setText("Please try again...");
+						/*
+						 * clear all kinds of the counts
+						 */
+						String sCounts = parent.getString(R.string.label_weibos) + ":-"
+							+ " " 
+							+ parent.getString(R.string.label_favorites) + ":-"
+							+ " "
+							+ parent.getString(R.string.label_followers) + ":-"
+							+ " " 
+							+ parent.getString(R.string.label_friends) + ":-"; 
+						mTextCounts.setText(sCounts);
+						parent.getBrowPage().getTextCounts_brow().setText(sCounts);
 						
 						if (wexp != null) {
 							Toast.makeText(
