@@ -16,6 +16,8 @@ import com.zrd.zr.protos.WeibousersProtos.Weibouser;
 import com.zrd.zr.protos.WeibousersProtos.Weibousers;
 import com.zrd.zr.weiboes.Sina;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -26,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -58,6 +61,7 @@ public class MainPage {
 	private ArrayList<Button> mTopicBtns = null;
 	public static SharedPreferences mPreferences = null;
 	private int _index = 0;
+	private WeibouserInfo _wi;
 	
 	private Handler mHandler = null;
 	
@@ -104,6 +108,20 @@ public class MainPage {
 						(UCMappings) msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
 					if (mappings.getFlag() > 0) {
 						//TODO: get rid of the selected possession here
+						int idx = getUsrIndexFromId(_wi.id, mUsrs);
+						mUsrs.remove(idx);
+						mTotalPics--;
+						switch (idx % 3) {
+						case 0:
+							mLinearLeft.removeViewAt(idx / 3);
+							break;
+						case 1:
+							mLinearMid.removeViewAt(idx / 3);
+							break;
+						case 2:
+							mLinearRight.removeViewAt(idx / 3);
+							break;
+						}
 						
 						renewCurParagraphTitle();
 						Toast.makeText(
@@ -561,6 +579,52 @@ public class MainPage {
 						parent.startActivity(intent);
 					}
 				}
+			}
+			
+		});
+		
+		ll.setOnLongClickListener(new OnLongClickListener(){
+
+			@Override
+			public boolean onLongClick(View arg0) {
+				// TODO Auto-generated method stub
+				_wi = mUsrs.get((Integer) arg0.getTag());
+				new AlertDialog.Builder(parent)
+					.setTitle(R.string.tips_confirmdelpossession)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setPositiveButton(
+						R.string.label_ok,
+						new DialogInterface.OnClickListener() {
+	
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// TODO Auto-generated method stub
+								new Thread(
+									new ThreadPNJDealer(
+										ThreadPNJDealer.DEL_POSSESSION,
+										EntranceActivity.URL_SITE
+											+ "delpzs.php?"
+											+ "clientkey=" + EntranceActivity.getClientKey()
+											+ "&channelid=0"
+											+ "&uid=" + _wi.uid,
+										mHandler
+									)
+								).start();
+								Toast.makeText(
+									parent,
+									R.string.tips_possessioncanceling,
+									Toast.LENGTH_SHORT
+								).show();
+							}
+							
+						}
+					)
+					.setNegativeButton(R.string.label_cancel, null)
+					.create()
+					.show();
+				
+				return false;
 			}
 			
 		});
