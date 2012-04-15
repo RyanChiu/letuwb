@@ -600,19 +600,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				} else {
 					switch (mBrowPage.getReferer()) {
 					case R.layout.main:
-						int idx = mMainPage.getUsrIndexFromId(mBrowPage.mId, mMainPage.getUsrs());
-						int par = idx / mMainPage.getPageLimit() + 1;
-						if (mMainPage.getPageBeforeBrow() != mMainPage.getCurPage() || par != mMainPage.getCurParagraph())
+						if (true)
 						{
-							mMainPage.mPrgDlg.show();
-							mMainPage.setCurParagraph(par);
-							mMainPage.mPageUsrs.clear();
-							for (int i = (mMainPage.getCurParagraph() - 1) * mMainPage.getPageLimit(); i < mMainPage.getCurParagraph() * mMainPage.getPageLimit(); i++) {
-								mMainPage.mPageUsrs.add(mMainPage.getUsrs().get(i));
-							}
-							WeibouserInfoGridAdapter adapter = new WeibouserInfoGridAdapter(EntranceActivity.this, mMainPage.mPageUsrs, mMainPage.getGridPics());
-							mMainPage.getGridPics().setAdapter(adapter);
-							mMainPage.renewCurParagraphTitle();
+							//TODO synchronize with page brow ------ lack of coding
 						}
 						break;
 					case R.layout.weibo_show:
@@ -897,7 +887,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
     public boolean onTouch(View view, MotionEvent event) {
     	switch (mViewFlipper.getDisplayedChild()) {
     	case 0:
-    		return mMainPage.getGestureDetector().onTouchEvent(event);
+    		break;
     	case 1:
     		return mBrowPage.getGestureDetector().onTouchEvent(event);
     	case 2:
@@ -1027,6 +1017,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			// TODO Auto-generated method stub
+			mWeiboPage.getTextAtSomeone().performClick();
 			super.onPostExecute(result);
 		}
 

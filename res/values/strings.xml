@@ -12,6 +12,7 @@
     <string name="label_remember">Remember Me</string>
     <string name="item_upload">Upload…</string>
     <string name="msg_loading">Loading…</string>
+    <string name="tips_loading">Loading, please wait a second…</string>
     <string name="choose_title">Please pick a list from below:</string>
     <string name="quit_title">Are you sure to quit?</string>
     <string name="label_yes">Yes</string>

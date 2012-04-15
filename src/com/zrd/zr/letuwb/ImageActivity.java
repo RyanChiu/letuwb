@@ -92,7 +92,7 @@ public class ImageActivity extends Activity implements OnTouchListener {
         	mImageGif.setVisibility(View.GONE);
         	if (mUrl != null) {
             	AsyncImageLoader loader = new AsyncImageLoader(
-            		this, mImageZoom, R.drawable.thumbg, mProgressLoading
+            		this, mImageZoom, R.drawable.icon_gray, mProgressLoading
             	);
             	loader.execute(mUrl);
             }

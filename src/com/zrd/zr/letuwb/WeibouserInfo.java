@@ -13,6 +13,7 @@ public class WeibouserInfo {
 	public String description;
 	public String url;
 	public String profile_image_url;
+	private String profile_image_url_bigger;
 	public String domain;
 	public String gender;
 	public Long followers_count;
@@ -126,5 +127,14 @@ public class WeibouserInfo {
 		this.clicks = clicks;
 		this.likes = likes;
 		this.dislikes = dislikes;
+	}
+	
+	public String getBigger_profile_image_url() {
+		if (profile_image_url != null && !profile_image_url.equals("")) {
+			profile_image_url_bigger = profile_image_url;
+			profile_image_url_bigger = profile_image_url_bigger.replace("/50/", "/180/");
+			return profile_image_url_bigger;
+		}
+		return "";
 	}
 }

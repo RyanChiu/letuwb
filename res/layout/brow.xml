@@ -25,12 +25,6 @@
 
     </LinearLayout>    
 	<RelativeLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:longClickable="true" android:id="@+id/rlControl">
-        <RelativeLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:id="@+id/relativeLayoutZoom">
-            <LinearLayout android:orientation="vertical" android:id="@+id/linearLayoutInfo" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="3dp" android:layout_alignParentBottom="true" android:layout_marginBottom="39dp">
-                <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomin" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomin" android:contentDescription="zoom in"></ImageButton>
-                <ImageButton android:layout_height="42dp" android:background="#00000000" android:src="@drawable/zoomout" android:visibility="gone" android:scaleType="fitXY" android:layout_width="42dp" android:id="@+id/btnZoomout" android:contentDescription="zoom out"></ImageButton>
-            </LinearLayout>
-        </RelativeLayout>
         <LinearLayout android:id="@+id/llBrowTop" android:layout_width="fill_parent" android:gravity="center" android:layout_height="wrap_content" android:orientation="vertical">
             <LinearLayout android:id="@+id/llOperate" android:gravity="right" android:layout_height="wrap_content" android:layout_width="fill_parent" android:visibility="gone">
 

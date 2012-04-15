@@ -12,6 +12,7 @@
     <string name="label_remember">记住我</string>
     <string name="item_upload">上传…</string>
     <string name="msg_loading">载入中…</string>
+    <string name="tips_loading">载入中，请稍后…</string>
     <string name="choose_title">您的选择</string>
     <string name="quit_title">您确定要退出吗?</string>
     <string name="label_yes">是</string>

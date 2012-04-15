@@ -63,8 +63,6 @@ public class BrowPage {
 	private Button btnUpload;
 	private Button btnPlay;
 	private Button btnPause;
-	private ImageButton btnZoomIn;
-	private ImageButton btnZoomOut;
 	private Button mBtnShare;
 	private Button mBtnWeiboShow;
 	private Button mBtnWeiboFriend;
@@ -107,8 +105,6 @@ public class BrowPage {
 		btnPlay = (Button) activity.findViewById(R.id.btnPlay);
 		btnPause = (Button) activity.findViewById(R.id.btnPause);
 		btnUpload = (Button) activity.findViewById(R.id.btnUpload);
-		btnZoomIn = (ImageButton) activity.findViewById(R.id.btnZoomin);
-		btnZoomOut = (ImageButton) activity.findViewById(R.id.btnZoomout);
 		mBtnShare = (Button) activity.findViewById(R.id.btnShare);
 		mBtnWeiboShow = (Button) activity.findViewById(R.id.btnWeiboShow);
 		mBtnWeiboFriend = (Button) activity.findViewById(R.id.btnMakeFriendsFromBrow);
@@ -196,8 +192,9 @@ public class BrowPage {
 		mBrow.setOnTouchListener(parent);
         //mBrow.setOnTouchListener(mZoomListener);
 		
-		mTextScreenName.setVisibility(TextView.GONE);
+		mTextScreenName.setVisibility(View.GONE);
 		mImgVerified.setVisibility(View.GONE);
+		mBtnDescriptionMore.setVisibility(View.GONE);
 		
 		zrAsyncShowPic(mId, 0);
 		
@@ -305,50 +302,6 @@ public class BrowPage {
 						mHandler
 					)
 				).start();
-			}
-			
-		});
-		
-		btnZoomOut.setOnClickListener(new OnClickListener () {
-
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (!isDooming()) {
-					Toast.makeText(
-						parent,
-						R.string.tips_howtobacktobrowse,
-						Toast.LENGTH_SHORT
-					).show();
-					setDooming(true);
-				}
-				//ZoomState state = mZoomControl.getZoomState();
-				//state.setZoom(state.getZoom() * (float)Math.pow(20, -0.1));
-				//state.notifyObservers();
-				mZoomControl.zoom((float)Math.pow(20, -0.1), 0, 0);
-				getBrow().setOnTouchListener(mZoomListener);
-				getLayoutCtrl().setOnTouchListener(mZoomListener);
-			}
-			
-		});
-		
-		btnZoomIn.setOnClickListener(new OnClickListener () {
-
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (!isDooming()) {
-					Toast.makeText(
-						parent,
-						R.string.tips_howtobacktobrowse,
-						Toast.LENGTH_SHORT
-					).show();
-					setDooming(true);
-				}
-				//ZoomState state = mZoomControl.getZoomState();
-				//state.setZoom(state.getZoom() * (float)Math.pow(20, 0.1));
-				//state.notifyObservers();
-				mZoomControl.zoom((float)Math.pow(20, 0.1), 0, 0);
-				getBrow().setOnTouchListener(mZoomListener);
-				getLayoutCtrl().setOnTouchListener(mZoomListener);
 			}
 			
 		});
@@ -769,28 +722,14 @@ public class BrowPage {
 			if (parent.getMainPage().getUsrs().size() == 0) return bdPicFailed;
 			switch (direction) {
 			default:
-			case 0:
+			case 0:// means refresh
 				mId = id;
 				break;
-			case 1:
-				if (idx == 0) {
-					String[] args = parent.getMainPage().renewPageArgs(-1);
-					if (args != null) {
-						parent.getMainPage().setUsrs(parent.getMainPage().getPics(args));
-					}
-					mId = parent.getMainPage().getUsrs().get(parent.getMainPage().getUsrs().size() - 1).id;
-				}
-				else mId = parent.getMainPage().getUsrs().get(idx - 1).id;
+			case 1:// means previous
+				//zrTODO
 				break;
-			case 2:
-				if (idx == parent.getMainPage().getUsrs().size() -1) {
-					String[] args = parent.getMainPage().renewPageArgs(1);
-					if (args != null) {
-						parent.getMainPage().setUsrs(parent.getMainPage().getPics(args));
-					}
-					mId = parent.getMainPage().getUsrs().get(0).id;
-				}
-				else mId = parent.getMainPage().getUsrs().get(idx + 1).id;
+			case 2:// means next
+				//zrTODO
 				break;
 			}
 			
@@ -816,9 +755,9 @@ public class BrowPage {
 		    	return bmp == null ? bdPicFailed : bmp;
 			} else {
 				SecureURL su = new SecureURL();
-				String sUrl = new String(wi.profile_image_url);
-				sUrl = sUrl.replace("/50/", "/180/");
-				URLConnection conn = su.getConnection(sUrl);
+				URLConnection conn = su.getConnection(
+					wi.getBigger_profile_image_url()
+				);
 				InputStream is;
 				
 				if (conn == null) return bdPicFailed;
