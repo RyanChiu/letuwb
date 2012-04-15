@@ -646,6 +646,7 @@ public class MainPage {
 				mLinearLeft.removeAllViews();
 				mLinearMid.removeAllViews();
 				mLinearRight.removeAllViews();
+				mScrollMain.scrollTo(0, 0);
 			}
 			addPinterests(result);
 			renewCurParagraphTitle();
