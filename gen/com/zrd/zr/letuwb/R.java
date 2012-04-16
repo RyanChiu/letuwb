@@ -150,7 +150,6 @@ containing a value of this type.
         public static final int pbStatusLoading=0x7f070079;
         public static final int pbUpdate=0x7f07006d;
         public static final int pbVote=0x7f07002b;
-        public static final int relativeLayout2=0x7f070052;
         public static final int relativeLayoutMain=0x7f070050;
         public static final int rlAdsMain=0x7f070023;
         public static final int rlControl=0x7f070010;
@@ -179,6 +178,7 @@ containing a value of this type.
         public static final int tvFriendship=0x7f070076;
         public static final int tvLocation=0x7f070072;
         public static final int tvLogin=0x7f07005c;
+        public static final int tvMsgMain=0x7f070052;
         public static final int tvNoVoteTips=0x7f070031;
         public static final int tvOfficialSite=0x7f070007;
         public static final int tvPinterest=0x7f070059;
@@ -253,6 +253,7 @@ containing a value of this type.
         public static final int label_accountdeltips=0x7f05009f;
         public static final int label_addaccount=0x7f05008c;
         public static final int label_allright=0x7f05009a;
+        public static final int label_alreadyloaded=0x7f0500b2;
         public static final int label_atsomeone=0x7f0500a2;
         public static final int label_bigger_pic=0x7f05007c;
         public static final int label_browse=0x7f050037;

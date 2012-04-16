@@ -52,6 +52,7 @@ public class MainPage {
 	private Button mBtnUnhottest;
 	private Button mBtnPossessions;
 	private LinearLayout mLinearMainBottom;
+	private TextView mTextMsgMain;
 	
 	private ScrollView mScrollMain;
 	private LinearLayout mLinearLeft;
@@ -91,6 +92,7 @@ public class MainPage {
         getTopicBtns().add(mBtnUnhottest);
         getTopicBtns().add(mBtnPossessions);
         mLinearMainBottom = (LinearLayout) activity.findViewById(R.id.linearLayoutMainBottom);
+        mTextMsgMain = (TextView) activity.findViewById(R.id.tvMsgMain);
         
         mScrollMain = (ScrollView) activity.findViewById(R.id.svMain);
         mLinearLeft = (LinearLayout) activity.findViewById(R.id.llLeft);
@@ -282,14 +284,18 @@ public class MainPage {
 				View view = ((ScrollView) v).getChildAt(0);
 				if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
 					/*
-					 * put the process codes of "scroll to the end" bellow
+					 * put the process codes of "scroll to the end" bellow.
 					 */
-					Toast.makeText(
-						parent,
-						R.string.tips_loading,
-						Toast.LENGTH_SHORT
-					).show();
-					asyncExpand();
+					if (mUsrs.size() == mTotalPics) {
+						
+					} else {
+						Toast.makeText(
+							parent,
+							R.string.tips_loading,
+							Toast.LENGTH_SHORT
+						).show();
+						asyncExpand();
+					}
 				}
 			}
 			return false;
@@ -415,6 +421,12 @@ public class MainPage {
      * renew the current paragraph informations
      */
     public void renewCurParagraphTitle() {
+    	if (mUsrs.size() != 0) {
+    		mTextMsgMain.setText(
+    			parent.getString(R.string.label_alreadyloaded) 
+    			+ mUsrs.size()
+    		);
+    	}
 		mLinearMainBottom.setVisibility(LinearLayout.VISIBLE);
 		AlphaAnimation anim = new AlphaAnimation(0.1f, 1.0f);
 		anim.setDuration(300);

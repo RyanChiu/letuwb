@@ -490,11 +490,8 @@ public class BrowPage {
 		WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs());
 		if (wi == null) return;
 		parent.getWeiboPage().reloadLastUser(wi.uid);
-		//tvNums.setText((LetuseeActivity.getPicIndexFromId(mId, mUsrs) + 1) + "/" + mUsrs.size());
 		tvNums.setText(
-			(parent.getMainPage().getUsrIndexFromId(mId, parent.getMainPage().getUsrs())
-			+ parent.getMainPage().getLimit() * (parent.getMainPage().getCurPage() -1)
-			+ 1)
+			(parent.getMainPage().getUsrIndexFromId(mId, parent.getMainPage().getUsrs()) + 1)
 			+ "/"
 			+ parent.getMainPage().getTotalPics()
 		);
