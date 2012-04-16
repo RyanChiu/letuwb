@@ -588,41 +588,45 @@ public class MainPage {
 			@Override
 			public boolean onLongClick(View arg0) {
 				// TODO Auto-generated method stub
-				_wi = mUsrs.get((Integer) arg0.getTag());
-				new AlertDialog.Builder(parent)
-					.setTitle(R.string.tips_confirmdelpossession)
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setPositiveButton(
-						R.string.label_ok,
-						new DialogInterface.OnClickListener() {
-	
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// TODO Auto-generated method stub
-								new Thread(
-									new ThreadPNJDealer(
-										ThreadPNJDealer.DEL_POSSESSION,
-										EntranceActivity.URL_SITE
-											+ "delpzs.php?"
-											+ "clientkey=" + EntranceActivity.getClientKey()
-											+ "&channelid=0"
-											+ "&uid=" + _wi.uid,
-										mHandler
-									)
-								).start();
-								Toast.makeText(
-									parent,
-									R.string.tips_possessioncanceling,
-									Toast.LENGTH_SHORT
-								).show();
+				if (mBtnPossessions.isSelected()) {
+					_wi = mUsrs.get((Integer) arg0.getTag());
+					new AlertDialog.Builder(parent)
+						.setTitle(R.string.tips_confirmdelpossession)
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setPositiveButton(
+							R.string.label_ok,
+							new DialogInterface.OnClickListener() {
+		
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// TODO Auto-generated method stub
+									new Thread(
+										new ThreadPNJDealer(
+											ThreadPNJDealer.DEL_POSSESSION,
+											EntranceActivity.URL_SITE
+												+ "delpzs.php?"
+												+ "clientkey=" + EntranceActivity.getClientKey()
+												+ "&channelid=0"
+												+ "&uid=" + _wi.uid,
+											mHandler
+										)
+									).start();
+									Toast.makeText(
+										parent,
+										R.string.tips_possessioncanceling,
+										Toast.LENGTH_SHORT
+									).show();
+								}
+								
 							}
-							
-						}
-					)
-					.setNegativeButton(R.string.label_cancel, null)
-					.create()
-					.show();
+						)
+						.setNegativeButton(R.string.label_cancel, null)
+						.create()
+						.show();
+				} else {
+					
+				}
 				
 				return false;
 			}
