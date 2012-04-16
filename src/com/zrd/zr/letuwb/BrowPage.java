@@ -100,7 +100,7 @@ public class BrowPage {
 		mTextCounts_brow = (TextView) activity.findViewById(R.id.tvCounts_brow);
 		mBtnDescriptionMore = (ImageButton) activity.findViewById(R.id.btnDescriptionMore);
 		mImgVerified = (ImageView) activity.findViewById(R.id.imgVerified_brow);
-		mBrow = (ImageZoomView) activity.findViewById(R.id.imageSwitcher);
+		mBrow = (ImageZoomView) activity.findViewById(R.id.imgBrow);
 		btnSave = (Button) activity.findViewById(R.id.btnSave);
 		btnPlay = (Button) activity.findViewById(R.id.btnPlay);
 		btnPause = (Button) activity.findViewById(R.id.btnPause);
@@ -501,8 +501,8 @@ public class BrowPage {
 			mTextScreenName.setVisibility(TextView.VISIBLE);
 			String s = wi.description;
 			mBtnDescriptionMore.setTag(wi.description);
-			if (s.toCharArray().length >= 14) {
-				s = s.substring(0, 12) + "...";
+			if (s.toCharArray().length >= 30) {
+				s = s.substring(0, 15) + "...";
 				mBtnDescriptionMore.setVisibility(View.VISIBLE);
 			} else {
 				mBtnDescriptionMore.setVisibility(View.GONE);
