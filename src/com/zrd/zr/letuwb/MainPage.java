@@ -422,10 +422,19 @@ public class MainPage {
      */
     public void renewCurParagraphTitle() {
     	if (mUsrs.size() != 0) {
-    		mTextMsgMain.setText(
-    			parent.getString(R.string.label_alreadyloaded) 
-    			+ mUsrs.size()
-    		);
+    		if (!mBtnPossessions.isSelected()) {
+	    		mTextMsgMain.setText(
+	    			parent.getString(R.string.label_alreadyloaded) 
+	    			+ mUsrs.size()
+	    		);
+    		} else {
+    			mTextMsgMain.setText(
+	    			parent.getString(R.string.label_alreadyloaded) 
+	    			+ mUsrs.size()
+	    			+ "/" + mTotalPics
+	    			+ parent.getString(R.string.label_possessiondeltips)
+	    		);
+    		}
     	}
 		mLinearMainBottom.setVisibility(LinearLayout.VISIBLE);
 		AlphaAnimation anim = new AlphaAnimation(0.1f, 1.0f);

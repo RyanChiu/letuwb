@@ -180,4 +180,5 @@
     <string name="tips_failedtoshowgif">载入GIF图片失败。</string>
     <string name="label_novotetips">您还没投票呢！赶紧投票吧，然后就可以看到大家到底是“顶”多还是“踩”多啦。</string>
     <string name="label_alreadyloaded">已载入：</string>
+    <string name="label_possessiondeltips">（长按可尝试删除选中的私藏。）</string>
 </resources>

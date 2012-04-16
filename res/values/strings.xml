@@ -180,4 +180,5 @@
     <string name="tips_failedtoshowgif">Failed to show GIF.</string>
     <string name="label_novotetips">You\'ve not voted yet.Vote to see the rating.</string>
     <string name="label_alreadyloaded">Loaded:</string>
+    <string name="label_possessiondeltips">(Long click to remove selected possession.)</string>
 </resources>
