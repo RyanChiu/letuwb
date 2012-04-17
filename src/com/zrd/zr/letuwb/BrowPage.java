@@ -501,8 +501,8 @@ public class BrowPage {
 			mTextScreenName.setVisibility(TextView.VISIBLE);
 			String s = wi.description;
 			mBtnDescriptionMore.setTag(wi.description);
-			if (s.toCharArray().length >= 30) {
-				s = s.substring(0, 15) + "...";
+			if (s.toCharArray().length >= 24) {
+				s = s.substring(0, 12) + "...";
 				mBtnDescriptionMore.setVisibility(View.VISIBLE);
 			} else {
 				mBtnDescriptionMore.setVisibility(View.GONE);
