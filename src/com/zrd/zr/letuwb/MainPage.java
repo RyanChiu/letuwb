@@ -663,6 +663,18 @@ public class MainPage {
 	public ArrayList<WeibouserInfo> expandUsrs(String... params) {
 		ArrayList<WeibouserInfo> usrs = getPics(params);
 		
+		/*
+		 * check the returned usrs to see if mUsrs contains some of it,
+		 * if it does, then get rid of the ones which already exist in
+		 * mUsrs from usrs.
+		 */
+		for (int i = 0; i < usrs.size(); i++) {
+			if (mUsrs.indexOf(usrs.get(i)) != -1) {
+				usrs.remove(i);
+				i--;
+			}
+		}
+		
 		int num;
 		if (!mBtnPossessions.isSelected()) {
 			num = getTotalPicsNum();
