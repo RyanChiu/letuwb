@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.zrd.zr.pnj.PNJ;
@@ -658,6 +659,42 @@ public class MainPage {
 	}
 	
 	/*
+	 * to see which column of LinearLeft, LinearMid, LinearRight is the
+	 * longest, shortest and in the middle of them.
+	 * @return: if _l[0] = 2 means left column is the longest, and if it
+	 * equals to 0 means left colum is the shortest, 1 means it's the mid
+	 * one, and so on. (the value of _l[1] points to the middle column, and
+	 * the value of _l[2] points to the right column.)
+	 */
+	private ArrayList<Integer> get3ColOrders(ArrayList<WeibouserInfo> usrs) {
+		int[] l = {0, 0, 0};
+		for (int i = 0; i < usrs.size(); i += 3) {
+			l[0] += usrs.get(i).description.getBytes().length;
+			if (i + 1 < usrs.size()) {
+				l[1] += usrs.get(i + 1).description.getBytes().length;
+			}
+			if (i + 2 < usrs.size()) {
+				l[2] += usrs.get(i + 2).description.getBytes().length;
+			}
+		}
+		//see which is the longest and which is the shortest one
+		ArrayList<Integer> arr = new ArrayList<Integer>();
+		for (int i = 0; i < l.length; i++) arr.add(l[i]);
+		Collections.sort(arr);
+		ArrayList<Integer> ret = new ArrayList<Integer>();
+		if (l[0] + l[1] + l[2] == 0) {
+			ret.add(0);
+			ret.add(1);
+			ret.add(2);
+		} else {
+			ret.add(arr.indexOf(l[0]));
+			ret.add(arr.indexOf(l[1]));
+			ret.add(arr.indexOf(l[2]));
+		}
+		return ret;
+	}
+	
+	/*
 	 * expand new users to mUsrs
 	 */
 	public ArrayList<WeibouserInfo> expandUsrs(String... params) {
@@ -702,11 +739,33 @@ public class MainPage {
 			}
 		}
 		
-		for (int i = 0; i < usrs.size(); i++) {
-			mUsrs.add(usrs.get(i));
+		/*
+		 * in order to make the pinterest as horizontally even as possible,
+		 * we make some order exchanging here for the usrs.
+		 */
+		ArrayList<WeibouserInfo> _usrs = new ArrayList<WeibouserInfo>();
+		ArrayList<WeibouserInfo> ret = new ArrayList<WeibouserInfo>();
+		for (int i = 0; i < usrs.size(); i += 3) {
+			_usrs.clear();
+			_usrs.add(usrs.get(i));
+			if (i + 1 < usrs.size()) {
+				_usrs.add(usrs.get(i + 1));
+			}
+			if (i + 2 < usrs.size()) {
+				_usrs.add(usrs.get(i + 2));
+			}
+			ArrayList<Integer> l = get3ColOrders(mUsrs);
+			ArrayList<Integer> _l = get3ColOrders(_usrs);
+			int j;
+			for (int k = 0; k < 3; k++) {
+				if ((j = _l.indexOf(2 - l.get(k))) < _usrs.size()) {
+					ret.add(_usrs.get(j));
+					mUsrs.add(_usrs.get(j));
+				}
+			}
 		}
 		
-		return usrs;
+		return ret;
 	}
 	
 	/*
