@@ -7,6 +7,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.ligi.tracedroid.TraceDroid;
+import org.ligi.tracedroid.sending.TraceDroidEmailSender;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -128,6 +131,13 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         
         //set content view with R.layout.core
         setContentView(R.layout.core);
+        
+        /**
+         * Try to trace exceptions
+         */
+        TraceDroid.init(this);
+        TraceDroidEmailSender.sendStackTraces("ray.october@gmail.com", this);
+        
         //inflate all the viewstubs in layout "core"
         ViewStub vs;
         vs = (ViewStub) findViewById(R.id.vsMain);
