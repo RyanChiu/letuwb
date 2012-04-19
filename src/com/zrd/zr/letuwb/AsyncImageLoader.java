@@ -26,6 +26,7 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	private ImageView mImage = null;
 	private ImageZoomView mImageZoom = null;
 	private ProgressBar mProgress = null;
+	private Boolean loading = false;
 	
 	private static HashMap<String, SoftReference<Bitmap>> mMemImages
 		= new HashMap<String, SoftReference<Bitmap>>();
@@ -103,6 +104,10 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		return bmp;
 	}
 	
+	public Boolean isLoading() {
+		return loading;
+	}
+	
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
@@ -121,6 +126,7 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	@Override
 	protected Bitmap doInBackground(Object... params) {
 		// TODO Auto-generated method stub
+		loading = true;
 		
 		if (params.length == 0) return null;
 		
@@ -185,6 +191,8 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	@Override
 	protected void onPostExecute(Bitmap result) {
 		// TODO Auto-generated method stub
+		loading = false;
+		
 		if (mImage != null) {
 			if (result != null) {
 				mImage.setImageBitmap(result);
@@ -225,6 +233,7 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	
 	@Override
     protected void onCancelled() {
+		loading = false;
 		super.onCancelled();
     }
 }
