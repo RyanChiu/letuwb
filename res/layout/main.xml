@@ -9,7 +9,7 @@
         android:layout_height="fill_parent" 
         android:id="@+id/frameLayoutMain">
 
-        <ScrollView
+        <com.zrd.zr.customctrls.ZRScrollView
             android:id="@+id/svMain"
             android:layout_width="fill_parent"
 		    android:layout_height="fill_parent"
@@ -46,7 +46,7 @@
                 </LinearLayout>
                 
             </LinearLayout>
-        </ScrollView>
+        </com.zrd.zr.customctrls.ZRScrollView>
         <RelativeLayout android:layout_width="fill_parent" android:id="@+id/relativeLayoutMain" android:layout_height="wrap_content">
             <LinearLayout 
                 android:layout_width="fill_parent" 

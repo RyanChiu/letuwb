@@ -22,5 +22,6 @@
         <ignore path="res/layout/image_brow.xml" />
         <ignore path="res/layout/list_weibo_status.xml" />
         <ignore path="res/layout/main.xml" />
+        <ignore path="res/layout/pinterest_item.xml" />
     </issue>
 </lint>

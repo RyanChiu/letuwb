@@ -20,6 +20,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
@@ -32,9 +34,12 @@ import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+
+import com.zrd.zr.customctrls.ZRImageView;
+import com.zrd.zr.customctrls.ZRScrollView;
+import com.zrd.zr.customctrls.ZRScrollView.OnScrollStoppedListener;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +59,7 @@ public class MainPage {
 	private LinearLayout mLinearMainBottom;
 	private TextView mTextMsgMain;
 	
-	private ScrollView mScrollMain;
+	private ZRScrollView mScrollMain;
 	private LinearLayout mLinearLeft;
 	private LinearLayout mLinearMid;
 	private LinearLayout mLinearRight;
@@ -94,7 +99,7 @@ public class MainPage {
         mLinearMainBottom = (LinearLayout) activity.findViewById(R.id.linearLayoutMainBottom);
         mTextMsgMain = (TextView) activity.findViewById(R.id.tvMsgMain);
         
-        mScrollMain = (ScrollView) activity.findViewById(R.id.svMain);
+        mScrollMain = (ZRScrollView) activity.findViewById(R.id.svMain);
         mLinearLeft = (LinearLayout) activity.findViewById(R.id.llLeft);
         mLinearMid = (LinearLayout) activity.findViewById(R.id.llMid);
         mLinearRight = (LinearLayout) activity.findViewById(R.id.llRight);
@@ -271,6 +276,8 @@ public class MainPage {
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
 				switch (event.getAction()) {
+				case MotionEvent.ACTION_UP:
+					mScrollMain.startScrollerTask();
 				case MotionEvent.ACTION_DOWN :
 					break;
 				case MotionEvent.ACTION_MOVE :
@@ -281,7 +288,7 @@ public class MainPage {
 			}
 			if (event.getAction() == MotionEvent.ACTION_UP &&  _index > 0) {
 				_index = 0;
-				View view = ((ScrollView) v).getChildAt(0);
+				View view = ((ZRScrollView) v).getChildAt(0);
 				if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
 					/*
 					 * put the process codes of "scroll to the end" bellow.
@@ -302,6 +309,95 @@ public class MainPage {
 			}
         	
         });
+		
+		mScrollMain.setOnScrollStoppedListener(new OnScrollStoppedListener() {
+
+	        public void onScrollStopped() {
+	        	//TODO: put codes below to deal with the stop of the scrolling
+	            ArrayList<View> views = mScrollMain.getTouchables();
+	            
+	            /*
+	             * for testing
+	            for (int i = 0; i < views.size(); i++) {
+	            	if (views.get(i).getClass().equals(LinearLayout.class)) {
+	            		Rect rect = new Rect();
+	            		Point point = new Point();
+	            		mScrollMain.getChildVisibleRect(views.get(i), rect, point);
+	            		int idx = (Integer) views.get(i).getTag();
+	            		Toast.makeText(
+        	            	parent,
+        	            	"." + idx + "." + views.size()
+        	            	+ "." + rect.toString() + "." + point.toString()
+        	            	+ "," + (mScrollMain.getRight() - mScrollMain.getLeft())
+        	            	+ "." + (mScrollMain.getBottom() - mScrollMain.getTop()),
+        	            	Toast.LENGTH_SHORT
+        	            ).show();
+	            	}
+	            }
+	            */
+	            
+	            /*
+	             * step 1.
+	             * find the first "visible" view, and put the position in
+	             * mUsrs with it into variable "idxUsr"
+	             */
+	            int idxUsr = -1;
+	            for (int i  = 0; i < views.size(); i++) {
+	            	if (views.get(i).getClass().equals(LinearLayout.class)
+	            		&& views.get(i).getTag() != null) {
+	            		Rect rect = new Rect();
+	            		Point point = new Point();
+	            		mScrollMain.getChildVisibleRect(views.get(i), rect, point);
+	            		if (point.y >= 0 
+	            			&& point.y <= (mScrollMain.getBottom() - mScrollMain.getTop())) {
+	            			idxUsr = (Integer) views.get(i).getTag();
+	            			break;
+	            		}
+	            	}
+	            }
+	            /*
+	             * step 2.
+	             * get the part of mUsrs that from (idxUsr - 16) to (idxUsr + 18),
+	             * and get the part of mUsrs that's the rest of the above part, too.
+	             * and then release the images outside the range above, and reload
+	             * the images (if they had been reset before) in the range above.
+	             */
+	            if (idxUsr != -1) {
+	            	int start = idxUsr - 16;
+	            	if (start < 0) start = 0;
+	            	int end = idxUsr + 18;
+	            	if (end >= mUsrs.size()) end = mUsrs.size() - 1;
+	            	for (int i = 0; i < mUsrs.size(); i++) {
+	            		WeibouserInfo wi = mUsrs.get(i);
+	            		LinearLayout ll = (LinearLayout) wi.getTag();
+	            		ZRImageView v = (ZRImageView) ll.findViewById(R.id.ivPinterest);
+            			if (!(i >= start && i <= end)) {
+            				if (!v.getAsyncLoader().isLoading()) {
+            					v.getAsyncLoader().cancel(true);
+            				}
+            				v.reset(R.drawable.icon_gray);
+            			} else {
+            				if (v.hasBeenReset()) {
+            					AsyncImageLoader imgLoader = new AsyncImageLoader(
+        							parent, 
+        							v, 
+        							R.drawable.icon_gray
+        						);
+        						v.setAsyncLoader(imgLoader);
+            					URL url;
+            					try {
+            						url = new URL(wi.getBigger_profile_image_url());
+            						imgLoader.execute(url);
+            					} catch (MalformedURLException e) {
+            						// TODO Auto-generated catch block
+            						e.printStackTrace();
+            					}
+            				}
+            			}
+	            	}
+	            }
+	        }
+		});
 	}
 	
 	/*
@@ -540,7 +636,7 @@ public class MainPage {
 	public void addPinterestView(LinearLayout linear, WeibouserInfo wi) {
 		LayoutInflater inflater = parent.getLayoutInflater();
 		LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.pinterest_item, null);
-		ImageView img = (ImageView) ll.findViewById(R.id.ivPinterest);
+		ZRImageView img = (ZRImageView) ll.findViewById(R.id.ivPinterest);
 		TextView text = (TextView) ll.findViewById(R.id.tvPinterest);
 		
 		AsyncImageLoader imgLoader = new AsyncImageLoader(
@@ -548,6 +644,7 @@ public class MainPage {
 			img, 
 			R.drawable.icon_gray
 		);
+		img.setAsyncLoader(imgLoader);
 		URL url;
 		try {
 			url = new URL(wi.getBigger_profile_image_url());
@@ -566,6 +663,7 @@ public class MainPage {
 		);
 		
 		ll.setTag(getUsrIndexFromId(wi.id, mUsrs));
+		wi.setTag(ll);
 		ll.setOnClickListener(new OnClickListener() {
 
 			@Override

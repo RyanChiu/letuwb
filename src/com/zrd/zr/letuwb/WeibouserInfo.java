@@ -4,6 +4,9 @@ import java.util.Date;
 
 public class WeibouserInfo {
 	public Long id;
+	/*
+	 * the ones just the same as the structure of SINA's
+	 */
 	public Long uid;
 	public String screen_name;
 	public String name;
@@ -37,6 +40,11 @@ public class WeibouserInfo {
 	 */
 	public Integer mLastVote = 0;
 	public Date mLastVoteTime = null;
+	
+	/*
+	 * the tag like every object class in android
+	 */
+	private Object tag;
 	
 	public WeibouserInfo() {
 		this.id = (long)0;
@@ -136,5 +144,13 @@ public class WeibouserInfo {
 			return profile_image_url_bigger;
 		}
 		return "";
+	}
+
+	public Object getTag() {
+		return tag;
+	}
+
+	public void setTag(Object tag) {
+		this.tag = tag;
 	}
 }
