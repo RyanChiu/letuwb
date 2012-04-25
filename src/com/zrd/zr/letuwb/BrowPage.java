@@ -704,9 +704,9 @@ public class BrowPage {
 		
 		@Override
 		protected Bitmap doInBackground(Object... params) {
-			System.gc();
-			System.runFinalization();
-			System.gc();
+			//System.gc();
+			//System.runFinalization();
+			//System.gc();
 			
 			// TODO Auto-generated method stub
 			setLoading(true);

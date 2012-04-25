@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.util.HashMap;
 
 import com.sonyericsson.zoom.ImageZoomView;
+import com.zrd.zr.customctrls.ZRImageView;
 import com.zrd.zr.pnj.SecureURL;
 
 import android.app.Activity;
@@ -24,9 +25,9 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	private Context mContext;
 	private Integer mResIdBadImage;
 	private ImageView mImage = null;
+	private ZRImageView mZRImage = null;
 	private ImageZoomView mImageZoom = null;
 	private ProgressBar mProgress = null;
-	private Boolean loading = false;
 	
 	private static HashMap<String, SoftReference<Bitmap>> mMemImages
 		= new HashMap<String, SoftReference<Bitmap>>();
@@ -45,6 +46,13 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		mContext = context;
 		mImage = image;
 		mResIdBadImage = resIdBadImage;
+	}
+	
+	public AsyncImageLoader(Context context,
+		ZRImageView image) {
+		super();
+		mContext = context;
+		mZRImage = image;
 	}
 	
 	public AsyncImageLoader(Context context,
@@ -104,10 +112,6 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		return bmp;
 	}
 	
-	public Boolean isLoading() {
-		return loading;
-	}
-	
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
@@ -126,8 +130,7 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	@Override
 	protected Bitmap doInBackground(Object... params) {
 		// TODO Auto-generated method stub
-		loading = true;
-		
+		if (mZRImage != null) mZRImage.setLoading(true);
 		if (params.length == 0) return null;
 		
 		URL url = (URL) params[0];
@@ -138,9 +141,9 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		
 		Bitmap bmp;
 		if (!inMemory) {
-			System.gc();
-			System.runFinalization();
-			System.gc();
+			//System.gc();
+			//System.runFinalization();
+			//System.gc();
 
 			/*
 			 * see if local cached.
@@ -191,8 +194,6 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	@Override
 	protected void onPostExecute(Bitmap result) {
 		// TODO Auto-generated method stub
-		loading = false;
-		
 		if (mImage != null) {
 			if (result != null) {
 				mImage.setImageBitmap(result);
@@ -200,6 +201,15 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 			else {
 				mImage.setImageResource(mResIdBadImage);
 			}
+		}
+		if (mZRImage != null) {
+			if (result != null) {
+				mZRImage.setImageBitmap(result);
+			}
+			else {
+				mZRImage.setImageDrawable(null);
+			}
+			mZRImage.setLoading(false);
 		}
 		if (mImageZoom != null) {
 			if (result != null) {
@@ -223,6 +233,12 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 			}
 		}
 		super.onPostExecute(result);
+		mContext = null;
+		mResIdBadImage = null;
+		mImage = null;
+		mZRImage = null;
+		mImageZoom = null;
+		mProgress = null;
 	}
 
 	@Override
@@ -233,7 +249,7 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	
 	@Override
     protected void onCancelled() {
-		loading = false;
+		if (mZRImage != null) mZRImage.setLoading(false);
 		super.onCancelled();
     }
 }

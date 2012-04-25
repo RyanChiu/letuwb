@@ -314,29 +314,8 @@ public class MainPage {
 
 	        public void onScrollStopped() {
 	        	//TODO: put codes below to deal with the stop of the scrolling
-	            ArrayList<View> views = mScrollMain.getTouchables();
-	            
-	            /*
-	             * for testing
-	            for (int i = 0; i < views.size(); i++) {
-	            	if (views.get(i).getClass().equals(LinearLayout.class)) {
-	            		Rect rect = new Rect();
-	            		Point point = new Point();
-	            		mScrollMain.getChildVisibleRect(views.get(i), rect, point);
-	            		int idx = (Integer) views.get(i).getTag();
-	            		Toast.makeText(
-        	            	parent,
-        	            	"." + idx + "." + views.size()
-        	            	+ "." + rect.toString() + "." + point.toString()
-        	            	+ "," + (mScrollMain.getRight() - mScrollMain.getLeft())
-        	            	+ "." + (mScrollMain.getBottom() - mScrollMain.getTop()),
-        	            	Toast.LENGTH_SHORT
-        	            ).show();
-	            	}
-	            }
-	            */
-	            
-	            /*
+	        	ArrayList<View> views = mScrollMain.getTouchables();
+	        	/*
 	             * step 1.
 	             * find the first "visible" view, and put the position in
 	             * mUsrs with it into variable "idxUsr"
@@ -357,43 +336,55 @@ public class MainPage {
 	            }
 	            /*
 	             * step 2.
-	             * get the part of mUsrs that from (idxUsr - 16) to (idxUsr + 18),
+	             * get the part of mUsrs that from (idxUsr - 12) to (idxUsr + 15),
 	             * and get the part of mUsrs that's the rest of the above part, too.
 	             * and then release the images outside the range above, and reload
 	             * the images (if they had been reset before) in the range above.
 	             */
 	            if (idxUsr != -1) {
-	            	int start = idxUsr - 16;
+	            	int start = idxUsr - 12;
 	            	if (start < 0) start = 0;
-	            	int end = idxUsr + 18;
+	            	int end = idxUsr + 15;
 	            	if (end >= mUsrs.size()) end = mUsrs.size() - 1;
 	            	for (int i = 0; i < mUsrs.size(); i++) {
 	            		WeibouserInfo wi = mUsrs.get(i);
 	            		LinearLayout ll = (LinearLayout) wi.getTag();
-	            		ZRImageView v = (ZRImageView) ll.findViewById(R.id.ivPinterest);
-            			if (!(i >= start && i <= end)) {
-            				if (!v.getAsyncLoader().isLoading()) {
-            					v.getAsyncLoader().cancel(true);
-            				}
-            				v.reset(R.drawable.icon_gray);
-            			} else {
-            				if (v.hasBeenReset()) {
-            					AsyncImageLoader imgLoader = new AsyncImageLoader(
-        							parent, 
-        							v, 
-        							R.drawable.icon_gray
-        						);
-        						v.setAsyncLoader(imgLoader);
-            					URL url;
-            					try {
-            						url = new URL(wi.getBigger_profile_image_url());
-            						imgLoader.execute(url);
-            					} catch (MalformedURLException e) {
-            						// TODO Auto-generated catch block
-            						e.printStackTrace();
-            					}
-            				}
-            			}
+	            		if (ll != null) {
+		            		ZRImageView v = (ZRImageView) ll.findViewById(R.id.ivPinterest);
+	            			if (!(i >= start && i <= end)) {
+	            				/* 
+	            				 * we don't want to deal with too many images,
+	            				 * we just deal with about 18 pieces here
+	            				 */
+	            				if ((i < start && i >= (start - 9)) 
+	            					|| (i > end && i <= (i + 9))) {
+		            				if (!v.isLoading()) {
+		            					AsyncImageLoader loader = (AsyncImageLoader) v.getTag();
+		            					if (loader != null) {
+		            						loader.cancel(true);
+		            					}
+		            					v.setTag(null);
+		            				}
+		            				v.reset();
+	            				}
+	            			} else {
+	            				if (v.hasBeenReset()) {
+	            					AsyncImageLoader imgLoader = new AsyncImageLoader(
+	        							parent, 
+	        							v, 
+	        							R.drawable.icon_gray
+	        						);
+	            					URL url;
+	            					try {
+	            						url = new URL(wi.getBigger_profile_image_url());
+	            						imgLoader.execute(url);
+	            					} catch (MalformedURLException e) {
+	            						// TODO Auto-generated catch block
+	            						e.printStackTrace();
+	            					}
+	            				}
+	            			}
+	            		}
 	            	}
 	            }
 	        }
@@ -636,18 +627,18 @@ public class MainPage {
 	public void addPinterestView(LinearLayout linear, WeibouserInfo wi) {
 		LayoutInflater inflater = parent.getLayoutInflater();
 		LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.pinterest_item, null);
-		ZRImageView img = (ZRImageView) ll.findViewById(R.id.ivPinterest);
+		ZRImageView zrImg = (ZRImageView) ll.findViewById(R.id.ivPinterest);
 		TextView text = (TextView) ll.findViewById(R.id.tvPinterest);
 		
 		AsyncImageLoader imgLoader = new AsyncImageLoader(
 			parent, 
-			img, 
-			R.drawable.icon_gray
+			zrImg
 		);
-		img.setAsyncLoader(imgLoader);
+		zrImg.setTag(imgLoader);
 		URL url;
 		try {
 			url = new URL(wi.getBigger_profile_image_url());
+			//imgLoader.execute(url, true);//load into memory
 			imgLoader.execute(url);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
