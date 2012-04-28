@@ -1,5 +1,7 @@
 package com.zrd.zr.customctrls;
 
+import com.zrd.zr.letuwb.R;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
@@ -45,7 +47,7 @@ public class ZRImageView extends ImageView {
 	}
 
 	public void reset() {
-		this.setImageDrawable(null);
+		this.setImageResource(R.drawable.transparent);
 		if (mBitmap != null) {
 			mBitmap.recycle();
 			mBitmap = null;
