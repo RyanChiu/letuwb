@@ -162,6 +162,12 @@ public class MainPage {
 				mBtnUnhottest.setSelected(false);
 				mBtnPossessions.setSelected(false);
 				
+				Toast.makeText(
+					parent,
+					R.string.tips_therandom,
+					Toast.LENGTH_LONG
+				).show();
+				
 				mCurTerms.clear();
 		        mCurTerms.add("top");
 		        mCurTerms.add("6");
@@ -181,6 +187,12 @@ public class MainPage {
 				mBtnHottest.setSelected(false);
 				mBtnUnhottest.setSelected(false);
 				mBtnPossessions.setSelected(false);
+				
+				Toast.makeText(
+					parent,
+					R.string.tips_thelatest,
+					Toast.LENGTH_LONG
+				).show();
 				
 				mCurTerms.clear();
 		        mCurTerms.add("top");
@@ -227,12 +239,6 @@ public class MainPage {
 				mBtnHottest.setSelected(false);
 				mBtnUnhottest.setSelected(true);
 				mBtnPossessions.setSelected(false);
-				
-				Toast.makeText(
-					parent,
-					R.string.tips_unhottesttheweek,
-					Toast.LENGTH_LONG
-				).show();
 				
 				mCurTerms.clear();
 		        mCurTerms.add("top");

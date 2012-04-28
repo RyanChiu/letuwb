@@ -97,8 +97,9 @@
     <string name="label_unhottest">Unhottest</string>
     <string name="tips_noadultstuff">It\'s not allowed to upload picture about adult stuff.</string>
     <string name="tips_hottesttheweek">Hottests the week.</string>
-    <string name="tips_unhottesttheweek">Unhottest the week.</string>
+    <string name="tips_thelatest">Latest ones.</string>
     <string name="tips_possessions">My possessions.</string>
+    <string name="tips_therandom">Randomly.</string>
     <string name="sharing_content">You could download it from here: </string>
     <string name="sharing_title">I found a hot application, wish you like it.</string>
     <string name="about_version">Version: </string>
