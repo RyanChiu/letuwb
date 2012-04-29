@@ -307,7 +307,7 @@ public class MainPage {
 							R.string.tips_loading,
 							Toast.LENGTH_SHORT
 						).show();
-						asyncExpand();
+						expandShow();
 					}
 				}
 			}
@@ -535,11 +535,6 @@ public class MainPage {
 		mLinearMainBottom.startAnimation(anim);
     }
     
-	public void asyncExpand(String... params) {
-		AsyncExpand expand = new AsyncExpand();
-		expand.execute(params);
-    }
-    
     public Handler getHandler() {
     	return mHandler;
     }
@@ -626,130 +621,19 @@ public class MainPage {
 		}
 		return i;
     }
-
+	
 	/*
-	 * add "pinterest" liked view
+	 * expand a "pinterest" liked view without loading the content
 	 */
-	public void addPinterestView(LinearLayout linear, WeibouserInfo wi) {
+	public LinearLayout expandPinterestView(LinearLayout linear) {
 		LayoutInflater inflater = parent.getLayoutInflater();
 		LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.pinterest_item, null);
-		ZRImageView zrImg = (ZRImageView) ll.findViewById(R.id.ivPinterest);
+
 		TextView text = (TextView) ll.findViewById(R.id.tvPinterest);
-		
-		AsyncImageLoader imgLoader = new AsyncImageLoader(
-			parent, 
-			zrImg
-		);
-		zrImg.setTag(imgLoader);
-		URL url;
-		try {
-			url = new URL(wi.getBigger_profile_image_url());
-			//imgLoader.execute(url, true);//load into memory
-			imgLoader.execute(url);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		text.setText(
-			Html.fromHtml(
-				"<font color='#1da7ef'>"
-				+ wi.description
-				+ "</font>"
-			)
-		);
-		
-		ll.setTag(getUsrIndexFromId(wi.id, mUsrs));
-		wi.setTag(ll);
-		ll.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Sina sina = WeiboPage.getSina();
-				if (EntranceActivity.isNowLoggingIn()) {
-					Toast.makeText(
-						parent,
-						R.string.tips_nowisloggingin,
-						Toast.LENGTH_LONG
-					).show();
-				} else {
-					if (sina != null && sina.isLoggedIn()) {
-						WeibouserInfo wi = mUsrs.get((Integer) arg0.getTag());
-						if (mBtnPossessions.isSelected()) {
-							parent.getWeiboPage().setReferer(R.layout.main);
-							parent.getWeiboPage().reloadLastUser(wi.uid);
-							parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
-						} else {
-							parent.getBrowPage().setReferer(R.layout.main);
-							parent.switchPage(R.layout.brow, wi.id);
-						}
-					} else {
-						Toast.makeText(
-							parent,
-							R.string.tips_havetologin,
-							Toast.LENGTH_LONG
-						).show();
-						Intent intent = new Intent();
-						intent.setClass(parent, RegLoginActivity.class);
-						parent.startActivity(intent);
-					}
-				}
-			}
-			
-		});
-		
-		ll.setOnLongClickListener(new OnLongClickListener(){
-
-			@Override
-			public boolean onLongClick(View arg0) {
-				// TODO Auto-generated method stub
-				if (mBtnPossessions.isSelected()) {
-					_wi = mUsrs.get((Integer) arg0.getTag());
-					new AlertDialog.Builder(parent)
-						.setTitle(R.string.tips_confirmdelpossession)
-						.setIcon(android.R.drawable.ic_dialog_alert)
-						.setPositiveButton(
-							R.string.label_ok,
-							new DialogInterface.OnClickListener() {
-		
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// TODO Auto-generated method stub
-									new Thread(
-										new ThreadPNJDealer(
-											ThreadPNJDealer.DEL_POSSESSION,
-											EntranceActivity.URL_SITE
-												+ "delpzs.php?"
-												+ "clientkey=" + EntranceActivity.getClientKey()
-												+ "&channelid=0"
-												+ "&uid=" + _wi.uid,
-											mHandler
-										)
-									).start();
-									Toast.makeText(
-										parent,
-										R.string.tips_possessioncanceling,
-										Toast.LENGTH_SHORT
-									).show();
-								}
-								
-							}
-						)
-						.setNegativeButton(R.string.label_cancel, null)
-						.create()
-						.show();
-				} else {
-					
-				}
-				
-				return false;
-			}
-			
-		});
+		text.setText(R.string.msg_loading);
 		
 		linear.addView(ll);
+		return ll;
 	}
 	
 	/*
@@ -808,25 +692,165 @@ public class MainPage {
 	 * show the very first pinterest pieces
 	 */
 	public void initShow(String termName, String termValue) {
-		asyncExpand(termName, termValue);
+		mLinearLeft.removeAllViews();
+		mLinearMid.removeAllViews();
+		mLinearRight.removeAllViews();
+		mScrollMain.scrollTo(0, 0);
+		AsyncExpand expand = new AsyncExpand(expandPinterests());
+		expand.execute(termName, termValue);
+	}
+	
+	public void expandShow() {
+		AsyncExpand expand = new AsyncExpand(expandPinterests());
+		expand.execute();
 	}
 	
 	/*
-	 * expand the contents of the parameter "list" to the pinterest
+	 * expand the views in pinterest view:
+	 * we will add "mLimit" numbers of pieces into the pinterest view 
+	 * at once without loading the contents.
 	 */
-	public void addPinterests(ArrayList<WeibouserInfo> list) {
-		for (int i = 0; i < list.size(); i += 3) {
-			WeibouserInfo wi;
-			wi = list.get(i);
-			addPinterestView(mLinearLeft, wi);
-			if (i + 1 < list.size()) {
-				wi = list.get(i + 1);
-				addPinterestView(mLinearMid, wi);
+	public ArrayList<LinearLayout> expandPinterests() {
+		ArrayList<LinearLayout> list = new ArrayList<LinearLayout>();
+		for (int i = 0; i < mLimit; i += 3) {
+			list.add(expandPinterestView(mLinearLeft));
+			if (i + 1 < mLimit) {
+				list.add(expandPinterestView(mLinearMid));
 			}
-			if (i + 2 < list.size()) {
-				wi = list.get(i + 2);
-				addPinterestView(mLinearRight, wi);
+			if (i + 2 < mLimit) {
+				list.add(expandPinterestView(mLinearRight));
 			}
+		}
+		return list;
+	}
+	
+	/*
+	 * load the contents for the views in pinterest
+	 */
+	public void loadPinterests(ArrayList<LinearLayout> views, ArrayList<WeibouserInfo> usrs) {
+		if (usrs.size() <= views.size()) {
+			for (int i = 0; i < usrs.size(); i++) {
+				LinearLayout ll = views.get(i);
+				WeibouserInfo wi = usrs.get(i);
+				
+				ZRImageView zrImg = (ZRImageView) ll.findViewById(R.id.ivPinterest);
+				TextView text = (TextView) ll.findViewById(R.id.tvPinterest);
+				
+				AsyncImageLoader imgLoader = new AsyncImageLoader(
+					parent, 
+					zrImg
+				);
+				zrImg.setTag(imgLoader);
+				URL url;
+				try {
+					url = new URL(wi.getBigger_profile_image_url());
+					//imgLoader.execute(url, true);//load into memory
+					imgLoader.execute(url);
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				text.setText(
+					Html.fromHtml(
+						"<font color='#1da7ef'>"
+						+ wi.description
+						+ "</font>"
+					)
+				);
+				
+				ll.setTag(getUsrIndexFromId(wi.id, mUsrs));
+				wi.setTag(ll);
+				ll.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+						// TODO Auto-generated method stub
+						Sina sina = WeiboPage.getSina();
+						if (EntranceActivity.isNowLoggingIn()) {
+							Toast.makeText(
+								parent,
+								R.string.tips_nowisloggingin,
+								Toast.LENGTH_LONG
+							).show();
+						} else {
+							if (sina != null && sina.isLoggedIn()) {
+								WeibouserInfo wi = mUsrs.get((Integer) arg0.getTag());
+								if (mBtnPossessions.isSelected()) {
+									parent.getWeiboPage().setReferer(R.layout.main);
+									parent.getWeiboPage().reloadLastUser(wi.uid);
+									parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
+								} else {
+									parent.getBrowPage().setReferer(R.layout.main);
+									parent.switchPage(R.layout.brow, wi.id);
+								}
+							} else {
+								Toast.makeText(
+									parent,
+									R.string.tips_havetologin,
+									Toast.LENGTH_LONG
+								).show();
+								Intent intent = new Intent();
+								intent.setClass(parent, RegLoginActivity.class);
+								parent.startActivity(intent);
+							}
+						}
+					}
+					
+				});
+				
+				ll.setOnLongClickListener(new OnLongClickListener(){
+
+					@Override
+					public boolean onLongClick(View arg0) {
+						// TODO Auto-generated method stub
+						if (mBtnPossessions.isSelected()) {
+							_wi = mUsrs.get((Integer) arg0.getTag());
+							new AlertDialog.Builder(parent)
+								.setTitle(R.string.tips_confirmdelpossession)
+								.setIcon(android.R.drawable.ic_dialog_alert)
+								.setPositiveButton(
+									R.string.label_ok,
+									new DialogInterface.OnClickListener() {
+				
+										@Override
+										public void onClick(DialogInterface dialog,
+												int which) {
+											// TODO Auto-generated method stub
+											new Thread(
+												new ThreadPNJDealer(
+													ThreadPNJDealer.DEL_POSSESSION,
+													EntranceActivity.URL_SITE
+														+ "delpzs.php?"
+														+ "clientkey=" + EntranceActivity.getClientKey()
+														+ "&channelid=0"
+														+ "&uid=" + _wi.uid,
+													mHandler
+												)
+											).start();
+											Toast.makeText(
+												parent,
+												R.string.tips_possessioncanceling,
+												Toast.LENGTH_SHORT
+											).show();
+										}
+										
+									}
+								)
+								.setNegativeButton(R.string.label_cancel, null)
+								.create()
+								.show();
+						} else {
+							
+						}
+						
+						return false;
+					}
+					
+				});
+			}
+		} else {
+			//TODO: put the cutting codes below
 		}
 	}
 
@@ -834,20 +858,22 @@ public class MainPage {
      * classes
      */
 	class AsyncExpand extends AsyncTask<String, Object, ArrayList<WeibouserInfo>> {
-
+		private ArrayList<LinearLayout> mViews;
+		
+		AsyncExpand(ArrayList<LinearLayout> views) {
+			this.mViews = views;
+		}
+		
 		@Override
-		protected void onPostExecute(ArrayList<WeibouserInfo> result) {
+		protected void onPostExecute(ArrayList<WeibouserInfo> usrs) {
 			// TODO Auto-generated method stub
-			if (mUsrs.size() == mLimit) {
-				mLinearLeft.removeAllViews();
-				mLinearMid.removeAllViews();
-				mLinearRight.removeAllViews();
-				mScrollMain.scrollTo(0, 0);
-			}
-			addPinterests(result);
-			renewCurParagraphTitle();
 			
-			super.onPostExecute(result);
+			if (mViews != null) {
+				loadPinterests(mViews, usrs);
+				renewCurParagraphTitle();
+			}
+			
+			super.onPostExecute(usrs);
 		}
 
 		/*
