@@ -272,7 +272,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 						//mVibrator.vibrate( new long[]{50, 400, 30, 800},-1);
 						wi.likes++;
 						wi.mLastVote = 1;
-						getBrowPage().zrRenewCurFileInfo();
+						mBrowPage.renewCurInfo(true);
 						AsyncVoter asyncVoter = new AsyncVoter();
 						asyncVoter.execute("weibouserid", getBrowPage().mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "1");
 					} else {
@@ -313,7 +313,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 						//mVibrator.vibrate( new long[]{100,10,100,10},-1);
 						wi.dislikes++;
 						wi.mLastVote = -1;
-						getBrowPage().zrRenewCurFileInfo();
+						mBrowPage.renewCurInfo(true);
 						AsyncVoter asyncVoter = new AsyncVoter();
 						asyncVoter.execute("weibouserid", getBrowPage().mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "-1");
 					} else {
@@ -693,6 +693,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		return mNowLoggingIn;
 	}
     
+	public AsyncVoter getAnAsyncVoter() {
+		return new AsyncVoter();
+	}
     /*
      * get the usable msg from post back text.
      * return value is in a string array:
@@ -935,7 +938,14 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		case R.layout.brow:
 			if (params.length == 1) {
 				long id = (Long)params[0];
-				mBrowPage.zrAsyncShowPic(id, 0);
+				//mBrowPage.zrAsyncShowPic(id, 0);
+				mBrowPage.showPic(id);
+				mBrowPage.renewCurInfo(true);
+				int idx = mMainPage.getUsrIndexFromId(id, mMainPage.getUsrs());
+				if (idx != -1) {
+					WeibouserInfo wi = mMainPage.getUsrs().get(idx);
+					mWeiboPage.reloadLastUser(wi.uid);
+				}
 			}
 			mViewFlipper.setDisplayedChild(1);
 			break;
@@ -943,11 +953,13 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			if (params.length == 2) {
 				long uid = (Long)params[0];
 				long _id = (Long)params[1];
+				mBrowPage.showPic(_id);
+				mBrowPage.renewCurInfo(false);
 				mWeiboPage.setUid(uid);
 				mWeiboPage.setId(_id);
 				mWeiboPage.reloadAll();
 				mWeiboPage.turnDealing(true);
-				mBrowPage.zrAsyncShowPic(_id, 0);
+				//mBrowPage.zrAsyncShowPic(_id, 0);
 			}
 			mViewFlipper.setDisplayedChild(2);
 			break;
@@ -990,7 +1002,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		return mLayoutVote;
 	}
 	
-	public boolean vote(String... params) {
+	public WeibouserInfo vote(String... params) {
 		WeibouserInfo wi = getMainPage().getPicFromId(getBrowPage().mId, getMainPage().getUsrs());
 				
 		String msg = PNJ.getResponseByGet(
@@ -1014,26 +1026,71 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 						wi.dislikes = Integer.parseInt(sRecs[4]);
 					}
 				}
-				return true;
-			} else return false;
-		} else return false;
+				return wi;
+			} else return null;
+		} else return null;
 	}
 	
 	/*
 	 * try to vote under background by using AsyncTask
 	 */
-	private class AsyncVoter extends AsyncTask <String, Object, Boolean> {
+	public class AsyncVoter extends AsyncTask <String, Object, WeibouserInfo> {
 		
 		@Override
-		protected void onPostExecute(Boolean result) {
+		protected void onPostExecute(WeibouserInfo result) {
 			// TODO Auto-generated method stub
-			mWeiboPage.getTextAtSomeone().performClick();
+			/*
+			 * after voted, we have several things to do next...
+			 */
+			WeibouserInfo wi = result;
+			/*
+			 * 1. we want people to "@" the one they just voted.
+			 */
+			TextView text = mWeiboPage.getTextAtSomeone();
+			String s6 = (String) text.getTag();
+			if (s6 != null && !s6.equals("2")) {
+				text.performClick();
+			}
+			/*
+			 * 2. according to the result of the voting, we see if
+			 * we should show the voting rate area or not.
+			 */
+			mTextUpup.setText(wi.likes.toString());
+			mTextDwdw.setText(wi.dislikes.toString());
+			int iTotalVotes = wi.likes + wi.dislikes;
+			int iPercentage = iTotalVotes <= 0 ? 0 : (wi.likes * 100 / iTotalVotes);
+			if (iTotalVotes <= 0) {
+				mProgressVote.setSecondaryProgress(0);
+				mProgressVote.setProgress(0);
+			} else {
+				mProgressVote.setProgress(iPercentage);
+				mProgressVote.setSecondaryProgress(100);
+			}
+			mTextVoteRating.setText(
+				String.format(
+					getString(R.string.tips_voterating), 
+					iPercentage, 
+					iTotalVotes
+				)
+			);
+			if (wi.mLastVote != 0) {
+				mLayoutVoteInfo.setVisibility(View.VISIBLE);
+				mTextNoVoteTips.setVisibility(View.GONE);
+			} else {
+				mLayoutVoteInfo.setVisibility(View.GONE);
+				mTextNoVoteTips.setVisibility(View.VISIBLE);
+			}
+			mLayoutVote.setVisibility(View.VISIBLE);
+			
 			super.onPostExecute(result);
 		}
 
 		@Override
-		protected Boolean doInBackground(String... params) {
+		protected WeibouserInfo doInBackground(String... params) {
 			// TODO Auto-generated method stub
+			if (params.length >= 6) {
+				mWeiboPage.getTextAtSomeone().setTag(params[5]);
+			}
 			return vote(params);
 		}
 		

@@ -33,6 +33,10 @@ public class ZRImageView extends ImageView {
 		super.setImageBitmap(bm);
 		mBitmap = bm;
 	}
+	
+	public Bitmap getImageBitmap() {
+		return mBitmap;
+	}
 
 	public Boolean isLoading() {
 		return loading;

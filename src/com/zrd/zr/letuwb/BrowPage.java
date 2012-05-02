@@ -42,6 +42,7 @@ import android.widget.Toast;
 import com.sonyericsson.zoom.DynamicZoomControl;
 import com.sonyericsson.zoom.ImageZoomView;
 import com.sonyericsson.zoom.LongPressZoomListener;
+import com.zrd.zr.customctrls.ZRImageView;
 import com.zrd.zr.pnj.SecureURL;
 import com.zrd.zr.pnj.ThreadPNJDealer;
 import com.zrd.zr.protos.WeibousersProtos.UCMappings;
@@ -484,14 +485,61 @@ public class BrowPage {
 	}
 	
 	/*
-	 * set current file information on mTextScreenName
+	 * show the next, previous or current picture following 2 parameters:
+	 * id, direction
 	 */
-	public void zrRenewCurFileInfo() {
-		WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs());
+	public void zrAsyncShowPic(long id, int direction) {
+		ArrayList<WeibouserInfo> usrs = parent.getMainPage().getUsrs();
+		if (usrs == null) return;
+		if (usrs.size() == 0) return;
+		AsyncPicLoader asyncPicLoader = new AsyncPicLoader(parent);
+		asyncPicLoader.execute(id, direction);
+	}
+	
+	/*
+	 * try to show the big profile image from the main page 
+	 * when some thumb nail is clicked.
+	 */
+	public void showPic(long id) {
+		ArrayList<WeibouserInfo> usrs = parent.getMainPage().getUsrs();
+		if (usrs == null) return;
+		if (usrs.size() == 0) return;
+		mId = id;
+		int idx = parent.getMainPage().getUsrIndexFromId(id, usrs);
+		if (idx != -1) {
+			WeibouserInfo wi = usrs.get(idx);
+			LinearLayout ll = (LinearLayout) wi.getTag();
+			if (ll != null) {
+				ZRImageView img = (ZRImageView) ll.findViewById(R.id.ivPinterest);
+				mBrow.setImage(img.getImageBitmap());
+				resetZoomState();
+				fadeinAnim.setDuration(300);
+				mBrow.startAnimation(fadeinAnim);
+			}
+		}
+	}
+	
+	/*
+	 * set current weibo user information on mTextScreenName and stuff
+	 */
+	public void renewCurInfo(boolean resetCounts) {
+		ArrayList<WeibouserInfo> usrs = parent.getMainPage().getUsrs();
+		WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, usrs);
 		if (wi == null) return;
-		parent.getWeiboPage().reloadLastUser(wi.uid);
+		EntranceActivity.AsyncVoter voter = parent.getAnAsyncVoter();
+		voter.execute(
+			"weibouserid", 
+			mId.toString(), 
+			"clientkey", 
+			EntranceActivity.getClientKey(), 
+			"vote", 
+			"2" //means a click
+		);
+		if (resetCounts) {
+			mTextCounts_brow.setText(R.string.msg_loading);
+		}
 		tvNums.setText(
-			(parent.getMainPage().getUsrIndexFromId(mId, parent.getMainPage().getUsrs()) + 1)
+			(parent.getMainPage().getUsrIndexFromId(mId, usrs) + 1)
 			+ "/"
 			+ parent.getMainPage().getTotalPics()
 		);
@@ -518,44 +566,6 @@ public class BrowPage {
 			);
 		}
 		mImgVerified.setVisibility((wi.verified == 1 ? View.VISIBLE : View.GONE));
-		parent.getTextUpup().setText(wi.likes.toString());
-		parent.getTextDwdw().setText(wi.dislikes.toString());
-		int iTotalVotes = wi.likes + wi.dislikes;
-		int iPercentage = iTotalVotes <= 0 ? 0 : (wi.likes * 100 / iTotalVotes);
-		if (iTotalVotes <= 0) {
-			parent.getProgressVote().setSecondaryProgress(0);
-			parent.getProgressVote().setProgress(0);
-		} else {
-			parent.getProgressVote().setProgress(iPercentage);
-			parent.getProgressVote().setSecondaryProgress(100);
-		}
-		parent.getTextVoteRating().setText(
-			String.format(
-				parent.getString(R.string.tips_voterating), 
-				iPercentage, 
-				iTotalVotes
-			)
-		);
-		if (wi.mLastVote != 0) {
-			parent.getLayoutVoteInfo().setVisibility(LinearLayout.VISIBLE);
-			parent.getTextNoVoteTips().setVisibility(View.GONE);
-		} else {
-			parent.getLayoutVoteInfo().setVisibility(LinearLayout.GONE);
-			parent.getTextNoVoteTips().setVisibility(View.VISIBLE);
-		}
-		parent.getLayoutVote().setVisibility(RelativeLayout.VISIBLE);
-	}
-	
-	/*
-	 * show the next, previous or current picture following 2 parameters:
-	 * id, direction
-	 */
-	public void zrAsyncShowPic(long id, int direction) {
-		ArrayList<WeibouserInfo> usrs = parent.getMainPage().getUsrs();
-		if (usrs == null) return;
-		if (usrs.size() == 0) return;
-		AsyncPicLoader asyncPicLoader = new AsyncPicLoader(parent);
-		asyncPicLoader.execute(id, direction);
 	}
 	
 	public Boolean getWasPlaying() {
@@ -825,7 +835,6 @@ public class BrowPage {
 			//mBrow.setTag(result);
 			mPrgDialog.dismiss();
 			setLoading(false);
-			zrRenewCurFileInfo();
 			super.onPostExecute(result);
 		}
 
