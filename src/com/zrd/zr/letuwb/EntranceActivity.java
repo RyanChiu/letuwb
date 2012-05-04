@@ -63,11 +63,12 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	final static String TIMEZONE_SERVER = "Asia/Hong_Kong";
 	//final static String URL_SITE = "http://hot88.info/letmewb/";
 	final static String URL_PROTOCOL = "http";
-	final static String URL_HOST = "122.224.249.74";
+	final static String URL_HOST = "hot88.info";
+	final static String URL_HOST0 = "az88.info";
 	final static int URL_PORT = 8080;
 	final static String URL_DIRECTORY = "/letmewb/";
 	final static String URL_SITE = URL_PROTOCOL + "://" + URL_HOST + ":" + URL_PORT + URL_DIRECTORY; //"http://122.224.249.74:8080/letmewb/";
-	final static String URL_UPDATE = URL_PROTOCOL + "://" + URL_HOST + ":" + URL_PORT + "/"; //"http://122.224.249.74:8080/";
+	final static String URL_UPDATE = URL_PROTOCOL + "://" + URL_HOST0 + ":" + URL_PORT + "/"; //"http://122.224.249.74:8080/";
 	final static String URL_STATS = URL_PROTOCOL + "://" + URL_HOST + ":" + URL_PORT + URL_DIRECTORY; //"http://122.224.249.74:8080/letmewb/";
 	final static String PATH_COLLECTION = "/letuwb/collection/";
 	final static String PATH_CACHE = "/letuwb/cache/";
@@ -272,7 +273,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 						//mVibrator.vibrate( new long[]{50, 400, 30, 800},-1);
 						wi.likes++;
 						wi.mLastVote = 1;
-						mBrowPage.renewCurInfo(true);
+						mBrowPage.renewCurInfo(false);
 						AsyncVoter asyncVoter = new AsyncVoter();
 						asyncVoter.execute("weibouserid", getBrowPage().mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "1");
 					} else {
@@ -313,7 +314,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 						//mVibrator.vibrate( new long[]{100,10,100,10},-1);
 						wi.dislikes++;
 						wi.mLastVote = -1;
-						mBrowPage.renewCurInfo(true);
+						mBrowPage.renewCurInfo(false);
 						AsyncVoter asyncVoter = new AsyncVoter();
 						asyncVoter.execute("weibouserid", getBrowPage().mId.toString(), "clientkey", EntranceActivity.getClientKey(), "vote", "-1");
 					} else {
