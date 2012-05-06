@@ -776,13 +776,17 @@ public class MainPage {
 						} else {
 							if (sina != null && sina.isLoggedIn()) {
 								WeibouserInfo wi = mUsrs.get((Integer) arg0.getTag());
-								if (mBtnPossessions.isSelected()) {
-									parent.getWeiboPage().setReferer(R.layout.main);
-									parent.getWeiboPage().reloadLastUser(wi.uid);
-									parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
-								} else {
-									parent.getBrowPage().setReferer(R.layout.main);
-									parent.switchPage(R.layout.brow, wi.id);
+								LinearLayout ll = (LinearLayout) wi.getTag();
+								ZRImageView img = (ZRImageView) ll.findViewById(R.id.ivPinterest);
+								if (img.getImageBitmap() != null) {
+									if (mBtnPossessions.isSelected()) {
+										parent.getWeiboPage().setReferer(R.layout.main);
+										parent.getWeiboPage().reloadLastUser(wi.uid);
+										parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
+									} else {
+										parent.getBrowPage().setReferer(R.layout.main);
+										parent.switchPage(R.layout.brow, wi.id);
+									}
 								}
 							} else {
 								Toast.makeText(
