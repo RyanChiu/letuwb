@@ -15,7 +15,7 @@ echo print_r($uinfo, true);
 echo "\n<br/><br/>\n";
 
 $o = new WeiboOAuth( WB_AKEY , WB_SKEY , LAST_OAUTH_TOKEN, LAST_OAUTH_TOKEN_SECRET);
-$content = $o->get(sprintf("http://api.t.sina.com.cn/users/hot.json"), array('source' => '3150341378'));
+$content = $o->get(sprintf("http://api.t.sina.com.cn/users/hot.json"), array('source' => WB_AKEY));
 //var_dump($content);
 echo "<b>The following is the hottest ones:</b>" . "<br/>";
 foreach ($content as $c) {
