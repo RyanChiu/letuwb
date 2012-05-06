@@ -63,8 +63,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	final static String TIMEZONE_SERVER = "Asia/Hong_Kong";
 	//final static String URL_SITE = "http://hot88.info/letmewb/";
 	final static String URL_PROTOCOL = "http";
-	final static String URL_HOST = "122.224.249.74";//"hot88.info";
-	final static String URL_HOST0 = "122.224.249.74";//"az88.info";
+	final static String URL_HOST = "hot88.info";
+	final static String URL_HOST0 = "az88.info";
 	final static int URL_PORT = 8080;
 	final static String URL_DIRECTORY = "/letmewb/";
 	final static String URL_SITE = URL_PROTOCOL + "://" + URL_HOST + ":" + URL_PORT + URL_DIRECTORY; //"http://122.224.249.74:8080/letmewb/";
