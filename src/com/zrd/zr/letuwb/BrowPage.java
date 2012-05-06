@@ -257,7 +257,7 @@ public class BrowPage {
 				parent.startActivity(intent);
 				*/
 				
-				parent.getWeiboPage().setReferer(R.layout.brow);
+				parent.getWeiboPage().setReferer(R.layout.main);
 				parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
 			}
 			
