@@ -33,7 +33,7 @@ if (array_key_exists('file', $_GET) && array_key_exists('direction', $_GET)) {
 }
 if (array_key_exists('top', $_GET)) {
 	if ($_GET['top'] == 0) {// means last registered at SINA
-		$sql = sprintf("select * from weibo_users order by created_at desc");
+		$sql = sprintf("select * from weibo_users order by id desc");
 	}
 	if ($_GET['top'] == 1) {// means most visited
 		$sql = sprintf("select * from weibo_users order by clicks desc");
