@@ -156,12 +156,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         mPreferences = getPreferences(EntranceActivity.MODE_PRIVATE);
         
         /**
-         * Try to trace exceptions
-         */
-        //TraceDroid.init(this);
-        //TraceDroidEmailSender.sendStackTraces("ralphchiu1@gmail.com", this);
-        
-        /**
          * Initialize the application
          */
         mClientKey = mPreferences.getString(CONFIG_CLIENTKEY, "");

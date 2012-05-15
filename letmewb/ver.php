@@ -2,7 +2,7 @@
 /*
  * 
  */
-$code = "7"; $name = "2.01.00";	// both are as the same as the ones in AndroidManifest.xml
+$code = "8"; $name = "2.01.01";	// both are as the same as the ones in AndroidManifest.xml
 echo "versionCode,$code,versionName,$name,"
 	. "newContent,"
 	. "1.主界面所有菜单项增加“退出”。#"
