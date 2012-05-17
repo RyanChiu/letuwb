@@ -1075,7 +1075,11 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				mLayoutVoteInfo.setVisibility(View.GONE);
 				mTextNoVoteTips.setVisibility(View.VISIBLE);
 			}
-			mLayoutVote.setVisibility(View.VISIBLE);
+			if (mViewFlipper.getDisplayedChild() == 0) {
+				mLayoutVote.setVisibility(View.GONE);
+			} else {
+				mLayoutVote.setVisibility(View.VISIBLE);
+			}
 			
 			super.onPostExecute(result);
 		}
