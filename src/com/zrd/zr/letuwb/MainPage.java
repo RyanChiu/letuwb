@@ -292,7 +292,7 @@ public class MainPage {
 				default :
 					break;
 			}
-			if (event.getAction() == MotionEvent.ACTION_UP &&  _index > 0) {
+			if (event.getAction() == MotionEvent.ACTION_UP && _index > 0) {
 				_index = 0;
 				View view = ((ZRScrollView) v).getChildAt(0);
 				if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
@@ -853,8 +853,23 @@ public class MainPage {
 					
 				});
 			}
-		} else {
-			//TODO: put the cutting codes below
+		}
+		
+		//TODO: put the cutting codes below
+		int nDels = views.size() - usrs.size();
+		for (int i = 0; i < nDels; i += 3) {
+			int nRLast = mLinearRight.getChildCount() - 1;
+			int nMLast = mLinearMid.getChildCount() - 1;
+			int nLLast = mLinearLeft.getChildCount() - 1;
+			if (nRLast > 0) {
+				mLinearRight.removeViewAt(nRLast);
+			}
+			if (nMLast > 0 && (i + 1 < nDels)) {
+				mLinearMid.removeViewAt(nMLast);
+			}
+			if (nLLast > 0 && (i + 2 < nDels)) {
+				mLinearLeft.removeViewAt(nLLast);
+			}
 		}
 	}
 
