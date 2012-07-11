@@ -766,7 +766,6 @@ public class MainPage {
 					@Override
 					public void onClick(View arg0) {
 						// TODO Auto-generated method stub
-						Sina sina = WeiboPage.getSina();
 						if (EntranceActivity.isNowLoggingIn()) {
 							Toast.makeText(
 								parent,
@@ -774,6 +773,7 @@ public class MainPage {
 								Toast.LENGTH_LONG
 							).show();
 						} else {
+							Sina sina = WeiboPage.getSina();
 							if (sina != null && sina.isLoggedIn()) {
 								WeibouserInfo wi = mUsrs.get((Integer) arg0.getTag());
 								LinearLayout ll = (LinearLayout) wi.getTag();
