@@ -1,14 +1,10 @@
 package com.zrd.zr.weiboes;
 
 import java.io.Serializable;
-import java.util.List;
 
-import weibo4android.Paging;
-import weibo4android.Status;
 import weibo4android.User;
 import weibo4android.Weibo;
 import weibo4android.OAuthConstant;
-import weibo4android.WeiboException;
 
 public class Sina implements Serializable {
 	
@@ -84,26 +80,6 @@ public class Sina implements Serializable {
 	
 	public boolean isLoggedIn() {
 		return (mLoggedInUser != null);
-	}
-	
-	public String getContent() {
-		
-		List<Status> friendsTimeline;
-		try {
-			friendsTimeline = mWeibo.getTrendStatus("seaeast", new Paging(1,20));
-			StringBuilder stringBuilder = new StringBuilder("");
-			for (Status status : friendsTimeline) {
-				stringBuilder.append(
-					status.getUser().getScreenName() + "说:\n"
-					+ status.getText() 
-					+ "\n--------------------------------------------------\n"
-				);
-			}
-			return stringBuilder.toString();
-		} catch (WeiboException e) {
-			e.printStackTrace();
-			return e.toString();
-		}
 	}
 	
 	public XStatus getXStatus() {
