@@ -182,4 +182,8 @@
     <string name="label_novotetips">您还没投票呢！赶紧投票吧，然后就可以看到大家到底是“顶”多还是“踩”多啦。</string>
     <string name="label_alreadyloaded">已载入：</string>
     <string name="label_possessiondeltips">（长按可尝试删除选中的私藏。）</string>
+    <string name="tips_loadingsinaweibooauthpage">尝试新浪微博官方授权中，请稍候…</string>
+    <string name="tips_successfullyoauthorized">已成功通过认证！</string>
+    <string name="tips_failtopassoauth">认证失败，请稍后重试。</string>
+    <string name="tips_canceloauth">取消认证。</string>
 </resources>

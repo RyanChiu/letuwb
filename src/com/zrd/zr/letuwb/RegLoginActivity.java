@@ -1,51 +1,29 @@
 package com.zrd.zr.letuwb;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import weibo4android.OAuthConstant;
-import weibo4android.User;
-import weibo4android.Weibo;
-import weibo4android.WeiboException;
-import weibo4android.http.AccessToken;
-import weibo4android.http.OAuthVerifier;
-import weibo4android.http.RequestToken;
-
+import com.weibo.sdk.android.custom.User2;
 import com.zrd.zr.letuwb.R;
-import com.zrd.zr.pnj.SecureURL;
-import com.zrd.zr.protos.WeibousersProtos.UCMappings;
-import com.zrd.zr.weiboes.Sina;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
+//import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -61,11 +39,11 @@ public class RegLoginActivity extends Activity {
 	private TableLayout mTableBackground;
 	private EditText mEditUsername;
 	private EditText mEditPassword;
-	private EditText mEditRepeat;
+	//private EditText mEditRepeat;
 	
 	private TableRow mRowRepeat;
 	private TableRow mRowLoginReg;
-	private CheckBox mCheckRemember;
+	//private CheckBox mCheckRemember;
 	private Button mBtnLogin;
 	private Button btnGuest;
 	private Button btnReg;
@@ -81,10 +59,10 @@ public class RegLoginActivity extends Activity {
 		mTableBackground = (TableLayout) findViewById(R.id.tlBackground);
 		mEditUsername = (EditText) findViewById(R.id.etUsername);
 		mEditPassword = (EditText) findViewById(R.id.etPassword);
-		mEditRepeat = (EditText) findViewById(R.id.etRepeat);
+		//mEditRepeat = (EditText) findViewById(R.id.etRepeat);
 		mRowRepeat = (TableRow) findViewById(R.id.trRepeat);
 		mRowLoginReg = (TableRow) findViewById(R.id.trLoginReg);
-		mCheckRemember = (CheckBox) findViewById(R.id.cbRemember);
+		//mCheckRemember = (CheckBox) findViewById(R.id.cbRemember);
 		mBtnLogin = (Button) findViewById(R.id.btnLogin);
 		btnGuest = (Button) findViewById(R.id.btnGuest);
 		btnReg = (Button) findViewById(R.id.btnReg);
@@ -210,27 +188,7 @@ public class RegLoginActivity extends Activity {
 				/*
 				 * get SINA_weibo's token and token secret for the account
 				 */
-				new AlertDialog.Builder(RegLoginActivity.this)
-					.setIcon(R.drawable.icon)
-					.setTitle(R.string.title_attention)
-					.setMessage(R.string.tips_whetherprofileimagecouldbeusedornot)
-					.setPositiveButton(
-						R.string.label_allright,
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// TODO Auto-generated method stub
-								AsyncLogin asyncLogin = new AsyncLogin();
-								asyncLogin.execute();
-							}
-							
-						}
-					)
-					.setNegativeButton(R.string.label_letmethink, null)
-					.create()
-					.show();	
+					
 			}
 		});
 		
@@ -249,6 +207,7 @@ public class RegLoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				/*
 				if (mRowRepeat.getVisibility() == TableRow.GONE) {
 					mRowRepeat.setVisibility(TableRow.VISIBLE);
 					return;
@@ -297,6 +256,7 @@ public class RegLoginActivity extends Activity {
 						return;
 					}
 				}
+				*/
 			}
 			
 		});
@@ -307,7 +267,7 @@ public class RegLoginActivity extends Activity {
 	}
 	
 	public static void updateTitle(
-		int resTitleIcon, int resTitleName, User user) {
+		int resTitleIcon, int resTitleName, User2 user) {
 		if (mContexts.size() == 0) return;
 		for (int i = 0; i < mContexts.size(); i++) {
 			Context context = mContexts.get(i);
@@ -353,100 +313,6 @@ public class RegLoginActivity extends Activity {
 		}
 	}
 
-	public static Sina login(String username, String password) {
-		/*
-		 * get SINA_weibo's token and token secret for the account
-		 */
-		Weibo weibo;
-		RequestToken requestToken;
-		try {
-			Sina sina = new Sina(true);
-			weibo = sina.getWeibo();
-			requestToken = weibo.getOAuthRequestToken();
-			OAuthConstant.getInstance().setRequestToken(requestToken);
-			OAuthVerifier oauthVerifier = weibo.getOAuthVerifier(username, password);
-			String verifier = oauthVerifier.getVerifier();
-			AccessToken accessToken = requestToken.getAccessToken(verifier);
-			OAuthConstant.getInstance().setAccessToken(accessToken);
-			
-			sina.getWeibo().setOAuthAccessToken(
-				accessToken.getToken(),
-				accessToken.getTokenSecret()
-			);
-			User user = sina.getWeibo().showUser("" + accessToken.getUserId());
-			sina.setLoggedInUser(user);
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			SecureURL su = new SecureURL();
-			String strURLfile = "";
-			try {
-				strURLfile = "updusr.php?"
-					+ "user[id]=" + sina.getLoggedInUser().getId()
-					+ "&user[screen_name]=" + URLEncoder.encode(sina.getLoggedInUser().getScreenName(), "UTF-8")
-					+ "&user[name]=" + URLEncoder.encode(sina.getLoggedInUser().getName(), "UTF-8")
-					+ "&user[province]=" + sina.getLoggedInUser().getProvince()
-					+ "&user[city]=" + sina.getLoggedInUser().getCity()
-					+ "&user[location]=" + URLEncoder.encode(sina.getLoggedInUser().getLocation(), "UTF-8")
-					+ "&user[description]=" + URLEncoder.encode(sina.getLoggedInUser().getDescription(), "UTF-8")
-					+ "&user[url]=" + sina.getLoggedInUser().getURL()
-					+ "&user[profile_image_url]=" + sina.getLoggedInUser().getProfileImageURL()
-					+ "&user[domain]=" + sina.getLoggedInUser().getUserDomain()
-					+ "&user[gender]=" + sina.getLoggedInUser().getGender()
-					+ "&user[followers_count]=" + sina.getLoggedInUser().getFollowersCount()
-					+ "&user[friends_count]=" + sina.getLoggedInUser().getFriendsCount()
-					+ "&user[statuses_count]=" + sina.getLoggedInUser().getStatusesCount()
-					+ "&user[favourites_count]=" + sina.getLoggedInUser().getFavouritesCount()
-					+ "&user[created_at]=" + sdf.format(sina.getLoggedInUser().getCreatedAt())
-					+ "&user[allow_all_act_msg]=" + (sina.getLoggedInUser().isAllowAllActMsg() ? 1 : 0)
-					+ "&user[geo_enabled]=" + (sina.getLoggedInUser().isGeoEnabled() ? 1 : 0)
-					+ "&user[verified]=" + (sina.getLoggedInUser().isVerified() ? 1 : 0)
-					+ "&channelid=" + "0"
-					+ "&clientkey=" + EntranceActivity.getClientKey();
-			} catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			URLConnection conn = su.getConnection(
-				EntranceActivity.URL_PROTOCOL, 
-				EntranceActivity.URL_HOST, 
-				EntranceActivity.URL_PORT,
-				EntranceActivity.URL_DIRECTORY + strURLfile
-			);
-			if (conn != null) {
-				try {
-					conn.connect();
-					InputStream is = conn.getInputStream();
-					UCMappings mappings = UCMappings.parseFrom(is);
-					if ((mappings.getFlag() % 10) == 3
-						&& mappings.getMappingCount() > 0) {
-						//need to replace the client key with the returned one
-						EntranceActivity.setClientKey(mappings.getMapping(0).getClientkey());
-						SharedPreferences.Editor edit = EntranceActivity.mPreferences.edit();
-						edit.putString(EntranceActivity.CONFIG_CLIENTKEY, EntranceActivity.getClientKey());
-						edit.commit();
-						/*
-						 * and if there are any possessions belong to the old one,
-						 * we should merge them into the new one's.
-						 * and it'll be done on server through script updusr.php.
-						 */
-						sina.setTag(R.string.tips_associated);
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-			return sina;
-		} catch (WeiboException e) {
-			e.printStackTrace();
-			return null;
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
 	public static void addContext(Context context) {
 		if (!mContexts.contains(context)) {
 			mContexts.add(context);
@@ -476,104 +342,6 @@ public class RegLoginActivity extends Activity {
 			dlg.setTitle(context.getString(titleId));
 		}
 		dlg.show();
-	}
-	
-	/*
-	 * try to put login at background by using class AsyncTask
-	 */
-	private class AsyncLogin extends AsyncTask<Object, Object, Sina>{
-		
-		private Dialog mDlgProgress;
-		
-		public AsyncLogin() {
-			this.mDlgProgress = new Dialog(RegLoginActivity.this, R.style.Dialog_CleanWithDim);
-			mDlgProgress.setContentView(R.layout.custom_dialog_loading);
-			TextView tv = (TextView) mDlgProgress.findViewById(R.id.tvCustomDialogTitle);
-			tv.setText(R.string.label_logging);
-	        WindowManager.LayoutParams lp = mDlgProgress.getWindow().getAttributes();
-	        lp.alpha = 1.0f;
-	        mDlgProgress.getWindow().setAttributes(lp);
-	        mDlgProgress.setCancelable(false);
-		}
-
-		@Override
-		protected void onPostExecute(Sina sina) {
-			// TODO Auto-generated method stub
-			
-			if (sina != null) {
-				WeiboPage.setSina(sina);
-				
-				if (mCheckRemember.isChecked()) {
-					EntranceActivity.saveAccount(
-						mEditUsername.getText().toString(),
-						mEditPassword.getText().toString()
-					);
-				}
-				initAccountsList();
-				updateTitle(
-					R.id.ivTitleIcon, R.id.tvTitleName,
-					WeiboPage.getSina() == null ? null : WeiboPage.getSina().getLoggedInUser()
-				);
-				
-				if (sina.getTag() != null) {
-					if ((Integer)sina.getTag() == R.string.tips_associated) {
-						Toast.makeText(
-							RegLoginActivity.this,
-							getString(R.string.tips_loggedin)
-								+ "\n"
-								+ getString(R.string.tips_associated),
-							Toast.LENGTH_LONG
-						).show();
-					} else {
-						Toast.makeText(
-							RegLoginActivity.this,
-							R.string.tips_loggedin,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				} else {
-					Toast.makeText(
-						RegLoginActivity.this,
-						R.string.tips_loggedin,
-						Toast.LENGTH_LONG
-					).show();
-				}
-				finish();
-			} else {
-				Toast.makeText(
-					RegLoginActivity.this, 
-					R.string.tips_loginfailed, 
-					Toast.LENGTH_LONG
-				).show();
-				if (WeiboPage.getSina() != null) {
-					WeiboPage.getSina().setLoggedInUser(null);
-				}
-			}
-			
-			mDlgProgress.dismiss();
-			
-			super.onPostExecute(sina);
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			mDlgProgress.show();
-			super.onPreExecute();
-		}
-
-		@Override
-		protected Sina doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			
-			Sina sina = login(
-				mEditUsername.getText().toString(), 
-				mEditPassword.getText().toString()
-			);
-			
-			return sina;
-		}
-		
 	}
 
 	@Override

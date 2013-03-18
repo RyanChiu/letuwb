@@ -2,7 +2,9 @@ package com.zrd.zr.weiboes;
 
 import java.io.Serializable;
 
-import weibo4android.User;
+import com.weibo.sdk.android.custom.Status2;
+import com.weibo.sdk.android.custom.User2;
+
 import weibo4android.Weibo;
 import weibo4android.OAuthConstant;
 
@@ -20,7 +22,7 @@ public class Sina implements Serializable {
 	 * we told every activities that they should open some
 	 * rights for it.
 	 */
-	private User mLoggedInUser = null;
+	private User2 mLoggedInUser = null;
 	
 	/*
 	 * implement "tag"
@@ -70,11 +72,11 @@ public class Sina implements Serializable {
 		return mWeibo;
 	}
 
-	public void setLoggedInUser(User user) {
+	public void setLoggedInUser(User2 user) {
 		mLoggedInUser = user;
 	}
 	
-	public User getLoggedInUser() {
+	public User2 getLoggedInUser() {
 		return mLoggedInUser;
 	}
 	
@@ -92,13 +94,13 @@ public class Sina implements Serializable {
 		 * for the original status
 		 */
 		private static final long serialVersionUID = -4063554782772695640L;
-		private weibo4android.Status status;
+		private Status2 status;
 		private long comments = 0;
 		private long reposts = 0;
-		public void setStatus(weibo4android.Status status) {
+		public void setStatus(Status2 status) {
 			this.status = status;
 		}
-		public weibo4android.Status getStatus() {
+		public Status2 getStatus() {
 			return status;
 		}
 		public void setComments(long comments) {

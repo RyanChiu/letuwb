@@ -1,5 +1,6 @@
 package com.zrd.zr.letuwb;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,10 +12,14 @@ import weibo4android.Comment;
 import weibo4android.Status;
 import weibo4android.User;
 import weibo4android.WeiboException;
+import weibo4android.org.json.JSONArray;
+import weibo4android.org.json.JSONException;
+import weibo4android.org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -32,6 +37,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
+
+import com.weibo.sdk.android.api.StatusesAPI;
+import com.weibo.sdk.android.api.UsersAPI;
+import com.weibo.sdk.android.api.WeiboAPI.FEATURE;
+import com.weibo.sdk.android.net.RequestListener;
+import com.weibo.sdk.android.custom.Responds;
+import com.weibo.sdk.android.custom.Status2;
+import com.weibo.sdk.android.custom.User2;
 
 import com.zrd.zr.pnj.ThreadPNJDealer;
 import com.zrd.zr.protos.WeibousersProtos.UCMappings;
@@ -70,8 +83,8 @@ public class WeiboPage {
 	
 	private Long mUid = null;
 	private Long mId = null;
-	private static Sina mSina = null;
-	private User mLastUser = null;
+	private static Sina mSina = new Sina();
+	private User2 mLastUser = null;
 	private List<Sina.XStatus> mLastUserTimeline = new ArrayList<Sina.XStatus>();
 	private int mIndexOfSelectedStatus = -1;
 	private List<Comment> mLastComments = new ArrayList<Comment>();
@@ -113,6 +126,7 @@ public class WeiboPage {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				/*
 				new Thread(
 					new ThreadSinaDealer(
 						mSina,
@@ -125,6 +139,34 @@ public class WeiboPage {
 						mHandler
 					)
 				).start();
+				*/
+				StatusesAPI api = new StatusesAPI(parent.getAccessToken());
+				api.userTimeline(getUid(), 0, 0, 
+					COUNT_PERPAGE_TIMELINE/*how many lines*/, 
+					(getLastUserTimelineTotalPage() + 1), 
+					false, FEATURE.ALL, false, 
+					new RequestListener() {
+
+						@Override
+						public void onComplete(String response) {
+							// TODO Auto-generated method stub
+							fireToUI(Responds.STATUSES_USERTIMELINE, response);
+						}
+
+						@Override
+						public void onIOException(IOException e) {
+							// TODO Auto-generated method stub
+							fireToUI(Responds.STATUSES_USERTIMELINE, e);
+						}
+
+						@Override
+						public void onError(
+								com.weibo.sdk.android.WeiboException e) {
+							// TODO Auto-generated method stub
+							fireToUI(Responds.STATUSES_USERTIMELINE, e);
+						}
+					
+				});
 				turnDealing(true);
 			}
 			
@@ -584,7 +626,7 @@ public class WeiboPage {
 							Toast.LENGTH_LONG
 						).show();
 					} else {
-						Status retweeted = mLastUserTimeline
+						Status2 retweeted = mLastUserTimeline
 							.get(mIndexOfSelectedStatus)
 							.getStatus()
 							.getRetweeted_status();
@@ -623,10 +665,14 @@ public class WeiboPage {
 				} else {
 					setSina(sina);
 				}
-				WeiboException wexp = (WeiboException)msg.getData().getSerializable(ThreadSinaDealer.KEY_WEIBO_ERR);
+				weibo4android.WeiboException wexp = (weibo4android.WeiboException)msg.getData().getSerializable(ThreadSinaDealer.KEY_WEIBO_ERR);
 				User user;
 				Status status;
 				Comment comment;
+				
+				Responds resp;
+				Bundle bundle = msg.getData();
+				
 				switch (msg.what) {
 				case ThreadPNJDealer.GET_POSSESSIONS:
 					UCMappings mappings = (UCMappings)msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
@@ -655,7 +701,31 @@ public class WeiboPage {
 					}
 					break;
 				case ThreadSinaDealer.SHOW_USER:
-					mLastUser = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+					//mLastUser = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+				case Responds.USERS_SHOW:
+					resp = (Responds) bundle.getSerializable(Responds.KEY_DATA);
+					switch (resp.getRespType()) {
+					case Responds.TYPE_COMPLETE:
+						try {
+							mLastUser = new User2(new JSONObject(resp.getRespOnComplete()));
+						} catch (WeiboException e) {
+							// TODO Auto-generated catch block
+							mLastUser = null;
+							e.printStackTrace();
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							mLastUser = null;
+							e.printStackTrace();
+						} catch (NullPointerException e) {
+							mLastUser = null;
+							e.printStackTrace();
+						}
+						break;
+					case Responds.TYPE_ERROR:
+					case Responds.TYPE_IO_ERROR:
+						mLastUser = null;
+						break;
+					}
 					if (mLastUser != null) {			
 						/*
 						 * show the profile-image
@@ -757,33 +827,124 @@ public class WeiboPage {
 					}
 					break;
 				case ThreadSinaDealer.GET_USER_TIMELINE:
-					ArrayList<Sina.XStatus> xstatuses = (ArrayList<Sina.XStatus>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-					if (xstatuses != null) {
-						for (int i = 0; i < xstatuses.size(); i++) {
-							mLastUserTimeline.add(xstatuses.get(i));
+					//ArrayList<Sina.XStatus> xstatuses = (ArrayList<Sina.XStatus>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
+				case Responds.STATUSES_USERTIMELINE:
+					final ArrayList<Sina.XStatus> xstatuses = new ArrayList<Sina.XStatus>();
+					resp = (Responds) bundle.getSerializable(Responds.KEY_DATA);
+					switch (resp.getRespType()) {
+					case Responds.TYPE_COMPLETE:
+						JSONObject json;
+						try {
+							json = new JSONObject(resp.getRespOnComplete());
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							json = null;
+							Toast.makeText(parent, "~~4debug~~00", Toast.LENGTH_LONG).show();
+							break;
 						}
-						/*
-						 * show the user time_line
-						 */
-						WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
-							parent,
-							getStatusData(ThreadSinaDealer.GET_USER_TIMELINE)
-						);
-						mListStatus.setAdapter(adapter);
-						mListStatus.setSelection(
-							(getLastUserTimelineTotalPage() - 1) * COUNT_PERPAGE_TIMELINE
-						);
-					} else {
-						//deal with failing to get time_line
-						if (wexp != null) {
-							Toast.makeText(
-								parent,
-								//wexp.toString(),
-								R.string.tips_getweiboinfofailed,
-								Toast.LENGTH_LONG
-							).show();
+						JSONArray statuses;
+						ArrayList<String> ids = new ArrayList<String>();
+						try {
+							statuses = json.getJSONArray("statuses");
+							for (int i = 0; i < statuses.length(); i++) {
+								Sina.XStatus xstatus = mSina.getXStatus();
+								xstatus.setStatus(new Status2(statuses.getJSONObject(i)));
+								xstatuses.add(xstatus);
+								ids.add(statuses.getJSONObject(i).getString("id"));
+							}
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							statuses = null;
+							Toast.makeText(parent, "~~4debug~~11", Toast.LENGTH_LONG).show();
+							break;
 						}
+						//List<Status> tlist = mSina.getWeibo().getUserTimeline(mParams[0], paging);
+						catch (WeiboException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							statuses = null;
+							Toast.makeText(parent, "~~4debug~~22", Toast.LENGTH_LONG).show();
+							break;
+						} catch (NullPointerException e) {
+							e.printStackTrace();
+							statuses = null;
+							Toast.makeText(parent, "~~4debug~~33", Toast.LENGTH_LONG).show();
+							break;
+						}
+						
+						if (ids.size() != 0) {
+							StatusesAPI api = new StatusesAPI(parent.getAccessToken());
+							String[] _ids = new String[ids.size()];
+							for (int i = 0; i < ids.size(); i++) {
+								_ids[i] = ids.get(i);
+							}
+							api.count(_ids,
+								new RequestListener() {
+
+									@Override
+									public void onComplete(String response) {
+										// TODO Auto-generated method stub
+										JSONArray counts;
+										try {
+											counts = new JSONArray(response);
+										} catch (JSONException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+											counts = null;
+										}
+										for (int i = 0; counts != null && i < counts.length(); i++) {
+											for (int j = 0; j < xstatuses.size(); j++) {
+												try {
+													if (xstatuses.get(j).getStatus().getId()
+														== counts.getJSONObject(i).getLong("id")) {
+														xstatuses.get(j).setComments(counts.getJSONObject(i).getInt("comments"));
+														xstatuses.get(j).setReposts(counts.getJSONObject(i).getInt("reposts"));
+													}
+												} catch (JSONException e) {
+													// TODO Auto-generated catch block
+													e.printStackTrace();
+												}
+											}
+										}
+									}
+
+									@Override
+									public void onIOException(IOException e) {
+										// TODO Auto-generated method stub
+										
+									}
+
+									@Override
+									public void onError(
+											com.weibo.sdk.android.WeiboException e) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+							});
+						}
+						break;
+					case Responds.TYPE_ERROR:
+					case Responds.TYPE_IO_ERROR:
+						break;
 					}
+					for (int i = 0; i < xstatuses.size(); i++) {
+						mLastUserTimeline.add(xstatuses.get(i));
+					}
+					/*
+					 * show the user time_line
+					 */
+					WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
+						parent,
+						//getStatusData(ThreadSinaDealer.GET_USER_TIMELINE)
+						getStatusData(Responds.STATUSES_USERTIMELINE)
+					);
+					mListStatus.setAdapter(adapter);
+					mListStatus.setSelection(
+						(getLastUserTimelineTotalPage() - 1) * COUNT_PERPAGE_TIMELINE
+					);
 					turnDealing(false);
 					break;
 				case ThreadSinaDealer.CREATE_FRIENDSHIP:
@@ -1016,6 +1177,7 @@ public class WeiboPage {
 	public void reloadLastUser(Long uid) {
 		mLastUser = null;
 		mIndexOfSelectedStatus = -1;
+		/*
 		new Thread(
 			new ThreadSinaDealer(
 				mSina, 
@@ -1024,6 +1186,31 @@ public class WeiboPage {
 				mHandler
 			)
 		).start();
+		*/
+		
+		UsersAPI api = new UsersAPI(parent.getAccessToken());
+		api.show(uid, 
+			new RequestListener() {
+
+				@Override
+				public void onComplete(String response) {
+					// TODO Auto-generated method stub
+					fireToUI(Responds.USERS_SHOW, response);
+				}
+
+				@Override
+				public void onIOException(IOException e) {
+					// TODO Auto-generated method stub
+					fireToUI(Responds.USERS_SHOW, e);
+				}
+
+				@Override
+				public void onError(com.weibo.sdk.android.WeiboException e) {
+					// TODO Auto-generated method stub
+					fireToUI(Responds.USERS_SHOW, e);
+				}
+	        	
+    	});
 	}
 	
 	protected void reloadAll() {
@@ -1033,6 +1220,7 @@ public class WeiboPage {
 		}
 		
 		mLastUserTimeline.clear();
+		/*
 		new Thread(
 			new ThreadSinaDealer(
 				mSina,
@@ -1041,6 +1229,34 @@ public class WeiboPage {
 				mHandler
 			)
 		).start();
+		*/
+		StatusesAPI api = new StatusesAPI(parent.getAccessToken());
+		api.userTimeline(getUid(), 0, 0, 
+			COUNT_PERPAGE_TIMELINE/*how many lines*/, 
+			(getLastUserTimelineTotalPage() + 1), 
+			false, FEATURE.ALL, false, 
+			new RequestListener() {
+
+				@Override
+				public void onComplete(String response) {
+					// TODO Auto-generated method stub
+					fireToUI(Responds.STATUSES_USERTIMELINE, response);
+				}
+
+				@Override
+				public void onIOException(IOException e) {
+					// TODO Auto-generated method stub
+					fireToUI(Responds.STATUSES_USERTIMELINE, e);
+				}
+
+				@Override
+				public void onError(
+						com.weibo.sdk.android.WeiboException e) {
+					// TODO Auto-generated method stub
+					fireToUI(Responds.STATUSES_USERTIMELINE, e);
+				}
+			
+		});
 	}
 
 	protected int getLastUserTimelineTotalPage() {
@@ -1069,6 +1285,10 @@ public class WeiboPage {
 		mSina = sina;
 	}
 	
+	public int getPrivilege() {
+		return mSina.getLoggedInUser() == null ? 1 : 0;
+	}
+	
 	private List<Map<String, Object>> getStatusData(int type) {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map;
@@ -1086,6 +1306,7 @@ public class WeiboPage {
 			}
 			break;
 		case ThreadSinaDealer.GET_USER_TIMELINE:
+		case Responds.STATUSES_USERTIMELINE:
 			if (mLastUserTimeline != null) {
 				for (int i = 0; i < mLastUserTimeline.size(); i++) {
 					xstatus = mLastUserTimeline.get(i);
@@ -1131,6 +1352,42 @@ public class WeiboPage {
 		intent.setClass(parent, ImageActivity.class);
 		parent.startActivity(intent);
 	}
+	
+	private void fireToUI(int act, String arg) {
+    	if (mHandler == null) return;
+    	Message msg = new Message();
+		msg.what = act;
+		Responds resp = new Responds(msg.what);
+		resp.setRespOnComplete(arg);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(Responds.KEY_DATA, resp);
+		msg.setData(bundle);
+		mHandler.sendMessage(msg);
+    }
+    
+    private void fireToUI(int act, com.weibo.sdk.android.WeiboException arg) {
+    	if (mHandler == null) return;
+    	Message msg = new Message();
+		msg.what = act;
+		Responds resp = new Responds(msg.what);
+		resp.setRespOnError(arg);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(Responds.KEY_DATA, resp);
+		msg.setData(bundle);
+		mHandler.sendMessage(msg);
+    }
+    
+    private void fireToUI(int act, IOException arg) {
+    	if (mHandler == null) return;
+    	Message msg = new Message();
+		msg.what = act;
+		Responds resp = new Responds(msg.what);
+		resp.setRespOnIOError(arg);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(Responds.KEY_DATA, resp);
+		msg.setData(bundle);
+		mHandler.sendMessage(msg);
+    }
 
 	public Long getUid() {
 		return mUid;
@@ -1156,7 +1413,7 @@ public class WeiboPage {
 		this.mId = mId;
 	}
 	
-	public User getLastUser() {
+	public User2 getLastUser() {
 		return this.mLastUser;
 	}
 	

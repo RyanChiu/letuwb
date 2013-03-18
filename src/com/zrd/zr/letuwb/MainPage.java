@@ -14,11 +14,9 @@ import com.zrd.zr.pnj.ThreadPNJDealer;
 import com.zrd.zr.protos.WeibousersProtos.UCMappings;
 import com.zrd.zr.protos.WeibousersProtos.Weibouser;
 import com.zrd.zr.protos.WeibousersProtos.Weibousers;
-import com.zrd.zr.weiboes.Sina;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -420,10 +418,6 @@ public class MainPage {
 		return mUsrs;
 	}
 	
-	public void setUsrs(ArrayList<WeibouserInfo> pics) {
-		mUsrs = pics;
-	}
-		
 	/*
 	 * get index of current usr in mUsrs by id
 	 */
@@ -773,8 +767,7 @@ public class MainPage {
 								Toast.LENGTH_LONG
 							).show();
 						} else {
-							Sina sina = WeiboPage.getSina();
-							if (sina != null && sina.isLoggedIn()) {
+							if (parent.getWeiboPage().getPrivilege() == 0) {
 								WeibouserInfo wi = mUsrs.get((Integer) arg0.getTag());
 								LinearLayout ll = (LinearLayout) wi.getTag();
 								ZRImageView img = (ZRImageView) ll.findViewById(R.id.ivPinterest);
@@ -789,14 +782,14 @@ public class MainPage {
 									}
 								}
 							} else {
+								/*
 								Toast.makeText(
 									parent,
 									R.string.tips_havetologin,
 									Toast.LENGTH_LONG
 								).show();
-								Intent intent = new Intent();
-								intent.setClass(parent, RegLoginActivity.class);
-								parent.startActivity(intent);
+								*/
+								parent.login(parent.getString(R.string.tips_loadingsinaweibooauthpage));
 							}
 						}
 					}

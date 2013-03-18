@@ -7,9 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.weibo.sdk.android.custom.Status2;
 import com.zrd.zr.weiboes.Sina;
-
-import weibo4android.Status;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -126,7 +125,7 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 				);
 			}
 			
-			Status statusR = xstatus.getStatus().getRetweeted_status();
+			Status2 statusR = xstatus.getStatus().getRetweeted_status();
 			if (statusR == null) {
 				holder.mLayoutRetweeted.setVisibility(LinearLayout.GONE);
 			} else {

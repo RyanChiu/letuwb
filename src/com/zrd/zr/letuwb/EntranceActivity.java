@@ -1,5 +1,6 @@
 package com.zrd.zr.letuwb;
 
+import java.io.IOException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +10,9 @@ import java.util.TimeZone;
 
 import org.ligi.tracedroid.TraceDroid;
 import org.ligi.tracedroid.sending.TraceDroidEmailSender;
+
+import weibo4android.org.json.JSONException;
+import weibo4android.org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -52,6 +56,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.adwhirl.AdWhirlLayout;
 import com.adwhirl.eventadapter.GmAdWhirlEventAdapterData;
 import com.mobclick.android.MobclickAgent;
+import com.weibo.sdk.android.Oauth2AccessToken;
+import com.weibo.sdk.android.Weibo;
+import com.weibo.sdk.android.WeiboAuthListener;
+import com.weibo.sdk.android.WeiboDialogError;
+import com.weibo.sdk.android.WeiboException;
+import com.weibo.sdk.android.api.AccountAPI;
+import com.weibo.sdk.android.api.UsersAPI;
+import com.weibo.sdk.android.custom.User2;
+import com.weibo.sdk.android.keep.AccessTokenKeeper;
+import com.weibo.sdk.android.net.RequestListener;
 import com.zrd.zr.letuwb.R;
 import com.zrd.zr.pnj.PNJ;
 import com.zrd.zr.pnj.SecureURL;
@@ -60,6 +74,10 @@ import com.zrd.zr.weiboes.Sina;
 public class EntranceActivity extends Activity implements OnTouchListener {
 
 	final static String SERIAL_APP = "gbhytfvnjurdcmkiesx,lowaz.;p201108282317";
+	private static final String CONSUMER_KEY = "3673961165";
+	private static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
+	private Weibo mWeibo;
+	private static Oauth2AccessToken accessToken;
 	final static String TIMEZONE_SERVER = "Asia/Hong_Kong";
 	//final static String URL_SITE = "http://hot88.info/letmewb/";
 	final static String URL_PROTOCOL = "http";
@@ -132,6 +150,11 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         
         //set content view with R.layout.core
         setContentView(R.layout.core);
+        
+        /*
+         * OAuth2
+         */
+        mWeibo = Weibo.getInstance(CONSUMER_KEY, REDIRECT_URL);
         
         /**
          * Try to trace exceptions
@@ -566,9 +589,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 					Toast.LENGTH_SHORT
 				).show();
 			} else {
-				Intent intent = new Intent();
-				intent.setClass(EntranceActivity.this, RegLoginActivity.class);
-				startActivity(intent);
+				login(null);
 			}
 			break;
 		case Menu.FIRST + 5:
@@ -581,6 +602,17 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void login(String tips) {
+		// TODO Auto-generated method stub
+		try {
+        	mWeibo.authorize(EntranceActivity.this, new AuthDialogListener(), tips);
+        } catch (Exception e) {
+        	//need to be more friendly here
+        	e.printStackTrace();
+        } finally {
+        }
 	}
 
 	@Override
@@ -657,31 +689,12 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		}
 	}
 
-	public static void setPrivilege(Integer privilege) {
-		if (privilege < 0 || privilege > 1) {
-			privilege = 1;
-		}
-		EntranceActivity.mPrivilege = privilege;
-		switch (privilege) {
-		case 0:
-			break;
-		case 1:
-			break;
-		default:
-			break;
-		}
-	}
-	
 	public static Integer getAccountId() {
 		return mAccountId;
 	}
 	
 	public static void setAccountId(Integer id) {
 		mAccountId = id;
-	}
-	
-	public static int getPrivilege() {
-		return mPrivilege;
 	}
 	
 	public static boolean isNowLoggingIn() {
@@ -793,7 +806,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		@Override
 		protected Object doInBackground(Object... params) {
 			// TODO Auto-generated method stub
-			boolean notAutoLogin = (Boolean)params[0];
+			//boolean notAutoLogin = (Boolean)params[0];
 			String[] msgs = {"", "", ""};
 			/*
 			 * try to get the client key
@@ -830,6 +843,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			/*
 	    	 * Auto login part begin
 	    	 */
+			/*
 			if (!notAutoLogin) {
 				mNowLoggingIn = true;
 				ArrayList<String[]> list = EntranceActivity.getStoredAccounts();
@@ -846,6 +860,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 					}
 				}
 			}
+			*/
 	        /*
 	    	 * Auto login part end
 	    	 */
@@ -967,6 +982,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 
 	public void setWeiboPage(WeiboPage mWeiboPage) {
 		this.mWeiboPage = mWeiboPage;
+	}
+	
+	public Oauth2AccessToken getAccessToken() {
+		return accessToken;
 	}
 	
 	public TextView getTextUpup() {
@@ -1094,4 +1113,110 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		}
 		
 	}
+	
+	/**
+     * @author ray
+     *
+     */
+    class AuthDialogListener implements WeiboAuthListener {
+
+        @Override
+        public void onComplete(Bundle values) {
+            String token = values.getString("access_token");
+            String expires_in = values.getString("expires_in");
+            EntranceActivity.accessToken = new Oauth2AccessToken(token, expires_in);
+            if (EntranceActivity.accessToken.isSessionValid()) {
+				AccessTokenKeeper.keepAccessToken(EntranceActivity.this,
+						EntranceActivity.accessToken);
+				Toast.makeText(EntranceActivity.this, getApplication().getString(R.string.tips_successfullyoauthorized), Toast.LENGTH_SHORT).show();
+				AccountAPI api = new AccountAPI(EntranceActivity.accessToken);
+				WeiboPage.getSina().setLoggedInUser(null);
+				api.getUid(new RequestListener() {
+
+					@Override
+					public void onComplete(String response) {
+						// TODO Auto-generated method stub
+						try {
+							JSONObject json = new JSONObject(response);
+							long uid = json.getLong("uid");
+							UsersAPI api = new UsersAPI(EntranceActivity.accessToken);
+							api.show(uid, new RequestListener() {
+
+								@Override
+								public void onComplete(String response) {
+									// TODO Auto-generated method stub
+									try {
+										JSONObject json = new JSONObject(response);
+										try {
+											User2 usr = new User2(json);
+											WeiboPage.getSina().setLoggedInUser(usr);
+										} catch (weibo4android.WeiboException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+
+								@Override
+								public void onIOException(IOException e) {
+									// TODO Auto-generated method stub
+									e.printStackTrace();
+								}
+
+								@Override
+								public void onError(WeiboException e) {
+									// TODO Auto-generated method stub
+									e.printStackTrace();
+								}
+								
+							});
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					public void onIOException(IOException e) {
+						// TODO Auto-generated method stub
+						e.printStackTrace();
+					}
+
+					@Override
+					public void onError(WeiboException e) {
+						// TODO Auto-generated method stub
+						e.printStackTrace();
+					}
+					
+				});
+            } else {
+            	Toast.makeText(EntranceActivity.this, getApplication().getString(R.string.tips_failtopassoauth), Toast.LENGTH_SHORT).show();
+            	WeiboPage.getSina().setLoggedInUser(null);
+            }
+        }
+
+        @Override
+        public void onError(WeiboDialogError e) {
+        	e.printStackTrace();
+        	WeiboPage.getSina().setLoggedInUser(null);
+        }
+
+        @Override
+        public void onCancel() {
+            Toast.makeText(getApplicationContext(), 
+            	getApplication().getString(R.string.tips_canceloauth),
+            	Toast.LENGTH_LONG).show();
+        	WeiboPage.getSina().setLoggedInUser(null);
+        }
+
+        @Override
+        public void onWeiboException(WeiboException e) {
+        	e.printStackTrace();
+        	WeiboPage.getSina().setLoggedInUser(null);
+        }
+
+    }
 }

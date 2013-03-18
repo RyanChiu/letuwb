@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import weibo4android.Comment;
-import weibo4android.Count;
 import weibo4android.Paging;
 import weibo4android.Status;
-import weibo4android.User;
 import weibo4android.WeiboException;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,9 +62,9 @@ public class ThreadSinaDealer implements Runnable {
 		
 		Message msg = new Message();
 		msg.what = mAction;
-		User user;
+		//User user;
 		Status status;
-		ArrayList<Sina.XStatus> xstatuses = new ArrayList<Sina.XStatus>();
+		//ArrayList<Sina.XStatus> xstatuses = new ArrayList<Sina.XStatus>();
 		ArrayList<Comment> comments = new ArrayList<Comment>();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(KEY_SINA, mSina);
@@ -74,6 +72,7 @@ public class ThreadSinaDealer implements Runnable {
 		bundle.putSerializable(KEY_WEIBO_ERR, null);
 		switch (mAction) {
 		case SHOW_USER:
+			/*
 			if (mParams != null && mParams.length != 1 && mParams[0] != null) return;
 			try {
 				user = mSina.getWeibo().showUser(mParams[0]);
@@ -86,7 +85,9 @@ public class ThreadSinaDealer implements Runnable {
 			msg.setData(bundle);
 			mHandler.sendMessage(msg);
 			break;
+			*/
 		case GET_USER_TIMELINE:
+			/*
 			if (mParams != null && mParams.length != 3 && mParams[0] != null) return;
 			try {
 				Paging paging = new Paging(
@@ -123,6 +124,7 @@ public class ThreadSinaDealer implements Runnable {
 			msg.setData(bundle);
 			mHandler.sendMessage(msg);
 			break;
+			*/
 		case CREATE_FRIENDSHIP:
 			if (mParams != null && mParams.length != 1 && mParams[0] != null) return;
 			try {

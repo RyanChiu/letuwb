@@ -182,4 +182,8 @@
     <string name="label_novotetips">You\'ve not voted yet.Vote to see the rating.</string>
     <string name="label_alreadyloaded">Loaded:</string>
     <string name="label_possessiondeltips">(Long click to remove selected possession.)</string>
+    <string name="tips_loadingsinaweibooauthpage">Loading auth page, please wait a moment…</string>
+    <string name="tips_successfullyoauthorized">Successfully authorized!</string>
+    <string name="tips_failtopassoauth">Authorizing failed.</string>
+    <string name="tips_canceloauth">Cancel authorizing.</string>
 </resources>
