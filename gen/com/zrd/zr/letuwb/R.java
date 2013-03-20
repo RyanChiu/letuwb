@@ -132,7 +132,7 @@ containing a value of this type.
         public static final int ivRetweetedImage=0x7f080044;
         public static final int ivShare=0x7f08000d;
         public static final int ivStatusImage=0x7f08003f;
-        public static final int ivTitleIcon=0x7f080035;
+        public static final int ivTitleIcon=0x7f080036;
         public static final int ivVerified=0x7f080070;
         public static final int linearLayout1=0x7f080000;
         public static final int linearLayout2=0x7f080002;
@@ -199,7 +199,7 @@ containing a value of this type.
         public static final int tvStatusCreatedAt=0x7f08003c;
         public static final int tvStatusReposts=0x7f080048;
         public static final int tvStatusText=0x7f08003d;
-        public static final int tvTitleName=0x7f080036;
+        public static final int tvTitleName=0x7f080035;
         public static final int tvUpdate=0x7f08006d;
         public static final int tvUpup=0x7f08002c;
         public static final int tvVersion=0x7f080005;
