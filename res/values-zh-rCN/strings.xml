@@ -167,7 +167,7 @@
     <string name="label_atsomeone"> \@</string>
     <string name="label_her">她</string>
     <string name="label_him">他</string>
-    <string name="tips_waitforgettinguser">正在获去已登录用户，请稍候…</string>
+    <string name="tips_waitforgettinguser">正在获取已登录用户，请稍候…</string>
     <string name="tips_trytogetuser">尝试获取已登录用户…</string>
     <string name="tips_routinehello">嗨！我是通过“私藏男女”应用看到了你的微博，真的很有趣诶^-^。</string>
     <string name="title_updatestatus">将会发布一条新浪微博</string>
