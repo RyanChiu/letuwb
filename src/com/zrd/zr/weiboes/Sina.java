@@ -1,12 +1,23 @@
 package com.zrd.zr.weiboes;
 
+import java.io.IOException;
 import java.io.Serializable;
 
+import android.os.Handler;
+import android.os.Message;
+
+import com.weibo.sdk.android.Oauth2AccessToken;
+import com.weibo.sdk.android.WeiboException;
+import com.weibo.sdk.android.api.AccountAPI;
+import com.weibo.sdk.android.api.UsersAPI;
 import com.weibo.sdk.android.custom.Status2;
 import com.weibo.sdk.android.custom.User2;
+import com.weibo.sdk.android.net.RequestListener;
 
 import weibo4android.Weibo;
 import weibo4android.OAuthConstant;
+import weibo4android.org.json.JSONException;
+import weibo4android.org.json.JSONObject;
 
 public class Sina implements Serializable {
 	
@@ -23,6 +34,12 @@ public class Sina implements Serializable {
 	 * rights for it.
 	 */
 	private User2 mLoggedInUser = null;
+	private AccountAPI accountApi;
+	private UsersAPI usersApi;
+	private boolean gettingUser = false;
+	private Handler mHandler;
+	
+	public final static int REFRESH_USERBAR = 0x20130319;
 	
 	/*
 	 * implement "tag"
@@ -36,7 +53,11 @@ public class Sina implements Serializable {
 	public void setTag(Object tag) {
 		this.mTag = tag;
 	}
-
+	
+	public Sina(Handler handler) {
+		this.mHandler = handler;
+	}
+	
 	public Sina() {
 		this(false);
 	}
@@ -74,9 +95,91 @@ public class Sina implements Serializable {
 
 	public void setLoggedInUser(User2 user) {
 		mLoggedInUser = user;
+		gettingUser = false;
 	}
 	
 	public User2 getLoggedInUser() {
+		return mLoggedInUser;
+	}
+	
+	public User2 getLoggedInUser(Oauth2AccessToken token) {
+		gettingUser = true;
+		mLoggedInUser = null;
+		accountApi = new AccountAPI(token);
+		usersApi = new UsersAPI(token);
+		accountApi.getUid(new RequestListener() {
+
+			@Override
+			public void onComplete(String response) {
+				// TODO Auto-generated method stub
+				try {
+					JSONObject json = new JSONObject(response);
+					long uid = json.getLong("uid");
+					
+					usersApi.show(uid, new RequestListener() {
+
+						@Override
+						public void onComplete(String response) {
+							// TODO Auto-generated method stub
+							try {
+								JSONObject json = new JSONObject(response);
+								try {
+									User2 usr = new User2(json);
+									setLoggedInUser(usr);
+									Message msg = new Message();
+									msg.what = Sina.REFRESH_USERBAR;
+									mHandler.sendMessage(msg);
+								} catch (weibo4android.WeiboException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+									setLoggedInUser(null);
+								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								setLoggedInUser(null);
+							}
+						}
+
+						@Override
+						public void onIOException(IOException e) {
+							// TODO Auto-generated method stub
+							e.printStackTrace();
+							setLoggedInUser(null);
+						}
+
+						@Override
+						public void onError(WeiboException e) {
+							// TODO Auto-generated method stub
+							e.printStackTrace();
+							setLoggedInUser(null);
+						}
+						
+					});
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					setLoggedInUser(null);
+				}
+
+			}
+
+			@Override
+			public void onIOException(IOException e) {
+				// TODO Auto-generated method stub
+				e.printStackTrace();
+				setLoggedInUser(null);
+			}
+
+			@Override
+			public void onError(WeiboException e) {
+				// TODO Auto-generated method stub
+				e.printStackTrace();
+				setLoggedInUser(null);
+			}
+			
+		});
+		
 		return mLoggedInUser;
 	}
 	
@@ -88,6 +191,10 @@ public class Sina implements Serializable {
 		return new XStatus();
 	}
 	
+	public boolean isGettingUser() {
+		return gettingUser;
+	}
+
 	public class XStatus implements Serializable {
 		/**
 		 * just in order to record the comments & reposts

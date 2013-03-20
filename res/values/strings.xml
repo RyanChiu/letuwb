@@ -168,6 +168,7 @@
     <string name="label_her">her</string>
     <string name="label_him">him</string>
     <string name="tips_waitforgettinguser">Loading user\'s information, please wait a moment and try again.</string>
+    <string name="tips_trytogetuser">Trying to get logged in user\'s information…</string>
     <string name="tips_routinehello">Hi. I read about your status through LETUWB, it\'s interesting!</string>
     <string name="title_updatestatus">It\'ll post a status to SINA-WEIBO</string>
     <string name="label_seebiggerimage0">Original image in status</string>

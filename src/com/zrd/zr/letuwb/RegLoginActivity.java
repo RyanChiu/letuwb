@@ -2,7 +2,6 @@ package com.zrd.zr.letuwb;
 
 import java.util.ArrayList;
 
-import com.weibo.sdk.android.custom.User2;
 import com.zrd.zr.letuwb.R;
 
 import android.app.Activity;
@@ -25,11 +24,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 //import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegLoginActivity extends Activity {
@@ -265,7 +262,8 @@ public class RegLoginActivity extends Activity {
 	public static boolean ifQuitIsSet() {
 		return mIfQuit;
 	}
-	
+
+	/*
 	public static void updateTitle(
 		int resTitleIcon, int resTitleName, User2 user) {
 		if (mContexts.size() == 0) return;
@@ -281,6 +279,7 @@ public class RegLoginActivity extends Activity {
 			}
 		}
 	}
+	*/
 	
 	public void initAccountsList() {
 		/*
@@ -348,18 +347,20 @@ public class RegLoginActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			/*
 			if (WeiboPage.getSina() != null && WeiboPage.getSina().isLoggedIn()) {
 				
 			} else {
-				/*
+				
 				Toast.makeText(
 					RegLoginActivity.this,
 					R.string.tips_havetologin,
 					Toast.LENGTH_LONG
 				).show();
 				return true;
-				*/
+				
 			}
+			*/
 		}
 		return super.onKeyDown(keyCode, event);
 	}

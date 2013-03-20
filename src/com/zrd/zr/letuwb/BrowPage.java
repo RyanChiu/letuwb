@@ -134,7 +134,7 @@ public class BrowPage {
 					case ThreadSinaDealer.CREATE_FRIENDSHIP:
 						User user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 						if (user != null) {
-							if (!user.equals(WeiboPage.getSina().getLoggedInUser())) {
+							if (!user.equals(parent.getWeiboPage().getSina().getLoggedInUser())) {
 								Toast.makeText(
 									parent,
 									R.string.tips_friendsmade,
@@ -268,7 +268,7 @@ public class BrowPage {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Sina sina = WeiboPage.getSina();
+				Sina sina = parent.getWeiboPage().getSina();
 				if (sina != null && sina.isLoggedIn()) {
 					new Thread(
 						new ThreadSinaDealer(

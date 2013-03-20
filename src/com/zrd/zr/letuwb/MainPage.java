@@ -760,14 +760,21 @@ public class MainPage {
 					@Override
 					public void onClick(View arg0) {
 						// TODO Auto-generated method stub
-						if (EntranceActivity.isNowLoggingIn()) {
-							Toast.makeText(
-								parent,
-								R.string.tips_nowisloggingin,
-								Toast.LENGTH_LONG
-							).show();
-						} else {
-							if (parent.getWeiboPage().getPrivilege() == 0) {
+						if (parent.getAccessToken() != null && parent.getAccessToken().isSessionValid()) {
+							if (parent.getWeiboPage().getPrivilege() == 1) {
+								if (parent.getWeiboPage().getSina().isGettingUser()) {
+									Toast.makeText(parent, 
+										parent.getString(R.string.tips_waitforgettinguser), 
+										Toast.LENGTH_LONG
+									).show();
+								} else {
+									Toast.makeText(parent,
+										parent.getString(R.string.tips_trytogetuser),
+										Toast.LENGTH_LONG
+									).show();
+									parent.getWeiboPage().getSina().getLoggedInUser(parent.getAccessToken());
+								}
+							} else {
 								WeibouserInfo wi = mUsrs.get((Integer) arg0.getTag());
 								LinearLayout ll = (LinearLayout) wi.getTag();
 								ZRImageView img = (ZRImageView) ll.findViewById(R.id.ivPinterest);
@@ -781,16 +788,10 @@ public class MainPage {
 										parent.switchPage(R.layout.brow, wi.id);
 									}
 								}
-							} else {
-								/*
-								Toast.makeText(
-									parent,
-									R.string.tips_havetologin,
-									Toast.LENGTH_LONG
-								).show();
-								*/
-								parent.login(parent.getString(R.string.tips_loadingsinaweibooauthpage));
 							}
+						} else {
+							parent.login(parent.getString(R.string.tips_loadingsinaweibooauthpage));
+							
 						}
 					}
 					
