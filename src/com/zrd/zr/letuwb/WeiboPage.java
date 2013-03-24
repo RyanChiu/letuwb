@@ -38,6 +38,7 @@ import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.weibo.sdk.android.api.FriendshipsAPI;
 import com.weibo.sdk.android.api.StatusesAPI;
 import com.weibo.sdk.android.api.UsersAPI;
 import com.weibo.sdk.android.api.WeiboAPI.FEATURE;
@@ -385,6 +386,7 @@ public class WeiboPage {
 				);
 				turnDealing(false);
 				break;
+			/*
 			case ThreadSinaDealer.CREATE_FRIENDSHIP:
 				user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 				if (user != null) {
@@ -411,6 +413,40 @@ public class WeiboPage {
 							Toast.LENGTH_LONG
 						).show();
 					}
+				}
+				turnDealing(false);
+				break;
+			*/
+			case Responds.FRIENDSHIPS_CREATE:
+				int fsc = msg.getData().getInt(Responds.KEY_DATA);
+				switch (fsc) {
+				case 0:
+					Toast.makeText(
+						parent,
+						R.string.tips_friendsalready,
+						Toast.LENGTH_LONG
+					).show();
+					break;
+				case 1:
+					Toast.makeText(
+						parent,
+						R.string.tips_friendsmade,
+						Toast.LENGTH_LONG
+					).show();
+					break;
+				case -1:
+					Toast.makeText(
+						parent,
+						R.string.tips_getweiboinfofailed,
+						Toast.LENGTH_LONG
+					).show();
+				default:
+					Toast.makeText(
+						parent,
+						R.string.tips_getweiboinfofailed,
+						Toast.LENGTH_SHORT
+					).show();
+					break;
 				}
 				turnDealing(false);
 				break;
@@ -937,6 +973,7 @@ public class WeiboPage {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if (mSina != null && mSina.isLoggedIn()) {
+					/*
 					new Thread(
 						new ThreadSinaDealer(
 							mSina,
@@ -945,7 +982,126 @@ public class WeiboPage {
 							mHandler
 						)
 					).start();
+					*/
 					turnDealing(true);
+					
+					FriendshipsAPI api = new FriendshipsAPI(parent.getAccessToken());
+					//step 1, judge if already friends
+					//step 2, if not yet, create it
+					User2 usr = getSina().getLoggedInUser();
+					api.show(usr.getId(), getUid(), new RequestListener() {
+
+						@Override
+						public void onComplete(String response) {
+							// TODO Auto-generated method stub
+							FriendshipsAPI api = new FriendshipsAPI(parent.getAccessToken());
+							try {
+								JSONObject json = new JSONObject(response);
+								JSONObject target = new JSONObject(json.getString("target"));
+								Message msg = new Message();
+								msg.what = Responds.FRIENDSHIPS_CREATE;
+								Bundle bundle = new Bundle();
+								if (target.getBoolean("followed_by")) {
+									/**
+									 * 0 means "already friends"
+									 * 1 means "friendships created"
+									 * -1 means "friendships failed to be created"
+									 * <-1 means other errors
+									 */
+									bundle.putInt(Responds.KEY_DATA , 0);
+									msg.setData(bundle);
+									mHandler.sendMessage(msg);
+								} else {
+									api.create(getUid(), null, new RequestListener() {
+
+										@Override
+										public void onComplete(String response) {
+											// TODO Auto-generated method stub
+											Message msg = new Message();
+											msg.what = Responds.FRIENDSHIPS_CREATE;
+											Bundle bundle = new Bundle();
+											try {
+												JSONObject json = new JSONObject(response);
+												if (json.has("id")) {
+													bundle.putInt(Responds.KEY_DATA, 1);
+												} else {
+													bundle.putInt(Responds.KEY_DATA, -1);
+												}
+											} catch (JSONException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+												bundle.putInt(Responds.KEY_DATA, -2);
+											}
+											msg.setData(bundle);
+											mHandler.sendMessage(msg);
+										}
+
+										@Override
+										public void onIOException(IOException e) {
+											// TODO Auto-generated method stub
+											e.printStackTrace();
+											Message msg = new Message();
+											msg.what = Responds.FRIENDSHIPS_CREATE;
+											Bundle bundle = new Bundle();
+											bundle.putInt(Responds.KEY_DATA, -3);
+											msg.setData(bundle);
+											mHandler.sendMessage(msg);
+										}
+
+										@Override
+										public void onError(
+												com.weibo.sdk.android.WeiboException e) {
+											// TODO Auto-generated method stub
+											e.printStackTrace();
+											Message msg = new Message();
+											msg.what = Responds.FRIENDSHIPS_CREATE;
+											Bundle bundle = new Bundle();
+											bundle.putInt(Responds.KEY_DATA, -4);
+											msg.setData(bundle);
+											mHandler.sendMessage(msg);
+										}
+										
+									});
+								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								Message msg = new Message();
+								msg.what = Responds.FRIENDSHIPS_CREATE;
+								Bundle bundle = new Bundle();
+								bundle.putInt(Responds.KEY_DATA, -5);
+								msg.setData(bundle);
+								mHandler.sendMessage(msg);
+							}
+						}
+
+						@Override
+						public void onIOException(IOException e) {
+							// TODO Auto-generated method stub
+							e.printStackTrace();
+							Message msg = new Message();
+							msg.what = Responds.FRIENDSHIPS_CREATE;
+							Bundle bundle = new Bundle();
+							bundle.putInt(Responds.KEY_DATA, -6);
+							msg.setData(bundle);
+							mHandler.sendMessage(msg);
+						}
+
+						@Override
+						public void onError(
+								com.weibo.sdk.android.WeiboException e) {
+							// TODO Auto-generated method stub
+							e.printStackTrace();
+							Message msg = new Message();
+							msg.what = Responds.FRIENDSHIPS_CREATE;
+							Bundle bundle = new Bundle();
+							bundle.putInt(Responds.KEY_DATA, -7);
+							msg.setData(bundle);
+							mHandler.sendMessage(msg);
+						}
+						
+					});
+					
 				} else {
 					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
 				}
@@ -1429,5 +1585,9 @@ public class WeiboPage {
 	
 	public TextView getTextAtSomeone() {
 		return this.mTextAtSomeone;
+	}
+	
+	public void friendshipClick() {
+		mTextFriendship.performClick();
 	}
 }

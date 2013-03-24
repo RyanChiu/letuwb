@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import weibo4android.User;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -46,8 +44,6 @@ import com.zrd.zr.customctrls.ZRImageView;
 import com.zrd.zr.pnj.SecureURL;
 import com.zrd.zr.pnj.ThreadPNJDealer;
 import com.zrd.zr.protos.WeibousersProtos.UCMappings;
-import com.zrd.zr.weiboes.Sina;
-import com.zrd.zr.weiboes.ThreadSinaDealer;
 
 public class BrowPage {
 	private EntranceActivity parent;
@@ -131,6 +127,7 @@ public class BrowPage {
 	                		}
 	                	}
 						break;
+					/*
 					case ThreadSinaDealer.CREATE_FRIENDSHIP:
 						User user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 						if (user != null) {
@@ -151,6 +148,7 @@ public class BrowPage {
 							//deal with failing to make friends
 						}
 						break;
+					*/
 					case ThreadPNJDealer.GET_POSSESSIONS:
 						UCMappings mappings = (UCMappings)msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
 						if (mappings != null) {
@@ -268,6 +266,7 @@ public class BrowPage {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				/*
 				Sina sina = parent.getWeiboPage().getSina();
 				if (sina != null && sina.isLoggedIn()) {
 					new Thread(
@@ -281,6 +280,10 @@ public class BrowPage {
 				} else {
 					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
 				}
+				*/
+				
+				parent.getWeiboPage().setUid(parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs()).uid);
+				parent.getWeiboPage().friendshipClick();
 			}
 			
 		});
