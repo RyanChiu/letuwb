@@ -3,6 +3,7 @@ package com.zrd.zr.weiboes;
 import java.io.IOException;
 import java.io.Serializable;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
@@ -39,6 +40,7 @@ public class Sina implements Serializable {
 	private boolean gettingUser = false;
 	private Handler mHandler;
 	
+	public final static String KEY_DATA = "sina_key_data";
 	public final static int REFRESH_USERBAR = 0x20130319;
 	
 	/*
@@ -93,9 +95,23 @@ public class Sina implements Serializable {
 		return mWeibo;
 	}
 
-	public void setLoggedInUser(User2 user) {
+	/**
+	 * @param user
+	 * @param flag:
+	 * 2 means starting (see getLoggedInUser(...))
+	 * 1 means succeeded
+	 * 0 means not ready to get (OAuth2 failed or canceled), 
+	 * < 0 means failed
+	 */
+	public void setLoggedInUser(User2 user, int flag) {
 		mLoggedInUser = user;
 		gettingUser = false;
+		Message msg = new Message();
+		msg.what = Sina.REFRESH_USERBAR;
+		Bundle bundle = new Bundle();
+		bundle.putInt(Sina.KEY_DATA, flag);
+		msg.setData(bundle);
+		mHandler.sendMessage(msg);
 	}
 	
 	public User2 getLoggedInUser() {
@@ -103,6 +119,13 @@ public class Sina implements Serializable {
 	}
 	
 	public User2 getLoggedInUser(Oauth2AccessToken token) {
+		Message msg = new Message();
+		msg.what = Sina.REFRESH_USERBAR;
+		Bundle bundle = new Bundle();
+		bundle.putInt(Sina.KEY_DATA, 2);
+		msg.setData(bundle);
+		mHandler.sendMessage(msg);
+		
 		gettingUser = true;
 		mLoggedInUser = null;
 		accountApi = new AccountAPI(token);
@@ -125,19 +148,17 @@ public class Sina implements Serializable {
 								JSONObject json = new JSONObject(response);
 								try {
 									User2 usr = new User2(json);
-									setLoggedInUser(usr);
-									Message msg = new Message();
-									msg.what = Sina.REFRESH_USERBAR;
-									mHandler.sendMessage(msg);
+									setLoggedInUser(usr, 1);
+									
 								} catch (weibo4android.WeiboException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
-									setLoggedInUser(null);
+									setLoggedInUser(null, -1);
 								}
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-								setLoggedInUser(null);
+								setLoggedInUser(null, -2);
 							}
 						}
 
@@ -145,21 +166,21 @@ public class Sina implements Serializable {
 						public void onIOException(IOException e) {
 							// TODO Auto-generated method stub
 							e.printStackTrace();
-							setLoggedInUser(null);
+							setLoggedInUser(null, -3);
 						}
 
 						@Override
 						public void onError(WeiboException e) {
 							// TODO Auto-generated method stub
 							e.printStackTrace();
-							setLoggedInUser(null);
+							setLoggedInUser(null, -4);
 						}
 						
 					});
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					setLoggedInUser(null);
+					setLoggedInUser(null, -5);
 				}
 
 			}
@@ -168,14 +189,14 @@ public class Sina implements Serializable {
 			public void onIOException(IOException e) {
 				// TODO Auto-generated method stub
 				e.printStackTrace();
-				setLoggedInUser(null);
+				setLoggedInUser(null, -6);
 			}
 
 			@Override
 			public void onError(WeiboException e) {
 				// TODO Auto-generated method stub
 				e.printStackTrace();
-				setLoggedInUser(null);
+				setLoggedInUser(null, -7);
 			}
 			
 		});

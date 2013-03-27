@@ -1113,14 +1113,14 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				mWeiboPage.getSina().getLoggedInUser(EntranceActivity.accessToken);
             } else {
             	Toast.makeText(EntranceActivity.this, getApplication().getString(R.string.tips_failtopassoauth), Toast.LENGTH_SHORT).show();
-            	mWeiboPage.getSina().setLoggedInUser(null);
+            	mWeiboPage.getSina().setLoggedInUser(null, 0);
             }
         }
 
         @Override
         public void onError(WeiboDialogError e) {
         	e.printStackTrace();
-        	mWeiboPage.getSina().setLoggedInUser(null);
+        	mWeiboPage.getSina().setLoggedInUser(null, 0);
         }
 
         @Override
@@ -1128,13 +1128,13 @@ public class EntranceActivity extends Activity implements OnTouchListener {
             Toast.makeText(getApplicationContext(), 
             	getApplication().getString(R.string.tips_canceloauth),
             	Toast.LENGTH_LONG).show();
-        	mWeiboPage.getSina().setLoggedInUser(null);
+        	mWeiboPage.getSina().setLoggedInUser(null, 0);
         }
 
         @Override
         public void onWeiboException(WeiboException e) {
         	e.printStackTrace();
-        	mWeiboPage.getSina().setLoggedInUser(null);
+        	mWeiboPage.getSina().setLoggedInUser(null, 0);
         }
 
     }

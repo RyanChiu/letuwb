@@ -606,13 +606,28 @@ public class WeiboPage {
 				turnDealing(false);
 				break;
 			case Sina.REFRESH_USERBAR:
+				int flag = bundle.getInt(Sina.KEY_DATA);
+				ProgressBar pb = (ProgressBar)parent.findViewById(R.id.pbTitleLoading);
 				ImageView iv = (ImageView)parent.findViewById(R.id.ivTitleIcon);
 				TextView tv = (TextView)parent.findViewById(R.id.tvTitleName);
-				if (iv != null && tv != null && getSina().getLoggedInUser() != null) {
+				if (flag == 0) {
+					pb.setVisibility(View.GONE);
+					iv.setImageResource(R.drawable.person);
+					tv.setText("");
+				} else if (flag == 1){
+					pb.setVisibility(View.GONE);
 					AsyncImageLoader loader = new AsyncImageLoader(parent,
 						iv, R.drawable.person);
 					loader.execute(getSina().getLoggedInUser().getProfileImageURL());
 					tv.setText(getSina().getLoggedInUser().getScreenName());
+				} else if (flag == 2) {
+					pb.setVisibility(View.VISIBLE);
+					iv.setImageResource(R.drawable.person);
+					tv.setText("");
+				} else {
+					pb.setVisibility(View.GONE);
+					iv.setImageResource(R.drawable.person_questionmark);
+					tv.setText("");
 				}
 				break;
 			}

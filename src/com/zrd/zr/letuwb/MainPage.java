@@ -767,6 +767,24 @@ public class MainPage {
 										parent.getString(R.string.tips_waitforgettinguser), 
 										Toast.LENGTH_LONG
 									).show();
+									/*
+									new AlertDialog.Builder(parent)
+										.setTitle(R.string.tips_waitforgettinguser)
+										.setPositiveButton("再次尝试", new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												// TODO Auto-generated method stub
+												parent.getWeiboPage().getSina().getLoggedInUser(parent.getAccessToken());
+											}
+											
+										})
+										.setNegativeButton("继续等待", null)
+										.create()
+										.show();
+									*/
 								} else {
 									Toast.makeText(parent,
 										parent.getString(R.string.tips_trytogetuser),

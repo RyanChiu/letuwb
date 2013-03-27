@@ -33,6 +33,13 @@
         android:layout_marginLeft="89dp"
         android:layout_toRightOf="@+id/tvTitleName" >
 
+        <ProgressBar
+            android:id="@+id/pbTitleLoading"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/ivTitleIcon"
             android:layout_width="22dp"
@@ -48,6 +55,7 @@
             android:gravity="center"
             android:paddingLeft="1dp"
             android:textColor="#ffffff" />
+
     </LinearLayout>
 
 </RelativeLayout>
