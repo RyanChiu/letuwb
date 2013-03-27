@@ -1123,7 +1123,7 @@ public class WeiboPage {
 				} else {
 					mEditUpdateStatus.setText(
 						"@" + mLastUser.getScreenName() + ":"
-						+ parent.getString(R.string.tips_routinehello)
+						+ String.format(parent.getString(R.string.tips_routinehello), parent.getString(R.string.app_name))
 						+ " \"" + parent.getString(R.string.app_name)
 						+ "\":" + EntranceActivity.URL_UPDATE + "letuwb.apk"
 					);
