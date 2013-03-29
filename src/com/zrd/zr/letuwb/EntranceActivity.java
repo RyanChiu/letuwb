@@ -1050,35 +1050,37 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			 * 2. according to the result of the voting, we see if
 			 * we should show the voting rate area or not.
 			 */
-			mTextUpup.setText(wi.likes.toString());
-			mTextDwdw.setText(wi.dislikes.toString());
-			int iTotalVotes = wi.likes + wi.dislikes;
-			int iPercentage = iTotalVotes <= 0 ? 0 : (wi.likes * 100 / iTotalVotes);
-			if (iTotalVotes <= 0) {
-				mProgressVote.setSecondaryProgress(0);
-				mProgressVote.setProgress(0);
-			} else {
-				mProgressVote.setProgress(iPercentage);
-				mProgressVote.setSecondaryProgress(100);
-			}
-			mTextVoteRating.setText(
-				String.format(
-					getString(R.string.tips_voterating), 
-					iPercentage, 
-					iTotalVotes
-				)
-			);
-			if (wi.mLastVote != 0) {
-				mLayoutVoteInfo.setVisibility(View.VISIBLE);
-				mTextNoVoteTips.setVisibility(View.GONE);
-			} else {
-				mLayoutVoteInfo.setVisibility(View.GONE);
-				mTextNoVoteTips.setVisibility(View.VISIBLE);
-			}
-			if (mViewFlipper.getDisplayedChild() == 0) {
-				mLayoutVote.setVisibility(View.GONE);
-			} else {
-				mLayoutVote.setVisibility(View.VISIBLE);
+			if (wi != null) {
+				mTextUpup.setText(wi.likes.toString());
+				mTextDwdw.setText(wi.dislikes.toString());
+				int iTotalVotes = wi.likes + wi.dislikes;
+				int iPercentage = iTotalVotes <= 0 ? 0 : (wi.likes * 100 / iTotalVotes);
+				if (iTotalVotes <= 0) {
+					mProgressVote.setSecondaryProgress(0);
+					mProgressVote.setProgress(0);
+				} else {
+					mProgressVote.setProgress(iPercentage);
+					mProgressVote.setSecondaryProgress(100);
+				}
+				mTextVoteRating.setText(
+					String.format(
+						getString(R.string.tips_voterating), 
+						iPercentage, 
+						iTotalVotes
+					)
+				);
+				if (wi.mLastVote != 0) {
+					mLayoutVoteInfo.setVisibility(View.VISIBLE);
+					mTextNoVoteTips.setVisibility(View.GONE);
+				} else {
+					mLayoutVoteInfo.setVisibility(View.GONE);
+					mTextNoVoteTips.setVisibility(View.VISIBLE);
+				}
+				if (mViewFlipper.getDisplayedChild() == 0) {
+					mLayoutVote.setVisibility(View.GONE);
+				} else {
+					mLayoutVote.setVisibility(View.VISIBLE);
+				}
 			}
 			
 			super.onPostExecute(result);
