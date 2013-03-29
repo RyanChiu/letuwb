@@ -132,6 +132,8 @@
     <string name="label_comment">评论</string>
     <string name="label_comments">查看评论</string>
     <string name="tips_favoritemade">收藏成功</string>
+    <string name="tips_favoritefailed">未能成功收藏</string>
+    <string name="tips_favoritealready">已收藏过了</string>
     <string name="tips_reposted">转发成功</string>
     <string name="tips_nocomments">还没有任何评论呢</string>
     <string name="tips_alreadylastone">最后一条了</string>

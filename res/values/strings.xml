@@ -132,6 +132,8 @@
     <string name="label_comment">Comment</string>
     <string name="label_comments">Check comments</string>
     <string name="tips_favoritemade">Favorite made.</string>
+    <string name="tips_favoritefailed">Failed to make favorite.</string>
+    <string name="tips_favoritealready">Favorited.</string>
     <string name="tips_reposted">Reposted.</string>
     <string name="tips_nocomments">No comments at all at the moment.</string>
     <string name="tips_alreadylastone">Already the last one.</string>
