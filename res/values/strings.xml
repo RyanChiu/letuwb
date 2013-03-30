@@ -135,10 +135,14 @@
     <string name="tips_favoritefailed">Failed to make favorite.</string>
     <string name="tips_favoritealready">Favorited.</string>
     <string name="tips_reposted">Reposted.</string>
+    <string name="tips_repostfailed">Failed to repost.</string>
+    <string name="tips_repostrepeated">Dont\'t repeat reposting, please.</string>
     <string name="tips_nocomments">No comments at all at the moment.</string>
     <string name="tips_alreadylastone">Already the last one.</string>
     <string name="tips_noitemselected">No item selected.</string>
     <string name="tips_commented">Commented.</string>
+    <string name="tips_commentfailed">Failed to comment.</string>
+    <string name="tips_commentrepeated">Don\'t repeat commenting, please.</string>
     <string name="title_repost">You could put some words here or just leave it blank.</string>
     <string name="title_comment">Please put your comment below.</string>
     <string name="tips_waitasecond">Getting comments, please wait a second…</string>

@@ -38,10 +38,12 @@ import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.weibo.sdk.android.api.CommentsAPI;
 import com.weibo.sdk.android.api.FavoritesAPI;
 import com.weibo.sdk.android.api.FriendshipsAPI;
 import com.weibo.sdk.android.api.StatusesAPI;
 import com.weibo.sdk.android.api.UsersAPI;
+import com.weibo.sdk.android.api.WeiboAPI.COMMENTS_TYPE;
 import com.weibo.sdk.android.api.WeiboAPI.FEATURE;
 import com.weibo.sdk.android.net.RequestListener;
 import com.weibo.sdk.android.custom.Responds;
@@ -508,24 +510,59 @@ public class WeiboPage {
 				}
 				turnDealing(false);
 				break;
-			case ThreadSinaDealer.REPOST://ZTodo
-				status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (status != null) {
+			case Responds.STATUSES_REPOST:
+				resp = (Responds)bundle.getSerializable(Responds.KEY_DATA);
+				switch (resp.getRespType()) {
+				case Responds.TYPE_COMPLETE:
 					Toast.makeText(
 						parent,
 						R.string.tips_reposted,
 						Toast.LENGTH_LONG
 					).show();
-				} else {
-					//deal with failing to make favorite
-					if (wexp != null) {
+					break;
+				case Responds.TYPE_ERROR:
+					try {
+						json = new JSONObject(resp.getRespOnError().getMessage());
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 						Toast.makeText(
 							parent,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
+							parent.getString(R.string.tips_repostfailed) + "(0)",
 							Toast.LENGTH_LONG
 						).show();
 					}
+					try {
+						if (json != null && json.getString("error_code").equals("20019")) {
+							Toast.makeText(
+								parent,
+								R.string.tips_repostrepeated,
+								Toast.LENGTH_LONG
+							).show();
+						} else {
+							Toast.makeText(
+								parent,
+								parent.getString(R.string.tips_repostfailed) + "(1)",
+								Toast.LENGTH_LONG
+							).show();
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						Toast.makeText(
+							parent,
+							parent.getString(R.string.tips_repostfailed) + "(2)",
+							Toast.LENGTH_LONG
+						).show();
+					}
+					break;
+				case Responds.TYPE_IO_ERROR:
+					Toast.makeText(
+						parent,
+						parent.getString(R.string.tips_repostfailed) + "(3)",
+						Toast.LENGTH_LONG
+					).show();
+					break;
 				}
 				turnDealing(false);
 				break;
@@ -600,7 +637,60 @@ public class WeiboPage {
 				}
 				turnDealing(false);
 				break;
-			case ThreadSinaDealer.UPDATE_COMMENT://ZTodo
+			case Responds.COMMENTS_CREATE:
+				resp = (Responds)bundle.getSerializable(Responds.KEY_DATA);
+				switch (resp.getRespType()) {
+				case Responds.TYPE_COMPLETE:
+					Toast.makeText(
+						parent,
+						R.string.tips_commented,
+						Toast.LENGTH_LONG
+					).show();
+					break;
+				case Responds.TYPE_ERROR:
+					try {
+						json = new JSONObject(resp.getRespOnError().getMessage());
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						Toast.makeText(
+							parent,
+							parent.getString(R.string.tips_commentfailed) + "(0)",
+							Toast.LENGTH_LONG
+						).show();
+					}
+					try {
+						if (json != null && json.getString("error_code").equals("20019")) {
+							Toast.makeText(
+								parent,
+								R.string.tips_commentrepeated,
+								Toast.LENGTH_LONG
+							).show();
+						} else {
+							Toast.makeText(
+								parent,
+								parent.getString(R.string.tips_commentfailed) + "(1)",
+								Toast.LENGTH_LONG
+							).show();
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						Toast.makeText(
+							parent,
+							parent.getString(R.string.tips_commentfailed) + "(2)",
+							Toast.LENGTH_LONG
+						).show();
+					}
+					break;
+				case Responds.TYPE_IO_ERROR:
+					Toast.makeText(
+						parent,
+						parent.getString(R.string.tips_commentfailed) + "(3)",
+						Toast.LENGTH_LONG
+					).show();
+					break;
+				}
 				comment = (Comment)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 				if (comment != null) {
 					Toast.makeText(
@@ -823,14 +913,30 @@ public class WeiboPage {
 					} else {
 						sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
 					}
-					new Thread(
-						new ThreadSinaDealer(
-							mSina,
-							ThreadSinaDealer.REPOST,
-							new String[] {"" + sid, mEditRepost.getText().toString()},
-							mHandler
-						)
-					).start();
+					StatusesAPI api = new StatusesAPI(parent.getAccessToken());
+					api.repost(sid, mEditRepost.getText().toString(), COMMENTS_TYPE.NONE, 
+						new RequestListener() {
+
+							@Override
+							public void onComplete(String response) {
+								// TODO Auto-generated method stub
+								fireToUI(Responds.STATUSES_REPOST, response);
+							}
+
+							@Override
+							public void onIOException(IOException e) {
+								// TODO Auto-generated method stub
+								fireToUI(Responds.STATUSES_REPOST, e);
+							}
+
+							@Override
+							public void onError(
+									com.weibo.sdk.android.WeiboException e) {
+								// TODO Auto-generated method stub
+								fireToUI(Responds.STATUSES_REPOST, e);
+							}
+						
+					});
 					turnDealing(true);
 				}
 				
@@ -856,14 +962,30 @@ public class WeiboPage {
 					} else {
 						sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
 					}
-					new Thread(
-						new ThreadSinaDealer(
-							mSina,
-							ThreadSinaDealer.UPDATE_COMMENT,
-							new String[] {mEditComment.getText().toString(), "" + sid, null},
-							mHandler
-						)
-					).start();
+					CommentsAPI api = new CommentsAPI(parent.getAccessToken());
+					api.create(mEditComment.getText().toString(), sid, false, 
+						new RequestListener() {
+
+							@Override
+							public void onComplete(String response) {
+								// TODO Auto-generated method stub
+								fireToUI(Responds.COMMENTS_CREATE, response);
+							}
+
+							@Override
+							public void onIOException(IOException e) {
+								// TODO Auto-generated method stub
+								fireToUI(Responds.COMMENTS_CREATE, e);
+							}
+
+							@Override
+							public void onError(
+									com.weibo.sdk.android.WeiboException e) {
+								// TODO Auto-generated method stub
+								fireToUI(Responds.COMMENTS_CREATE, e);
+							}
+						
+					});
 					turnDealing(true);
 				}
 				
@@ -1254,36 +1376,28 @@ public class WeiboPage {
 					}
 					break;
 				case 1:
-					if (mSina != null && mSina.isLoggedIn()) {
-						if (mIndexOfSelectedStatus == -1) {
-							Toast.makeText(
-								parent,
-								R.string.tips_noitemselected,
-								Toast.LENGTH_LONG
-							).show();
-							return;
-						}
-						
-						mDlgComment.show();
-					} else {
-						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
+					if (mIndexOfSelectedStatus == -1) {
+						Toast.makeText(
+							parent,
+							R.string.tips_noitemselected,
+							Toast.LENGTH_LONG
+						).show();
+						return;
 					}
+					
+					mDlgComment.show();
 					break;
 				case 2:
-					if (mSina != null && mSina.isLoggedIn()) {
-						if (mIndexOfSelectedStatus == -1) {
-							Toast.makeText(
-								parent,
-								R.string.tips_noitemselected,
-								Toast.LENGTH_LONG
-							).show();
-							return;
-						}
-						
-						mDlgRepost.show();
-					} else {
-						RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
+					if (mIndexOfSelectedStatus == -1) {
+						Toast.makeText(
+							parent,
+							R.string.tips_noitemselected,
+							Toast.LENGTH_LONG
+						).show();
+						return;
 					}
+					
+					mDlgRepost.show();
 					break;
 				case 3:
 					if (mIndexOfSelectedStatus == -1) {

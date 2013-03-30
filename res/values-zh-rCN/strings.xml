@@ -135,10 +135,14 @@
     <string name="tips_favoritefailed">未能成功收藏</string>
     <string name="tips_favoritealready">已收藏过了</string>
     <string name="tips_reposted">转发成功</string>
+    <string name="tips_repostfailed">转发失败</string>
+    <string name="tips_repostrepeated">请不要重复转发</string>
     <string name="tips_nocomments">还没有任何评论呢</string>
     <string name="tips_alreadylastone">最后一条了</string>
     <string name="tips_noitemselected">您还没选择是那条呢</string>
     <string name="tips_commented">评论成功</string>
+    <string name="tips_commentfailed">评论失败</string>
+    <string name="tips_commentrepeated">请不要重复评论</string>
     <string name="title_repost">您可以写点儿什么，或者留空也行</string>
     <string name="title_comment">您的评论</string>
     <string name="tips_waitasecond">获取评论中，请稍候…</string>
