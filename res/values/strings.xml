@@ -170,6 +170,8 @@
     <string name="label_accountdeltips">(Long click to try to remove an account from the list.)</string>
     <string name="tips_statusupdating">Status posting, please wait a moment…</string>
     <string name="tips_statusupdated">A new status successfully posted.</string>
+    <string name="tips_statusupdatefailed">Failed to update a status.</string>
+    <string name="tips_statusupdaterepeated">Don\'t repeat updating status, please.</string>
     <string name="label_atsomeone"> \@</string>
     <string name="label_her">her</string>
     <string name="label_him">him</string>

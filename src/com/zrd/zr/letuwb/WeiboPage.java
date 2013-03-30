@@ -711,7 +711,60 @@ public class WeiboPage {
 				}
 				turnDealing(false);
 				break;
-			case ThreadSinaDealer.UPDATE_STATUS://ZTodo
+			case Responds.STATUSES_UPDATE:
+				resp = (Responds)bundle.getSerializable(Responds.KEY_DATA);
+				switch (resp.getRespType()) {
+				case Responds.TYPE_COMPLETE:
+					Toast.makeText(
+						parent,
+						R.string.tips_statusupdated,
+						Toast.LENGTH_LONG
+					).show();
+					break;
+				case Responds.TYPE_ERROR:
+					try {
+						json = new JSONObject(resp.getRespOnError().getMessage());
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						Toast.makeText(
+							parent,
+							parent.getString(R.string.tips_statusupdatefailed) + "(0)",
+							Toast.LENGTH_LONG
+						).show();
+					}
+					try {
+						if (json != null && json.getString("error_code").equals("20019")) {
+							Toast.makeText(
+								parent,
+								R.string.tips_statusupdaterepeated,
+								Toast.LENGTH_LONG
+							).show();
+						} else {
+							Toast.makeText(
+								parent,
+								parent.getString(R.string.tips_statusupdatefailed) + "(1)",
+								Toast.LENGTH_LONG
+							).show();
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						Toast.makeText(
+							parent,
+							parent.getString(R.string.tips_statusupdatefailed) + "(2)",
+							Toast.LENGTH_LONG
+						).show();
+					}
+					break;
+				case Responds.TYPE_IO_ERROR:
+					Toast.makeText(
+						parent,
+						parent.getString(R.string.tips_statusupdatefailed) + "(3)",
+						Toast.LENGTH_LONG
+					).show();
+					break;
+				}
 				status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 				if (status != null) {
 					Toast.makeText(
@@ -1010,14 +1063,30 @@ public class WeiboPage {
 						R.string.tips_statusupdating,
 						Toast.LENGTH_LONG
 					).show();
-					new Thread(
-						new ThreadSinaDealer(
-							mSina,
-							ThreadSinaDealer.UPDATE_STATUS,
-							new String[] {mEditUpdateStatus.getText().toString()},
-							mHandler
-						)
-					).start();
+					StatusesAPI api = new StatusesAPI(parent.getAccessToken());
+					api.update(mEditUpdateStatus.getText().toString(), "0.0", "0.0",
+						new RequestListener() {
+
+							@Override
+							public void onComplete(String response) {
+								// TODO Auto-generated method stub
+								fireToUI(Responds.STATUSES_UPDATE, response);
+							}
+
+							@Override
+							public void onIOException(IOException e) {
+								// TODO Auto-generated method stub
+								fireToUI(Responds.STATUSES_UPDATE, e);
+							}
+
+							@Override
+							public void onError(
+									com.weibo.sdk.android.WeiboException e) {
+								// TODO Auto-generated method stub
+								fireToUI(Responds.STATUSES_UPDATE, e);
+							}
+						
+					});
 					turnDealing(true);
 				}
 				

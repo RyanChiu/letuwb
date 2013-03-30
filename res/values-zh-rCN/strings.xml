@@ -170,6 +170,8 @@
     <string name="label_accountdeltips">（长按某帐号可在确认后将其删除。）</string>
     <string name="tips_statusupdating">正在发布微博，请稍候…</string>
     <string name="tips_statusupdated">微博发布成功</string>
+    <string name="tips_statusupdatefailed">发布微博失败</string>
+    <string name="tips_statusupdaterepeated">请不要重复发布相同的微博</string>
     <string name="label_atsomeone"> \@</string>
     <string name="label_her">她</string>
     <string name="label_him">他</string>
