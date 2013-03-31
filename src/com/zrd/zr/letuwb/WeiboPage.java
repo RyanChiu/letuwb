@@ -8,9 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import weibo4android.Comment;
-import weibo4android.Status;
-import weibo4android.User;
 import weibo4android.WeiboException;
 import weibo4android.org.json.JSONArray;
 import weibo4android.org.json.JSONException;
@@ -43,9 +40,11 @@ import com.weibo.sdk.android.api.FavoritesAPI;
 import com.weibo.sdk.android.api.FriendshipsAPI;
 import com.weibo.sdk.android.api.StatusesAPI;
 import com.weibo.sdk.android.api.UsersAPI;
+import com.weibo.sdk.android.api.WeiboAPI.AUTHOR_FILTER;
 import com.weibo.sdk.android.api.WeiboAPI.COMMENTS_TYPE;
 import com.weibo.sdk.android.api.WeiboAPI.FEATURE;
 import com.weibo.sdk.android.net.RequestListener;
+import com.weibo.sdk.android.custom.Comment2;
 import com.weibo.sdk.android.custom.Responds;
 import com.weibo.sdk.android.custom.Status2;
 import com.weibo.sdk.android.custom.User2;
@@ -90,7 +89,7 @@ public class WeiboPage {
 	private User2 mLastUser = null;
 	private List<Sina.XStatus> mLastUserTimeline = new ArrayList<Sina.XStatus>();
 	private int mIndexOfSelectedStatus = -1;
-	private List<Comment> mLastComments = new ArrayList<Comment>();
+	private List<Comment2> mLastComments = new ArrayList<Comment2>();
 	
 	//private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
 	//private AlphaAnimation mAnimFadeout = new AlphaAnimation(1.0f, 0.1f);
@@ -99,7 +98,6 @@ public class WeiboPage {
 	 * Handler for showing all kinds of SINA_weibo data from background thread.
 	 */
 	Handler mHandler = new Handler() {
-		@SuppressWarnings("unchecked")
 		public void handleMessage(Message msg) {
 			Sina sina = (Sina)msg.getData().getSerializable(ThreadSinaDealer.KEY_SINA);
 			if (sina == null) {
@@ -108,9 +106,7 @@ public class WeiboPage {
 				setSina(sina);
 			}
 			weibo4android.WeiboException wexp = (weibo4android.WeiboException)msg.getData().getSerializable(ThreadSinaDealer.KEY_WEIBO_ERR);
-			User user;
-			Status status;
-			Comment comment;
+			User2 user;
 			
 			Responds resp;
 			Bundle bundle = msg.getData();
@@ -566,74 +562,109 @@ public class WeiboPage {
 				}
 				turnDealing(false);
 				break;
-			case ThreadSinaDealer.GET_COMMENTS://ZTodo
-				ArrayList<Comment> comments = (ArrayList<Comment>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (comments != null) {
-					if (comments.size() != 0) {
-						for (int i = 0; i < comments.size(); i++) {
-							mLastComments.add(comments.get(i));
-						}
-						if (mLastComments.size() != 0) {
-							ListView lv = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
-							lv.removeFooterView(mBtnMoreComments);
-							lv.addFooterView(mBtnMoreComments);
-							ArrayList<String> contents = new ArrayList<String>();
-							WeiboStatusListAdapter _tmp = 
-								new WeiboStatusListAdapter(parent, null);
-							for (int i = 0; i < mLastComments.size(); i++) {
-								user = mLastComments.get(i).getUser();
-								contents.add(
-									"[" + (i + 1) + "] "
-									+ (user != null ? user.getScreenName() : "")
-									+ "(" + _tmp.getSpecialDateText(mLastComments.get(i).getCreatedAt(), 0) + "):\n"
-									+ mLastComments.get(i).getText()
-								);
-							}
-							lv.setAdapter(
-								new ArrayAdapter<String>(
+			case Responds.COMMENTS_SHOW:
+				resp = (Responds)bundle.getSerializable(Responds.KEY_DATA);
+				switch (resp.getRespType()) {
+				case Responds.TYPE_COMPLETE:
+					try {
+						json = new JSONObject(resp.getRespOnComplete());
+						JSONArray comments = json.getJSONArray("comments");
+						if (comments != null) {
+							if (comments.length() != 0) {
+								for (int i = 0; i < comments.length(); i++) {
+									mLastComments.add(new Comment2(comments.getJSONObject(i)));
+								}
+								if (mLastComments.size() != 0) {
+									ListView lv = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
+									lv.removeFooterView(mBtnMoreComments);
+									lv.addFooterView(mBtnMoreComments);
+									ArrayList<String> contents = new ArrayList<String>();
+									WeiboStatusListAdapter _tmp = 
+										new WeiboStatusListAdapter(parent, null);
+									for (int i = 0; i < mLastComments.size(); i++) {
+										user = mLastComments.get(i).getUser();
+										contents.add(
+											"[" + (i + 1) + "] "
+											+ (user != null ? user.getScreenName() : "")
+											+ "(" + _tmp.getSpecialDateText(mLastComments.get(i).getCreatedAt(), 0) + "):\n"
+											+ mLastComments.get(i).getText()
+										);
+									}
+									lv.setAdapter(
+										new ArrayAdapter<String>(
+											parent,
+											R.layout.item_custom_dialog_list,
+											contents
+										)
+									);
+									lv.setSelection(
+										(getLastCommentsTotalPage() - 1) * COUNT_PERPAGE_COMMENTS
+									);
+								} else {
+									Toast.makeText(
+										parent,
+										R.string.tips_nocomments,
+										Toast.LENGTH_LONG
+									).show();
+								}
+							} else {
+								Toast.makeText(
 									parent,
-									R.layout.item_custom_dialog_list,
-									contents
-								)
-							);
-							lv.setSelection(
-								(getLastCommentsTotalPage() - 1) * COUNT_PERPAGE_COMMENTS
-							);
+									R.string.tips_nomorecomments,
+									Toast.LENGTH_LONG
+								).show();
+								mBtnMoreComments.setTag(2);
+								mBtnMoreComments.setEnabled(false);
+							}
 						} else {
-							Toast.makeText(
-								parent,
-								R.string.tips_nocomments,
-								Toast.LENGTH_LONG
-							).show();
+							//deal with failing to get comments
+							Integer flag = (Integer)mBtnMoreComments.getTag();
+							if (flag != null && flag != 0) {
+								//if mBtnMoreComments was clicked, then do something here
+								mDlgComments.dismiss();
+							} else {
+								//if mBtnMoreComments was not clicked, do something here
+								
+							}
 						}
-					} else {
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 						Toast.makeText(
-							parent,
-							R.string.tips_nomorecomments,
-							Toast.LENGTH_LONG
+							parent, 
+							parent.getString(R.string.tips_commentsgetfailed) + "(0)", 
+							Toast.LENGTH_SHORT
 						).show();
-						mBtnMoreComments.setTag(2);
-						mBtnMoreComments.setEnabled(false);
-					}
-				} else {
-					//deal with failing to get comments
-					Integer flag = (Integer)mBtnMoreComments.getTag();
-					if (flag != null && flag != 0) {
-						//if mBtnMoreComments was clicked, then do something here
-						mDlgComments.dismiss();
-					} else {
-						//if mBtnMoreComments was not clicked, do something here
-						
-					}
-					
-					if (wexp != null) {
+					} catch (WeiboException e) {
+						e.printStackTrace();
 						Toast.makeText(
-							parent,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
+							parent, 
+							parent.getString(R.string.tips_commentsgetfailed) + "(1)", 
+							Toast.LENGTH_SHORT
+						).show();
+					} catch (NullPointerException e) {
+						e.printStackTrace();
+						Toast.makeText(
+							parent, 
+							parent.getString(R.string.tips_commentsgetfailed) + "(-1)", 
+							Toast.LENGTH_SHORT
 						).show();
 					}
+					break;
+				case Responds.TYPE_ERROR:
+					Toast.makeText(
+						parent, 
+						parent.getString(R.string.tips_commentsgetfailed) + "(3)", 
+						Toast.LENGTH_SHORT
+					).show();
+					break;
+				case Responds.TYPE_IO_ERROR:
+					Toast.makeText(
+						parent, 
+						parent.getString(R.string.tips_commentsgetfailed) + "(4)", 
+						Toast.LENGTH_SHORT
+					).show();
+					break;
 				}
 				turnDealing(false);
 				break;
@@ -691,24 +722,6 @@ public class WeiboPage {
 					).show();
 					break;
 				}
-				comment = (Comment)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (comment != null) {
-					Toast.makeText(
-						parent,
-						R.string.tips_commented,
-						Toast.LENGTH_LONG
-					).show();
-				} else {
-					//deal with failing to make favorite
-					if (wexp != null) {
-						Toast.makeText(
-							parent,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				}
 				turnDealing(false);
 				break;
 			case Responds.STATUSES_UPDATE:
@@ -764,24 +777,6 @@ public class WeiboPage {
 						Toast.LENGTH_LONG
 					).show();
 					break;
-				}
-				status = (Status)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (status != null) {
-					Toast.makeText(
-						parent,
-						R.string.tips_statusupdated,
-						Toast.LENGTH_LONG
-					).show();
-				} else {
-					//deal with failing to make favorite
-					if (wexp != null) {
-						Toast.makeText(
-							parent,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
-						).show();
-					}
 				}
 				turnDealing(false);
 				break;
@@ -912,18 +907,7 @@ public class WeiboPage {
 				} else {
 					sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
 				}
-				new Thread(
-					new ThreadSinaDealer(
-						mSina,
-						ThreadSinaDealer.GET_COMMENTS,
-						new String[] {
-							"" + sid,
-							"" + (getLastCommentsTotalPage() + 1),
-							"" + COUNT_PERPAGE_COMMENTS
-						},
-						mHandler
-					)
-				).start();
+				getComments(sid, (getLastCommentsTotalPage() + 1), COUNT_PERPAGE_COMMENTS);
 				turnDealing(true);
 				mBtnMoreComments.setTag(1);
 			}
@@ -1552,18 +1536,7 @@ public class WeiboPage {
 			sid = mLastUserTimeline.get(mIndexOfSelectedStatus).getStatus().getId();
 		}
 		mLastComments.clear();
-		new Thread(
-			new ThreadSinaDealer(
-				mSina,
-				ThreadSinaDealer.GET_COMMENTS,
-				new String[] {
-					"" + sid,
-					"" + getLastCommentsTotalPage(),
-					"" + COUNT_PERPAGE_COMMENTS
-				},
-				mHandler
-			)
-		).start();
+		getComments(sid, getLastCommentsTotalPage(), COUNT_PERPAGE_COMMENTS);
 		ListView lvComments = (ListView)mDlgComments.findViewById(R.id.lvCustomList);
 		ArrayList<String> lstWaiting = new ArrayList<String>();
 		lstWaiting.add(parent.getString(R.string.tips_waitasecond));
@@ -1796,6 +1769,32 @@ public class WeiboPage {
 		msg.setData(bundle);
 		mHandler.sendMessage(msg);
     }
+    
+   private void getComments(long statusId, int page, int count) {
+	   CommentsAPI api = new CommentsAPI(parent.getAccessToken());
+	   api.show(statusId, 0, 0, count, page, AUTHOR_FILTER.ALL,
+			new RequestListener() {
+
+				@Override
+				public void onComplete(String response) {
+					// TODO Auto-generated method stub
+					fireToUI(Responds.COMMENTS_SHOW, response);
+				}
+
+				@Override
+				public void onIOException(IOException e) {
+					// TODO Auto-generated method stub
+					fireToUI(Responds.COMMENTS_SHOW, e);
+				}
+
+				@Override
+				public void onError(com.weibo.sdk.android.WeiboException e) {
+					// TODO Auto-generated method stub
+					fireToUI(Responds.COMMENTS_SHOW, e);
+				}
+		   
+	   });
+   }
 
 	public Long getUid() {
 		return mUid;
