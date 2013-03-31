@@ -65,7 +65,7 @@ import com.zrd.zr.pnj.SecureURL;
 public class EntranceActivity extends Activity implements OnTouchListener {
 
 	final static String SERIAL_APP = "gbhytfvnjurdcmkiesx,lowaz.;p201108282317";
-	private static final String CONSUMER_KEY = "3673961165";
+	private static final String CONSUMER_KEY = "3150341378";
 	private static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
 	private Weibo mWeibo;
 	private static Oauth2AccessToken accessToken;
