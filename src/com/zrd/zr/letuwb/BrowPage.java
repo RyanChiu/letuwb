@@ -127,28 +127,6 @@ public class BrowPage {
 	                		}
 	                	}
 						break;
-					/*
-					case ThreadSinaDealer.CREATE_FRIENDSHIP:
-						User user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-						if (user != null) {
-							if (!user.equals(parent.getWeiboPage().getSina().getLoggedInUser())) {
-								Toast.makeText(
-									parent,
-									R.string.tips_friendsmade,
-									Toast.LENGTH_LONG
-								).show();
-							} else {
-								Toast.makeText(
-									parent,
-									R.string.tips_friendsalready,
-									Toast.LENGTH_LONG
-								).show();
-							}
-						} else {
-							//deal with failing to make friends
-						}
-						break;
-					*/
 					case ThreadPNJDealer.GET_POSSESSIONS:
 						UCMappings mappings = (UCMappings)msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
 						if (mappings != null) {
@@ -266,22 +244,6 @@ public class BrowPage {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				/*
-				Sina sina = parent.getWeiboPage().getSina();
-				if (sina != null && sina.isLoggedIn()) {
-					new Thread(
-						new ThreadSinaDealer(
-							sina,
-							ThreadSinaDealer.CREATE_FRIENDSHIP,
-							new String[] {"" + parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs()).uid},
-							mHandler
-						)
-					).start();
-				} else {
-					RegLoginActivity.shallWeLogin(R.string.title_loginfirst, parent);
-				}
-				*/
-				
 				parent.getWeiboPage().setUid(parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs()).uid);
 				parent.getWeiboPage().friendshipClick();
 			}

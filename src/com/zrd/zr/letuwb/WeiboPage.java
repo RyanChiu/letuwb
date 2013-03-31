@@ -52,7 +52,6 @@ import com.weibo.sdk.android.custom.User2;
 import com.zrd.zr.pnj.ThreadPNJDealer;
 import com.zrd.zr.protos.WeibousersProtos.UCMappings;
 import com.zrd.zr.weiboes.Sina;
-import com.zrd.zr.weiboes.ThreadSinaDealer;
 
 public class WeiboPage {
 	private EntranceActivity parent;
@@ -99,13 +98,6 @@ public class WeiboPage {
 	 */
 	Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			Sina sina = (Sina)msg.getData().getSerializable(ThreadSinaDealer.KEY_SINA);
-			if (sina == null) {
-				sina = mSina;
-			} else {
-				setSina(sina);
-			}
-			weibo4android.WeiboException wexp = (weibo4android.WeiboException)msg.getData().getSerializable(ThreadSinaDealer.KEY_WEIBO_ERR);
 			User2 user;
 			
 			Responds resp;
@@ -139,8 +131,6 @@ public class WeiboPage {
 					//deal with failing to possess
 				}
 				break;
-			//case ThreadSinaDealer.SHOW_USER:
-				//mLastUser = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 			case Responds.USERS_SHOW:
 				resp = (Responds) bundle.getSerializable(Responds.KEY_DATA);
 				switch (resp.getRespType()) {
@@ -255,18 +245,8 @@ public class WeiboPage {
 					mTextCounts.setText(sCounts);
 					parent.getBrowPage().getTextCounts_brow().setText(sCounts);
 					
-					if (wexp != null) {
-						Toast.makeText(
-							parent,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
-						).show();
-					}
 				}
 				break;
-			//case ThreadSinaDealer.GET_USER_TIMELINE:
-				//ArrayList<Sina.XStatus> xstatuses = (ArrayList<Sina.XStatus>)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
 			case Responds.STATUSES_USERTIMELINE:
 				final ArrayList<Sina.XStatus> xstatuses = new ArrayList<Sina.XStatus>();
 				resp = (Responds) bundle.getSerializable(Responds.KEY_DATA);
@@ -376,7 +356,6 @@ public class WeiboPage {
 				 */
 				WeiboStatusListAdapter adapter = new WeiboStatusListAdapter(
 					parent,
-					//getStatusData(ThreadSinaDealer.GET_USER_TIMELINE)
 					getStatusData(Responds.STATUSES_USERTIMELINE)
 				);
 				mListStatus.setAdapter(adapter);
@@ -385,37 +364,6 @@ public class WeiboPage {
 				);
 				turnDealing(false);
 				break;
-			/*
-			case ThreadSinaDealer.CREATE_FRIENDSHIP:
-				user = (User)msg.getData().getSerializable(ThreadSinaDealer.KEY_DATA);
-				if (user != null) {
-					if (!user.equals(mSina.getLoggedInUser())) {
-						Toast.makeText(
-							parent,
-							R.string.tips_friendsmade,
-							Toast.LENGTH_LONG
-						).show();
-					} else {
-						Toast.makeText(
-							parent,
-							R.string.tips_friendsalready,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				} else {
-					//deal with failing to make friends
-					if (wexp != null) {
-						Toast.makeText(
-							parent,
-							//wexp.toString(),
-							R.string.tips_getweiboinfofailed,
-							Toast.LENGTH_LONG
-						).show();
-					}
-				}
-				turnDealing(false);
-				break;
-			*/
 			case Responds.FRIENDSHIPS_CREATE:
 				int fsc = msg.getData().getInt(Responds.KEY_DATA);
 				switch (fsc) {
@@ -841,21 +789,11 @@ public class WeiboPage {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				/*
-				new Thread(
-					new ThreadSinaDealer(
-						mSina,
-						ThreadSinaDealer.GET_USER_TIMELINE,
-						new String[] {
-							getUid().toString(), 
-							"" + (getLastUserTimelineTotalPage() + 1), 
-							"" + COUNT_PERPAGE_TIMELINE
-						},
-						mHandler
-					)
-				).start();
-				*/
 				StatusesAPI api = new StatusesAPI(parent.getAccessToken());
+				mListStatus.setAdapter(new WeiboStatusListAdapter(
+					parent,
+					new ArrayList<Map<String, Object>>()
+				));
 				api.userTimeline(getUid(), 0, 0, 
 					COUNT_PERPAGE_TIMELINE/*how many lines*/, 
 					(getLastUserTimelineTotalPage() + 1), 
@@ -1200,16 +1138,6 @@ public class WeiboPage {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if (mSina != null && mSina.isLoggedIn()) {
-					/*
-					new Thread(
-						new ThreadSinaDealer(
-							mSina,
-							ThreadSinaDealer.CREATE_FRIENDSHIP,
-							new String[] {getUid().toString()},
-							mHandler
-						)
-					).start();
-					*/
 					turnDealing(true);
 					
 					FriendshipsAPI api = new FriendshipsAPI(parent.getAccessToken());
@@ -1556,16 +1484,6 @@ public class WeiboPage {
 	public void reloadLastUser(Long uid) {
 		mLastUser = null;
 		mIndexOfSelectedStatus = -1;
-		/*
-		new Thread(
-			new ThreadSinaDealer(
-				mSina, 
-				ThreadSinaDealer.SHOW_USER, 
-				new String[] {uid.toString()}, 
-				mHandler
-			)
-		).start();
-		*/
 		
 		UsersAPI api = new UsersAPI(parent.getAccessToken());
 		api.show(uid, 
@@ -1599,17 +1517,11 @@ public class WeiboPage {
 		}
 		
 		mLastUserTimeline.clear();
-		/*
-		new Thread(
-			new ThreadSinaDealer(
-				mSina,
-				ThreadSinaDealer.GET_USER_TIMELINE,
-				new String[] {getUid().toString(), "" + getLastUserTimelineTotalPage(), "" + COUNT_PERPAGE_TIMELINE},
-				mHandler
-			)
-		).start();
-		*/
 		StatusesAPI api = new StatusesAPI(parent.getAccessToken());
+		mListStatus.setAdapter(new WeiboStatusListAdapter(
+			parent,
+			new ArrayList<Map<String, Object>>()
+		));
 		api.userTimeline(getUid(), 0, 0, 
 			COUNT_PERPAGE_TIMELINE/*how many lines*/, 
 			(getLastUserTimelineTotalPage() + 1), 
@@ -1673,20 +1585,6 @@ public class WeiboPage {
 		Map<String, Object> map;
 		Sina.XStatus xstatus;
 		switch (type) {
-		/*
-		case ThreadSinaDealer.SHOW_USER:
-			if (mLastUser != null) {
-				xstatus = mSina.getXStatus();
-				xstatus.setStatus(mLastUser.getStatus());
-				if (xstatus != null) {
-					map = new HashMap<String, Object>();
-					map.put("xstatus", xstatus);
-					list.add(map);
-				}	
-			}
-			break;
-		case ThreadSinaDealer.GET_USER_TIMELINE:
-		*/
 		case Responds.STATUSES_USERTIMELINE:
 			if (mLastUserTimeline != null) {
 				for (int i = 0; i < mLastUserTimeline.size(); i++) {
