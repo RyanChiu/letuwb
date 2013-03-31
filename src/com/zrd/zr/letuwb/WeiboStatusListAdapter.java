@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.weibo.sdk.android.custom.Status2;
+import com.weibo.sdk.android.custom.User2;
 import com.zrd.zr.weiboes.Sina;
 
 import android.content.Context;
@@ -130,10 +131,11 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 				holder.mLayoutRetweeted.setVisibility(LinearLayout.GONE);
 			} else {
 				holder.mLayoutRetweeted.setVisibility(TextView.VISIBLE);
+				User2 usr = statusR.getUser();
 				holder.mTextRetweeted.setText(
 					Html.fromHtml(
 						"<b><font color='red'>Quote:</font></b>"
-						+ "@" + statusR.getUser().getScreenName() + ":"
+						+ "@" + (usr != null ? usr.getScreenName() : "-") + ":"
 						+ statusR.getText()
 					)
 				);
