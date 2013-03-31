@@ -146,7 +146,7 @@
     <string name="tips_commentrepeated">Don\'t repeat commenting, please.</string>
     <string name="title_repost">You could put some words here or just leave it blank.</string>
     <string name="title_comment">Please put your comment below.</string>
-    <string name="tips_waitasecond">Getting comments, please wait a second…</string>
+    <string name="tips_waitasecond">Loading, please wait a second…</string>
     <string name="label_getmore">Click to get more…</string>
     <string name="tips_nomorecomments">No more comments.</string>
     <string name="label_addaccount">Add another account…</string>
