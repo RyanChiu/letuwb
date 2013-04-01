@@ -67,6 +67,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	final static String SERIAL_APP = "gbhytfvnjurdcmkiesx,lowaz.;p201108282317";
 	private static final String CONSUMER_KEY = "3150341378";
 	private static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
+	//private static final String REDIRECT_URL = "http://az88.info:8080/letmewb/weibo/test_callback.php";
 	private Weibo mWeibo;
 	private static Oauth2AccessToken accessToken;
 	final static String TIMEZONE_SERVER = "Asia/Hong_Kong";
