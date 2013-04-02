@@ -24,6 +24,7 @@
     <string name="err_filealreadyexists">图片 \&quot;%1$s\&quot; 已经在您的SD卡上了。\n您确定要覆盖它吗?</string>
     <string name="label_ok">确认</string>
     <string name="label_cancel">取消</string>
+    <string name="label_close">关闭</string>
     <string name="err_sdcardnotmounted">您的SD卡没装好，请装好后再试试。</string>
     <!-- <string name="tips_pages">%1$d~%2$d / %3$d~%4$d 共%5$d张图片</string> -->
     <string name="tips_pages">%1$d~%2$d / 共%3$d张图片</string>

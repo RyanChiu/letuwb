@@ -21,6 +21,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -71,6 +72,7 @@ public class WeiboPage {
 	private TextView mTextFriendship;
 	private TextView mTextAtSomeone;
 	private ImageView mBtnTinyProfileImage;
+	private ListView mListLeftSideBar;
 	
 	private AlertDialog mDlgRepost;
 	private EditText mEditRepost;
@@ -80,8 +82,8 @@ public class WeiboPage {
 	private EditText mEditUpdateStatus;
 	private Button mBtnMoreTimelines;
 	private Button mBtnMoreComments;
+	private Button mBtnCloseLeftSideBar;
 	private Dialog mDlgComments;
-	private Dialog mDlgMore;
 	
 	private Long mUid = null;
 	private Long mId = null;
@@ -90,8 +92,8 @@ public class WeiboPage {
 	private int mIndexOfSelectedStatus = -1;
 	private List<Comment2> mLastComments = new ArrayList<Comment2>();
 	
-	//private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
-	//private AlphaAnimation mAnimFadeout = new AlphaAnimation(1.0f, 0.1f);
+	private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
+	private AlphaAnimation mAnimFadeout = new AlphaAnimation(1.0f, 0.1f);
 	
 	/*
 	 * Handler for showing all kinds of SINA_weibo data from background thread.
@@ -774,13 +776,15 @@ public class WeiboPage {
 		mTextPossess = (TextView)parent.findViewById(R.id.tvPossess);
 		mTextFriendship = (TextView)parent.findViewById(R.id.tvFriendship);
 		mTextAtSomeone = (TextView)parent.findViewById(R.id.tvAtSomeone);
+		mListLeftSideBar = (ListView)parent.findViewById(R.id.lvWeiboLeftSideBar); 
 		mEditRepost  = new EditText(parent);
 		mEditComment = new EditText(parent);
 		mBtnTinyProfileImage = (ImageButton)parent.findViewById(R.id.btnTinyProfileImage);
 		mEditUpdateStatus = new EditText(parent);
 		
-		mImageVerified.setVisibility(ImageView.GONE);
-		mBtnDescription.setVisibility(ImageButton.GONE);
+		mListLeftSideBar.setVisibility(View.GONE);
+		mImageVerified.setVisibility(View.GONE);
+		mBtnDescription.setVisibility(View.GONE);
 			
 		mBtnMoreTimelines = new Button(parent);
 		mBtnMoreTimelines.setText(R.string.label_getmore);
@@ -1037,7 +1041,7 @@ public class WeiboPage {
 		mListStatus.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View arg1, int arg2,
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
 				
@@ -1056,7 +1060,8 @@ public class WeiboPage {
 				/*
 				 * pop up the "more" list
 				 */
-				mDlgMore.show();
+				showLeftSideBar(false);
+				showLeftSideBar(true);
 				
 				long lastClickTime;
 				/*
@@ -1288,9 +1293,20 @@ public class WeiboPage {
 			
 		});
 		
-		mDlgMore = new Dialog(parent, R.style.Dialog_Clean);
-		mDlgMore.setContentView(R.layout.custom_dialog_list);
-		ListView lvMore = (ListView)mDlgMore.findViewById(R.id.lvCustomList);
+		mBtnCloseLeftSideBar = new Button(parent);
+		mBtnCloseLeftSideBar.setText(R.string.label_close);
+		mBtnCloseLeftSideBar.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				showLeftSideBar(false);
+			}
+			
+				
+		});
+		mListLeftSideBar.addFooterView(mBtnCloseLeftSideBar);
+		
 		ArrayList<String> mlist = new ArrayList<String>();
 		mlist.add(parent.getString(R.string.label_weibo_favorite));
 		mlist.add(parent.getString(R.string.label_comment));
@@ -1299,14 +1315,18 @@ public class WeiboPage {
 		mlist.add(parent.getString(R.string.label_seebiggerimage0));
 		mlist.add(parent.getString(R.string.label_seebiggerimage1));
 		mlist.add(parent.getString(R.string.label_reload));
-		lvMore.setAdapter(
+		
+		mListLeftSideBar.setAdapter(
 			new ArrayAdapter<String> (
 				parent,
 				R.layout.item_custom_dialog_list,
 				mlist
 			)
 		);
-		lvMore.setOnItemClickListener(new OnItemClickListener() {
+
+		mListLeftSideBar.setVerticalScrollBarEnabled(false);
+		
+		mListLeftSideBar.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> av, View view, 
@@ -1448,7 +1468,7 @@ public class WeiboPage {
 					turnDealing(true);
 					break;
 				}
-				mDlgMore.dismiss();
+				showLeftSideBar(false);
 			}
 			
 		});
@@ -1728,5 +1748,26 @@ public class WeiboPage {
 	
 	public void friendshipClick() {
 		mTextFriendship.performClick();
+	}
+	
+	public void showLeftSideBar(boolean t) {
+		if (t) {
+			//show it
+			if (mListLeftSideBar.getVisibility() != View.VISIBLE) {
+				mListLeftSideBar.setVisibility(View.VISIBLE);
+				mListLeftSideBar.startAnimation(mAnimFadeout);
+				mListLeftSideBar.startLayoutAnimation();
+			}
+		} else {
+			//hide it
+			if (mListLeftSideBar.getVisibility() == View.VISIBLE) {
+				mListLeftSideBar.startAnimation(mAnimFadein);
+				mListLeftSideBar.setVisibility(View.GONE);
+			}
+		}
+	}
+	
+	public boolean isLeftSideBarVisible() {
+		return mListLeftSideBar.getVisibility() == View.VISIBLE ? true: false;
 	}
 }

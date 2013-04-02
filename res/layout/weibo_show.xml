@@ -132,5 +132,16 @@
     </RelativeLayout>
     <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
         <ListView android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/lvStatus" android:layout_marginBottom="40dp"></ListView>
+
+        <ListView
+            android:id="@+id/lvWeiboLeftSideBar"
+            android:layout_width="120dp"
+            android:layout_height="fill_parent"
+            android:background="@drawable/roundsquare"
+            android:layout_marginBottom="40dp"
+            android:fastScrollEnabled="false"
+            android:layoutAnimation="@anim/leftsidebar_listview_anim"
+            android:layout_alignParentLeft="true" />
+
     </RelativeLayout>
 </LinearLayout>

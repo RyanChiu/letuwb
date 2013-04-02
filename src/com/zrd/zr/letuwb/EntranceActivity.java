@@ -643,7 +643,11 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				}
 				break;
 			case 2:
-				switchPage(mWeiboPage.getReferer());
+				if (mWeiboPage.isLeftSideBarVisible()) {
+					mWeiboPage.showLeftSideBar(false);
+				} else {
+					switchPage(mWeiboPage.getReferer());
+				}
 				break;
 			}
 		}
