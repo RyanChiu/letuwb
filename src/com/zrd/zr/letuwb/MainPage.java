@@ -761,34 +761,21 @@ public class MainPage {
 					public void onClick(View arg0) {
 						// TODO Auto-generated method stub
 						if (parent.getAccessToken() != null && parent.getAccessToken().isSessionValid()) {
-							if (parent.getWeiboPage().getPrivilege() == 1) {
-								if (parent.getWeiboPage().getSina().isGettingUser()) {
-									Toast.makeText(parent, 
-										parent.getString(R.string.tips_waitforgettinguser), 
-										Toast.LENGTH_LONG
-									).show();
+							
+							WeibouserInfo wi = mUsrs.get((Integer) arg0.getTag());
+							LinearLayout ll = (LinearLayout) wi.getTag();
+							ZRImageView img = (ZRImageView) ll.findViewById(R.id.ivPinterest);
+							if (img.getImageBitmap() != null) {
+								if (mBtnPossessions.isSelected()) {
+									parent.getWeiboPage().setReferer(R.layout.main);
+									parent.getWeiboPage().reloadLastUser(wi.uid);
+									parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
 								} else {
-									Toast.makeText(parent,
-										parent.getString(R.string.tips_trytogetuser),
-										Toast.LENGTH_LONG
-									).show();
-									parent.getWeiboPage().getSina().getLoggedInUser(parent.getAccessToken());
-								}
-							} else {
-								WeibouserInfo wi = mUsrs.get((Integer) arg0.getTag());
-								LinearLayout ll = (LinearLayout) wi.getTag();
-								ZRImageView img = (ZRImageView) ll.findViewById(R.id.ivPinterest);
-								if (img.getImageBitmap() != null) {
-									if (mBtnPossessions.isSelected()) {
-										parent.getWeiboPage().setReferer(R.layout.main);
-										parent.getWeiboPage().reloadLastUser(wi.uid);
-										parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
-									} else {
-										parent.getBrowPage().setReferer(R.layout.main);
-										parent.switchPage(R.layout.brow, wi.id);
-									}
+									parent.getBrowPage().setReferer(R.layout.main);
+									parent.switchPage(R.layout.brow, wi.id);
 								}
 							}
+							
 						} else {
 							parent.login(parent.getString(R.string.tips_loadingsinaweibooauthpage));
 							

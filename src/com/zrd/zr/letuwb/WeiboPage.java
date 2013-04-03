@@ -1146,10 +1146,26 @@ public class WeiboPage {
 				if (mSina != null && mSina.isLoggedIn()) {
 					turnDealing(true);
 					
+					User2 usr = getSina().getLoggedInUser();
+					if (usr == null) {
+						if (getSina().isGettingUser()) {
+							Toast.makeText(parent, 
+								parent.getString(R.string.tips_waitforgettinguser), 
+								Toast.LENGTH_LONG
+							).show();
+						} else {
+							Toast.makeText(parent,
+								parent.getString(R.string.tips_trytogetuser),
+								Toast.LENGTH_LONG
+							).show();
+							getSina().getLoggedInUser(parent.getAccessToken());
+						}
+						return;
+					}
+					
 					FriendshipsAPI api = new FriendshipsAPI(parent.getAccessToken());
 					//step 1, judge if already friends
 					//step 2, if not yet, create it
-					User2 usr = getSina().getLoggedInUser();
 					api.show(usr.getId(), getUid(), new RequestListener() {
 
 						@Override
@@ -1595,10 +1611,6 @@ public class WeiboPage {
 	
 	public void setSina(Sina sina) {
 		mSina = sina;
-	}
-	
-	public int getPrivilege() {
-		return mSina.getLoggedInUser() == null ? 1 : 0;
 	}
 	
 	private List<Map<String, Object>> getStatusData(int type) {
