@@ -459,14 +459,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		 */
 		MobclickAgent.onPause(this);
 		
-		/* 
-		 * for playing in BrowPage
-		 */
-		if (mBrowPage.getBtnPause().getVisibility() == ImageButton.VISIBLE) {
-			mBrowPage.setPlaying(true);
-			mBrowPage.getBtnPause().performClick();
-			mBrowPage.setLoading(false);
-		}
 	}
 
 	@Override
@@ -496,14 +488,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		 * for umeng.com
 		 */
 		MobclickAgent.onResume(this);
-		
-		/*
-		 * for playing in BrowPage
-		 */
-		if (mBrowPage.wasPlaying()) {
-			mBrowPage.setPlaying(false);
-			mBrowPage.getBtnPlay().performClick();
-		}
 		
 		/*
 		 * for exit

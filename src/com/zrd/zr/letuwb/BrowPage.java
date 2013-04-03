@@ -7,9 +7,6 @@ import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
-
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -56,10 +53,6 @@ public class BrowPage {
 	private ImageButton mBtnDescriptionMore;
 	private ImageView mImgVerified;
 	private ImageZoomView mBrow;
-	private Button btnSave;
-	private Button btnUpload;
-	private Button btnPlay;
-	private Button btnPause;
 	private Button mBtnShare;
 	private Button mBtnWeiboShow;
 	private Button mBtnWeiboFriend;
@@ -83,8 +76,6 @@ public class BrowPage {
     /** On touch listener for zoom view */
     private LongPressZoomListener mZoomListener;
     
-	private File mSaveFile = null;
-	
 	private int mReferer = -1;
 	
 	BrowPage(EntranceActivity activity) {
@@ -98,10 +89,6 @@ public class BrowPage {
 		mBtnDescriptionMore = (ImageButton) activity.findViewById(R.id.btnDescriptionMore);
 		mImgVerified = (ImageView) activity.findViewById(R.id.imgVerified_brow);
 		mBrow = (ImageZoomView) activity.findViewById(R.id.imgBrow);
-		btnSave = (Button) activity.findViewById(R.id.btnSave);
-		btnPlay = (Button) activity.findViewById(R.id.btnPlay);
-		btnPause = (Button) activity.findViewById(R.id.btnPause);
-		btnUpload = (Button) activity.findViewById(R.id.btnUpload);
 		mBtnShare = (Button) activity.findViewById(R.id.btnShare);
 		mBtnWeiboShow = (Button) activity.findViewById(R.id.btnWeiboShow);
 		mBtnWeiboFriend = (Button) activity.findViewById(R.id.btnMakeFriendsFromBrow);
@@ -115,17 +102,7 @@ public class BrowPage {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 					case 1:
-						ArrayList<WeibouserInfo> usrs = parent.getMainPage().getUsrs();
-						if (usrs.size() == 0) {
-							Toast.makeText(parent, parent.getString(R.string.tips_nopictures), Toast.LENGTH_SHORT).show();
-						} else if (getBtnPause().getVisibility() == ImageButton.VISIBLE && !isLoading()) {
-	                		Toast.makeText(parent, parent.getString(R.string.tips_playing), Toast.LENGTH_SHORT).show();
-	                		if (parent.getMainPage().getUsrIndexFromId(mId, usrs) < usrs.size() - 1) {
-	                			zrAsyncShowPic(mId, 2);
-	                		} else {
-	                			zrAsyncShowPic(usrs.get(0).id, 0);
-	                		}
-	                	}
+						
 						break;
 					case ThreadPNJDealer.GET_POSSESSIONS:
 						UCMappings mappings = (UCMappings)msg.getData().getSerializable(ThreadPNJDealer.KEY_DATA);
@@ -272,158 +249,6 @@ public class BrowPage {
 			
 		});
 				
-		btnUpload.setOnClickListener(new OnClickListener () {
-
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				AlertDialog dlg = new AlertDialog.Builder(parent)
-					.setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							// TODO Auto-generated method stub
-							AsyncUploader.upload(parent.getWeiboPage().getPrivilege(), parent);
-						}
-						
-					})
-					.setNegativeButton(R.string.label_cancel, null)
-					.setTitle(R.string.tips_noadultstuff)
-					.create();
-				dlg.show();
-			}
-			
-		});
-		
-		btnSave.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Context context = parent.getApplicationContext();
-				// TODO Auto-generated method stub
-				if(!AsyncSaver.getSdcardDir().equals("")) {
-					String path = AsyncSaver.getSdcardDir() + EntranceActivity.PATH_COLLECTION;
-					File file = new File(path);
-					Boolean couldSave = false;
-					if (!file.exists()) {
-						if (file.mkdirs()) {
-							couldSave = true;
-						} else {
-							Toast.makeText(context,
-								String.format(parent.getString(R.string.err_nopath), path),
-								Toast.LENGTH_LONG
-							).show();
-							return;
-						}
-					} else couldSave = true;
-					if (couldSave) {
-						//OK, now we could actually save the file, finally.
-						String fn = getSaveFileName(parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs()).uid + ".xxx");
-						mSaveFile = new File(file, fn);
-						if (mSaveFile.exists()) {
-							//if there is already a file exists with same file name
-							AlertDialog alertDlg = new AlertDialog.Builder(parent).create();
-							alertDlg.setTitle(R.string.title_warning);
-							alertDlg.setMessage(String.format(parent.getString(R.string.err_filealreadyexists), fn));
-							alertDlg.setIcon(android.R.drawable.ic_dialog_alert);
-							alertDlg.setButton(
-								DialogInterface.BUTTON_POSITIVE,
-								parent.getString(R.string.label_ok),
-								new DialogInterface.OnClickListener () {
-
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										// TODO Auto-generated method stub
-										Toast.makeText(
-											parent,
-											R.string.tips_saving,
-											Toast.LENGTH_SHORT
-										).show();
-										AsyncSaver asyncSaver = new AsyncSaver(parent, getBrow().getImage());
-										asyncSaver.execute(mSaveFile);
-									}
-									
-								}
-							);
-							alertDlg.setButton(
-								DialogInterface.BUTTON_NEGATIVE, 
-								parent.getString(R.string.label_cancel), 
-								new DialogInterface.OnClickListener () {
-
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										// TODO Auto-generated method stub
-									}
-									
-								}
-							);
-							alertDlg.show();
-						} else {
-							Toast.makeText(
-								parent,
-								R.string.tips_saving,
-								Toast.LENGTH_SHORT
-							).show();
-							AsyncSaver asyncSaver = new AsyncSaver(parent, getBrow().getImage());
-							asyncSaver.execute(mSaveFile);
-						}
-					}
-				} else {
-					Toast.makeText(context,
-						parent.getString(R.string.err_sdcardnotmounted),
-						Toast.LENGTH_LONG
-					).show();
-				}
-			}
-			
-		});
-		
-		btnPlay.setOnClickListener(new OnClickListener () {
-
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				getBtnPause().setVisibility(ImageButton.VISIBLE);
-				getBtnPlay().setVisibility(ImageButton.GONE);
-				
-				mTimer  = new Timer();
-				
-				mTimer.schedule(new TimerTask(){
-
-					public void run() {
-						Message message = new Message();    
-						message.what = 1;    
-						mHandler.sendMessage(message);  
-					}
-					
-				} , 0, 9000);
-			}
-			
-		});
-		
-		btnPause.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (mTimer != null) {
-					mTimer.cancel();
-				}
-				getBtnPlay().setVisibility(ImageButton.VISIBLE);
-				getBtnPause().setVisibility(ImageButton.GONE);
-			}
-			
-		});
-		
-		mBtnDescriptionMore.setOnClickListener (new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				parent.popupDescription((String) mBtnDescriptionMore.getTag());
-			}
-			
-		});
 	}
 	
 	/**
@@ -581,14 +406,6 @@ public class BrowPage {
 		this.mReferer = mReferer;
 	}
 
-	public Button getBtnPause() {
-		return btnPause;
-	}
-
-	public void setBtnPause(Button btnPause) {
-		this.btnPause = btnPause;
-	}
-	
 	public Button getBtnAtSomeone() {
 		return this.mBtnAtSomeone;
 	}
@@ -611,14 +428,6 @@ public class BrowPage {
 
 	public void setLoading(Boolean mIsLoading) {
 		BrowPage.mIsLoading = mIsLoading;
-	}
-
-	public Button getBtnPlay() {
-		return btnPlay;
-	}
-
-	public void setBtnPlay(Button btnPlay) {
-		this.btnPlay = btnPlay;
 	}
 
 	public Boolean isDooming() {
@@ -664,8 +473,6 @@ public class BrowPage {
 					if (mTimer != null) {
 						mTimer.cancel();
 					}
-					getBtnPlay().setVisibility(ImageButton.VISIBLE);
-					getBtnPause().setVisibility(ImageButton.GONE);
 					setLoading(false);
 					dialog.cancel();
 				}
@@ -814,8 +621,6 @@ public class BrowPage {
 			if (mTimer != null) {
 				mTimer.cancel();
 			}
-			getBtnPause().setVisibility(ImageButton.GONE);
-			getBtnPlay().setVisibility(ImageButton.VISIBLE);
 			setLoading(false);
             //super.onCancelled();
         }
