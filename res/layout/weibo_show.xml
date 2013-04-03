@@ -137,7 +137,7 @@
             android:id="@+id/lvWeiboLeftSideBar"
             android:layout_width="120dp"
             android:layout_height="fill_parent"
-            android:background="@drawable/roundsquare"
+            android:background="@drawable/roundsidebar"
             android:layout_marginBottom="40dp"
             android:fastScrollEnabled="false"
             android:layoutAnimation="@anim/leftsidebar_listview_anim"

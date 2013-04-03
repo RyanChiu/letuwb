@@ -21,7 +21,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
+//import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -92,8 +93,8 @@ public class WeiboPage {
 	private int mIndexOfSelectedStatus = -1;
 	private List<Comment2> mLastComments = new ArrayList<Comment2>();
 	
-	private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
-	private AlphaAnimation mAnimFadeout = new AlphaAnimation(1.0f, 0.1f);
+	//private AlphaAnimation mAnimFadein = new AlphaAnimation(0.1f, 1.0f);
+	//private AlphaAnimation mAnimFadeout = new AlphaAnimation(1.0f, 0.1f);
 	
 	/*
 	 * Handler for showing all kinds of SINA_weibo data from background thread.
@@ -1755,13 +1756,13 @@ public class WeiboPage {
 			//show it
 			if (mListLeftSideBar.getVisibility() != View.VISIBLE) {
 				mListLeftSideBar.setVisibility(View.VISIBLE);
-				mListLeftSideBar.startAnimation(mAnimFadeout);
+				mListLeftSideBar.startAnimation(AnimationUtils.loadAnimation(parent, R.anim.left_side_in));
 				mListLeftSideBar.startLayoutAnimation();
 			}
 		} else {
 			//hide it
 			if (mListLeftSideBar.getVisibility() == View.VISIBLE) {
-				mListLeftSideBar.startAnimation(mAnimFadein);
+				mListLeftSideBar.startAnimation(AnimationUtils.loadAnimation(parent, R.anim.left_side_out));
 				mListLeftSideBar.setVisibility(View.GONE);
 			}
 		}

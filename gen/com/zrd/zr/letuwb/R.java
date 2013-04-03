@@ -11,10 +11,12 @@ public final class R {
     public static final class anim {
         public static final int fadein=0x7f040000;
         public static final int fadeout=0x7f040001;
-        public static final int leftsidebar_listview_anim=0x7f040002;
-        public static final int list_anim=0x7f040003;
-        public static final int push_left_in=0x7f040004;
-        public static final int push_left_out=0x7f040005;
+        public static final int left_side_in=0x7f040002;
+        public static final int left_side_out=0x7f040003;
+        public static final int leftsidebar_listview_anim=0x7f040004;
+        public static final int list_anim=0x7f040005;
+        public static final int push_left_in=0x7f040006;
+        public static final int push_left_out=0x7f040007;
     }
     public static final class attr {
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
@@ -78,16 +80,17 @@ containing a value of this type.
         public static final int person_questionmark=0x7f02001a;
         public static final int popup_full_dark=0x7f02001b;
         public static final int reposts=0x7f02001c;
-        public static final int roundsquare=0x7f02001d;
-        public static final int share=0x7f02001e;
-        public static final int toast_frame=0x7f02001f;
-        public static final int transparent=0x7f020020;
-        public static final int upup=0x7f020021;
-        public static final int upup_normal=0x7f020022;
-        public static final int upup_pressed=0x7f020023;
-        public static final int voterating_progress_horizontal=0x7f020024;
-        public static final int weibo_verified=0x7f020025;
-        public static final int weibosdk_dialog_bg=0x7f020026;
+        public static final int roundsidebar=0x7f02001d;
+        public static final int roundsquare=0x7f02001e;
+        public static final int share=0x7f02001f;
+        public static final int toast_frame=0x7f020020;
+        public static final int transparent=0x7f020021;
+        public static final int upup=0x7f020022;
+        public static final int upup_normal=0x7f020023;
+        public static final int upup_pressed=0x7f020024;
+        public static final int voterating_progress_horizontal=0x7f020025;
+        public static final int weibo_verified=0x7f020026;
+        public static final int weibosdk_dialog_bg=0x7f020027;
     }
     public static final class id {
         public static final int btnAtSomeoneBrow=0x7f080019;
