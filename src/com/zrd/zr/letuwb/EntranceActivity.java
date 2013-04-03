@@ -929,6 +929,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		switch (layout) {
 		case R.layout.main:
 			mLayoutVote.setVisibility(View.GONE);
+			mWeiboPage.showLeftSideBar(false);
 			mViewFlipper.setDisplayedChild(0);
 			break;
 		case R.layout.brow:
@@ -943,6 +944,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 					mWeiboPage.reloadLastUser(wi.uid);
 				}
 			}
+			mWeiboPage.showLeftSideBar(false);
 			mViewFlipper.setDisplayedChild(1);
 			break;
 		case R.layout.weibo_show:
