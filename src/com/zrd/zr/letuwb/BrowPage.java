@@ -198,7 +198,7 @@ public class BrowPage {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//get current weibo user's information
-            	WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs());
+            	//WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs());
             	
             	/*
                 Intent intent = new Intent();
@@ -211,7 +211,8 @@ public class BrowPage {
 				*/
 				
 				parent.getWeiboPage().setReferer(R.layout.main);
-				parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
+				//parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
+				parent.switchPage(R.layout.weibo_show);
 			}
 			
 		});

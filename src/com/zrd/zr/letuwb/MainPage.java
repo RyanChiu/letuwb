@@ -768,11 +768,16 @@ public class MainPage {
 							if (img.getImageBitmap() != null) {
 								if (mBtnPossessions.isSelected()) {
 									parent.getWeiboPage().setReferer(R.layout.main);
+									parent.getWeiboPage().clearCurUserInfo();
 									parent.getWeiboPage().reloadLastUser(wi.uid);
 									parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
 								} else {
-									parent.getBrowPage().setReferer(R.layout.main);
-									parent.switchPage(R.layout.brow, wi.id);
+									//parent.getBrowPage().setReferer(R.layout.main);
+									//parent.switchPage(R.layout.brow, wi.id);
+									parent.getWeiboPage().setReferer(R.layout.main);
+									parent.getWeiboPage().clearCurUserInfo();
+									parent.getWeiboPage().reloadLastUser(wi.uid);
+									parent.switchPage(R.layout.weibo_show, wi.uid, wi.id);
 								}
 							}
 							

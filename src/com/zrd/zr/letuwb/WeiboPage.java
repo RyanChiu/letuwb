@@ -233,21 +233,7 @@ public class WeiboPage {
 					}
 					
 				} else {
-					mTextAtSomeone.setText(R.string.label_atsomeone);
-					parent.getBrowPage().getBtnAtSomeone().setText(R.string.label_atsomeone);
-					/*
-					 * clear all kinds of the counts
-					 */
-					String sCounts = parent.getString(R.string.label_weibos) + ":-"
-						+ " " 
-						+ parent.getString(R.string.label_favorites) + ":-"
-						+ " "
-						+ parent.getString(R.string.label_followers) + ":-"
-						+ " " 
-						+ parent.getString(R.string.label_friends) + ":-"; 
-					mTextCounts.setText(sCounts);
-					parent.getBrowPage().getTextCounts_brow().setText(sCounts);
-					
+					clearCurUserInfo();					
 				}
 				break;
 			case Responds.STATUSES_USERTIMELINE:
@@ -868,7 +854,7 @@ public class WeiboPage {
 				intent.putExtra("id", mId);
 				startActivity(intent);
 				*/
-				parent.getBrowPage().setReferer(R.layout.main);
+				parent.getBrowPage().setReferer(R.layout.weibo_show);
 				//parent.switchPage(R.layout.brow, mId);
 				parent.switchPage(R.layout.brow);
 			}
@@ -1782,5 +1768,27 @@ public class WeiboPage {
 	
 	public boolean isLeftSideBarVisible() {
 		return mListLeftSideBar.getVisibility() == View.VISIBLE ? true: false;
+	}
+	
+	public void clearCurUserInfo() {
+		mBtnTinyProfileImage.setImageResource(R.drawable.person);
+		mTextScreenName.setText("-");
+		mImageVerified.setVisibility(View.GONE);
+		mTextCreatedAt.setText("---- -- --");
+		mTextLocation.setText("[- -]");
+		mTextAtSomeone.setText(R.string.label_atsomeone);
+		parent.getBrowPage().getBtnAtSomeone().setText(R.string.label_atsomeone);
+		/*
+		 * clear all kinds of the counts
+		 */
+		String sCounts = parent.getString(R.string.label_weibos) + ":-"
+			+ " " 
+			+ parent.getString(R.string.label_favorites) + ":-"
+			+ " "
+			+ parent.getString(R.string.label_followers) + ":-"
+			+ " " 
+			+ parent.getString(R.string.label_friends) + ":-"; 
+		mTextCounts.setText(sCounts);
+		parent.getBrowPage().getTextCounts_brow().setText(sCounts);
 	}
 }
