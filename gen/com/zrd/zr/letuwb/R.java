@@ -113,6 +113,7 @@ containing a value of this type.
         public static final int btnTinyProfileImage=0x7f080069;
         public static final int btnUnhottest=0x7f080050;
         public static final int btnUpup=0x7f080022;
+        public static final int btnWeiboLeftSideBarClose=0x7f080077;
         public static final int btnWeiboShow=0x7f080015;
         public static final int cbRemember=0x7f080062;
         public static final int etPassword=0x7f08005c;
@@ -147,10 +148,11 @@ containing a value of this type.
         public static final int llRetweeted=0x7f08003c;
         public static final int llRight=0x7f080049;
         public static final int llVoteInfo=0x7f080023;
+        public static final int llWeiboLeftSideBar=0x7f080075;
         public static final int lvAccounts=0x7f080066;
         public static final int lvCustomList=0x7f08002b;
         public static final int lvStatus=0x7f080074;
-        public static final int lvWeiboLeftSideBar=0x7f080075;
+        public static final int lvWeiboLeftSideBar=0x7f080076;
         public static final int pbCustomDialogProgress=0x7f08002c;
         public static final int pbImageBrowser=0x7f080032;
         public static final int pbRetweetedImageLoading=0x7f08003e;

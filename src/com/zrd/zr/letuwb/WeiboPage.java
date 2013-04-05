@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -74,6 +75,7 @@ public class WeiboPage {
 	private TextView mTextAtSomeone;
 	private ImageView mBtnTinyProfileImage;
 	private ListView mListLeftSideBar;
+	private LinearLayout mLayoutLeftSideBar;
 	
 	private AlertDialog mDlgRepost;
 	private EditText mEditRepost;
@@ -83,7 +85,7 @@ public class WeiboPage {
 	private EditText mEditUpdateStatus;
 	private Button mBtnMoreTimelines;
 	private Button mBtnMoreComments;
-	private Button mBtnCloseLeftSideBar;
+	private ImageButton mBtnWeiboLeftSideBarClose;
 	private Dialog mDlgComments;
 	
 	private Long mUid = null;
@@ -763,13 +765,15 @@ public class WeiboPage {
 		mTextPossess = (TextView)parent.findViewById(R.id.tvPossess);
 		mTextFriendship = (TextView)parent.findViewById(R.id.tvFriendship);
 		mTextAtSomeone = (TextView)parent.findViewById(R.id.tvAtSomeone);
-		mListLeftSideBar = (ListView)parent.findViewById(R.id.lvWeiboLeftSideBar); 
+		mListLeftSideBar = (ListView)parent.findViewById(R.id.lvWeiboLeftSideBar);
+		mLayoutLeftSideBar = (LinearLayout)parent.findViewById(R.id.llWeiboLeftSideBar);
 		mEditRepost  = new EditText(parent);
 		mEditComment = new EditText(parent);
 		mBtnTinyProfileImage = (ImageButton)parent.findViewById(R.id.btnTinyProfileImage);
+		mBtnWeiboLeftSideBarClose = (ImageButton)parent.findViewById(R.id.btnWeiboLeftSideBarClose);
 		mEditUpdateStatus = new EditText(parent);
 		
-		mListLeftSideBar.setVisibility(View.GONE);
+		mLayoutLeftSideBar.setVisibility(View.GONE);
 		mImageVerified.setVisibility(View.GONE);
 		mBtnDescription.setVisibility(View.GONE);
 			
@@ -1296,9 +1300,7 @@ public class WeiboPage {
 			
 		});
 		
-		mBtnCloseLeftSideBar = new Button(parent);
-		mBtnCloseLeftSideBar.setText(R.string.label_close);
-		mBtnCloseLeftSideBar.setOnClickListener(new OnClickListener() {
+		mBtnWeiboLeftSideBarClose.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -1308,7 +1310,6 @@ public class WeiboPage {
 			
 				
 		});
-		mListLeftSideBar.addFooterView(mBtnCloseLeftSideBar);
 		
 		ArrayList<String> mlist = new ArrayList<String>();
 		mlist.add(parent.getString(R.string.label_weibo_favorite));
@@ -1752,22 +1753,22 @@ public class WeiboPage {
 	public void showLeftSideBar(boolean t) {
 		if (t) {
 			//show it
-			if (mListLeftSideBar.getVisibility() != View.VISIBLE) {
-				mListLeftSideBar.setVisibility(View.VISIBLE);
-				mListLeftSideBar.startAnimation(AnimationUtils.loadAnimation(parent, R.anim.left_side_in));
+			if (mLayoutLeftSideBar.getVisibility() != View.VISIBLE) {
+				mLayoutLeftSideBar.setVisibility(View.VISIBLE);
+				mLayoutLeftSideBar.startAnimation(AnimationUtils.loadAnimation(parent, R.anim.left_side_in));
 				mListLeftSideBar.startLayoutAnimation();
 			}
 		} else {
 			//hide it
-			if (mListLeftSideBar.getVisibility() == View.VISIBLE) {
-				mListLeftSideBar.startAnimation(AnimationUtils.loadAnimation(parent, R.anim.left_side_out));
-				mListLeftSideBar.setVisibility(View.GONE);
+			if (mLayoutLeftSideBar.getVisibility() == View.VISIBLE) {
+				mLayoutLeftSideBar.setAnimation(AnimationUtils.loadAnimation(parent, R.anim.left_side_out));
+				mLayoutLeftSideBar.setVisibility(View.GONE);
 			}
 		}
 	}
 	
 	public boolean isLeftSideBarVisible() {
-		return mListLeftSideBar.getVisibility() == View.VISIBLE ? true: false;
+		return mLayoutLeftSideBar.getVisibility() == View.VISIBLE ? true: false;
 	}
 	
 	public void clearCurUserInfo() {
