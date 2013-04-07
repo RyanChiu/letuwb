@@ -19,7 +19,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -27,6 +29,8 @@ public class ImageActivity extends Activity implements OnTouchListener {
 	private ProgressBar mProgressLoading;
 	private ImageZoomView mImageZoom;
 	private GifView mImageGif;
+	private ImageButton mBtnBack;
+	private ImageButton mBtnMore;
 	/** Zoom control */
     private DynamicZoomControl mZoomControl;
     /** On touch listener for zoom view */
@@ -44,6 +48,8 @@ public class ImageActivity extends Activity implements OnTouchListener {
 		
 		mProgressLoading = (ProgressBar) findViewById(R.id.pbImageBrowser);
 		mImageZoom = (ImageZoomView) findViewById(R.id.imageBrowser);
+		mBtnBack = (ImageButton) findViewById(R.id.btnBackBigPic);
+		mBtnMore = (ImageButton) findViewById(R.id.btnMoreBigPic);
 		mImageGif = (GifView) findViewById(R.id.imageGif);
 		mImageGif.setGifImageType(GifImageType.WAIT_FINISH);
 		mImageGif.setOnTouchListener(this);
@@ -54,6 +60,26 @@ public class ImageActivity extends Activity implements OnTouchListener {
         mZoomControl.setAspectQuotient(mImageZoom.getAspectQuotient());
         mImageZoom.setOnTouchListener(this);
         mGestureDetector = new GestureDetector(this, new ImagebrowGestureListener());
+        
+        mBtnBack.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				((Activity)v.getContext()).finish();
+			}
+        	
+        });
+        
+        mBtnMore.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				((Activity)v.getContext()).openOptionsMenu();
+			}
+        	
+        });
         
         String sUrl = getIntent().getStringExtra("url");
         int idx = sUrl.lastIndexOf(".");

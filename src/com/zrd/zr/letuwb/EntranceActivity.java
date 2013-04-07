@@ -708,22 +708,6 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		return null;
     }
     
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
-		switch (requestCode) {
-		case REQUESTCODE_PICKFILE:
-			if (resultCode == RESULT_OK) {
-				AsyncUploader asyncUploader = new AsyncUploader(this, mAccountId);
-				asyncUploader.execute(data);
-			}
-			break;
-		default:
-			break;
-		}
-		super.onActivityResult(requestCode, resultCode, data);
-	}
-	
     /*
      * Initialize stuff that the app needed, should include:
      * 1.try to get a local key
