@@ -181,10 +181,6 @@
     <string name="tips_trytogetuser">Trying to get logged in user\'s information…</string>
     <string name="tips_routinehello">Hi. I read about your status through "%1$s", it\'s interesting!</string>
     <string name="title_updatestatus">It\'ll post a status to SINA-WEIBO</string>
-    <string name="label_seebiggerimage0">Original image in status</string>
-    <string name="label_seebiggerimage1">Original image in retweeted</string>
-    <string name="tips_nooriginalimage0">No image in status.</string>
-    <string name="tips_nooriginalimage1">No image in retweeted.</string>
     <string name="tips_nopossessions">You have no possessions right now, go pick ones, please.</string>
     <string name="label_sharetheapp">Share this application:</string>
     <string name="omenuitem_goback">Go back</string>

@@ -1316,8 +1316,6 @@ public class WeiboPage {
 		mlist.add(parent.getString(R.string.label_comment));
 		mlist.add(parent.getString(R.string.label_weibo_repost));
 		mlist.add(parent.getString(R.string.label_comments));
-		mlist.add(parent.getString(R.string.label_seebiggerimage0));
-		mlist.add(parent.getString(R.string.label_seebiggerimage1));
 		mlist.add(parent.getString(R.string.label_reload));
 		
 		mListLeftSideBar.setAdapter(
@@ -1336,7 +1334,6 @@ public class WeiboPage {
 			public void onItemClick(AdapterView<?> av, View view, 
 					int position, long id) {
 				// TODO Auto-generated method stub
-				String originalPic;
 				switch (position) {
 				case 0:
 					if (mIndexOfSelectedStatus != -1) {
@@ -1417,57 +1414,6 @@ public class WeiboPage {
 					}
 					break;
 				case 4:
-					if (mIndexOfSelectedStatus == -1) {
-						Toast.makeText(
-							parent,
-							R.string.tips_noitemselected,
-							Toast.LENGTH_LONG
-						).show();
-					} else {
-						originalPic = mLastUserTimeline
-							.get(mIndexOfSelectedStatus)
-							.getStatus()
-							.getOriginal_pic();
-						if (originalPic != null && !originalPic.trim().equals("")) {
-							showOriginalImage(originalPic);
-						} else {
-							Toast.makeText(
-								parent,
-								R.string.tips_nooriginalimage0,
-								Toast.LENGTH_LONG
-							).show();
-						}
-					}
-					break;
-				case 5:
-					if (mIndexOfSelectedStatus == -1) {
-						Toast.makeText(
-							parent,
-							R.string.tips_noitemselected,
-							Toast.LENGTH_LONG
-						).show();
-					} else {
-						Status2 retweeted = mLastUserTimeline
-							.get(mIndexOfSelectedStatus)
-							.getStatus()
-							.getRetweeted_status();
-						if (retweeted != null) {
-							originalPic = retweeted.getOriginal_pic();
-						} else {
-							originalPic = null;
-						}
-						if (originalPic != null && !originalPic.trim().equals("")) {
-							showOriginalImage(originalPic);
-						} else {
-							Toast.makeText(
-								parent,
-								R.string.tips_nooriginalimage1,
-								Toast.LENGTH_LONG
-							).show();
-						}
-					}
-					break;
-				case 6:
 					reloadAll();
 					turnDealing(true);
 					break;
@@ -1645,7 +1591,7 @@ public class WeiboPage {
 	 * try to show pictures from weibo in a dialog
 	 * with given uri
 	 */
-	protected void showOriginalImage(String sUrl) {
+	public void showOriginalImage(String sUrl) {
 		Intent intent = new Intent();
 		intent.putExtra("url", sUrl);
 		intent.setClass(parent, ImageActivity.class);

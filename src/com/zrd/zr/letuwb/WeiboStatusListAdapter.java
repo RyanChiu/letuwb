@@ -17,6 +17,7 @@ import android.text.Html;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -163,6 +164,18 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 					urlR = new URL(sURL);
 					loaderR.execute(urlR, true);
 					holder.mImageRetweeted.setVisibility(View.VISIBLE);
+					holder.mImageRetweeted.setTag(sURL);
+					holder.mImageRetweeted.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							String url = (String) v.getTag();
+							((EntranceActivity)mContext).getWeiboPage().showOriginalImage(url);
+							//Toast.makeText(v.getContext(), "test in status adpter(r)", Toast.LENGTH_LONG).show();
+						}
+						
+					});
 				} catch (MalformedURLException e) {
 					holder.mImageRetweeted.setVisibility(View.GONE);
 				}
@@ -190,6 +203,18 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 				url = new URL(sURL);
 				loader.execute(url, true);
 				holder.mImage.setVisibility(View.VISIBLE);
+				holder.mImage.setTag(sURL);
+				holder.mImage.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						String url = (String) v.getTag();
+						((EntranceActivity)mContext).getWeiboPage().showOriginalImage(url);
+						//Toast.makeText(v.getContext(), "test in status adpter", Toast.LENGTH_LONG).show();
+					}
+					
+				});
 			} catch (MalformedURLException e) {
 				holder.mImage.setVisibility(View.GONE);
 			}

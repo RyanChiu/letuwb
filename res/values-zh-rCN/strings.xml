@@ -181,10 +181,6 @@
     <string name="tips_trytogetuser">准备尝试获取已登录用户…</string>
     <string name="tips_routinehello">嗨！我是通过“%1$s”应用看到了你的微博，真的很有趣诶^-^。</string>
     <string name="title_updatestatus">将会发布一条新浪微博</string>
-    <string name="label_seebiggerimage0">正文中原图</string>
-    <string name="label_seebiggerimage1">引用文中原图</string>
-    <string name="tips_nooriginalimage0">正文没插图诶。</string>
-    <string name="tips_nooriginalimage1">引文没插图诶。</string>
     <string name="tips_nopossessions">您还没“私藏”呢，赶紧添加您的“私藏”吧。</string>
     <string name="label_sharetheapp">分享此应用：</string>
     <string name="omenuitem_goback">返回</string>
