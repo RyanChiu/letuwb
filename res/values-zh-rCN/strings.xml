@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="locale">cn</string>
-	<string name="app_name">私藏男女</string>
+	<string name="app_name">私藏微博</string>
 	<string name="reglogin_title">登录新浪微博</string>
 	<string name="label_username">用户名:</string>
     <string name="label_password">密  码:</string>
