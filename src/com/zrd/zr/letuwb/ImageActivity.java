@@ -130,8 +130,8 @@ public class ImageActivity extends Activity implements OnTouchListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
-		menu.add(Menu.NONE, Menu.FIRST + 1, 1, getString(R.string.label_save));
-		menu.add(Menu.NONE, Menu.FIRST + 2, 1, getString(R.string.omenuitem_goback));
+		menu.add(Menu.NONE, Menu.FIRST + 1, 1, R.string.label_save).setIcon(android.R.drawable.ic_menu_save);
+		menu.add(Menu.NONE, Menu.FIRST + 2, 1, R.string.omenuitem_goback).setIcon(R.drawable.backward);
 		
 		return super.onCreateOptionsMenu(menu);
 	}
