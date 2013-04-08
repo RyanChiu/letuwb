@@ -193,4 +193,6 @@
     <string name="tips_successfullyoauthorized">Successfully authorized!</string>
     <string name="tips_failtopassoauth">Authorizing failed.</string>
     <string name="tips_canceloauth">Cancel authorizing.</string>
+    <string name="label_browseweibo">Browse Weibo</string>
+    <string name="label_home">Home</string>
 </resources>

@@ -76,6 +76,8 @@ public class WeiboPage {
 	private ImageView mBtnTinyProfileImage;
 	private ListView mListLeftSideBar;
 	private LinearLayout mLayoutLeftSideBar;
+	private ImageButton mBtnBack;
+	private ImageButton mBtnMore;
 	
 	private AlertDialog mDlgRepost;
 	private EditText mEditRepost;
@@ -767,6 +769,8 @@ public class WeiboPage {
 		mTextAtSomeone = (TextView)parent.findViewById(R.id.tvAtSomeone);
 		mListLeftSideBar = (ListView)parent.findViewById(R.id.lvWeiboLeftSideBar);
 		mLayoutLeftSideBar = (LinearLayout)parent.findViewById(R.id.llWeiboLeftSideBar);
+		mBtnBack = (ImageButton)parent.findViewById(R.id.btnWeiboPageBack);
+		mBtnMore = (ImageButton)parent.findViewById(R.id.btnWeiboPageMore);
 		mEditRepost  = new EditText(parent);
 		mEditComment = new EditText(parent);
 		mBtnTinyProfileImage = (ImageButton)parent.findViewById(R.id.btnTinyProfileImage);
@@ -776,6 +780,28 @@ public class WeiboPage {
 		mLayoutLeftSideBar.setVisibility(View.GONE);
 		mImageVerified.setVisibility(View.GONE);
 		mBtnDescription.setVisibility(View.GONE);
+		
+		mBtnBack.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				parent.getBrowPage().setReferer(R.layout.weibo_show);
+				//parent.switchPage(R.layout.brow, mId);
+				parent.switchPage(R.layout.main);
+			}
+			
+		});
+		
+		mBtnMore.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				parent.openOptionsMenu();
+			}
+			
+		});
 			
 		mBtnMoreTimelines = new Button(parent);
 		mBtnMoreTimelines.setText(R.string.label_getmore);

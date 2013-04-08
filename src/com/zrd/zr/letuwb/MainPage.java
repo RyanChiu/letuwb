@@ -32,6 +32,7 @@ import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.zrd.zr.customctrls.ZRImageView;
@@ -56,6 +57,7 @@ public class MainPage {
 	private Button mBtnPossessions;
 	private LinearLayout mLinearMainBottom;
 	private TextView mTextMsgMain;
+	private ImageButton mBtnMore;
 	
 	private ZRScrollView mScrollMain;
 	private LinearLayout mLinearLeft;
@@ -88,6 +90,7 @@ public class MainPage {
         mBtnHottest = (Button) activity.findViewById(R.id.btnHottest);
         mBtnUnhottest = (Button) activity.findViewById(R.id.btnUnhottest);
         mBtnPossessions = (Button) activity.findViewById(R.id.btnPossessions);
+        mBtnMore = (ImageButton) activity.findViewById(R.id.btnHomeMore);
         mTopicBtns = new ArrayList<Button>();
         getTopicBtns().add(mBtnLatest);
         getTopicBtns().add(mBtnHottest);
@@ -148,6 +151,16 @@ public class MainPage {
 		/*
 		 * actions
 		 */
+        
+        mBtnMore.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				parent.openOptionsMenu();
+			}
+        	
+        });
 
 	    mBtnRandom.setOnClickListener(new OnClickListener () {
 
