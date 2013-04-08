@@ -7,61 +7,79 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:visibility="gone"/>
-    
-    <LinearLayout 
-         android:layout_width="fill_parent" 
-         android:layout_height="50dp" 
-         android:gravity="center"
-         android:layout_centerHorizontal="true" android:layout_alignParentTop="true">
 
-         <RelativeLayout
-             android:id="@+id/rlAdsMain"
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent" >
-         </RelativeLayout>
-
-     </LinearLayout>
-    
-    <ViewFlipper
-        android:id="@+id/vfCore"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="50dp" android:layout_alignParentBottom="true" android:inAnimation="@anim/push_left_in" android:outAnimation="@anim/push_left_out" android:flipInterval="1000" android:persistentDrawingCache="all">
-
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
-
-            <ViewStub
-                android:id="@+id/vsMain"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" android:layout="@layout/main"/>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
-
-            <ViewStub
-                android:id="@+id/vsBrow"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" android:layout="@layout/brow"/>
-
-        </FrameLayout>
+        android:orientation="vertical" >
         
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
-
-            <ViewStub
-                android:id="@+id/vsWeibo"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" android:layout="@layout/weibo_show"/>
-
-        </FrameLayout>
-            
-    </ViewFlipper>
+        <RelativeLayout 
+			 android:id="@+id/rlAds"
+	         android:layout_width="fill_parent" 
+	         android:layout_height="50dp" 
+	         android:gravity="center">
+	
+	         <RelativeLayout
+	             android:id="@+id/rlAdsMain"
+	             android:layout_width="fill_parent"
+	             android:layout_height="fill_parent" >
+	         </RelativeLayout>
+	
+	        <ImageButton
+	            android:id="@+id/btnAdsClose"
+	            android:layout_width="32dp"
+	            android:layout_height="32dp"
+	            android:background="#00000000"
+	            android:scaleType="fitXY"
+	            android:src="@drawable/fancy_close" android:layout_alignParentRight="true" android:layout_centerVertical="true"/>
+	
+	         </RelativeLayout>
+	    
+	    <ViewFlipper
+	        android:id="@+id/vfCore"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:inAnimation="@anim/push_left_in" 
+	        android:outAnimation="@anim/push_left_out" 
+	        android:flipInterval="1000" 
+	        android:persistentDrawingCache="all">
+	
+	        <FrameLayout
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent" >
+	
+	            <ViewStub
+	                android:id="@+id/vsMain"
+	                android:layout_width="fill_parent"
+	                android:layout_height="fill_parent" android:layout="@layout/main"/>
+	
+	        </FrameLayout>
+	
+	        <FrameLayout
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent" >
+	
+	            <ViewStub
+	                android:id="@+id/vsBrow"
+	                android:layout_width="fill_parent"
+	                android:layout_height="fill_parent" android:layout="@layout/brow"/>
+	
+	        </FrameLayout>
+	        
+	        <FrameLayout
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent" >
+	
+	            <ViewStub
+	                android:id="@+id/vsWeibo"
+	                android:layout_width="fill_parent"
+	                android:layout_height="fill_parent" android:layout="@layout/weibo_show"/>
+	
+	        </FrameLayout>
+	            
+	    </ViewFlipper>
+        
+    </LinearLayout>
     
     <RelativeLayout 
         android:id="@+id/rlVote"

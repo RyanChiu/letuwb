@@ -131,6 +131,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	private ImageButton mBtnDwdw;
 	private Dialog mDlgDescription;
 	
+	private ViewFlipper mFlipperCore;
+	private ImageButton mBtnAdsClose;
+	private RelativeLayout mLayoutAds;
+	
     /* Called when the activity is firstly created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,7 +164,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 		vs = (ViewStub) findViewById(R.id.vsWeibo);
 		vs.setVisibility(View.VISIBLE);
         //get all the views needed in layout "core"
-        setViewFlipper((ViewFlipper) findViewById(R.id.vfCore));
+		mFlipperCore = (ViewFlipper)findViewById(R.id.vfCore);
+        setViewFlipper(mFlipperCore);
         setMainPage(new MainPage(this));
         setBrowPage(new BrowPage(this));
         setWeiboPage(new WeiboPage(this));
@@ -198,10 +203,21 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         );
         
         // implement AdWhirl.
-        RelativeLayout rlAds = (RelativeLayout)this.findViewById(R.id.rlAdsMain);
+        RelativeLayout rlAds = (RelativeLayout)findViewById(R.id.rlAdsMain);
         AdWhirlLayout ret = new AdWhirlLayout(this,
 			GmAdWhirlEventAdapterData.CONST_STR_APPID_ADWHIRL, null);
         rlAds.addView(ret);
+        mLayoutAds = (RelativeLayout)findViewById(R.id.rlAds);
+        mBtnAdsClose = (ImageButton)findViewById(R.id.btnAdsClose);
+        mBtnAdsClose.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mLayoutAds.setVisibility(View.GONE);
+			}
+        	
+        });
                 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.exchangelist_title);
         RegLoginActivity.addContext(EntranceActivity.this);
