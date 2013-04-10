@@ -740,7 +740,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 			for (int i = 0; i < msgs.length; i++) {
 				if (!msgs[i].equals("")) {
 					Toast.makeText(
-						LetuseeActivity.this,
+						EntranceActivity.this,
 						msgs[i],
 						Toast.LENGTH_SHORT
 					).show();
