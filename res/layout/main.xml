@@ -89,6 +89,15 @@
                 </RelativeLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvNoConnectionTip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/err_noconnection" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:gravity="center" android:paddingBottom="48dp"/>
+
         </RelativeLayout>
     </FrameLayout>
 

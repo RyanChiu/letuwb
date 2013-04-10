@@ -29,7 +29,6 @@
     <!-- <string name="tips_pages">%1$d~%2$d / %3$d~%4$d Total %5$d pictures</string> -->
     <string name="tips_pages">%1$d~%2$d / Total %3$d pictures</string>
     <string name="err_nopictures">No pictures available</string>
-    <string name="msg_nopictures">It appears that either there is no Internet connection, or our server is down. We apologize for any inconvenience. Please check back later!</string>
     <string name="err_noconnection">It appears that either there is no Internet connection, or our server is down. We apologize for any inconvenience. Please check back later!</string>
     <string name="msg_uploading">Uploading…</string>
     <string name="tips_voting">Voting…</string>

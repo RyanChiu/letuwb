@@ -58,6 +58,7 @@ public class MainPage {
 	private LinearLayout mLinearMainBottom;
 	private TextView mTextMsgMain;
 	private ImageButton mBtnMore;
+	private TextView mTextNoConnectionTip;
 	
 	private ZRScrollView mScrollMain;
 	private LinearLayout mLinearLeft;
@@ -91,6 +92,7 @@ public class MainPage {
         mBtnUnhottest = (Button) activity.findViewById(R.id.btnUnhottest);
         mBtnPossessions = (Button) activity.findViewById(R.id.btnPossessions);
         mBtnMore = (ImageButton) activity.findViewById(R.id.btnHomeMore);
+        mTextNoConnectionTip = (TextView) activity.findViewById(R.id.tvNoConnectionTip);
         mTopicBtns = new ArrayList<Button>();
         getTopicBtns().add(mBtnLatest);
         getTopicBtns().add(mBtnHottest);
@@ -148,6 +150,7 @@ public class MainPage {
 	
 	private void __init() {
         mLinearMainBottom.setVisibility(LinearLayout.GONE);
+        mTextNoConnectionTip.setVisibility(LinearLayout.GONE);
 		/*
 		 * actions
 		 */
@@ -457,13 +460,13 @@ public class MainPage {
 		return pics.get(idx);
 	}
 	
-    public ArrayList<WeibouserInfo> getPics(String... params) {
+    public ArrayList<WeibouserInfo> getWeiboUsers(String... params) {
     	ArrayList<WeibouserInfo> usrs = new ArrayList<WeibouserInfo>();
     	
     	String sParams = PNJ.getParamsAsStr(params);
     	SecureURL su = new SecureURL();
     	URLConnection conn = su.getConnection(EntranceActivity.URL_SITE + "picsinfo.php?" + sParams);
-    	if (conn == null) return usrs;
+    	if (conn == null) return null;
     	try {
 	    	conn.connect();
 	    	InputStream is = conn.getInputStream();
@@ -492,6 +495,7 @@ public class MainPage {
     	} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		return usrs;
     }
@@ -647,7 +651,8 @@ public class MainPage {
 	 * expand new users to mUsrs
 	 */
 	public ArrayList<WeibouserInfo> expandUsrs(String... params) {
-		ArrayList<WeibouserInfo> usrs = getPics(params);
+		ArrayList<WeibouserInfo> usrs = getWeiboUsers(params);
+		if (usrs == null) return null;
 		
 		/*
 		 * check the returned usrs to see if mUsrs contains some of it,
@@ -735,6 +740,13 @@ public class MainPage {
 	 * load the contents for the views in pinterest
 	 */
 	public void loadPinterests(ArrayList<LinearLayout> views, ArrayList<WeibouserInfo> usrs) {
+		if (usrs == null) {
+			mTextNoConnectionTip.setVisibility(View.VISIBLE);
+			usrs = new ArrayList<WeibouserInfo>();
+		} else {
+			mTextNoConnectionTip.setVisibility(View.GONE);
+		}
+		
 		if (usrs.size() <= views.size()) {
 			for (int i = 0; i < usrs.size(); i++) {
 				LinearLayout ll = views.get(i);
@@ -860,13 +872,13 @@ public class MainPage {
 			int nRLast = mLinearRight.getChildCount() - 1;
 			int nMLast = mLinearMid.getChildCount() - 1;
 			int nLLast = mLinearLeft.getChildCount() - 1;
-			if (nRLast > 0) {
+			if (nRLast >= 0) {
 				mLinearRight.removeViewAt(nRLast);
 			}
-			if (nMLast > 0 && (i + 1 < nDels)) {
+			if (nMLast >= 0 && (i + 1 < nDels)) {
 				mLinearMid.removeViewAt(nMLast);
 			}
-			if (nLLast > 0 && (i + 2 < nDels)) {
+			if (nLLast >= 0 && (i + 2 < nDels)) {
 				mLinearLeft.removeViewAt(nLLast);
 			}
 		}

@@ -29,7 +29,6 @@
     <!-- <string name="tips_pages">%1$d~%2$d / %3$d~%4$d 共%5$d张图片</string> -->
     <string name="tips_pages">%1$d~%2$d / 共%3$d张图片</string>
     <string name="err_nopictures">没有可用的图片</string>
-    <string name="msg_nopictures">您也许得检查一下您的互联网连接。或者，真的是没有图片了。</string>
     <string name="err_noconnection">您也许得检查一下您的互联网连接。</string>
     <string name="msg_uploading">上传中…</string>
     <string name="tips_voting">投票中…</string>
