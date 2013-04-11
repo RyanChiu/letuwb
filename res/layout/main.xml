@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="@string/err_noconnection" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:gravity="center" android:paddingBottom="48dp"/>
+                android:text="@string/err_noconnection" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:gravity="center" android:background="@drawable/organgeroundsquare" android:textColor="#000000"/>
 
         </RelativeLayout>
     </FrameLayout>

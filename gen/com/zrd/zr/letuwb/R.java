@@ -77,7 +77,7 @@ containing a value of this type.
         public static final int icon=0x7f020017;
         public static final int icon_gray=0x7f020018;
         public static final int more=0x7f020019;
-        public static final int parent32x32=0x7f02001a;
+        public static final int organgeroundsquare=0x7f02001a;
         public static final int person=0x7f02001b;
         public static final int person_questionmark=0x7f02001c;
         public static final int popup_full_dark=0x7f02001d;
