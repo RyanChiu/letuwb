@@ -726,8 +726,8 @@ public class EntranceActivity extends Activity implements OnTouchListener {
     
     /*
      * Initialize stuff that the app needed, should include:
-     * 1.try to get a local key
-     * 2.automatically login if remembered
+     * 1.try to get a local key, and detect that if the logged weibo account associated with it(not finished)
+     * 2.check if updating needed.
      */
     private class AsyncInit extends AsyncTask <Object, Object, Object>{
 
