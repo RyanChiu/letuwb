@@ -147,7 +147,7 @@ public class ImageActivity extends Activity implements OnTouchListener {
 				Toast.LENGTH_SHORT
 			).show();
 			AsyncSaver saver = new AsyncSaver(this, mUrl);
-			String sPath = AsyncSaver.getSdcardDir() + EntranceActivity.PATH_COLLECTION;
+			String sPath = AsyncSaver.getSdcardDir() + EntranceActivity.DIR_COLLECTION;
 			String sFile = mUrl.getFile();
 			int idxFind = sFile.lastIndexOf("/");
 			if (idxFind != -1) {

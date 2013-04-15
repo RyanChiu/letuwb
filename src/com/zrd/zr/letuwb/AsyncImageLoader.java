@@ -150,7 +150,7 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 			 * it uses value of MD5 the address of URL for the cached image filename.
 			 */
 			String pathCacheImg = AsyncSaver.getSdcardDir()
-				+ EntranceActivity.PATH_CACHE;
+				+ EntranceActivity.DIR_CACHE;
 			SecureURL su = new SecureURL();
 			String fileCacheImg = su.phpMd5(url.toString());
 			int probe = AsyncSaver.probeFile(pathCacheImg, fileCacheImg);

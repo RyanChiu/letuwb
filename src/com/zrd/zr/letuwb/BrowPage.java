@@ -172,10 +172,10 @@ public class BrowPage {
             	WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs());
             	if (wi != null) {
             		String sCacheFile = 
-            			AsyncSaver.getSdcardDir() + EntranceActivity.PATH_CACHE 
+            			AsyncSaver.getSdcardDir() + EntranceActivity.DIR_CACHE 
             			+ wi.uid + ".jg";
             		String sFile =
-            			AsyncSaver.getSdcardDir() + EntranceActivity.PATH_CACHE 
+            			AsyncSaver.getSdcardDir() + EntranceActivity.DIR_CACHE 
             			+ wi.uid + ".jpg";
             		File file = new File(sCacheFile);
             		file.renameTo(new File(sFile));
@@ -516,7 +516,7 @@ public class BrowPage {
 			
 			WeibouserInfo wi = parent.getMainPage().getPicFromId(mId, parent.getMainPage().getUsrs());
 			String sPath, sFname;
-			sPath = AsyncSaver.getSdcardDir() + EntranceActivity.PATH_CACHE;
+			sPath = AsyncSaver.getSdcardDir() + EntranceActivity.DIR_CACHE;
 			sFname = wi.uid + ".jg";
 
 			/*

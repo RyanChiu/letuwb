@@ -21,6 +21,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -57,6 +59,7 @@ import com.weibo.sdk.android.Weibo;
 import com.weibo.sdk.android.WeiboAuthListener;
 import com.weibo.sdk.android.WeiboDialogError;
 import com.weibo.sdk.android.WeiboException;
+import com.weibo.sdk.android.custom.Emotions;
 import com.weibo.sdk.android.keep.AccessTokenKeeper;
 import com.zrd.zr.letuwb.R;
 import com.zrd.zr.pnj.PNJ;
@@ -80,8 +83,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	final static String URL_SITE = URL_PROTOCOL + "://" + URL_HOST + ":" + URL_PORT + URL_DIRECTORY; //"http://122.224.249.74:8080/letmewb/";
 	final static String URL_UPDATE = URL_PROTOCOL + "://" + URL_HOST0 + ":" + URL_PORT + "/"; //"http://122.224.249.74:8080/";
 	final static String URL_STATS = URL_PROTOCOL + "://" + URL_HOST + ":" + URL_PORT + URL_DIRECTORY; //"http://122.224.249.74:8080/letmewb/";
-	final static String PATH_COLLECTION = "/letuwb/collection/";
-	final static String PATH_CACHE = "/letuwb/cache/";
+	final static String DIR_COLLECTION = "/letuwb/collection/";
+	final static String DIR_CACHE = "/letuwb/cache/";
+	public final static String DIR_EMOTIONS = "/letuwb/emotions/";
 	final static Integer MAXSIZE_CACHE = 100;// in MB
 	final static Integer MAXPERCENTAGE_CACHE = 5; // with %
 	final static int REQUESTCODE_PICKFILE = 1001;
@@ -106,6 +110,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	
 	private WebView mWebCount;
 	private AlertDialog mQuitDialog;
+	private ProgressBar mProgressSysTiny;
 	public static SharedPreferences mPreferences = null;
 	private static Integer mAccountId = 0;
 
@@ -134,6 +139,28 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	private ViewFlipper mFlipperCore;
 	private ImageButton mBtnAdsClose;
 	private RelativeLayout mLayoutAds;
+	
+	private Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			Bundle bundle = msg.getData();
+			switch (msg.what) {
+			case Emotions.BEGIN:
+				int max = bundle.getInt(Emotions.DATA_KEY);
+				mProgressSysTiny.setMax(max);
+				mProgressSysTiny.setVisibility(View.VISIBLE);
+				break;
+			case Emotions.SAVING:
+				int ing = bundle.getInt(Emotions.DATA_KEY);
+				mProgressSysTiny.setProgress(ing);
+				break;
+			case Emotions.FATAL_ERROR:
+				int errCode = bundle.getInt(Emotions.DATA_KEY);
+				mProgressSysTiny.setBackgroundColor(0xcdcdcd);
+				Toast.makeText(EntranceActivity.this, "error:" + errCode, Toast.LENGTH_LONG).show();
+				break;
+			}
+		}
+	};
 	
     /* Called when the activity is firstly created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -190,14 +217,14 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         /**
          * try to pass the OAuth2 through SINA
          */
-        login(getString(R.string.tips_loadingsinaweibooauthpage));        
+        login(getString(R.string.tips_loadingsinaweibooauthpage));
         
         /**
          * Clean cache if needed
          */
         AsyncCacheCleaner acc = new AsyncCacheCleaner(this);
         acc.execute(
-        	AsyncSaver.getSdcardDir() + EntranceActivity.PATH_CACHE,
+        	AsyncSaver.getSdcardDir() + EntranceActivity.DIR_CACHE,
         	MAXSIZE_CACHE.toString(),		//in MB
         	MAXPERCENTAGE_CACHE.toString()	//in percentage
         );
@@ -232,8 +259,10 @@ public class EntranceActivity extends Activity implements OnTouchListener {
         mProgressVote = (ProgressBar) findViewById(R.id.pbVote);
         mBtnUpup = (ImageButton) findViewById(R.id.btnUpup);
 		mBtnDwdw = (ImageButton) findViewById(R.id.btnDwdw);
+		mProgressSysTiny = (ProgressBar) findViewById(R.id.pbSysTiny);
         
-        //mLayoutVoteInfo.setVisibility(LinearLayout.INVISIBLE);
+		mProgressSysTiny.setVisibility(View.GONE);
+		//mLayoutVoteInfo.setVisibility(LinearLayout.INVISIBLE);
         //mLayoutVote.setVisibility(LinearLayout.GONE);
 		
 		mDlgDescription = new Dialog(this, R.style.Dialog_Clean);
@@ -1104,6 +1133,26 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 						EntranceActivity.accessToken);
 				Toast.makeText(EntranceActivity.this, getApplication().getString(R.string.tips_successfullyoauthorized), Toast.LENGTH_SHORT).show();
 				mWeiboPage.getSina().getLoggedInUser(EntranceActivity.accessToken);
+				/**
+				 * try to get emotions
+				 */
+				Emotions emotions = new Emotions(
+					accessToken, 
+					AsyncSaver.getSdcardDir() + DIR_EMOTIONS, 
+					mHandler
+				);
+				int err = emotions.load();
+				if (err == -1 || err == 0) {//means local files not found or no emotion exists
+					//try to download emotions
+					emotions.update();
+				}
+				//SpannableString spannable;
+				//ImageSpan span;
+				Toast.makeText(
+					EntranceActivity.this,
+					(String)emotions.getEmotion("[呵呵]"),
+					Toast.LENGTH_LONG
+				).show();
             } else {
             	Toast.makeText(EntranceActivity.this, getApplication().getString(R.string.tips_failtopassoauth), Toast.LENGTH_SHORT).show();
             	mWeiboPage.getSina().setLoggedInUser(null, 0);
