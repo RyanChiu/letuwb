@@ -142,6 +142,7 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 				);
 				Linkify.addLinks(holder.mTextRetweeted, Linkify.ALL);
 				
+				holder.mImageRetweeted.setImageResource(R.drawable.icon_gray);
 				AsyncImageLoader loaderR = new AsyncImageLoader(
 					mContext, holder.mImageRetweeted, R.drawable.broken,
 					holder.mProgressRetweetedImageLoading
@@ -181,6 +182,7 @@ public class WeiboStatusListAdapter extends BaseAdapter {
 				}
 			}
 			
+			holder.mImage.setImageResource(R.drawable.icon_gray);
 			AsyncImageLoader loader = new AsyncImageLoader(
 				mContext, holder.mImage, R.drawable.broken,
 				holder.mProgressStatusImageLoading
