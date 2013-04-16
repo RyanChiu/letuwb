@@ -148,6 +148,9 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 				int max = bundle.getInt(Emotions.DATA_KEY);
 				mProgressSysTiny.setMax(max);
 				mProgressSysTiny.setVisibility(View.VISIBLE);
+				if (mProgressSysTiny.getMax() == mProgressSysTiny.getProgress()) {
+					mProgressSysTiny.setVisibility(View.GONE);
+				}
 				break;
 			case Emotions.SAVING:
 				int ing = bundle.getInt(Emotions.DATA_KEY);
