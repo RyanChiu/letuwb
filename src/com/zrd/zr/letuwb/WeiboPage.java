@@ -48,10 +48,12 @@ import com.weibo.sdk.android.api.WeiboAPI.COMMENTS_TYPE;
 import com.weibo.sdk.android.api.WeiboAPI.FEATURE;
 import com.weibo.sdk.android.net.RequestListener;
 import com.weibo.sdk.android.custom.Comment2;
+import com.weibo.sdk.android.custom.Emotions;
 import com.weibo.sdk.android.custom.Responds;
 import com.weibo.sdk.android.custom.Status2;
 import com.weibo.sdk.android.custom.User2;
 
+import com.zrd.zr.custom.async.AsyncImageLoader;
 import com.zrd.zr.pnj.ThreadPNJDealer;
 import com.zrd.zr.protos.WeibousersProtos.UCMappings;
 import com.zrd.zr.weiboes.Sina;
@@ -62,6 +64,7 @@ public class WeiboPage {
 	
 	protected static final int COUNT_PERPAGE_TIMELINE = 20;
 	protected static final int COUNT_PERPAGE_COMMENTS = 20;
+	private Emotions mEmotions;
 	private TextView mTextScreenName;
 	private ImageView mImageVerified;
 	private TextView mTextCreatedAt;
@@ -1763,5 +1766,13 @@ public class WeiboPage {
 			+ parent.getString(R.string.label_friends) + ":-"; 
 		mTextCounts.setText(sCounts);
 		parent.getBrowPage().getTextCounts_brow().setText(sCounts);
+	}
+
+	public Emotions getEmotions() {
+		return mEmotions;
+	}
+
+	public void setEmotions(Emotions mEmotions) {
+		this.mEmotions = mEmotions;
 	}
 }

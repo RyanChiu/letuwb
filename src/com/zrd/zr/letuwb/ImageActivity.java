@@ -10,6 +10,8 @@ import com.ant.liao.GifView.GifImageType;
 import com.sonyericsson.zoom.DynamicZoomControl;
 import com.sonyericsson.zoom.ImageZoomView;
 import com.sonyericsson.zoom.LongPressZoomListener;
+import com.zrd.zr.custom.async.AsyncImageLoader;
+import com.zrd.zr.custom.async.AsyncSaver;
 
 import android.app.Activity;
 import android.os.Bundle;

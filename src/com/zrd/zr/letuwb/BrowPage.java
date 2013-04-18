@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.sonyericsson.zoom.DynamicZoomControl;
 import com.sonyericsson.zoom.ImageZoomView;
 import com.sonyericsson.zoom.LongPressZoomListener;
+import com.zrd.zr.custom.async.AsyncSaver;
 import com.zrd.zr.customctrls.ZRImageView;
 import com.zrd.zr.pnj.SecureURL;
 import com.zrd.zr.pnj.ThreadPNJDealer;

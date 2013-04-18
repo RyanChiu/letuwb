@@ -61,6 +61,8 @@ import com.weibo.sdk.android.WeiboDialogError;
 import com.weibo.sdk.android.WeiboException;
 import com.weibo.sdk.android.custom.Emotions;
 import com.weibo.sdk.android.keep.AccessTokenKeeper;
+import com.zrd.zr.custom.async.AsyncCacheCleaner;
+import com.zrd.zr.custom.async.AsyncSaver;
 import com.zrd.zr.letuwb.R;
 import com.zrd.zr.pnj.PNJ;
 import com.zrd.zr.pnj.SecureURL;
@@ -85,7 +87,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 	final static String URL_STATS = URL_PROTOCOL + "://" + URL_HOST + ":" + URL_PORT + URL_DIRECTORY; //"http://122.224.249.74:8080/letmewb/";
 	final static String DIR_COLLECTION = "/letuwb/collection/";
 	final static String DIR_CACHE = "/letuwb/cache/";
-	public final static String DIR_EMOTIONS = "/letuwb/emotions/";
+	final static String DIR_EMOTIONS = "/letuwb/emotions/";
 	final static Integer MAXSIZE_CACHE = 100;// in MB
 	final static Integer MAXPERCENTAGE_CACHE = 5; // with %
 	final static int REQUESTCODE_PICKFILE = 1001;
@@ -1149,6 +1151,7 @@ public class EntranceActivity extends Activity implements OnTouchListener {
 					//try to download emotions
 					emotions.update();
 				}
+				mWeiboPage.setEmotions(emotions);
 				//SpannableString spannable;
 				//ImageSpan span;
 				Toast.makeText(
