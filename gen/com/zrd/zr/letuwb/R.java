@@ -80,19 +80,20 @@ containing a value of this type.
         public static final int organgeroundsquare=0x7f02001a;
         public static final int person=0x7f02001b;
         public static final int person_questionmark=0x7f02001c;
-        public static final int popup_full_dark=0x7f02001d;
-        public static final int reposts=0x7f02001e;
-        public static final int roundsidebar=0x7f02001f;
-        public static final int roundsquare=0x7f020020;
-        public static final int share=0x7f020021;
-        public static final int toast_frame=0x7f020022;
-        public static final int transparent=0x7f020023;
-        public static final int upup=0x7f020024;
-        public static final int upup_normal=0x7f020025;
-        public static final int upup_pressed=0x7f020026;
-        public static final int voterating_progress_horizontal=0x7f020027;
-        public static final int weibo_verified=0x7f020028;
-        public static final int weibosdk_dialog_bg=0x7f020029;
+        public static final int phrase=0x7f02001d;
+        public static final int popup_full_dark=0x7f02001e;
+        public static final int reposts=0x7f02001f;
+        public static final int roundsidebar=0x7f020020;
+        public static final int roundsquare=0x7f020021;
+        public static final int share=0x7f020022;
+        public static final int toast_frame=0x7f020023;
+        public static final int transparent=0x7f020024;
+        public static final int upup=0x7f020025;
+        public static final int upup_normal=0x7f020026;
+        public static final int upup_pressed=0x7f020027;
+        public static final int voterating_progress_horizontal=0x7f020028;
+        public static final int weibo_verified=0x7f020029;
+        public static final int weibosdk_dialog_bg=0x7f02002a;
     }
     public static final class id {
         public static final int btnAdsClose=0x7f08001f;
