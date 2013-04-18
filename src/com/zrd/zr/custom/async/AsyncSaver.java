@@ -1,4 +1,4 @@
-package com.zrd.zr.letuwb;
+package com.zrd.zr.custom.async;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+
+import com.zrd.zr.letuwb.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -24,12 +26,12 @@ public class AsyncSaver extends AsyncTask <Object, Object, Object> {
 	Bitmap mBitmap;
 	URL mUrl;
 	
-	AsyncSaver(Context context, Bitmap bmp) {
+	public AsyncSaver(Context context, Bitmap bmp) {
 		mContext = context;
 		mBitmap = bmp;
 	}
 	
-	AsyncSaver(Context context, URL url) {
+	public AsyncSaver(Context context, URL url) {
 		mContext = context;
 		mUrl = url;
 	}

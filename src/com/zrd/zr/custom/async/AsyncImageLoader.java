@@ -1,4 +1,4 @@
-package com.zrd.zr.letuwb;
+package com.zrd.zr.custom.async;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -17,6 +17,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -27,6 +28,7 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	private ImageView mImage = null;
 	private ZRImageView mZRImage = null;
 	private ImageZoomView mImageZoom = null;
+	private ImageSpan mImageSpan = null;
 	private ProgressBar mProgress = null;
 	
 	private static HashMap<String, SoftReference<Bitmap>> mMemImages
@@ -57,7 +59,6 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	
 	public AsyncImageLoader(Context context,
 		ImageView image, Integer resIdBadImage, ProgressBar progress) {
-		this(context, image, resIdBadImage);
 		mProgress = progress;
 	}
 	
@@ -69,6 +70,13 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		mProgress = progress;
 	}
 	
+	public AsyncImageLoader(Context context,
+		ImageSpan span, Integer resIdDefault) {
+		mContext = context;
+		mImageSpan = span;
+		mResIdBadImage = resIdDefault;
+	}
+	
 	public HashMap<String, SoftReference<Bitmap>> getMemImages() {
 		return mMemImages;
 	}
@@ -76,7 +84,7 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 	/*
 	 * load the INTERNET image here
 	 */
-	private Bitmap loadImage(URL url) {
+	static private Bitmap loadImage(URL url) {
 		SecureURL su = new SecureURL();
 		Bitmap bmp;
 		URLConnection conn = su.getConnection(url);
@@ -112,6 +120,63 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		return bmp;
 	}
 	
+	static public Bitmap loadImage(Context context, URL url, Boolean inMem, String cacheDir) {
+		Bitmap bmp;
+		if (!inMem) {
+			//System.gc();
+			//System.runFinalization();
+			//System.gc();
+
+			/*
+			 * see if local cached.
+			 * it uses value of MD5 the address of URL for the cached image filename.
+			 */
+			String pathCacheImg;
+			if (cacheDir == null) {
+				pathCacheImg = AsyncSaver.getSdcardDir() + "/";
+			} else {
+				pathCacheImg = AsyncSaver.getSdcardDir() + "/" + cacheDir;
+			}
+			SecureURL su = new SecureURL();
+			String fileCacheImg = su.phpMd5(url.toString());
+			int probe = AsyncSaver.probeFile(pathCacheImg, fileCacheImg);
+			if (probe == -2) {//means cache image exists
+				/*
+				 * directly load the cached image here
+				 */
+				bmp = BitmapFactory.decodeFile(pathCacheImg + fileCacheImg);
+		    	return bmp == null ? null : bmp;
+			} else {
+				/*
+				 * load the INTERNET image here
+				 */
+				bmp = loadImage(url);
+				if (probe == 1) {//means could deal with the cache
+					/*
+					 * cache the image file here
+					 */
+					AsyncSaver saver = new AsyncSaver(context, bmp);
+					saver.saveImage(
+						AsyncSaver.getSilentFile(pathCacheImg, fileCacheImg)
+					);
+				}
+				return bmp;
+			}
+		} else {
+			String sUrl = url.toString();
+			if (mMemImages.containsKey(sUrl)) {
+				SoftReference<Bitmap> sf = mMemImages.get(sUrl);
+				bmp = sf.get();
+				if (bmp != null) {
+					return bmp;
+				}
+			}
+			bmp = loadImage(url);
+			mMemImages.put(sUrl, new SoftReference<Bitmap>(bmp));
+			return bmp;
+		}
+	}
+	
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
@@ -136,59 +201,12 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 		URL url = (URL) params[0];
 		
 		boolean inMemory = false;
-		
 		if (params.length > 1) inMemory = (Boolean)params[1];
 		
-		Bitmap bmp;
-		if (!inMemory) {
-			//System.gc();
-			//System.runFinalization();
-			//System.gc();
-
-			/*
-			 * see if local cached.
-			 * it uses value of MD5 the address of URL for the cached image filename.
-			 */
-			String pathCacheImg = AsyncSaver.getSdcardDir()
-				+ EntranceActivity.DIR_CACHE;
-			SecureURL su = new SecureURL();
-			String fileCacheImg = su.phpMd5(url.toString());
-			int probe = AsyncSaver.probeFile(pathCacheImg, fileCacheImg);
-			if (probe == -2) {//means cache image exists
-				/*
-				 * directly load the cached image here
-				 */
-				bmp = BitmapFactory.decodeFile(pathCacheImg + fileCacheImg);
-		    	return bmp == null ? null : bmp;
-			} else {
-				/*
-				 * load the INTERNET image here
-				 */
-				bmp = loadImage(url);
-				if (probe == 1) {//means could deal with the cache
-					/*
-					 * cache the image file here
-					 */
-					AsyncSaver saver = new AsyncSaver(mContext, bmp);
-					saver.saveImage(
-						AsyncSaver.getSilentFile(pathCacheImg, fileCacheImg)
-					);
-				}
-				return bmp;
-			}
-		} else {
-			String sUrl = url.toString();
-			if (mMemImages.containsKey(sUrl)) {
-				SoftReference<Bitmap> sf = mMemImages.get(sUrl);
-				bmp = sf.get();
-				if (bmp != null) {
-					return bmp;
-				}
-			}
-			bmp = loadImage(url);
-			mMemImages.put(sUrl, new SoftReference<Bitmap>(bmp));
-			return bmp;
-		}
+		String cacheDir = null;
+		if (params.length > 2) cacheDir = (String)params[2];
+		
+		return loadImage(mContext, url, inMemory, cacheDir);
 	}
 
 	@Override
@@ -200,6 +218,11 @@ public class AsyncImageLoader extends AsyncTask<Object, Object, Bitmap> {
 			}
 			else {
 				mImage.setImageResource(mResIdBadImage);
+			}
+		}
+		if (mImageSpan != null) {
+			if (result != null) {
+				mImageSpan = new ImageSpan(result, ImageSpan.ALIGN_BASELINE);
 			}
 		}
 		if (mZRImage != null) {
