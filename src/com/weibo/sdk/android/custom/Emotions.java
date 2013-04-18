@@ -216,11 +216,11 @@ public class Emotions {
 				i++;
 				y = s.indexOf("]", i);
 				if (y != -1) {
-					e = s.substring(x, y);
+					e = (y + 1) > s.length() ? s.substring(x) : s.substring(x, y + 1);
 					if (emotions.containsKey(e)) {
 						es.add(new Position(e, x, y));
 					}
-					i += (y - x);
+					i = y;
 				}
 			}
 		}
